@@ -301,3 +301,61 @@ Rule: For each new sheet, at least one real asset must use it — otherwise wait
 *Generated: 2026-06-16 | Claude Sonnet 4.6 + HI | Hub v0.5*  
 *Ratification: pending HI*  
 *Previous version was outdated — this replaces it*
+
+---
+
+## @go Protocol
+
+The `@go` protocol lets any AI (Claude, ChatGPT, Gemini) bootstrap with full DFL operational context in one step.
+
+### Two Sources
+
+| Source | Format | Purpose |
+|---|---|---|
+| **A — Doctrine** | This file (Markdown, public) | Human-readable identity, rules, registry |
+| **B — Live memory** | `https://context.deepfeelingslabs.com/go` (JSON) | Machine-readable decisions, constraints, pending from Engram |
+
+### Endpoint
+
+```
+GET https://context.deepfeelingslabs.com/go
+```
+
+No authentication required. Response shape:
+
+```json
+{
+  "identity": {
+    "ecosystem": "DFL / amOS",
+    "grounding_anchor": "La Garra — 67.205.166.199",
+    "source_a": "https://raw.githubusercontent.com/DFLghub/amos-context/main/amos-context.md",
+    "source_b": "https://context.deepfeelingslabs.com/go",
+    "protocol": "@go v1.0"
+  },
+  "recent_decisions": [...],
+  "active_constraints": [...],
+  "pending": [...],
+  "generated_at": "ISO timestamp"
+}
+```
+
+### Usage
+
+At the start of any session, before any task:
+
+```
+@go
+→ fetch https://context.deepfeelingslabs.com/go
+→ load identity, recent_decisions, active_constraints, pending
+→ ground session context
+→ proceed
+```
+
+### Infrastructure
+
+- Proxy: `dfl-context-proxy` Python service on La Garra, port 8091
+- Memory backend: Engram local runtime at `127.0.0.1:7437`, project `dfl`
+- Caddy: `context.deepfeelingslabs.com` → `127.0.0.1:8091`
+- Systemd: `/etc/systemd/system/dfl-context-proxy.service` (enabled, auto-restart)
+
+*@go Protocol v1.0 — deployed 2026-06-24*
