@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-02T21:27:47Z  
+**Generated:** 2026-07-02T22:43:27Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -133,10 +133,6 @@ PRÓXIMO AGENTE DEBE: NO modificar puntajeTigreKnockout sin PRP explícito y aut
 
 ## PENDING
 
-### FutbolWeb — estado y stack (caso 001 Apps Factory)
-
-FutbolWeb / Oráculo Futbolero: producto operativo en producción durante Mundial 2026. Es simultáneamente un producto real y el caso de estudio 001 de DFL Apps Factory. Stack: Next.js + Supabase + Vercel (hobby). Repo: github.com/DFLghub/futbolweb-app. Código en /opt/futbolweb en La Garra. Sistema de scoring: puntaje_tigre (grupos) + puntaje_tigre_knockout (eliminatorias, commit bfca1ac). Sync ESPN via cron-job.org (expira 2026-07-20). Backup: GitHub Actions diario. Pendientes críticos: (1) wiring DB layer KnockoutEngine contra Neon; (2) sensibilidad a mayúsculas en realAdvancingTeam con datos reales; (3) confirmar deploy commit 50316e3; (4) diagnosticar webhook GitHub-Vercel roto. Regla de oro: no tocar Supabase/scoring/deployment sin autorización explícita.
-
 ### Gate Engine v0 Caso 01: Gate 1 es el gate más débil (PRP-001 retroactivo)
 
 Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21). Gate 2 (Execution Perimeter): PASS limpio — perímetro declarado con claridad inusual desde el diseño. Gate 4 (Closure Integrity): PASS — 859/859 harness, diff cero, pendientes explícitos. Gate 1 (Decision Resurrection): ESCALATE — el Candidate Vault NO fue consultado en ningún momento del PRP-001; TSL sirvió como validación de riesgo pero no como chequeo de decisiones archivadas. Hallazgo clave: el checklist necesita una tercera categoría de respuesta (NOT_VERIFIABLE / PARTIAL) además de SÍ/NO — se improvisó durante la evaluación. Gate 4 es el más automatizable (diff/harness son verificables mecánicamente). Gate 1 requiere lectura semántica humana (distinguir 'consulta a TSL' de 'consulta al Candidate Vault'). Conclusión operacional: antes de ejecutar cualquier PRP, consultar 04_Candidate_Vault/ activamente — no solo a agentes. Este hallazgo viene de Gate_Engine_Caso01_PRP001.md en audited_pass/.
@@ -150,7 +146,7 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 - **Step 3:** Al guardar obs: usar DFL Writing Convention v0.3 (topic: dfl/engram/writing-convention)
 - **Precedencia:** A > B > C > D > E — Engram es capa D, nunca invalida Blueprint (A) ni MASTER_INDEX (B)
 - **Protegido:** NO modificar puntajeTigreKnockout, Supabase, Vercel config sin PRP explícito
-- **Alerta:** cron-job.org ESPN sync expira 2026-07-20 — cierre natural, torneo termina 2026-07-19, no requiere renovación
+- **Alerta:** 
 
 ---
 
@@ -233,4 +229,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-02T21:27:47Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-02T22:43:27Z | La Garra → DFLghub/amos-context*
