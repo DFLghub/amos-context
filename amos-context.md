@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-02T22:45:15Z  
+**Generated:** 2026-07-02T22:49:44Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -21,6 +21,14 @@
 ---
 
 ## RECENT DECISIONS
+
+### [TEST @$fin] Dummy cierre ordenado — verificación mirror
+**Type:** decision  
+
+**What**: Observación dummy para probar el circuito de outboarding @$fin v1.0.
+**Why**: Verificar que push_mirror.sh propaga un mem_save fresco al mirror amos-context en segundos.
+**Where**: N/A — no representa una decisión real.
+**Learned**: N/A — a archivar inmediatamente después de confirmar la propagación.
 
 ### FutbolWeb — fix amnesia pronósticos KO (ce766fd)
 **Type:** decision  
@@ -83,19 +91,6 @@ DATE: 2026-06-28
 SUMMARY: KNL v1.0 queda operativo como contrato oficial en /go. knl.json valida schema dfl.knl.v1 con semantic communities/entropy, navigation neighbors, memory, policy, provenance, comparator y validation. graph_context no aparece en /go. knl_compare.py ahora soporta snapshots previos con links y genera comparator status changed con previous_available=true. dfl-nav --brief muestra neighbors. P0/P4 quedan pendientes de confirmacion: regen_graph.sh aun usa OPENAI_API_KEY y graphify como productor; contrato KNL requiere ag_topologo.py como productor canonico de graph.json y Graphify solo como consumidor/analisador. P3 gap: ag_topologo local declara v0.1; no se encontro v0.3 instalable.
 EVIDENCE: python3 /opt/dfl-context-proxy/tests/test_knl_contract.py => knl contract ok. Public /go has knl=true, graph_context=false, validation ok.
 
-### [VERIFIED] /go payload slim — graph_context alias eliminado
-**Type:** decision  
-
-Eliminado el alias `graph_context` del payload GET /go en /opt/dfl-context-proxy/main.py.
-
-Cambio: `payload["graph_context"] = knl` removido. Solo queda `payload["knl"]`.
-
-Verificado: curl http://127.0.0.1:8091/go keys = ['identity', 'recent_decisions', 'active_constraints', 'pending', 'cc_bootstrap', 'generated_at', 'recent_engram_dfl', 'knl']. graph_context: False, knl: True.
-
-Servicio reiniciado y saludable. Consumidores activos (cc-atgo-hook.sh, Codex) nunca leyeron graph_context del payload — solo leen identity/decisions/constraints/pending/cc_bootstrap.
-
-KNL policy y CLAUDE.md en /opt/dfl-knowledge/ mencionan graph_context como legacy — no se tocaron (documentación, no runtime).
-
 ---
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
@@ -132,6 +127,10 @@ PRÓXIMO AGENTE DEBE: NO modificar puntajeTigreKnockout sin PRP explícito y aut
 ---
 
 ## PENDING
+
+### @go Protocol v1.0 — protocolo de arranque DFL
+
+Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT, Gemini) arrancar con contexto completo DFL en un paso. Fuente A: amos-context.md en DFLghub/amos-context (commit edd5f51). Fuente B: GET https://context.deepfeelingslabs.com/go — devuelve JSON con identity, recent_decisions, active_constraints, pending, generated_at. Backend: dfl-context-proxy en 127.0.0.1:8091 consulta Engram local 127.0.0.1:7437 con queries: "decisiones activas estado", "restricciones prohibido no tocar", "pendientes criticos". Sin auth requerida en /go. @go v1.0 activo y verificado.
 
 ### Gate Engine v0 Caso 01: Gate 1 es el gate más débil (PRP-001 retroactivo)
 
@@ -229,4 +228,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-02T22:45:15Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-02T22:49:44Z | La Garra → DFLghub/amos-context*
