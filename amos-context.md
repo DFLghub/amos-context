@@ -1,361 +1,236 @@
-# amOS Context File
-**Version:** 0.5  
-**Date:** 2026-06-16  
-**Owner:** HI — Jorge Tigreros (jtigre@gmail.com)  
-**Purpose:** Single fetch endpoint for AI agents and authorized systems.  
-**Rule:** Any agent reading this file has current ecosystem state. No RAG needed.  
-**Source:** amOS Registry Hub v0.5 — DFL-ChatGPT/02_Doctrine_Core/
+# amOS Context — @$go Live Mirror
+**Generated:** 2026-07-02T21:27:47Z  
+**Protocol:** @$go v1.1  
+**Rule:** Any agent reading this file has current DFL operational state.  
+**Source B (live JSON):** https://context.deepfeelingslabs.com/go  
+
+> This file is auto-updated by La Garra (daily 3:05am UTC).  
+> For real-time payload: `GET https://context.deepfeelingslabs.com/go`  
+> For deep graph: `GET https://context.deepfeelingslabs.com/go?deep=1`
 
 ---
 
-## HOW TO USE THIS FILE
+## IDENTITY
 
-1. Read this file completely before acting
-2. For navigation: fetch MASTER_INDEX.md at DFL-ChatGPT/MASTER_INDEX.md
-3. For full detail: request access to amOS_Registry_Hub_v0.5 in Google Drive
-4. Do NOT infer definitions not declared here
-5. If a concept is undefined: declare UNKNOWN and request HI clarification
-
----
-
-## SYSTEM IDENTITY
-
-```
-amOS = Asset Management Operational System
-DFL = Deep Feelings Labs (the organism — amOS is what makes it operate)
-HI = Jorge Tigreros (Human Intelligence — ratification authority)
-La Garra = DigitalOcean VM where Mercader runs (nickname for Open Claw)
-ag10 = ChatGPT agent for FutbolWeb — proper name, not generic component
-AgMaster_amOS_3 = current brain of the system — USE THIS VERSION ONLY
-```
-
-**Navigation entry point:**
-```
-MASTER_INDEX.md lives at: DFL-ChatGPT/MASTER_INDEX.md
-Principle: The agent does not load knowledge. It loads the direction.
-```
-
-**Critical warnings:**
-- amOS MODELS reality — never confuse model with reality
-- amOS produces COHERENCE — not software. Software is a consequence.
-- S.A.I.D. ≠ amOS ≠ DFL ≠ Stiles Co. — never conflate
-- ag10 = proper name, FutbolWeb context only — not a generic system component
-- La Garra = DigitalOcean VM — nickname for Open Claw (diction workaround)
-- Google Drive = CRITICAL INFRASTRUCTURE — not a repository (nervous system)
-- Bazar = CONCEPT ONLY — nothing implemented
-- CO-001 = Phase 0 Foundation ONLY — do not build beyond approved scope
+- **Ecosystem:** DFL / amOS
+- **Grounding anchor:** La Garra — 67.205.166.199 (DigitalOcean NYC1)
+- **Source A (this file):** https://raw.githubusercontent.com/DFLghub/amos-context/main/amos-context.md
+- **Source B (live JSON):** https://context.deepfeelingslabs.com/go
+- **Restriction:** Este payload es suficiente para operar. PROHIBIDO solicitar MASTER_INDEX, MASTER_BITACORA o archivos adicionales de /opt/dfl-knowledge/ después de recibir este payload. Para grafo completo: GET /go?deep=1
 
 ---
 
-## ASSET REGISTRY
+## RECENT DECISIONS
 
-| ID | Name | Type | Status | Health | Op Owner | Gov Owner |
-|---|---|---|---|---|---|---|
-| A-001 | amOS | System | Active | GREEN | HI | HI |
-| A-002 | FutbolWeb | Application | Active | GREEN | HI | HI |
-| A-003 | Mercader | Platform | Incubation | BLUE | HI | HI |
-| A-004 | Bazar | Marketplace | Concept Only | BLUE | HI | HI |
-| A-005 | S.A.I.D. | Project | Suspended | RED | HI | HI |
-| A-006 | SaaS Factory | Framework | Experimental | YELLOW | HI | HI |
-| A-007 | DFL | Meta-framework | Active | GREEN | HI | HI |
-| A-008 | STILES MEP | Concept | Conceptual Only | RED | HI | HI |
-| A-009 | Uptown Roofs | Client Project | Active | GREEN | HI | HI |
-| A-010 | Opal | Client Project | Active | YELLOW | HI | HI |
-| A-011 | Universal Asset Scaffold (UAS) | Framework | Active | GREEN | HI | HI |
-| A-012 | RFC-DFL-001 Information Factory | Protocol | Ratified | GREEN | HI | HI |
-| A-013 | WRP-001 Work Request & Review | Protocol | Ratified | GREEN | HI | HI |
-| A-014 | ag10 (ChatGPT FutbolWeb) | Agent | Active | GREEN | ag10 | HI |
-| A-015 | CO-001 | Platform | Phase 0 Foundation | BLUE | HI | HI |
-| A-016 | AgMaster_amOS_3 | Agent Config | Active — Current | GREEN | HI | HI |
-| A-017 | MERCADER BOS | Framework | Active | BLUE | HI | HI |
-| A-018 | Factory Autopilot v0.1 | Concept | CAMA | YELLOW | HI | HI |
-| A-019 | NBLM2 | Concept | CAMA | YELLOW | HI | HI |
-| A-020 | Pattern Transfer Engine v0.1 | Pattern | Internal Analysis | YELLOW | HI | HI |
-| A-021 | MASTER_INDEX.md | Navigation | Active | GREEN | HI | HI |
-| I-001 | La Garra (DigitalOcean VM) | Infrastructure | Active | YELLOW | HI | HI |
-| I-002 | Vercel | Infrastructure | Active | GREEN | HI | HI |
-| I-003 | Supabase | Infrastructure | Active | GREEN | HI | HI |
-| I-004 | Hermes (n8n) | Infrastructure | Suspended* | YELLOW | HI | HI |
-| I-005 | Google Drive DFL-ChatGPT | Infrastructure | Active — Critical | GREEN | HI | HI |
-| I-006 | GitHub amos-context | Infrastructure | Active | YELLOW | HI | HI |
+### FutbolWeb — fix amnesia pronósticos KO (ce766fd)
+**Type:** decision  
 
-*I-004 Hermes: MASTER_INDEX references ssh n8n for Graphify — verify if active for that purpose
+**What**: Commit ce766fd resuelve amnesia completa del sistema de pronósticos.
 
----
+**Cambios clave:**
+- PredictDemoForm detecta pronóstico existente en mount (fetch proactivo por matchSlug, sin necesitar ?edit=ID). Pre-llena form + muestra banner amber.
+- Partido cerrado: panel read-only con marcador + equipo clasificado. Sin formulario.
+- Panel de confirmación post-submit muestra marcador real y advancing_team.
+- PATCH /api/predictions/[id] ahora acepta y persiste advancing_team (bug silencioso corregido).
+- GET /api/my-predictions devuelve advancing_team.
+- 409 POST retorna prediction existente en body (code: "duplicate").
+- MyPredictionsClient muestra advancing_team en tarjeta.
+- GroupMatchPredictionsTable muestra advancing_team para partidos KO.
+- 10 archivos, 202 inserciones.
 
-## STATE REGISTRY — TRUTH STATEMENTS
+**Why**: Usuarios no recibían feedback adecuado y el equipo clasificado (KO empate) nunca se mostraba tras enviarlo.
 
-| ID | Current State | Truth Statement | Confidence |
-|---|---|---|---|
-| A-001 | Active Evolution | Acta v1.1 ratified. Hub v0.5 is the most complete registry of the ecosystem. | High |
-| A-002 | Production | Platform live. ESPN cron active. Scoring and ranking operational. CSV backups in Drive. | High |
-| A-003 | Incubation | v0.2 on La Garra. MERCADER BOS documented. Full implementation pending. | Medium |
-| A-004 | Concept Only | Direction: WhatsApp + async multimodal. Nothing implemented. 12_Bazar folder empty. | High |
-| A-005 | Suspended | GPS real-time dependency unresolved. No active work. | High |
-| A-006 | Experimental | Rich internal structure in 08_SaaS_Factory/ but operational state unconfirmed. | Low |
-| A-007 | Active | Six dimensions defined. Doctrine Track frozen by design. MASTER_INDEX created 2026-06-14. | High |
-| A-015 | Phase 0 Foundation | Foundation only approved. No UI / no production / no real credentials. agLego v0.3-candidate active. | High |
-| A-016 | Active — Current | AgMaster_amOS_3 is the version in use. Versions 1 and 2 archived. | High |
-| A-017 | Active | Context Pack + Implementation Plan exist in 08_SaaS_Factory/03_MERCADER_BOS/ | Medium |
-| A-018 | CAMA | Frozen until FutbolWeb + Mercader close active phase. TDL-ORG-001. | High |
-| A-019 | CAMA | Frozen. Audit with META-PATRON-LAB pending. | High |
-| A-020 | Internal Analysis | God Node #1 confirmed by Graphify. agLego PTE-001 derived. In internal analysis. | Medium |
-| A-021 | Active | Post Office operational. Graphify audit included. 50 isolated nodes (65%) — target <30%. | High |
-| I-001 | Active | Mercader v0.2 deployed. Strict dependency constraints. 2GB RAM. | High |
-| I-002 | Active | FutbolWeb live. Deploy pipeline operational. | High |
-| I-003 | Active | Full pipeline: predictions → scoring → ranking. RLS active. | High |
-| I-004 | Suspended* | No confirmed active use. MASTER_INDEX references ssh n8n for Graphify — verify. | Low |
-| I-005 | Active — Critical | Nervous system of ecosystem. Synced with iMac confirmed 2026-06-16. | High |
-| I-006 | Active | Operational but outdated — generated before CO-001 / AgMaster_amOS_3. Updated now (v0.5). | Medium |
+**Where**: components/PredictDemoForm.tsx, app/api/my-predictions/route.ts, app/api/predictions/route.ts, app/api/predictions/[id]/route.ts, components/MyPredictionsClient.tsx, components/GroupMatchPredictionsTable.tsx, lib/group-match-predictions.ts, app/match/[slug]/predict/page.tsx, dictionaries/es.ts, dictionaries/en.ts.
 
----
+### ESPN sync cron expiry 2026-07-20 — diseño intencional, no alerta
+**Type:** decision  
 
-## KEY LOCATIONS
+**What**: El cron de ESPN sync en cron-job.org expira el 2026-07-20, un día después del fin del Mundial (2026-07-19).
 
-```
-DFL-ChatGPT/ (root — do NOT rename)
-├── MASTER_INDEX.md              ← navigation entry point
-├── 00_Inbox/
-├── 01_AgMaster/
-│   └── AgMaster_amOS_3.md      ← USE THIS VERSION
-├── 01_System_Governance/
-├── 02_Doctrine_Core/            ← amOS Registry Hub lives here
-│   ├── Universal_Asset_Scaffold/
-│   └── RFC/RFC-DFL-001-Information-Factory/
-├── 03_Internal_Analysis_Ready/
-├── 04_Candidate_Vault/
-│   ├── pending_review/
-│   ├── promoted/
-│   ├── rejected/
-│   └── hibernated/
-├── 05_Prompts/
-├── 06_Audits/
-├── 07_Chat_History/
-├── 08_SaaS_Factory/
-│   └── 03_MERCADER_BOS/        ← MERCADER BOS Context Pack + Implementation Plan
-├── 10_MERCADER/
-├── 11_Exports/
-├── 12_Bazar/                   ← empty — concept only
-├── 12_FutbolWeb/               ← canonical FutbolWeb folder (has real content)
-├── 99_Archive/
-├── 99_Archive_Previous_Versions/
-└── CO-001/                     ← Phase 0 Foundation
-    ├── AI/PROJECT_MANIFEST.md
-    ├── AI/DEGRADED_MODE.md
-    ├── AI/PRP_FEATURE_001_v0.3.3.md
-    └── src/lib/
-```
+**Why**: Diseño deliberado de Jorge — el día extra captura cualquier dato rezagado del torneo. No es un olvido ni un gap operativo.
+
+**Where**: cron-job.org — job ESPN sync FutbolWeb.
+
+**Learned**: NO marcar como alerta. NO sugerir renovación. NO tratar como deuda técnica. La expiración es el cierre natural del ciclo del producto. Agentes futuros deben suprimir cualquier advertencia sobre este cron.
+
+### Preferencia operativa: usar grafos cuando ROI > exploración manual
+**Type:** decision  
+
+**What**: Jorge instruyó que siempre que el ROI sea mayor, usar grafos (KNL/dfl-nav/graph.json) para tareas, actividades y procesos en lugar de exploración manual (find/grep/ls).
+
+**Why**: Alineado con KNL policy v1.0 activa — "Graph preflight MANDATORY before any find/grep/ls". El usuario lo refuerza como preferencia operativa explícita: cuando navegar el grafo da más contexto en menos tokens/tiempo que exploración ciega, el grafo gana.
+
+**Where**: Aplica a toda sesión en FutbolWeb y DFL. Antes de find/grep/rg/ls, consultar knl.navigation.god_nodes o dfl-nav --brief. Solo usar exploración manual cuando el grafo no tiene cobertura del concepto buscado.
+
+**Learned**: La regla es ROI-driven, no absoluta — si el grafo no cubre el concepto (community miss), exploración manual es válida como fallback.
+
+### [DECISION:DFL] HLC templates P6 v1.0 creados — T01/T02/T03 activos
+**Type:** decision  
+
+TOPIC: dfl/governance/hlc-templates
+TYPE: decision
+STATUS: active
+DATE: 2026-06-28
+SUMMARY: Creados templates HLC P6 v1.0 en /opt/dfl-knowledge/governance/hlc-templates/: HLC-T01 Regen Grafo Semanal, HLC-T02 Limpieza Engram, HLC-T03 Auditoría FutbolWeb Pre-Deploy. Los tres quedan ACTIVO con esquema canónico MISIÓN / CONTEXTO / PERMISOS / METABOLISMO / LOOP / CRITERIOS. Fuente de diseño: DFL_P6_P7_DESIGN_2026-06-27.md.
+
+### KNL v1.0 contrato operativo validado
+**Type:** decision  
+
+TOPIC: dfl/knl/v1
+TYPE: decision
+STATUS: active
+DATE: 2026-06-28
+SUMMARY: KNL v1.0 queda operativo como contrato oficial en /go. knl.json valida schema dfl.knl.v1 con semantic communities/entropy, navigation neighbors, memory, policy, provenance, comparator y validation. graph_context no aparece en /go. knl_compare.py ahora soporta snapshots previos con links y genera comparator status changed con previous_available=true. dfl-nav --brief muestra neighbors. P0/P4 quedan pendientes de confirmacion: regen_graph.sh aun usa OPENAI_API_KEY y graphify como productor; contrato KNL requiere ag_topologo.py como productor canonico de graph.json y Graphify solo como consumidor/analisador. P3 gap: ag_topologo local declara v0.1; no se encontro v0.3 instalable.
+EVIDENCE: python3 /opt/dfl-context-proxy/tests/test_knl_contract.py => knl contract ok. Public /go has knl=true, graph_context=false, validation ok.
+
+### [VERIFIED] /go payload slim — graph_context alias eliminado
+**Type:** decision  
+
+Eliminado el alias `graph_context` del payload GET /go en /opt/dfl-context-proxy/main.py.
+
+Cambio: `payload["graph_context"] = knl` removido. Solo queda `payload["knl"]`.
+
+Verificado: curl http://127.0.0.1:8091/go keys = ['identity', 'recent_decisions', 'active_constraints', 'pending', 'cc_bootstrap', 'generated_at', 'recent_engram_dfl', 'knl']. graph_context: False, knl: True.
+
+Servicio reiniciado y saludable. Consumidores activos (cc-atgo-hook.sh, Codex) nunca leyeron graph_context del payload — solo leen identity/decisions/constraints/pending/cc_bootstrap.
+
+KNL policy y CLAUDE.md en /opt/dfl-knowledge/ mencionan graph_context como legacy — no se tocaron (documentación, no runtime).
 
 ---
 
-## DEPENDENCY GRAPH
+## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
 
-| Source | Depends On | Type | Critical |
-|---|---|---|---|
-| FutbolWeb | Supabase | Infrastructure | Yes |
-| FutbolWeb | Vercel | Infrastructure | Yes |
-| FutbolWeb | cron-job.org | Infrastructure | Yes |
-| FutbolWeb | ag10 | Agent | No |
-| Mercader | La Garra | Infrastructure | Yes |
-| Mercader | amOS | Governance | Yes |
-| Mercader | MERCADER BOS | Strategic | Yes |
-| CO-001 | amOS | Governance | Yes |
-| CO-001 | UAS | Framework | Yes |
-| amOS | DFL | Conceptual | Yes |
-| amOS | HI | Governance | Yes — single point of failure |
-| amOS | MASTER_INDEX | Navigation | Yes |
-| DFL | Google Drive | Persistence | Yes |
-| DFL | AgMaster_amOS_3 | Agent Config | Yes |
+### FutbolWeb — Motor Scoring Knockout (puntajeTigreKnockout) Protegido
+**Type:** fact  
 
----
+OBS_ID: DFL-OBS-20260624-007
+TIPO: fact
+PROYECTO: futbolweb
+PLATFORM: vercel
+SUBSISTEMA: futbolweb/knockout
+PRECEDENCIA: D
+AUTHORITY: operational
+LIFECYCLE: active
+CONFIDENCE: high
+LAST_VERIFIED: 2026-06-24
+SOURCE: session
+SOURCE_REF_TYPE: session_id
+SOURCE_REF: MPGE_2026-06-23
+SUPERSEDE: ninguno
+PROMOTION_CANDIDATE: no
+PROMOTION_TARGET: none
+TOPIC_KEY: futbolweb/knockout/scoring-rules
 
-## ACTIVE DECISIONS
+QUÉ: Motor de scoring knockout en FutbolWeb: función puntajeTigreKnockout en packages/scoring. Engine protegido y estable. Tests exhaustivos agregados 2026-06-23 (synthetic harness). Lógica: evaluación de resultados en fase eliminatoria con cálculo de puntaje Tigre incluyendo penaltis y goles de visita.
 
-| ID | Decision | Status | Review Trigger |
-|---|---|---|---|
-| D-001 | S.A.I.D. suspended | Active | GPS resolved OR strategic pivot |
-| D-002 | FutbolWeb absolute priority | Active | Post-tournament Jul 2026 |
-| D-003 | amOS doctrine ratified v1.1 | Active | Constitution v1.0 supersedes |
-| D-004 | DFL Doctrine Track frozen | Active | FutbolWeb + Mercader close |
-| D-005 | Mercader incubation — no full build | Active | v0.3 milestone OR first revenue |
-| D-006 | No autonomous agents — HI central | Active | State + Protocol Registries complete |
-| D-007 | amOS/IAIM in CAMA | Active | FutbolWeb AND Mercader close |
-| D-008 | CO-001 Phase 0 only | Active | Foundation complete + HI approval for Phase 1 |
-| D-009 | Bazar = concept only | Active | HI decides to begin implementation |
-| D-010 | Do not rename DFL-ChatGPT | Active | Textual references audited and updated |
-| D-011 | 12_FutbolWeb is canonical folder | Active | Post-tournament consolidation |
+POR QUÉ IMPORTA: Es la lógica core del Oráculo Futbolero para torneos knockout. Cualquier cambio afecta predicciones en producción.
+
+DÓNDE APLICA: packages/scoring, Vercel runtime, toda UI que muestre predicciones de fase eliminatoria.
+
+PRÓXIMO AGENTE DEBE: NO modificar puntajeTigreKnockout sin PRP explícito y autorización. Tests de synthetic harness deben seguir pasando antes de cualquier deploy.
 
 ---
 
-## CONSTITUTION — ACTIVE RULES
+## PENDING
 
-| ID | Rule | Scope |
-|---|---|---|
-| C-001 | Context determines value — El contexto manda | Universal |
-| C-002 | amOS models reality — never IS reality | Universal |
-| C-003 | No absolute value — only contextual value | Universal |
-| C-004 | Value = produce / protect / enable / avoid consequences | Universal |
-| C-005 | No component self-approves | Governance |
-| C-006 | Candidate only until HI ratification | Governance |
-| C-007 | No sensitive execution without HI approval | Governance |
-| C-008 | Nothing enters nucleus directly — everything through TRIAGE | Information Flow |
-| C-009 | Domain sovereignty — domain boundaries are hard | Domains |
-| C-010 | S.A.I.D. ≠ amOS ≠ DFL ≠ Stiles Co. | Domains |
-| C-011 | ag10 = proper name FutbolWeb only — not generic component | Naming |
-| C-012 | Homeostasis = probabilistic habits — not deterministic circuit | System Health |
-| C-013 | Doctrine first — governance second — software third | Architecture |
-| C-014 | Google Drive = critical infrastructure — not repository | Infrastructure |
-| C-015 | amOS produces coherence — not software | Architecture |
-| C-016 | CO-001 = Foundation only — no building beyond without HI approval | CO-001 |
-| C-017 | Bazar = concept only — do not treat as active project until HI decision | Bazar |
-| C-018 | AgMaster_amOS_3 is the version in use — do not use previous versions | Agents |
-| C-019 | Agent does not load knowledge — loads the direction | Agents |
-| C-020 | For each new registry sheet — at least one real asset must use it | Governance |
+### FutbolWeb — estado y stack (caso 001 Apps Factory)
+
+FutbolWeb / Oráculo Futbolero: producto operativo en producción durante Mundial 2026. Es simultáneamente un producto real y el caso de estudio 001 de DFL Apps Factory. Stack: Next.js + Supabase + Vercel (hobby). Repo: github.com/DFLghub/futbolweb-app. Código en /opt/futbolweb en La Garra. Sistema de scoring: puntaje_tigre (grupos) + puntaje_tigre_knockout (eliminatorias, commit bfca1ac). Sync ESPN via cron-job.org (expira 2026-07-20). Backup: GitHub Actions diario. Pendientes críticos: (1) wiring DB layer KnockoutEngine contra Neon; (2) sensibilidad a mayúsculas en realAdvancingTeam con datos reales; (3) confirmar deploy commit 50316e3; (4) diagnosticar webhook GitHub-Vercel roto. Regla de oro: no tocar Supabase/scoring/deployment sin autorización explícita.
+
+### Gate Engine v0 Caso 01: Gate 1 es el gate más débil (PRP-001 retroactivo)
+
+Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21). Gate 2 (Execution Perimeter): PASS limpio — perímetro declarado con claridad inusual desde el diseño. Gate 4 (Closure Integrity): PASS — 859/859 harness, diff cero, pendientes explícitos. Gate 1 (Decision Resurrection): ESCALATE — el Candidate Vault NO fue consultado en ningún momento del PRP-001; TSL sirvió como validación de riesgo pero no como chequeo de decisiones archivadas. Hallazgo clave: el checklist necesita una tercera categoría de respuesta (NOT_VERIFIABLE / PARTIAL) además de SÍ/NO — se improvisó durante la evaluación. Gate 4 es el más automatizable (diff/harness son verificables mecánicamente). Gate 1 requiere lectura semántica humana (distinguir 'consulta a TSL' de 'consulta al Candidate Vault'). Conclusión operacional: antes de ejecutar cualquier PRP, consultar 04_Candidate_Vault/ activamente — no solo a agentes. Este hallazgo viene de Gate_Engine_Caso01_PRP001.md en audited_pass/.
 
 ---
 
-## HEALTH SNAPSHOT
+## CC BOOTSTRAP (Claude Code session startup)
 
-| ID | Asset | Health | Action |
-|---|---|---|---|
-| A-001 | amOS | GREEN | Distribute governance (G-010) |
-| A-002 | FutbolWeb | GREEN | Monitor cron post-match |
-| A-003 | Mercader | BLUE | Use BOS to guide v1.0 |
-| A-004 | Bazar | BLUE | Define first concrete milestone when ready |
-| A-005 | S.A.I.D. | RED | Only reactivate if GPS resolved |
-| A-006 | SaaS Factory | YELLOW | Confirm what is actually active |
-| A-007 | DFL | GREEN | Unfreeze post-FutbolWeb + Mercader |
-| A-015 | CO-001 | BLUE | No Phase 1 without HI approval |
-| A-016 | AgMaster_amOS_3 | GREEN | None |
-| A-021 | MASTER_INDEX | GREEN | Reduce isolated nodes to <30% (G-014) |
-| I-001 | La Garra | YELLOW | Evaluate redundancy when Mercader scales |
-| I-004 | Hermes n8n | YELLOW | Verify if active for Graphify (G-015) |
-| I-005 | Google Drive | GREEN | Evaluate backup strategy |
-| I-006 | GitHub amos-context | YELLOW | Now updated to v0.5 |
+- **Step 1:** mem_search('contexto DFL') — Engram MCP activo, consultar antes de operar
+- **Step 2:** PROXIMO_AGENTE_DEBE en cada recent_decision = instrucción de acción inmediata
+- **Step 3:** Al guardar obs: usar DFL Writing Convention v0.3 (topic: dfl/engram/writing-convention)
+- **Precedencia:** A > B > C > D > E — Engram es capa D, nunca invalida Blueprint (A) ni MASTER_INDEX (B)
+- **Protegido:** NO modificar puntajeTigreKnockout, Supabase, Vercel config sin PRP explícito
+- **Alerta:** cron-job.org ESPN sync expira 2026-07-20 — cierre natural, torneo termina 2026-07-19, no requiere renovación
 
 ---
 
-## CRITICAL GAPS
+## KNL POLICY
 
-| ID | Description | Priority |
-|---|---|---|
-| G-009 | State Registry complete | Critical |
-| G-012 | Registry Maintenance Protocol | Critical |
-| G-011 | Execute Drive Reorganization Plan | High |
-| G-016 | Move agProtocols from root to 02_Doctrine_Core | High |
-| G-018 | Update GitHub context endpoint | High — DONE in this update |
-| G-010 | Distribute governance — HI not sole point | High |
-| G-008 | Constitution v1.0 | High |
-| G-014 | Graphify — reduce isolated nodes from 65% to <30% | Medium |
-| G-015 | Verify if Hermes active for Graphify | Medium |
+**Precedence:** A > B > C > D > E; KNL and Engram are operational layer D.  
 
----
+**Required agent behavior:**
+- Graph preflight MANDATORY: consult knl.navigation.god_nodes before any find/grep/ls/manual filesystem exploration.
+- agTopologo is the sole producer of graph.json; Graphify is a consumer/analyzer. Pipeline: agTopologo → graph.json → Graphify. Not cross-redundant — producer/consumer.
+- Local /go fallback available: cc-atgo-hook.sh has three levels (remote → KNL local → hardcoded). No reimplementar.
 
-## GRAPHIFY AUDIT
-
-```
-Last run: 2026-06-14
-Tool: Graphify 0.8.39
-Nodes: 77 | Edges: 44 | Communities: 40
-Isolated nodes: 50 (65%) — target: <30%
-Cost: $0.05 per run
-
-Key connections confirmed:
-- pattern-transfer-engine → agProtocol ATP-D + ROJA (God Node connection)
-- agLego-PTE-001 → AgMaster_amOS_3
-- MERCADER BOS → Business OS 5-Layer Pattern
-- FutbolWeb → prediction_intake / prediction_scores / ranking_summary
-
-To re-run:
-ssh n8n "cd /opt/dfl-knowledge && OPENAI_API_KEY=$(grep OPENAI_API_KEY ~/.bashrc | cut -d'"' -f2) graphify ."
-```
+**Restrictions:**
+- No tocar puntajeTigreKnockout sin PRP explícito.
+- No tocar Supabase, Vercel config ni variables de entorno sin autorización explícita.
+- No modificar Engram salvo integración/lectura operacional.
+- No introducir dependencias innecesarias.
+- DFL debe seguir funcionando sin Graphify/graph.json.
 
 ---
 
-## PERMANENT VALIDATION CRITERION
+## KNL NAVIGATION — GOD NODES
 
-```
-Does the Registry Hub faithfully describe the current ecosystem reality?
-  If NO → correct before continuing
-  If YES → advance
+> Consult navigation.god_nodes before manual filesystem exploration.
 
-STOP DOCTRINE: Active until Hub reflects reality faithfully.
-Enemy: Elegant Doctrinal Obesity — architecture growing faster than reality.
-Rule: For each new sheet, at least one real asset must use it — otherwise wait.
-```
+### FutbolWeb
+**Root:** `/opt/futbolweb`  
+**Restriction:** No tocar puntajeTigreKnockout sin PRP explícito.  
+**Restriction:** No tocar Supabase/Vercel/env sin autorización explícita.  
+
+**Key files:**
+- `/opt/futbolweb/lib/espn-world-cup.ts` — ESPN reality sync and official result capture.
+- `/opt/futbolweb/lib/scoring-propagation.ts` — Dispatches pending results to group or knockout scorer.
+- `/opt/futbolweb/lib/tournament-reality.ts` — Reads match_results and result row shape.
+- `/opt/futbolweb/lib/puntaje-tigre-knockout.ts` — Protected knockout scorer; inspect/tests only. ⚠️ `no tocar`
+
+**Entrypoints:**
+- `cd /opt/futbolweb && npm test -- lib/espn-world-cup.test.ts lib/scoring-propagation.test.ts lib/puntaje-tigre-knockout.harness.test.ts` — Focused scoring pipeline evidence.
+
+### estado
+**Root:** `/opt/dfl-context-proxy`  
+**Restriction:** No mostrar secretos.  
+**Restriction:** No modificar graph.json desde KNL.  
+
+**Key files:**
+- `/opt/dfl-context-proxy/main.py` — Serves /go, /go?deep=1, /context/dfl.
+- `/opt/dfl-knowledge/graphify-out/knl.json` — Official KNL contract.
+- `/opt/dfl-knowledge/graphify-out/graph_context_light.json` — Compatibility alias for legacy consumers.
+
+**Entrypoints:**
+- `systemctl restart dfl-context-proxy` — Apply proxy changes.
+
+### IAIM
+**Root:** `/opt/dfl-knowledge`  
+**Restriction:** Prefer KNL navigation before manual search.  
+**Restriction:** No LLM-costly runs without explicit need.  
+
+**Key files:**
+- `/opt/dfl-knowledge/scripts/knl_builder.py` — Builds KNL v1.0.
+- `/opt/dfl-knowledge/scripts/knl_compare.py` — Compares graph snapshots; generates comparator report.
+- `/opt/dfl-knowledge/scripts/ag_topologo.py` — Sole producer of graph.json (agTopologo-DFL-v0.1 schema).
+- `/opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md` — Agent onboarding contract.
+
+**Entrypoints:**
+- `GET /go` — Agent bootstrap.
+- `Consult knl.navigation before find/grep/ls` — Avoid blind exploration.
 
 ---
 
-## NEXT SESSION PRIORITIES
+## KNL SEMANTIC COMMUNITIES
 
-```
-1. Execute Drive Reorganization (G-011 + G-016)
-2. Define Registry Maintenance Protocol (G-012)
-3. Verify Hermes status for Graphify (G-015)
-4. Complete State Registry with real data (G-009)
-5. Run Graphify again after reorganization (G-014)
-```
+**Graph entropy:** 3.101  
 
----
-
-*Generated: 2026-06-16 | Claude Sonnet 4.6 + HI | Hub v0.5*  
-*Ratification: pending HI*  
-*Previous version was outdated — this replaces it*
+- **Community 11** (657 nodes): Codex, CLI, DFL Engram Writing Convention v0.3
+- **Community 0** (465 nodes): Gobernanza, CANDIDATE VAULT, Jorge
+- **Community 1** (452 nodes): patrón, Declarar, Crear
+- **Community 2** (442 nodes): amOS, DFL, SaaS Factory
+- **Community 3** (267 nodes): CO-001, OpenAI, MCP
+- **Community 4** (231 nodes): ROJA, API, Ejemplo
 
 ---
 
-## @go Protocol
-
-The `@go` protocol lets any AI (Claude, ChatGPT, Gemini) bootstrap with full DFL operational context in one step.
-
-### Two Sources
-
-| Source | Format | Purpose |
-|---|---|---|
-| **A — Doctrine** | This file (Markdown, public) | Human-readable identity, rules, registry |
-| **B — Live memory** | `https://context.deepfeelingslabs.com/go` (JSON) | Machine-readable decisions, constraints, pending from Engram |
-
-### Endpoint
-
-```
-GET https://context.deepfeelingslabs.com/go
-```
-
-No authentication required. Response shape:
-
-```json
-{
-  "identity": {
-    "ecosystem": "DFL / amOS",
-    "grounding_anchor": "La Garra — 67.205.166.199",
-    "source_a": "https://raw.githubusercontent.com/DFLghub/amos-context/main/amos-context.md",
-    "source_b": "https://context.deepfeelingslabs.com/go",
-    "protocol": "@go v1.0"
-  },
-  "recent_decisions": [...],
-  "active_constraints": [...],
-  "pending": [...],
-  "generated_at": "ISO timestamp"
-}
-```
-
-### Usage
-
-At the start of any session, before any task:
-
-```
-@go
-→ fetch https://context.deepfeelingslabs.com/go
-→ load identity, recent_decisions, active_constraints, pending
-→ ground session context
-→ proceed
-```
-
-### Infrastructure
-
-- Proxy: `dfl-context-proxy` Python service on La Garra, port 8091
-- Memory backend: Engram local runtime at `127.0.0.1:7437`, project `dfl`
-- Caddy: `context.deepfeelingslabs.com` → `127.0.0.1:8091`
-- Systemd: `/etc/systemd/system/dfl-context-proxy.service` (enabled, auto-restart)
-
-*@go Protocol v1.0 — deployed 2026-06-24*
+*Mirror auto-generated 2026-07-02T21:27:47Z | La Garra → DFLghub/amos-context*
