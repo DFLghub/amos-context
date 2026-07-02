@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-02T22:50:38Z  
+**Generated:** 2026-07-02T22:51:40Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -21,6 +21,33 @@
 ---
 
 ## RECENT DECISIONS
+
+### @$fin v1.0 — circuito de outboarding implementado (cierre ordenado + resiliente)
+**Type:** decision  
+
+**What**: Implementado @$fin, simétrico de salida de @$go, con dos vías de propagación:
+- Cierre ordenado: agente recibe @$fin → Gate 4B final (mem_save + mem_search/mem_update archivado) → bash push_mirror.sh → reporta timestamp del mirror.
+- Cierre resiliente: Gate 4B incremental durante la sesión (ya documentado, ahora con cadencia explícita) + watchdog en La Garra que detecta sesión muerta y dispara push_mirror.sh solo (mitad mecánica).
+
+**Why**: Que cualquier @$go posterior reciba el estado real de la última sesión, cerrada bien o muerta a mitad de camino. Sin esto, una sesión que muere sin cerrar deja Engram actualizado pero el mirror público (amos-context) desactualizado hasta el CRON de 3:05am.
+
+**Where**:
+- `/opt/dfl-context-proxy/push_mirror.sh` (nuevo) — wrapper idempotente sobre publish-amos-context.sh (sin reescribir el generador). Lock con flock + dedup por hash del payload /go sin generated_at, para que llamadas repetidas no generen commits duplicados.
+- `/opt/dfl-context-proxy/main.py` — payload /go extendido con campo `closure_contract`.
+- `/opt/dfl-context-proxy/cc-atgo-hook.sh` — renderiza closure_contract (sirve a CC vía SessionStart hook y a Codex vía invocación manual, mismo script).
+- `/opt/dfl-context-proxy/cc-heartbeat-hook.sh` (nuevo), `/opt/dfl-context-proxy/cc-sessionend-hook.sh` (nuevo) — heartbeat por session_id y mecánica de cierre en SessionEnd.
+- `~/.claude/settings.json` — nuevas entradas PreToolUse(matcher "*") y SessionEnd, sin tocar las existentes (SessionStart cc-atgo-hook.sh, PreToolUse Bash knl-preflight-hook.sh).
+- `/opt/dfl-context-proxy/session-watchdog.sh` (nuevo) — reaping de heartbeats CC vencidos (>600s) + diff de PIDs `codex` entre polls (Codex no tiene hooks). Cron cada 3 min, agregado sin tocar las 4 entradas previas.
+- Docs: `/opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md` (nueva §1.2, versión v0.4), `/opt/dfl-knowledge/CLAUDE.md` (sección @$fin), `/opt/futbolweb/CLAUDE.md` §12 (Gate 4B incremental + @$fin), `/root/AGENTS.md` (protocolo @$fin para Codex).
+
+**Learned**:
+- CC `SessionEnd` existe pero solo cubre salidas normales — nunca SIGKILL/broken pipe (confirmado vía docs oficiales). La resiliencia real depende de que el Gate 4B incremental ya haya escrito el estado, no de que algo se dispare en el momento de morir.
+- publish-amos-context.sh embebe `generated_at` en el markdown, por lo que su propio chequeo `git diff --quiet` SIEMPRE detecta cambio y commitea — inofensivo a cadencia diaria, pero genera commits redundantes si se llama seguido (como hará @$fin/SessionEnd/watchdog). push_mirror.sh resuelve esto con un hash del payload excluyendo generated_at antes de invocar el generador.
+- Bug propio detectado durante prueba: escribir "LIFECYCLE: archived" embebido en una línea de prosa (ej. dentro de "**Learned**: ... LIFECYCLE: archived.") NO activa `_is_archived()` en main.py — requiere ser línea propia que empiece con "LIFECYCLE:". Relevante para todo Gate 4B futuro.
+- Watchdog probado por simulación (heartbeat con mtime falseado a 20 min, PID falso en snapshot) — no se mató ninguna sesión `claude`/`codex` real por riesgo de cortar sesiones en vivo (había 2 procesos `claude` activos en la VM durante la misión). Ambas ramas de detección confirmadas correctas.
+- Verificación cruzada Codex fue por ejecución directa de cc-atgo-hook.sh (mismo script que usa Codex per AGENTS.md paso 3), no por sesión Codex real nueva — recomendado a Jorge confirmarlo con una sesión Codex real si quiere certeza total end-to-end.
+- Prueba de cierre ordenado real: mem_save dummy (obs #126) → push_mirror.sh → apareció en raw.githubusercontent.com en ~3s → archivada correctamente (LIFECYCLE: archived en línea propia) → push_mirror.sh → desapareció del mirror. Ciclo completo verificado.
+- CRON 3:05am UTC intacto — verificado antes y después, las 4 entradas originales sin modificar.
 
 ### FutbolWeb — fix amnesia pronósticos KO (ce766fd)
 **Type:** decision  
@@ -82,19 +109,6 @@ STATUS: active
 DATE: 2026-06-28
 SUMMARY: KNL v1.0 queda operativo como contrato oficial en /go. knl.json valida schema dfl.knl.v1 con semantic communities/entropy, navigation neighbors, memory, policy, provenance, comparator y validation. graph_context no aparece en /go. knl_compare.py ahora soporta snapshots previos con links y genera comparator status changed con previous_available=true. dfl-nav --brief muestra neighbors. P0/P4 quedan pendientes de confirmacion: regen_graph.sh aun usa OPENAI_API_KEY y graphify como productor; contrato KNL requiere ag_topologo.py como productor canonico de graph.json y Graphify solo como consumidor/analisador. P3 gap: ag_topologo local declara v0.1; no se encontro v0.3 instalable.
 EVIDENCE: python3 /opt/dfl-context-proxy/tests/test_knl_contract.py => knl contract ok. Public /go has knl=true, graph_context=false, validation ok.
-
-### [VERIFIED] /go payload slim — graph_context alias eliminado
-**Type:** decision  
-
-Eliminado el alias `graph_context` del payload GET /go en /opt/dfl-context-proxy/main.py.
-
-Cambio: `payload["graph_context"] = knl` removido. Solo queda `payload["knl"]`.
-
-Verificado: curl http://127.0.0.1:8091/go keys = ['identity', 'recent_decisions', 'active_constraints', 'pending', 'cc_bootstrap', 'generated_at', 'recent_engram_dfl', 'knl']. graph_context: False, knl: True.
-
-Servicio reiniciado y saludable. Consumidores activos (cc-atgo-hook.sh, Codex) nunca leyeron graph_context del payload — solo leen identity/decisions/constraints/pending/cc_bootstrap.
-
-KNL policy y CLAUDE.md en /opt/dfl-knowledge/ mencionan graph_context como legacy — no se tocaron (documentación, no runtime).
 
 ---
 
@@ -233,4 +247,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-02T22:50:38Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-02T22:51:40Z | La Garra → DFLghub/amos-context*
