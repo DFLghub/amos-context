@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-03T22:18:01Z  
+**Generated:** 2026-07-03T22:19:20Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -283,4 +283,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-03T22:18:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-03T22:19:20Z | La Garra → DFLghub/amos-context*
