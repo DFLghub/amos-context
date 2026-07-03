@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-03T21:48:58Z  
+**Generated:** 2026-07-03T21:50:04Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -48,6 +48,24 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 ---
 
 ## RECENT DECISIONS
+
+### Lobby Directory v1.0 implementado — Fase 2 audit @$go/@$fin
+**Type:** decision  
+
+**What**: Fase 2 completa del HLC de auditoría @$go/@$fin. Implementado Lobby Directory v1.0:
+- 3 anexos de perfil en el repo amos-context (`agents/ejecutor.md`, `agents/orquestador.md`, `agents/consultor.md`), publicados y accesibles vía raw.githubusercontent.com (200 OK confirmado).
+- `amos-context.md` ahora tiene 2 secciones estables no rotativas — `AGENT DIRECTORY` (tabla de 3 perfiles con test de 2 preguntas + URL de anexo) y `SESSION CONTRACT` (contrato universal: @$go/@$fin, dos modos de @$fin, Gate 4B incremental, zonas protegidas, precedencia A>B>C>D>E). Mecanismo de estabilidad: contenido hardcodeado en `publish-amos-context.sh`, no derivado del JSON `/go` — sobrevive cualquier regen por diseño (confirmado con push_mirror.sh real).
+- Header del mirror corregido: cadencia real = evento (@$fin/watchdog) con cron 3:05 como fallback, ya no dice "daily 3:05am" como si fuera la cadencia primaria.
+- Campos vacíos eliminados del template (title/type/precedence condicionales).
+- `main.py` — nuevo campo `agent_directory` en el payload `/go` (3 perfiles con test + annex_url), y `closure_contract.checkpoint_mode` documentando el modo CHECKPOINT.
+- Modo CHECKPOINT introducido formalmente para `@$fin`: si Jorge lo pide explícitamente con esa palabra, el agente hace `mem_save` de progreso parcial sin barrido de archivado ni `push_mirror.sh` — la sesión sigue abierta. Resuelve el gap encontrado en Fase 1 (semántica checkpoint/cierre ausente en `/root/.claude/CLAUDE.md`).
+- `/root/.claude/CLAUDE.md`, `/opt/futbolweb/CLAUDE.md`, `/root/AGENTS.md` reducidos a un puntero único de una línea al AGENT DIRECTORY. Censo `grep -rn '@\$go\|@\$fin' /opt /root` confirma cero semántica local residual en los 3.
+
+**Why**: Fase 1 (auditoría previa) encontró que `closure_contract` nunca llegaba al mirror público y que la semántica checkpoint/cierre solo corrió en 2 de 3 archivos — inconsistencia de fuente de verdad distribuida. Lobby Directory centraliza el protocolo en un solo lugar (los 3 anexos) para que agentes de cualquier perfil (con brazo, con fetch, sin ninguno) lo lean de la misma fuente.
+
+**Where**: `/opt/amos-context-mirror/agents/{ejecutor,orquestador,consultor}.md` (commit ed9b0dc, pusheado), `/opt/dfl-context-proxy/publish-amos-context.sh`, `/opt/dfl-context-proxy/main.py` (no versionados — dir no es repo git), `/opt/futbolweb/CLAUDE.md` (commit a9b57be, local, no pusheado a origin), `/root/.claude/CLAUDE.md`, `/root/AGENTS.md` (no versionados).
+
+**Learned**: El path que dio Jorge en el brief (`/opt/dfl-context-proxy/amos-context/agents/`) no existía — el repo real está en `/opt/amos-context-mirror`. `/opt/dfl-context-proxy` no es un repo git — main.py y publish-amos-context.sh quedan sin historial de versiones, solo el estado en disco. `/root/.claude/CLAUDE.md` no tenía protocolo @$go previo (Fase 1 ya lo había detectado) — se agregó por primera vez, no se "redujo".
 
 ### @$fin v1.0 — circuito de outboarding implementado (cierre ordenado + resiliente)
 **Type:** decision  
@@ -126,16 +144,6 @@ TYPE: decision
 STATUS: active
 DATE: 2026-06-28
 SUMMARY: Creados templates HLC P6 v1.0 en /opt/dfl-knowledge/governance/hlc-templates/: HLC-T01 Regen Grafo Semanal, HLC-T02 Limpieza Engram, HLC-T03 Auditoría FutbolWeb Pre-Deploy. Los tres quedan ACTIVO con esquema canónico MISIÓN / CONTEXTO / PERMISOS / METABOLISMO / LOOP / CRITERIOS. Fuente de diseño: DFL_P6_P7_DESIGN_2026-06-27.md.
-
-### KNL v1.0 contrato operativo validado
-**Type:** decision  
-
-TOPIC: dfl/knl/v1
-TYPE: decision
-STATUS: active
-DATE: 2026-06-28
-SUMMARY: KNL v1.0 queda operativo como contrato oficial en /go. knl.json valida schema dfl.knl.v1 con semantic communities/entropy, navigation neighbors, memory, policy, provenance, comparator y validation. graph_context no aparece en /go. knl_compare.py ahora soporta snapshots previos con links y genera comparator status changed con previous_available=true. dfl-nav --brief muestra neighbors. P0/P4 quedan pendientes de confirmacion: regen_graph.sh aun usa OPENAI_API_KEY y graphify como productor; contrato KNL requiere ag_topologo.py como productor canonico de graph.json y Graphify solo como consumidor/analisador. P3 gap: ag_topologo local declara v0.1; no se encontro v0.3 instalable.
-EVIDENCE: python3 /opt/dfl-context-proxy/tests/test_knl_contract.py => knl contract ok. Public /go has knl=true, graph_context=false, validation ok.
 
 ---
 
@@ -273,4 +281,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-03T21:48:58Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-03T21:50:04Z | La Garra → DFLghub/amos-context*
