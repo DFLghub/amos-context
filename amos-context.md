@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-03T22:19:20Z  
+**Generated:** 2026-07-03T22:19:53Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -48,6 +48,21 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 ---
 
 ## RECENT DECISIONS
+
+### Fix: MIRROR verification bug — push_mirror.sh ahora emite commit real por stdout
+**Type:** decision  
+
+**What**: Corregido un bug de reporte encontrado en producción: una sesión Codex, tras correr `push_mirror.sh` en `@$fin`, no pudo verificar el push por `curl raw.githubusercontent.com` (posible restricción de su sandbox bubblewrap) y usó `/go` como fallback para "confirmar" el timestamp — pero `/go` regenera `generated_at` en cada request, sin importar si algo se publicó de verdad. Reportó `22:11:22Z` como timestamp del mirror cuando el commit real era `22:09:02Z` (2min de diferencia, fuente equivocada).
+
+**Fix aplicado**:
+- `push_mirror.sh` reescrito: ahora imprime siempre por stdout una línea `MIRROR: <updated|unchanged> | commit <hash> | <fecha UTC>`, verificada con `git -C /opt/amos-context-mirror log -1` real, en los 4 puntos de salida del script (lock busy, hash-fail fallback, no-op, update). Testeado en vivo: ambos caminos (`updated`/`unchanged`) coinciden exactamente con `git log`.
+- 3 fuentes de instrucción sincronizadas para apuntar a esa línea en vez de a `/go`: `agents/ejecutor.md` (repo amos-context, commits e9760d1), `main.py` (`closure_contract.on_receive`), `publish-amos-context.sh` (bloque estático SESSION CONTRACT).
+
+**Hallazgo colateral durante el fix**: `/opt/amos-context-mirror` es a la vez (a) working dir de anexos editados a mano (`agents/*.md`) y (b) target de `git reset --hard origin/main` en cada corrida de `publish-amos-context.sh`. Edité `ejecutor.md`, no lo comiteé, corrí `push_mirror.sh` para testear el fix de arriba, y el reset silencioso descartó mi propio edit — tuve que rehacerlo. Documentado ahora como advertencia explícita en `ejecutor.md`: comitear+pushear anexos ANTES de correr `push_mirror.sh`, nunca después.
+
+**Where**: `/opt/dfl-context-proxy/push_mirror.sh`, `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh`, `/opt/amos-context-mirror/agents/ejecutor.md` (commit e9760d1, pusheado).
+
+**Verificado en vivo**: servicio reiniciado sin sesiones concurrentes activas, `/go` sirviendo `agent_directory`+`checkpoint_mode`+texto corregido, mirror publicado con SESSION CONTRACT corregido (commit `c28e036`, `2026-07-03 22:19:21 UTC`), coincide exactamente con lo que `push_mirror.sh` reportó por stdout.
 
 ### ejecutor.md — nota de traducción de tool names (CC vs Codex)
 **Type:** decision  
@@ -136,49 +151,9 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 **Learned**: NO marcar como alerta. NO sugerir renovación. NO tratar como deuda técnica. La expiración es el cierre natural del ciclo del producto. Agentes futuros deben suprimir cualquier advertencia sobre este cron.
 
-### Preferencia operativa: usar grafos cuando ROI > exploración manual
-**Type:** decision  
-
-**What**: Jorge instruyó que siempre que el ROI sea mayor, usar grafos (KNL/dfl-nav/graph.json) para tareas, actividades y procesos en lugar de exploración manual (find/grep/ls).
-
-**Why**: Alineado con KNL policy v1.0 activa — "Graph preflight MANDATORY before any find/grep/ls". El usuario lo refuerza como preferencia operativa explícita: cuando navegar el grafo da más contexto en menos tokens/tiempo que exploración ciega, el grafo gana.
-
-**Where**: Aplica a toda sesión en FutbolWeb y DFL. Antes de find/grep/rg/ls, consultar knl.navigation.god_nodes o dfl-nav --brief. Solo usar exploración manual cuando el grafo no tiene cobertura del concepto buscado.
-
-**Learned**: La regla es ROI-driven, no absoluta — si el grafo no cubre el concepto (community miss), exploración manual es válida como fallback.
-
 ---
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
-
-### FutbolWeb — Motor Scoring Knockout (puntajeTigreKnockout) Protegido
-**Type:** fact  
-
-OBS_ID: DFL-OBS-20260624-007
-TIPO: fact
-PROYECTO: futbolweb
-PLATFORM: vercel
-SUBSISTEMA: futbolweb/knockout
-PRECEDENCIA: D
-AUTHORITY: operational
-LIFECYCLE: active
-CONFIDENCE: high
-LAST_VERIFIED: 2026-06-24
-SOURCE: session
-SOURCE_REF_TYPE: session_id
-SOURCE_REF: MPGE_2026-06-23
-SUPERSEDE: ninguno
-PROMOTION_CANDIDATE: no
-PROMOTION_TARGET: none
-TOPIC_KEY: futbolweb/knockout/scoring-rules
-
-QUÉ: Motor de scoring knockout en FutbolWeb: función puntajeTigreKnockout en packages/scoring. Engine protegido y estable. Tests exhaustivos agregados 2026-06-23 (synthetic harness). Lógica: evaluación de resultados en fase eliminatoria con cálculo de puntaje Tigre incluyendo penaltis y goles de visita.
-
-POR QUÉ IMPORTA: Es la lógica core del Oráculo Futbolero para torneos knockout. Cualquier cambio afecta predicciones en producción.
-
-DÓNDE APLICA: packages/scoring, Vercel runtime, toda UI que muestre predicciones de fase eliminatoria.
-
-PRÓXIMO AGENTE DEBE: NO modificar puntajeTigreKnockout sin PRP explícito y autorización. Tests de synthetic harness deben seguir pasando antes de cualquier deploy.
 
 ---
 
@@ -283,4 +258,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-03T22:19:20Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-03T22:19:53Z | La Garra → DFLghub/amos-context*
