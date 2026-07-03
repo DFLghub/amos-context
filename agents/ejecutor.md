@@ -7,6 +7,13 @@ directamente en la VM (o con acceso remoto equivalente a ella).
 Si no tenés brazo pero sí podés hacer fetch público → ver `orquestador.md`.
 Si no tenés ninguno de los dos → ver `consultor.md`.
 
+**Nota de traducción de tools:** este documento usa los nombres de Claude Code
+(`mem_save`/`mem_search`/`mem_update`) como convención genérica de referencia. Tu agente
+concreto puede exponerlos con otro nombre — traducí según corresponda:
+- **CC** (Claude Code, plugin Engram) usa `mem_save`/`mem_search`/`mem_update`.
+- **Codex** (vía `engram-mcp`) usa `save_memory`/`search_memory`/`update_memory`.
+Mismo Gate 4B, mismos pasos — solo cambia el nombre de la tool que invocás.
+
 ## Cómo ejecutar `@$go`
 
 1. `curl -s http://127.0.0.1:8091/go` (o `https://context.deepfeelingslabs.com/go` si no estás en la VM)
