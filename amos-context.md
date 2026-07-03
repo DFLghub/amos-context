@@ -1,12 +1,39 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-03T03:05:01Z  
+**Generated:** 2026-07-03T21:48:58Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
 
-> This file is auto-updated by La Garra (daily 3:05am UTC).  
+> This file updates on event (`@$fin` cierre ordenado, or the resilient-close  
+> watchdog) with a daily 3:05am UTC cron as fallback — not the primary cadence.  
 > For real-time payload: `GET https://context.deepfeelingslabs.com/go`  
 > For deep graph: `GET https://context.deepfeelingslabs.com/go?deep=1`
+
+---
+
+## AGENT DIRECTORY
+
+Landing here for the first time? Find your profile, read your annex, obey its contract.
+
+| Perfil | ¿Sos vos? | Anexo |
+|---|---|---|
+| **EJECUTOR** | ¿Tenés brazo en La Garra (bash/Engram/git)? Sí → sos EJECUTOR. | https://raw.githubusercontent.com/DFLghub/amos-context/main/agents/ejecutor.md |
+| **ORQUESTADOR** | ¿Sin brazo, pero con fetch público confiable (HTTP/navegación)? Sí → sos ORQUESTADOR. | https://raw.githubusercontent.com/DFLghub/amos-context/main/agents/orquestador.md |
+| **CONSULTOR** | ¿Sin brazo y sin fetch público garantizado (chat puro)? Sí → sos CONSULTOR. | https://raw.githubusercontent.com/DFLghub/amos-context/main/agents/consultor.md |
+
+---
+
+## SESSION CONTRACT
+
+Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea su perfil:
+
+- **`@$go`** — comando del agente que activa el bootstrap. **`/go`** — ruta HTTP del proxy. No son lo mismo, no se intercambian.
+- **`@$fin`** — comando de cierre del agente, simétrico a `@$go`. Local, no tiene ruta HTTP.
+  - **Modo CIERRE** (default): Gate 4B final (`mem_save` del resumen + `mem_search`/`mem_update` de lo que este cierre archiva) + `push_mirror.sh` + reportar el timestamp del mirror.
+  - **Modo CHECKPOINT** (solo si Jorge lo pide explícitamente con esa palabra): `mem_save` del progreso parcial, sin barrido de archivado y sin `push_mirror.sh` — la sesión sigue abierta.
+- **Gate 4B incremental**: `mem_save` en cada commit, decisión o blocker resuelto durante la sesión — no esperar al cierre. Es lo que hace sobrevivir el estado si la sesión muere sin `@$fin`.
+- **Zonas protegidas** (no tocar sin PRP explícito): `puntajeTigreKnockout`, Supabase, Vercel config, environment variables, templates HLC-T01/T02/T03, CRON 3:05am UTC, `/etc/dfl-secrets`.
+- **Precedencia**: A (Constitution) > B (Routing/MASTER_INDEX) > C (Jurisprudence/MASTER_BITACORA) > D (Operation — Engram, PRPs, skills) > E (Archive). Engram es capa D — nunca invalida A ni B.
 
 ---
 
@@ -164,7 +191,6 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 - **Step 3:** Al guardar obs: usar DFL Writing Convention v0.3 (topic: dfl/engram/writing-convention)
 - **Precedencia:** A > B > C > D > E — Engram es capa D, nunca invalida Blueprint (A) ni MASTER_INDEX (B)
 - **Protegido:** NO modificar puntajeTigreKnockout, Supabase, Vercel config sin PRP explícito
-- **Alerta:** 
 
 ---
 
@@ -247,4 +273,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-03T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-03T21:48:58Z | La Garra → DFLghub/amos-context*
