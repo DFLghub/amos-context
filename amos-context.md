@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-03T21:50:04Z  
+**Generated:** 2026-07-03T22:09:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -48,6 +48,17 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 ---
 
 ## RECENT DECISIONS
+
+### ejecutor.md — nota de traducción de tool names (CC vs Codex)
+**Type:** decision  
+
+**What**: Agregada nota de traducción en `agents/ejecutor.md` (repo amos-context): CC usa `mem_save`/`mem_search`/`mem_update`, Codex (vía `engram-mcp`) usa `save_memory`/`search_memory`/`update_memory`. Mismo Gate 4B, mismos pasos, distinto nombre de tool.
+
+**Why**: El documento usaba nombres de CC como si fueran universales. Un EJECUTOR-Codex real que lo lea sin esta nota buscaría tools que no existen bajo esos nombres.
+
+**Where**: `/opt/amos-context-mirror/agents/ejecutor.md`, commit `a9667c9` (pusheado a DFLghub/amos-context). `push_mirror.sh` corrido y confirmado no-op — correcto, ejecutor.md no es parte del payload `/go`, se publica por commit directo al repo, no por regeneración del mirror.
+
+**Learned**: No todo lo que vive en el repo `amos-context` pasa por `push_mirror.sh` — los anexos `agents/*.md` son estáticos y se versionan con git normal; solo `amos-context.md` se regenera desde el payload `/go`.
 
 ### Lobby Directory v1.0 implementado — Fase 2 audit @$go/@$fin
 **Type:** decision  
@@ -135,15 +146,6 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 **Where**: Aplica a toda sesión en FutbolWeb y DFL. Antes de find/grep/rg/ls, consultar knl.navigation.god_nodes o dfl-nav --brief. Solo usar exploración manual cuando el grafo no tiene cobertura del concepto buscado.
 
 **Learned**: La regla es ROI-driven, no absoluta — si el grafo no cubre el concepto (community miss), exploración manual es válida como fallback.
-
-### [DECISION:DFL] HLC templates P6 v1.0 creados — T01/T02/T03 activos
-**Type:** decision  
-
-TOPIC: dfl/governance/hlc-templates
-TYPE: decision
-STATUS: active
-DATE: 2026-06-28
-SUMMARY: Creados templates HLC P6 v1.0 en /opt/dfl-knowledge/governance/hlc-templates/: HLC-T01 Regen Grafo Semanal, HLC-T02 Limpieza Engram, HLC-T03 Auditoría FutbolWeb Pre-Deploy. Los tres quedan ACTIVO con esquema canónico MISIÓN / CONTEXTO / PERMISOS / METABOLISMO / LOOP / CRITERIOS. Fuente de diseño: DFL_P6_P7_DESIGN_2026-06-27.md.
 
 ---
 
@@ -281,4 +283,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-03T21:50:04Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-03T22:09:01Z | La Garra → DFLghub/amos-context*
