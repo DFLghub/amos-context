@@ -37,8 +37,20 @@ Se usa al terminar la sesión o la tarea.
    prefijo `[RESOLVED]` en el título, o `LIFECYCLE: archived` en su propia línea del `content`.
 3. `bash /opt/dfl-context-proxy/push_mirror.sh` — regenera y publica el mirror público
    `amos-context`. Idempotente: hashea el payload `/go` (sin `generated_at`) y no-opea si no
-   hay cambio sustantivo.
-4. Reportar a Jorge el timestamp del mirror actualizado.
+   hay cambio sustantivo. Termina imprimiendo por stdout una línea `MIRROR: <updated|unchanged>
+   | commit <hash> | <fecha UTC>` — ese commit viene de `git log` real sobre el repo del mirror,
+   no es una suposición.
+4. Reportar a Jorge exactamente esa línea `MIRROR: ...`. **Nunca la reemplaces por una nueva
+   consulta a `/go`** — `/go` regenera `generated_at` en cada request que recibe, así que
+   siempre te va a devolver "recién actualizado" aunque no se haya publicado nada nuevo. Si por
+   algún motivo necesitás verificarlo vos mismo en vez de confiar en la salida del script:
+   `git -C /opt/amos-context-mirror log -1 --format='%H | %ci'`.
+
+**Cuidado si editás anexos (`agents/*.md`) a mano:** `push_mirror.sh`/`publish-amos-context.sh`
+hacen `git reset --hard origin/main` sobre este mismo repo antes de regenerar. Si editaste un
+anexo y no lo commiteaste + pusheaste todavía, correr `push_mirror.sh` te lo va a descartar en
+silencio. Commiteá y pusheá tus cambios a `agents/*.md` **antes** de correr `push_mirror.sh`,
+nunca después.
 
 ### Modo CHECKPOINT (solo si Jorge lo pide explícitamente con esa palabra)
 
