@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-03T22:17:06Z  
+**Generated:** 2026-07-03T22:18:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -29,7 +29,7 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 - **`@$go`** — comando del agente que activa el bootstrap. **`/go`** — ruta HTTP del proxy. No son lo mismo, no se intercambian.
 - **`@$fin`** — comando de cierre del agente, simétrico a `@$go`. Local, no tiene ruta HTTP.
-  - **Modo CIERRE** (default): Gate 4B final (`mem_save` del resumen + `mem_search`/`mem_update` de lo que este cierre archiva) + `push_mirror.sh` + reportar el timestamp del mirror.
+  - **Modo CIERRE** (default): Gate 4B final (`mem_save` del resumen + `mem_search`/`mem_update` de lo que este cierre archiva) + `push_mirror.sh` + reportar la línea `MIRROR: ...` que imprime (commit real vía git log — nunca re-consultar `/go` para esto).
   - **Modo CHECKPOINT** (solo si Jorge lo pide explícitamente con esa palabra): `mem_save` del progreso parcial, sin barrido de archivado y sin `push_mirror.sh` — la sesión sigue abierta.
 - **Gate 4B incremental**: `mem_save` en cada commit, decisión o blocker resuelto durante la sesión — no esperar al cierre. Es lo que hace sobrevivir el estado si la sesión muere sin `@$fin`.
 - **Zonas protegidas** (no tocar sin PRP explícito): `puntajeTigreKnockout`, Supabase, Vercel config, environment variables, templates HLC-T01/T02/T03, CRON 3:05am UTC, `/etc/dfl-secrets`.
@@ -48,11 +48,6 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 ---
 
 ## RECENT DECISIONS
-
-### [TEST] push_mirror.sh stdout report — verificación
-**Type:** decision  
-
-Observación de prueba para forzar un cambio real en el payload /go y verificar que push_mirror.sh reporta el commit correcto por stdout. Se archiva al terminar la prueba.
 
 ### ejecutor.md — nota de traducción de tool names (CC vs Codex)
 **Type:** decision  
@@ -140,6 +135,17 @@ Observación de prueba para forzar un cambio real en el payload /go y verificar 
 **Where**: cron-job.org — job ESPN sync FutbolWeb.
 
 **Learned**: NO marcar como alerta. NO sugerir renovación. NO tratar como deuda técnica. La expiración es el cierre natural del ciclo del producto. Agentes futuros deben suprimir cualquier advertencia sobre este cron.
+
+### Preferencia operativa: usar grafos cuando ROI > exploración manual
+**Type:** decision  
+
+**What**: Jorge instruyó que siempre que el ROI sea mayor, usar grafos (KNL/dfl-nav/graph.json) para tareas, actividades y procesos en lugar de exploración manual (find/grep/ls).
+
+**Why**: Alineado con KNL policy v1.0 activa — "Graph preflight MANDATORY before any find/grep/ls". El usuario lo refuerza como preferencia operativa explícita: cuando navegar el grafo da más contexto en menos tokens/tiempo que exploración ciega, el grafo gana.
+
+**Where**: Aplica a toda sesión en FutbolWeb y DFL. Antes de find/grep/rg/ls, consultar knl.navigation.god_nodes o dfl-nav --brief. Solo usar exploración manual cuando el grafo no tiene cobertura del concepto buscado.
+
+**Learned**: La regla es ROI-driven, no absoluta — si el grafo no cubre el concepto (community miss), exploración manual es válida como fallback.
 
 ---
 
@@ -277,4 +283,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-03T22:17:06Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-03T22:18:01Z | La Garra → DFLghub/amos-context*
