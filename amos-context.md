@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-04T15:21:47Z  
+**Generated:** 2026-07-04T15:33:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -248,6 +248,39 @@ Para estado actual de FutbolWeb consultar observaciones recientes o git log /opt
 --- SNAPSHOT ORIGINAL (2026-06-24) ---
 FutbolWeb / Oráculo Futbolero: producto operativo en producción durante Mundial 2026. Stack: Next.js + Supabase + Vercel (hobby). Repo: github.com/DFLghub/futbolweb-app. Código en /opt/futbolweb en La Garra. Pendientes críticos al 2026-06-24: (1) wiring DB layer KnockoutEngine — RESUELTO 2026-06-27; (2) sensibilidad mayúsculas realAdvancingTeam — RESUELTO 2026-06-27; (3) confirmar deploy commit 50316e3 — RESUELTO; (4) diagnosticar webhook GitHub-Vercel — pendiente verificación.
 
+### Session summary: futbolweb-app
+**Type:** session_summary  
+**Project:** futbolweb-app  
+
+## Goal
+Ejecutar HLC "Fix /go multi-proyecto" (P1) para resolver obs #156/#159: el payload `/go` (y el mirror público amos-context.md) debía reflejar actividad de TODOS los proyectos DFL, no solo project="dfl".
+
+## Discoveries
+- Causa raíz confirmada: `main.py` hardcodeaba `project="dfl"` en las 3 queries de `/go`; Engram auto-detecta proyecto por git remote del cwd, así que trabajo hecho desde /opt/futbolweb (project=futbolweb-app) era estructuralmente invisible para /go.
+- Bug secundario en `_engram_recent_dfl`: el term-match del grafo KNL podía llenar toda la cuota sin nunca invocar el fallback de recencia pura — por eso actividad reciente no relacionada a ningún nodo del grafo (ej. trabajo de infra como backup off-host) tampoco aparecía.
+- `publish-amos-context.sh` nunca renderizaba el campo `recent_engram_dfl` del JSON al markdown público — existía en /go pero no llegaba al mirror.
+- Engram soporta descubrimiento dinámico de proyectos gratis: omitir el parámetro `project` en `/observations` y `/search` devuelve resultados cross-project con el campo `project` en cada obs — no hizo falta `/projects` endpoint ni lista ACTIVE_PROJECTS en config.env.
+
+## Accomplished
+- main.py: quitado el hardcode de project="dfl", agregado PER_PROJECT_CAP=2 en decisions/constraints/pending/recent_engram_dfl, arreglado el reserved-slots de recencia en _engram_recent_dfl.
+- publish-amos-context.sh: nueva sección "RECENT ACTIVITY (cross-project)" + labels "Project:" en decisions/constraints/pending.
+- Probado local (/go incluye futbolweb-app+dfl+tdf-01) y en el mirror público (contiene backup off-host/VM3/receiver/92b6857 — criterio de aceptación del HLC cumplido).
+- Commit af48db6 pusheado a DFLghub/dfl-context-proxy.
+- obs #156 y #159 marcadas [RESOLVED] con evidencia.
+- Corregida una memoria previa mal cerrada (#156 había sido marcada [RESOLVED] por error en el bootstrap de esta misma sesión, confundiendo el bug del reporte MIRROR con el bug del contenido del payload — Jorge la reabrió con evidencia).
+- Nueva regla guardada: onboarding @$go es solo lectura, cero mutaciones de estado (obs #157).
+- Tareas de infra completadas: push de DFLghub/dfl-context-proxy y DFLghub/dfl-knowledge (repos vacíos → con su primer push), verificación del backup off-host Engram→VM3 (cron cada 6h, corridas OK confirmadas vía rsync --list-only contra el receiver con forced-command).
+
+## Next Steps
+- Ninguno bloqueante. push_mirror.sh reportó `MIRROR: updated | commit bbd90d66d75abcd612bfb325e7d5a9f47f1c9282 | 2026-07-04 15:21:47 +0000` como cierre de este HLC.
+- El ORQUESTADOR va a verificar el mirror por fetch propio (pendiente de que Jorge confirme).
+
+## Relevant Files
+- /opt/dfl-context-proxy/main.py
+- /opt/dfl-context-proxy/publish-amos-context.sh
+- /opt/dfl-context-proxy/push_mirror.sh (no tocado)
+- /opt/dfl-context-proxy/config.env (no tocado)
+
 ### [RESOLVED] Causa raíz #156 — /go hardcodeaba project=dfl, ciego a futbolweb-app
 **Type:** discovery  
 **Project:** futbolweb-app  
@@ -259,15 +292,6 @@ LIFECYCLE: resolved
 **Fix implementado 2026-07-04** (commit af48db6, repo DFLghub/dfl-context-proxy): se removió el filtro de project por default en `_engram_search`/`_fetch_observations` — Engram devuelve cross-project cuando se omite el parámetro, así que el "descubrimiento dinámico" pedido por Jorge no requirió tocar la API de Engram ni mantener una lista en config.env. Se agregó `PER_PROJECT_CAP=2` (constante en main.py) en las 4 secciones que categorizan observaciones (decisions, constraints, pending, recent_engram_dfl) para que un proyecto activo no desplace a los demás dentro de los topes globales existentes (6/5/-/5). Se corrigió además un bug latente en `_engram_recent_dfl`: retornaba apenas el term-match del grafo KNL llenaba la cuota, sin nunca invocar el fallback de recencia pura — ahora reserva 2 slots garantizados para eso. `publish-amos-context.sh` gana una sección `RECENT ACTIVITY (cross-project)` para que `recent_engram_dfl` (que antes solo vivía en el JSON) llegue al mirror público, más labels `Project:` en decisions/constraints/pending.
 **Verificación empírica** (criterio de aceptación del HLC): mirror público post-push contiene "backup off-host", "VM3", "receiver", "92b6857" — confirmado con curl directo contra raw.githubusercontent.com (Generated 2026-07-04T15:20:14Z).
 **Where**: /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/publish-amos-context.sh — commit af48db6, pusheado a DFLghub/dfl-context-proxy.
-
-### Backup off-host Engram→VM3 verificado operativo (primeras corridas)
-**Type:** discovery  
-**Project:** futbolweb-app  
-
-**What**: Verificado el cron `engram-backup-offhost.sh` (cada 6h, :17) hacia VM3 (root@137.184.207.239, mismo host que alias ssh "vault"). Log local `/var/log/dfl-engram-backup.log` muestra 2 corridas OK hoy: 06:17:04Z y 12:17:03Z, ambas sobrescribiendo `daily/2026-07-04.db.gz` (703878 bytes) según el esquema de naming por fecha (no timestamp). Confirmado también vía `rsync --list-only` contra el receiver remoto (la key `id_ed25519_engram_backup` tiene forced command — `ls`/`ssh <cmd>` directo devuelve "dfl-backup-receiver: comando no permitido", pero `rsync --list-only` sí es aceptado por el forced command).
-**Why**: Tarea pendiente de sesión anterior — confirmar que el primer backup automático del cron llegó a VM3 (mitigación obs #150, fragilidad de tener primario+espejo Postgres en el mismo disco).
-**Where**: /opt/dfl-context-proxy/engram-backup-offhost.sh, crontab (línea `17 */6 * * *`), VM3:/data/dfl-backups/engram/daily/.
-**Learned**: la forced command en VM3 solo permite el flujo rsync de recepción, no comandos de shell arbitrarios — para verificación futura usar `rsync --list-only` contra el receiver, no `ssh ... "ls ..."`.
 
 ---
 
@@ -360,4 +384,4 @@ LIFECYCLE: resolved
 
 ---
 
-*Mirror auto-generated 2026-07-04T15:21:47Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-04T15:33:01Z | La Garra → DFLghub/amos-context*
