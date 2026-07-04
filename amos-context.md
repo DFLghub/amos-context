@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-04T03:05:02Z  
+**Generated:** 2026-07-04T15:18:21Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -49,6 +49,27 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ## RECENT DECISIONS
 
+### [DECISION:DFL] Onboarding @$go es solo lectura — cero mutaciones de estado
+**Type:** decision  
+
+**What**: El bootstrap `@$go` (o cualquier onboarding de un agente nuevo entrando a una sesión DFL) es SOLO LECTURA. Prohibido archivar, resolver, marcar [RESOLVED] o mutar el estado de cualquier observación de Engram durante el bootstrap — solo reportar lo encontrado a Jorge y esperar indicación explícita antes de escribir.
+**Why**: Corrección de Jorge 2026-07-04 — en un bootstrap @$go anterior, el agente EJECUTOR marcó la obs #156 (payload /go no refleja obs nuevas entre corridas de cron) como [RESOLVED] confundiéndola con un bug distinto ya cerrado (línea 34 de push_mirror.sh, que solo corrige el REPORTE de la línea MIRROR, no el contenido del payload). El archivado prematuro sin evidencia suficiente casi oculta una anomalía real y viva.
+**Learned**: Gate 4B incremental (mem_save durante la sesión al cerrar commits/decisiones/blockers) sigue vigente para trabajo activo — esta regla aplica específicamente a la ventana de bootstrap/onboarding, antes de que Jorge haya dado indicación de qué trabajar. Ver también [[ejecutor-annex-update-pending]] — esta regla debe incorporarse al anexo `agents/ejecutor.md` (pendiente, no ejecutado en esta sesión).
+
+### [CIERRE] P0 FutbolWeb 2026-07-04 — archivado de las 3 premisas del HLC original [CORREGIDO: deploy sí ocurrió]
+**Type:** decision  
+
+**What**: Cierre formal de las 3 premisas del HLC-P0-2026-07-04 (FutbolWeb, octavos/bracket), cada una con su estado real verificado esta sesión.
+
+1. **"node_modules roto en /opt/futbolweb, bloquea npm test"** → [RESOLVED — la premisa era falsa]. Verificado: `npm run build` y `npm test` corren limpios (67/67, harness puntajeTigreKnockout >850 casos ok). Ver obs #147.
+
+2. **"Falta propagación automática de bracket para todas las rondas"** → [RESOLVED — la premisa era falsa]. La función `applyKnockoutBracketAssignments` (lib/knockout-reality.ts) ya cubre genéricamente 73→104 desde commit c4c6111 (preexistente). El bug real era más angosto: app/upcoming/page.tsx nunca la invocaba. Fix commiteado y pusheado a origin/main (92b6857). Ver obs #147/#148.
+
+3. **"Webhook GitHub→Vercel roto, producción congelada en 4a9112e"** → [CORREGIDO 2026-07-04 noche, tras cierre inicial erróneo]. El push de 92b6857 SÍ disparó deploy automático a producción — verificado por Jorge en Vercel dashboard (badge Production/Ready) y por mí en vivo (`curl https://www.futbolweb.app/upcoming` muestra Paraguay/Francia/Canadá/Marruecos en los partidos de Octavos, igual que en la verificación local). El webhook funcionó empíricamente esta noche. Estado correcto: **producción al día**. Lo que NO quedó investigado es la causa raíz histórica del congelamiento previo (por qué estuvo detenido en 4a9112e desde el 28-jun hasta ahora) — eso sigue sin diagnóstico, no el webhook en sí.
+
+**Resultado neto para el próximo agente**: código arreglado, pusheado, Y desplegado — producción refleja el fix. Misión P0 FutbolWeb: completa en su objetivo funcional (octavos con equipos reales en prod). Pendiente real remanente: ninguno funcional; opcionalmente investigar causa raíz histórica del freeze si se quiere prevenir recurrencia.
+**Where**: app/upcoming/page.tsx (commit 92b6857), obs #147, #148, #149.
+
 ### Fix: MIRROR verification bug — push_mirror.sh ahora emite commit real por stdout
 **Type:** decision  
 
@@ -75,85 +96,83 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 **Learned**: No todo lo que vive en el repo `amos-context` pasa por `push_mirror.sh` — los anexos `agents/*.md` son estáticos y se versionan con git normal; solo `amos-context.md` se regenera desde el payload `/go`.
 
-### Lobby Directory v1.0 implementado — Fase 2 audit @$go/@$fin
+### TDF-01 session close low_variance_probe Gate 4B complete
 **Type:** decision  
 
-**What**: Fase 2 completa del HLC de auditoría @$go/@$fin. Implementado Lobby Directory v1.0:
-- 3 anexos de perfil en el repo amos-context (`agents/ejecutor.md`, `agents/orquestador.md`, `agents/consultor.md`), publicados y accesibles vía raw.githubusercontent.com (200 OK confirmado).
-- `amos-context.md` ahora tiene 2 secciones estables no rotativas — `AGENT DIRECTORY` (tabla de 3 perfiles con test de 2 preguntas + URL de anexo) y `SESSION CONTRACT` (contrato universal: @$go/@$fin, dos modos de @$fin, Gate 4B incremental, zonas protegidas, precedencia A>B>C>D>E). Mecanismo de estabilidad: contenido hardcodeado en `publish-amos-context.sh`, no derivado del JSON `/go` — sobrevive cualquier regen por diseño (confirmado con push_mirror.sh real).
-- Header del mirror corregido: cadencia real = evento (@$fin/watchdog) con cron 3:05 como fallback, ya no dice "daily 3:05am" como si fuera la cadencia primaria.
-- Campos vacíos eliminados del template (title/type/precedence condicionales).
-- `main.py` — nuevo campo `agent_directory` en el payload `/go` (3 perfiles con test + annex_url), y `closure_contract.checkpoint_mode` documentando el modo CHECKPOINT.
-- Modo CHECKPOINT introducido formalmente para `@$fin`: si Jorge lo pide explícitamente con esa palabra, el agente hace `mem_save` de progreso parcial sin barrido de archivado ni `push_mirror.sh` — la sesión sigue abierta. Resuelve el gap encontrado en Fase 1 (semántica checkpoint/cierre ausente en `/root/.claude/CLAUDE.md`).
-- `/root/.claude/CLAUDE.md`, `/opt/futbolweb/CLAUDE.md`, `/root/AGENTS.md` reducidos a un puntero único de una línea al AGENT DIRECTORY. Censo `grep -rn '@\$go\|@\$fin' /opt /root` confirma cero semántica local residual en los 3.
+**Session close summary (`@$fin`)**
 
-**Why**: Fase 1 (auditoría previa) encontró que `closure_contract` nunca llegaba al mirror público y que la semántica checkpoint/cierre solo corrió en 2 de 3 archivos — inconsistencia de fuente de verdad distribuida. Lobby Directory centraliza el protocolo en un solo lugar (los 3 anexos) para que agentes de cualquier perfil (con brazo, con fetch, sin ninguno) lo lean de la misma fuente.
+**Project**: `tdf-01` in `/opt/nq-factory`.
 
-**Where**: `/opt/amos-context-mirror/agents/{ejecutor,orquestador,consultor}.md` (commit ed9b0dc, pusheado), `/opt/dfl-context-proxy/publish-amos-context.sh`, `/opt/dfl-context-proxy/main.py` (no versionados — dir no es repo git), `/opt/futbolweb/CLAUDE.md` (commit a9b57be, local, no pusheado a origin), `/root/.claude/CLAUDE.md`, `/root/AGENTS.md` (no versionados).
+**Done**:
+- Generated/kept `data/sample/nq_10d_synthetic.csv`: 3910 synthetic 1-min OHLCV bars across 10 operated days, no external data purchase/accounts/API keys.
+- Analyzed VWAP R5 failure: daily PnL `[-950.0, -1027.0, -447.0, -932.5, -445.0, -972.0, -686.0, -541.5, -966.0, -1072.0]`, mean `-803.90`, population std `235.16`, CV `0.2925`.
+- Implemented `LowVarianceProbeStrategy`, available as `--strategy low_variance_probe`.
+- Compared strategies on `nq_10d_synthetic.csv`: `low_variance_probe` passes R4a/R4b/R4c/R5 with `CV=0.1346291201783626`; VWAP fails R4c/R5.
+- Committed local repo: `011bab1 feat(tdf-01): add low_variance_probe strategy — passes R4/R5; add 10d synthetic dataset`.
+- Gate 4B saved obs 138 with ranking and metrics.
+- Marked obs 135 as superseded by obs 138 via relation `rel-d366de964a1c68ee` and archived obs 135 with `[RESOLVED]` / `LIFECYCLE: archived`.
 
-**Learned**: El path que dio Jorge en el brief (`/opt/dfl-context-proxy/amos-context/agents/`) no existía — el repo real está en `/opt/amos-context-mirror`. `/opt/dfl-context-proxy` no es un repo git — main.py y publish-amos-context.sh quedan sin historial de versiones, solo el estado en disco. `/root/.claude/CLAUDE.md` no tenía protocolo @$go previo (Fase 1 ya lo había detectado) — se agregó por primera vez, no se "redujo".
+**Verification**:
+- `.venv/bin/python -B -m pytest -q -o cache_dir=/tmp/nq-factory-pytest-cache` -> `7 passed in 1.39s`.
+- `git status --short` clean after commit.
 
-### @$fin v1.0 — circuito de outboarding implementado (cierre ordenado + resiliente)
+**Open caveat**: `objective_win_rate` remains an optional/configurable objective, not a contract rule, per obs 130. No protected surfaces touched: puntajeTigreKnockout, Supabase, Vercel, secrets untouched.
+
+### TDF-01 low_variance_probe pasa R4/R5 y supera VWAP baseline
 **Type:** decision  
 
-**What**: Implementado @$fin, simétrico de salida de @$go, con dos vías de propagación:
-- Cierre ordenado: agente recibe @$fin → Gate 4B final (mem_save + mem_search/mem_update archivado) → bash push_mirror.sh → reporta timestamp del mirror.
-- Cierre resiliente: Gate 4B incremental durante la sesión (ya documentado, ahora con cadencia explícita) + watchdog en La Garra que detecta sesión muerta y dispara push_mirror.sh solo (mitad mecánica).
+**What**: Commit local `011bab1` (`feat(tdf-01): add low_variance_probe strategy — passes R4/R5; add 10d synthetic dataset`) agregó `data/sample/nq_10d_synthetic.csv` y la estrategia candidata `LowVarianceProbeStrategy` en `/opt/nq-factory`. La estrategia quedó disponible vía `--strategy low_variance_probe` y con test de validadores.
 
-**Why**: Que cualquier @$go posterior reciba el estado real de la última sesión, cerrada bien o muerta a mitad de camino. Sin esto, una sesión que muere sin cerrar deja Engram actualizado pero el mirror público (amos-context) desactualizado hasta el CRON de 3:05am.
+**Dataset**: `data/sample/nq_10d_synthetic.csv`, 3910 barras 1-min OHLCV sintéticas, 10 días hábiles (`2026-07-06 09:30:00` a `2026-07-17 16:00:00`). No se compraron datos, no se crearon cuentas, no se usaron API keys.
 
-**Where**:
-- `/opt/dfl-context-proxy/push_mirror.sh` (nuevo) — wrapper idempotente sobre publish-amos-context.sh (sin reescribir el generador). Lock con flock + dedup por hash del payload /go sin generated_at, para que llamadas repetidas no generen commits duplicados.
-- `/opt/dfl-context-proxy/main.py` — payload /go extendido con campo `closure_contract`.
-- `/opt/dfl-context-proxy/cc-atgo-hook.sh` — renderiza closure_contract (sirve a CC vía SessionStart hook y a Codex vía invocación manual, mismo script).
-- `/opt/dfl-context-proxy/cc-heartbeat-hook.sh` (nuevo), `/opt/dfl-context-proxy/cc-sessionend-hook.sh` (nuevo) — heartbeat por session_id y mecánica de cierre en SessionEnd.
-- `~/.claude/settings.json` — nuevas entradas PreToolUse(matcher "*") y SessionEnd, sin tocar las existentes (SessionStart cc-atgo-hook.sh, PreToolUse Bash knl-preflight-hook.sh).
-- `/opt/dfl-context-proxy/session-watchdog.sh` (nuevo) — reaping de heartbeats CC vencidos (>600s) + diff de PIDs `codex` entre polls (Codex no tiene hooks). Cron cada 3 min, agregado sin tocar las 4 entradas previas.
-- Docs: `/opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md` (nueva §1.2, versión v0.4), `/opt/dfl-knowledge/CLAUDE.md` (sección @$fin), `/opt/futbolweb/CLAUDE.md` §12 (Gate 4B incremental + @$fin), `/root/AGENTS.md` (protocolo @$fin para Codex).
+**Hallazgo clave**: `low_variance_probe` es la primera candidata registrada que pasa el contrato Eduardo completo R4/R5 sobre el dataset sintético extendido: R4a PASS, R4b PASS, R4c PASS, R5 PASS con `CV=0.1346291201783626` (`operated_days=10`, límite `0.20`). Es una candidata de consistencia/baja varianza, no una afirmación de edge de mercado.
 
-**Learned**:
-- CC `SessionEnd` existe pero solo cubre salidas normales — nunca SIGKILL/broken pipe (confirmado vía docs oficiales). La resiliencia real depende de que el Gate 4B incremental ya haya escrito el estado, no de que algo se dispare en el momento de morir.
-- publish-amos-context.sh embebe `generated_at` en el markdown, por lo que su propio chequeo `git diff --quiet` SIEMPRE detecta cambio y commitea — inofensivo a cadencia diaria, pero genera commits redundantes si se llama seguido (como hará @$fin/SessionEnd/watchdog). push_mirror.sh resuelve esto con un hash del payload excluyendo generated_at antes de invocar el generador.
-- Bug propio detectado durante prueba: escribir "LIFECYCLE: archived" embebido en una línea de prosa (ej. dentro de "**Learned**: ... LIFECYCLE: archived.") NO activa `_is_archived()` en main.py — requiere ser línea propia que empiece con "LIFECYCLE:". Relevante para todo Gate 4B futuro.
-- Watchdog probado por simulación (heartbeat con mtime falseado a 20 min, PID falso en snapshot) — no se mató ninguna sesión `claude`/`codex` real por riesgo de cortar sesiones en vivo (había 2 procesos `claude` activos en la VM durante la misión). Ambas ramas de detección confirmadas correctas.
-- Verificación cruzada Codex fue por ejecución directa de cc-atgo-hook.sh (mismo script que usa Codex per AGENTS.md paso 3), no por sesión Codex real nueva — recomendado a Jorge confirmarlo con una sesión Codex real si quiere certeza total end-to-end.
-- Prueba de cierre ordenado real: mem_save dummy (obs #126) → push_mirror.sh → apareció en raw.githubusercontent.com en ~3s → archivada correctamente (LIFECYCLE: archived en línea propia) → push_mirror.sh → desapareció del mirror. Ciclo completo verificado.
-- CRON 3:05am UTC intacto — verificado antes y después, las 4 entradas originales sin modificar.
+**Comparación VWAP baseline**:
+- `vwap`: `trades=542`, `net_pnl=-8039.0`, `costs=7859.0`, R4a PASS (`-1072.0 >= -2000`), R4b PASS (`-1022.0 >= -2000`), R4c FAIL (`min_cushion=-3007.95`), R5 FAIL (`CV=0.2925258352542665 > 0.20`, `operated_days=10`), `objective_win_rate` FAIL (`0.2823 < 0.59`).
+- Distribución diaria VWAP: `[-950.0, -1027.0, -447.0, -932.5, -445.0, -972.0, -686.0, -541.5, -966.0, -1072.0]`; media diaria `-803.90`, std poblacional `235.16`, CV `0.2925`.
 
-### FutbolWeb — fix amnesia pronósticos KO (ce766fd)
-**Type:** decision  
+**Comparación low_variance_probe**:
+- `low_variance_probe`: `trades=10`, `net_pnl=-200.0`, `costs=145.0`, R4a PASS (`-24.5 >= -2000`), R4b PASS (`-24.5 >= -2000`), R4c PASS (`min_cushion=4817.55`), R5 PASS (`CV=0.1346291201783626 <= 0.20`, `operated_days=10`), `objective_win_rate` FAIL (`0.0 < 0.59`).
+- Distribución diaria low_variance_probe: `[-19.5, -19.5, -24.5, -24.5, -19.5, -19.5, -19.5, -14.5, -19.5, -19.5]`.
 
-**What**: Commit ce766fd resuelve amnesia completa del sistema de pronósticos.
+**Ranking Eduardo**: 1) `low_variance_probe` porque pasa R4 completo y R5; 2) `vwap` porque falla R4c y R5. `objective_win_rate` se mantiene como objetivo configurable/no canónico según obs 130, no como regla obligatoria del contrato Eduardo.
 
-**Cambios clave:**
-- PredictDemoForm detecta pronóstico existente en mount (fetch proactivo por matchSlug, sin necesitar ?edit=ID). Pre-llena form + muestra banner amber.
-- Partido cerrado: panel read-only con marcador + equipo clasificado. Sin formulario.
-- Panel de confirmación post-submit muestra marcador real y advancing_team.
-- PATCH /api/predictions/[id] ahora acepta y persiste advancing_team (bug silencioso corregido).
-- GET /api/my-predictions devuelve advancing_team.
-- 409 POST retorna prediction existente en body (code: "duplicate").
-- MyPredictionsClient muestra advancing_team en tarjeta.
-- GroupMatchPredictionsTable muestra advancing_team para partidos KO.
-- 10 archivos, 202 inserciones.
+**Evidence**: `.venv/bin/python -B -m pytest -q -o cache_dir=/tmp/nq-factory-pytest-cache` -> `7 passed in 1.39s`. Demos ejecutados con `nq_10d_synthetic.csv`: VWAP -> `validations_failed=R4c_trailing_hwm_floor,R5_consistency_cv,objective_win_rate`; low_variance_probe -> `validations_failed=objective_win_rate`.
 
-**Why**: Usuarios no recibían feedback adecuado y el equipo clasificado (KO empate) nunca se mostraba tras enviarlo.
-
-**Where**: components/PredictDemoForm.tsx, app/api/my-predictions/route.ts, app/api/predictions/route.ts, app/api/predictions/[id]/route.ts, components/MyPredictionsClient.tsx, components/GroupMatchPredictionsTable.tsx, lib/group-match-predictions.ts, app/match/[slug]/predict/page.tsx, dictionaries/es.ts, dictionaries/en.ts.
-
-### ESPN sync cron expiry 2026-07-20 — diseño intencional, no alerta
-**Type:** decision  
-
-**What**: El cron de ESPN sync en cron-job.org expira el 2026-07-20, un día después del fin del Mundial (2026-07-19).
-
-**Why**: Diseño deliberado de Jorge — el día extra captura cualquier dato rezagado del torneo. No es un olvido ni un gap operativo.
-
-**Where**: cron-job.org — job ESPN sync FutbolWeb.
-
-**Learned**: NO marcar como alerta. NO sugerir renovación. NO tratar como deuda técnica. La expiración es el cierre natural del ciclo del producto. Agentes futuros deben suprimir cualquier advertencia sobre este cron.
+**Supersedes**: Esta observación supera operativamente obs 135 en ranking de estrategias: obs 135 dejó la base VWAP/validadores implementada; esta observación identifica la primera candidata que pasa R4/R5 completo.
 
 ---
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
+
+### FutbolWeb — Motor Scoring Knockout (puntajeTigreKnockout) Protegido
+**Type:** fact  
+
+OBS_ID: DFL-OBS-20260624-007
+TIPO: fact
+PROYECTO: futbolweb
+PLATFORM: vercel
+SUBSISTEMA: futbolweb/knockout
+PRECEDENCIA: D
+AUTHORITY: operational
+LIFECYCLE: active
+CONFIDENCE: high
+LAST_VERIFIED: 2026-06-24
+SOURCE: session
+SOURCE_REF_TYPE: session_id
+SOURCE_REF: MPGE_2026-06-23
+SUPERSEDE: ninguno
+PROMOTION_CANDIDATE: no
+PROMOTION_TARGET: none
+TOPIC_KEY: futbolweb/knockout/scoring-rules
+
+QUÉ: Motor de scoring knockout en FutbolWeb: función puntajeTigreKnockout en packages/scoring. Engine protegido y estable. Tests exhaustivos agregados 2026-06-23 (synthetic harness). Lógica: evaluación de resultados en fase eliminatoria con cálculo de puntaje Tigre incluyendo penaltis y goles de visita.
+
+POR QUÉ IMPORTA: Es la lógica core del Oráculo Futbolero para torneos knockout. Cualquier cambio afecta predicciones en producción.
+
+DÓNDE APLICA: packages/scoring, Vercel runtime, toda UI que muestre predicciones de fase eliminatoria.
+
+PRÓXIMO AGENTE DEBE: NO modificar puntajeTigreKnockout sin PRP explícito y autorización. Tests de synthetic harness deben seguir pasando antes de cualquier deploy.
 
 ---
 
@@ -258,4 +277,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-04T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-04T15:18:21Z | La Garra → DFLghub/amos-context*
