@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-04T15:20:14Z  
+**Generated:** 2026-07-04T15:21:47Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -248,14 +248,17 @@ Para estado actual de FutbolWeb consultar observaciones recientes o git log /opt
 --- SNAPSHOT ORIGINAL (2026-06-24) ---
 FutbolWeb / Oráculo Futbolero: producto operativo en producción durante Mundial 2026. Stack: Next.js + Supabase + Vercel (hobby). Repo: github.com/DFLghub/futbolweb-app. Código en /opt/futbolweb en La Garra. Pendientes críticos al 2026-06-24: (1) wiring DB layer KnockoutEngine — RESUELTO 2026-06-27; (2) sensibilidad mayúsculas realAdvancingTeam — RESUELTO 2026-06-27; (3) confirmar deploy commit 50316e3 — RESUELTO; (4) diagnosticar webhook GitHub-Vercel — pendiente verificación.
 
-### [DECISION:DFL] Causa raíz #156 — /go hardcodea project=dfl, ciego a futbolweb-app
+### [RESOLVED] Causa raíz #156 — /go hardcodeaba project=dfl, ciego a futbolweb-app
 **Type:** discovery  
 **Project:** futbolweb-app  
 
-**What**: `/opt/dfl-context-proxy/main.py` hardcodea `project="dfl"` en las 3 queries que arman el payload `/go`: `_fetch_observations(project="dfl", ...)` (dentro de `_handle_go`), `pending_search = self._engram_search("pendientes", project="dfl", ...)`, y `_engram_recent_dfl` (vía `_graph_context_search_terms` + `_engram_search(term, project="dfl", ...)`). Engram auto-detecta el proyecto de una obs por el git remote del cwd de la sesión que llama a `mem_save` — sesiones operando en `/opt/futbolweb` quedan bajo proyecto `futbolweb-app`, no `dfl`.
-**Why**: Root cause de obs #156 (payload /go no reflejaba obs #147-154 de la noche del 2026-07-03/04). Verificado con `mem_search(query="P0 FutbolWeb backup Graphify auditoría", all_projects=true)`: todo ese trabajo vive en project=futbolweb-app. `push_mirror.sh` hashea el payload `/go` (con generated_at stripped) y compara contra `.last-mirror-hash` — el hash se mantiene idéntico corrida tras corrida NO porque el diff-guard esté roto, sino porque el payload fuente (`/go`) es ciego al proyecto `futbolweb-app` por diseño (hardcode), así que su contenido nunca cambia por trabajo guardado ahí, sin importar la hora o el cron.
-**Where**: /opt/dfl-context-proxy/main.py (líneas con `project="dfl"` en `_handle_go`, `_engram_search` calls), /opt/dfl-context-proxy/push_mirror.sh (dedup hash — funciona correctamente, no es el bug).
-**Learned**: Esto es un problema de scope/convención, no de código roto — dos opciones no mutuamente excluyentes: (a) `/go` agrega múltiples proyectos (`dfl` + `futbolweb-app`, o vía `all_projects`); (b) convención explícita de qué observaciones son "DFL-global" (deben guardarse con `project="dfl"` explícito) vs "repo-local" (quedan en su proyecto auto-detectado y no se espera que aparezcan en `/go`). Pendiente de decisión de Jorge — no se tocó main.py en esta sesión.
+**What**: `main.py` hardcodeaba `project="dfl"` en las 3 queries que arman `/go`.
+
+LIFECYCLE: resolved
+
+**Fix implementado 2026-07-04** (commit af48db6, repo DFLghub/dfl-context-proxy): se removió el filtro de project por default en `_engram_search`/`_fetch_observations` — Engram devuelve cross-project cuando se omite el parámetro, así que el "descubrimiento dinámico" pedido por Jorge no requirió tocar la API de Engram ni mantener una lista en config.env. Se agregó `PER_PROJECT_CAP=2` (constante en main.py) en las 4 secciones que categorizan observaciones (decisions, constraints, pending, recent_engram_dfl) para que un proyecto activo no desplace a los demás dentro de los topes globales existentes (6/5/-/5). Se corrigió además un bug latente en `_engram_recent_dfl`: retornaba apenas el term-match del grafo KNL llenaba la cuota, sin nunca invocar el fallback de recencia pura — ahora reserva 2 slots garantizados para eso. `publish-amos-context.sh` gana una sección `RECENT ACTIVITY (cross-project)` para que `recent_engram_dfl` (que antes solo vivía en el JSON) llegue al mirror público, más labels `Project:` en decisions/constraints/pending.
+**Verificación empírica** (criterio de aceptación del HLC): mirror público post-push contiene "backup off-host", "VM3", "receiver", "92b6857" — confirmado con curl directo contra raw.githubusercontent.com (Generated 2026-07-04T15:20:14Z).
+**Where**: /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/publish-amos-context.sh — commit af48db6, pusheado a DFLghub/dfl-context-proxy.
 
 ### Backup off-host Engram→VM3 verificado operativo (primeras corridas)
 **Type:** discovery  
@@ -357,4 +360,4 @@ FutbolWeb / Oráculo Futbolero: producto operativo en producción durante Mundia
 
 ---
 
-*Mirror auto-generated 2026-07-04T15:20:14Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-04T15:21:47Z | La Garra → DFLghub/amos-context*
