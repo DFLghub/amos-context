@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-04T15:18:21Z  
+**Generated:** 2026-07-04T15:20:14Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -51,6 +51,7 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ### [DECISION:DFL] Onboarding @$go es solo lectura — cero mutaciones de estado
 **Type:** decision  
+**Project:** futbolweb-app  
 
 **What**: El bootstrap `@$go` (o cualquier onboarding de un agente nuevo entrando a una sesión DFL) es SOLO LECTURA. Prohibido archivar, resolver, marcar [RESOLVED] o mutar el estado de cualquier observación de Engram durante el bootstrap — solo reportar lo encontrado a Jorge y esperar indicación explícita antes de escribir.
 **Why**: Corrección de Jorge 2026-07-04 — en un bootstrap @$go anterior, el agente EJECUTOR marcó la obs #156 (payload /go no refleja obs nuevas entre corridas de cron) como [RESOLVED] confundiéndola con un bug distinto ya cerrado (línea 34 de push_mirror.sh, que solo corrige el REPORTE de la línea MIRROR, no el contenido del payload). El archivado prematuro sin evidencia suficiente casi oculta una anomalía real y viva.
@@ -58,6 +59,7 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ### [CIERRE] P0 FutbolWeb 2026-07-04 — archivado de las 3 premisas del HLC original [CORREGIDO: deploy sí ocurrió]
 **Type:** decision  
+**Project:** futbolweb-app  
 
 **What**: Cierre formal de las 3 premisas del HLC-P0-2026-07-04 (FutbolWeb, octavos/bracket), cada una con su estado real verificado esta sesión.
 
@@ -72,6 +74,7 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ### Fix: MIRROR verification bug — push_mirror.sh ahora emite commit real por stdout
 **Type:** decision  
+**Project:** dfl  
 
 **What**: Corregido un bug de reporte encontrado en producción: una sesión Codex, tras correr `push_mirror.sh` en `@$fin`, no pudo verificar el push por `curl raw.githubusercontent.com` (posible restricción de su sandbox bubblewrap) y usó `/go` como fallback para "confirmar" el timestamp — pero `/go` regenera `generated_at` en cada request, sin importar si algo se publicó de verdad. Reportó `22:11:22Z` como timestamp del mirror cuando el commit real era `22:09:02Z` (2min de diferencia, fuente equivocada).
 
@@ -87,6 +90,7 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ### ejecutor.md — nota de traducción de tool names (CC vs Codex)
 **Type:** decision  
+**Project:** dfl  
 
 **What**: Agregada nota de traducción en `agents/ejecutor.md` (repo amos-context): CC usa `mem_save`/`mem_search`/`mem_update`, Codex (vía `engram-mcp`) usa `save_memory`/`search_memory`/`update_memory`. Mismo Gate 4B, mismos pasos, distinto nombre de tool.
 
@@ -98,6 +102,7 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ### TDF-01 session close low_variance_probe Gate 4B complete
 **Type:** decision  
+**Project:** tdf-01  
 
 **Session close summary (`@$fin`)**
 
@@ -120,6 +125,7 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ### TDF-01 low_variance_probe pasa R4/R5 y supera VWAP baseline
 **Type:** decision  
+**Project:** tdf-01  
 
 **What**: Commit local `011bab1` (`feat(tdf-01): add low_variance_probe strategy — passes R4/R5; add 10d synthetic dataset`) agregó `data/sample/nq_10d_synthetic.csv` y la estrategia candidata `LowVarianceProbeStrategy` en `/opt/nq-factory`. La estrategia quedó disponible vía `--strategy low_variance_probe` y con test de validadores.
 
@@ -147,6 +153,7 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ### FutbolWeb — Motor Scoring Knockout (puntajeTigreKnockout) Protegido
 **Type:** fact  
+**Project:** dfl  
 
 OBS_ID: DFL-OBS-20260624-007
 TIPO: fact
@@ -179,12 +186,85 @@ PRÓXIMO AGENTE DEBE: NO modificar puntajeTigreKnockout sin PRP explícito y aut
 ## PENDING
 
 ### @go Protocol v1.0 — protocolo de arranque DFL
+**Project:** dfl  
 
 Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT, Gemini) arrancar con contexto completo DFL en un paso. Fuente A: amos-context.md en DFLghub/amos-context (commit edd5f51). Fuente B: GET https://context.deepfeelingslabs.com/go — devuelve JSON con identity, recent_decisions, active_constraints, pending, generated_at. Backend: dfl-context-proxy en 127.0.0.1:8091 consulta Engram local 127.0.0.1:7437 con queries: "decisiones activas estado", "restricciones prohibido no tocar", "pendientes criticos". Sin auth requerida en /go. @go v1.0 activo y verificado.
 
 ### Gate Engine v0 Caso 01: Gate 1 es el gate más débil (PRP-001 retroactivo)
+**Project:** dfl  
 
 Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21). Gate 2 (Execution Perimeter): PASS limpio — perímetro declarado con claridad inusual desde el diseño. Gate 4 (Closure Integrity): PASS — 859/859 harness, diff cero, pendientes explícitos. Gate 1 (Decision Resurrection): ESCALATE — el Candidate Vault NO fue consultado en ningún momento del PRP-001; TSL sirvió como validación de riesgo pero no como chequeo de decisiones archivadas. Hallazgo clave: el checklist necesita una tercera categoría de respuesta (NOT_VERIFIABLE / PARTIAL) además de SÍ/NO — se improvisó durante la evaluación. Gate 4 es el más automatizable (diff/harness son verificables mecánicamente). Gate 1 requiere lectura semántica humana (distinguir 'consulta a TSL' de 'consulta al Candidate Vault'). Conclusión operacional: antes de ejecutar cualquier PRP, consultar 04_Candidate_Vault/ activamente — no solo a agentes. Este hallazgo viene de Gate_Engine_Caso01_PRP001.md en audited_pass/.
+
+---
+
+## RECENT ACTIVITY (cross-project)
+
+### Session summary: futbolweb-app
+**Type:** session_summary  
+**Project:** futbolweb-app  
+
+## Cierre DFL/KNL/FutbolWeb — 2026-06-27
+
+### Goal
+Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar FutbolWeb limpio de dirty files y factory artifacts.
+
+### Accomplished
+- Engram #101: payload /go slim — graph_context eliminado, knl canónico único en payload
+- cc-atgo-hook.sh: header @go → @$go corregido
+- dfl-nav fmt_brief: mensaje no-match → "sin god_node — intenta la raíz del concepto"
+- FutbolWeb repo limpio: Blueprint audit movido a /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Auditorias/, graphify-out/ eliminado, .gitignore actualizado, commit 3fd5801
+- Engram #102: higiene FutbolWeb documentada
+- Bitácora creada: /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+
+### Discoveries
+- graph_context era alias redundante del payload /go — eliminado sin romper consumidores
+- agProtocol_ATP-D_ROJA_v0.1-1: 3 archivos con MD5 idéntico en corpus (duplicados de indexación)
+- "estado" como nombre de god_node produce colisión léxica en español con el grafo
+- Blueprint_v0.6 audit era inconclusa (Blueprint no disponible en VM2) — conservada en Auditorias/
+
+### Next Steps
+1. FutbolWeb producto — runtime estable, knockout scoring deployado (91a4531)
+2. KNL próximo ciclo — nota stale graph_context en knl_builder.py, health test local, evaluar renombrar estado → context-proxy
+3. MERCADER — agregar a KNL si se activa como área de trabajo
+4. Corpus — eliminar agProtocol duplicados (-1 variants)
+
+### Relevant Files
+/opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+
+### Stack FutbolWeb — runtime activo
+**Type:** fact  
+**Project:** futbolweb-app  
+
+FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
+
+### [RESOLVED] FutbolWeb — estado y stack snapshot 2026-06-24 (superado)
+**Type:** fact  
+**Project:** dfl  
+
+SNAPSHOT ARCHIVADO — corte 2026-06-24. Los pendientes críticos listados aquí fueron resueltos en sesiones posteriores (commit ce766fd amnesia fix 2026-06-28, commit 4a9112e Supabase grant 2026-07-02, KnockoutEngine wiring 2026-06-27). Este snapshot no refleja el estado actual.
+
+Para estado actual de FutbolWeb consultar observaciones recientes o git log /opt/futbolweb.
+
+--- SNAPSHOT ORIGINAL (2026-06-24) ---
+FutbolWeb / Oráculo Futbolero: producto operativo en producción durante Mundial 2026. Stack: Next.js + Supabase + Vercel (hobby). Repo: github.com/DFLghub/futbolweb-app. Código en /opt/futbolweb en La Garra. Pendientes críticos al 2026-06-24: (1) wiring DB layer KnockoutEngine — RESUELTO 2026-06-27; (2) sensibilidad mayúsculas realAdvancingTeam — RESUELTO 2026-06-27; (3) confirmar deploy commit 50316e3 — RESUELTO; (4) diagnosticar webhook GitHub-Vercel — pendiente verificación.
+
+### [DECISION:DFL] Causa raíz #156 — /go hardcodea project=dfl, ciego a futbolweb-app
+**Type:** discovery  
+**Project:** futbolweb-app  
+
+**What**: `/opt/dfl-context-proxy/main.py` hardcodea `project="dfl"` en las 3 queries que arman el payload `/go`: `_fetch_observations(project="dfl", ...)` (dentro de `_handle_go`), `pending_search = self._engram_search("pendientes", project="dfl", ...)`, y `_engram_recent_dfl` (vía `_graph_context_search_terms` + `_engram_search(term, project="dfl", ...)`). Engram auto-detecta el proyecto de una obs por el git remote del cwd de la sesión que llama a `mem_save` — sesiones operando en `/opt/futbolweb` quedan bajo proyecto `futbolweb-app`, no `dfl`.
+**Why**: Root cause de obs #156 (payload /go no reflejaba obs #147-154 de la noche del 2026-07-03/04). Verificado con `mem_search(query="P0 FutbolWeb backup Graphify auditoría", all_projects=true)`: todo ese trabajo vive en project=futbolweb-app. `push_mirror.sh` hashea el payload `/go` (con generated_at stripped) y compara contra `.last-mirror-hash` — el hash se mantiene idéntico corrida tras corrida NO porque el diff-guard esté roto, sino porque el payload fuente (`/go`) es ciego al proyecto `futbolweb-app` por diseño (hardcode), así que su contenido nunca cambia por trabajo guardado ahí, sin importar la hora o el cron.
+**Where**: /opt/dfl-context-proxy/main.py (líneas con `project="dfl"` en `_handle_go`, `_engram_search` calls), /opt/dfl-context-proxy/push_mirror.sh (dedup hash — funciona correctamente, no es el bug).
+**Learned**: Esto es un problema de scope/convención, no de código roto — dos opciones no mutuamente excluyentes: (a) `/go` agrega múltiples proyectos (`dfl` + `futbolweb-app`, o vía `all_projects`); (b) convención explícita de qué observaciones son "DFL-global" (deben guardarse con `project="dfl"` explícito) vs "repo-local" (quedan en su proyecto auto-detectado y no se espera que aparezcan en `/go`). Pendiente de decisión de Jorge — no se tocó main.py en esta sesión.
+
+### Backup off-host Engram→VM3 verificado operativo (primeras corridas)
+**Type:** discovery  
+**Project:** futbolweb-app  
+
+**What**: Verificado el cron `engram-backup-offhost.sh` (cada 6h, :17) hacia VM3 (root@137.184.207.239, mismo host que alias ssh "vault"). Log local `/var/log/dfl-engram-backup.log` muestra 2 corridas OK hoy: 06:17:04Z y 12:17:03Z, ambas sobrescribiendo `daily/2026-07-04.db.gz` (703878 bytes) según el esquema de naming por fecha (no timestamp). Confirmado también vía `rsync --list-only` contra el receiver remoto (la key `id_ed25519_engram_backup` tiene forced command — `ls`/`ssh <cmd>` directo devuelve "dfl-backup-receiver: comando no permitido", pero `rsync --list-only` sí es aceptado por el forced command).
+**Why**: Tarea pendiente de sesión anterior — confirmar que el primer backup automático del cron llegó a VM3 (mitigación obs #150, fragilidad de tener primario+espejo Postgres en el mismo disco).
+**Where**: /opt/dfl-context-proxy/engram-backup-offhost.sh, crontab (línea `17 */6 * * *`), VM3:/data/dfl-backups/engram/daily/.
+**Learned**: la forced command en VM3 solo permite el flujo rsync de recepción, no comandos de shell arbitrarios — para verificación futura usar `rsync --list-only` contra el receiver, no `ssh ... "ls ..."`.
 
 ---
 
@@ -277,4 +357,4 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ---
 
-*Mirror auto-generated 2026-07-04T15:18:21Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-04T15:20:14Z | La Garra → DFLghub/amos-context*
