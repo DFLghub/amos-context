@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-05T05:36:57Z  
+**Generated:** 2026-07-05T18:37:14Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -190,6 +190,18 @@ Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21)
 
 ## RECENT ACTIVITY (cross-project)
 
+### AgMaster_amOS_3 — vocabulario y reglas IAIM
+**Type:** fact  
+**Project:** dfl  
+
+AgMaster_amOS_3 es el documento maestro v3 del ecosistema (USAR ESTA, versiones 1 y 2 obsoletas). Vocabulario mínimo para IA invitada: amOS=sistema operativo conceptual/metodológico para absorber/metabolizar información manteniendo soberanía; IAIM=Invisible Augmented Intelligence Mesh, red invisible de IAs aliadas sin nodos fijos, orquestada por HI; HI=Jorge, decisión final soberana; ag10=ChatGPT como router/integrador/destilador/última yarda (no oráculo ni jefe); agPregunta=pregunta aumentada con propósito/dominio/límite/criterio; agLego=pieza conceptual candidata modular trazable; Candado Soberano=restricciones no negociables: no-exec, candidate_only, human-review-first. Prefijo 'ag'=augmented+governed+generative-but-contained. AG10-AUSTERITY-LOCK para fases de cierre/patch/gate. Origin Chain obligatorio para todo agLego. Frase núcleo v3: 'La red ilumina. La HI orquesta. ag10 destila. El candado audita. amOS asimila la cicatriz, no la herida.' Paralelo permitido: máximo 2 nodos, candidate_only, revisión HI.
+
+### MERCADER — contexto operativo completo y restricciones duras
+**Type:** fact  
+**Project:** dfl  
+
+MERCADER BOS v0.1 (2026-05-20): motor económico digital. Jerarquía: amOS/IAIM→Apps Factory→MERCADER→MERCADER BOS. Objetivo inmediato: cerrar circuito económico mínimo (lead capture→Gmail→registro→seguimiento→venta→aprendizaje). Las 5 capas BOS: (1)Contexto — qué es, qué vende, a quién, límites éticos; (2)Datos — 11 campos: nombre/email/tel/ciudad/fuente/producto/urgencia/presupuesto/estado/próx.acción/resultado; (3)Inteligencia — síntesis diaria: leads calientes, objeciones, canales; (4)Automatización — permitida: capturar/notificar/registrar/recordar; PROHIBIDA: cobrar sin revisión, inventar precios/inventario, hacerse pasar por Jorge; (5)Build — landing+formulario+Gmail+Sheets/Postgres+dashboard leads. Restricciones duras: sin empleados; sin storage propio; sin capital inicial fuerte; bajo costo operativo; humano en el cierre sensible; NO mezclar MERCADER con Bazaar ni con videos bioarmónicos. Modelo comercial: broker/coordinador/conector liviano. Score de oportunidad: Dolor+Urgencia+Capacidad+Claridad+Fit (máx 50). Morning Briefing + Evening Reflection operativos. Primer agLego: agLego-MERCADER-LEAD-CAPTURE-v0.1.
+
 ### Session summary: futbolweb-app
 **Type:** session_summary  
 **Project:** futbolweb-app  
@@ -222,34 +234,25 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Stack FutbolWeb — runtime activo
-**Type:** fact  
-**Project:** futbolweb-app  
-
-FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
-
-### [RESOLVED] FutbolWeb — estado y stack snapshot 2026-06-24 (superado)
+### IAIM Graphify Fase 1 — graph.json regenerado con agTopologo v0.3
 **Type:** fact  
 **Project:** dfl  
 
-SNAPSHOT ARCHIVADO — corte 2026-06-24. Los pendientes críticos listados aquí fueron resueltos en sesiones posteriores (commit ce766fd amnesia fix 2026-06-28, commit 4a9112e Supabase grant 2026-07-02, KnockoutEngine wiring 2026-06-27). Este snapshot no refleja el estado actual.
+What: En /opt/dfl-knowledge se ejecutó Paso 3A-3C autorizado por Jorge. graphify-out/graph.json v0.1 fue movido a graphify-out/graph.json.v0.1.bak y se regeneró graphify-out/graph.json con scripts/ag_topologo.py usando --full --llm --source /opt/dfl-knowledge --out /opt/dfl-knowledge/graphify-out.
 
-Para estado actual de FutbolWeb consultar observaciones recientes o git log /opt/futbolweb.
+Evidence:
+- Backup previo: graph.json v0.1, schema agTopologo-DFL-v0.1, 3261 nodes, tamaño 2.9M, timestamp Jul 5 04:05.
+- Nuevo grafo: schema agTopologo-DFL-v0.3, 140 nodes, tamaño 255K, generado Jul 5 18:28.
+- ag_topologo output: [OK] graph.json: 140 nodos semánticos desde 1206 nodos estructurales; [OK] graph_context.json: capas semantic y str escritas sin mezcla.
+- Warnings no fatales durante extracción PDF: Could not get FontBBox from font descriptor because None cannot be parsed as 4 floats.
 
---- SNAPSHOT ORIGINAL (2026-06-24) ---
-FutbolWeb / Oráculo Futbolero: producto operativo en producción durante Mundial 2026. Stack: Next.js + Supabase + Vercel (hobby). Repo: github.com/DFLghub/futbolweb-app. Código en /opt/futbolweb en La Garra. Pendientes críticos al 2026-06-24: (1) wiring DB layer KnockoutEngine — RESUELTO 2026-06-27; (2) sensibilidad mayúsculas realAdvancingTeam — RESUELTO 2026-06-27; (3) confirmar deploy commit 50316e3 — RESUELTO; (4) diagnosticar webhook GitHub-Vercel — pendiente verificación.
+Caveat: graphify-out/.last_full_regen NO se actualizó durante esta ejecución; stat Modify siguió en 2026-06-26 23:26:49 +0000. El metadata.last_regen del nuevo graph.json imprimió None. Esto contradice el comentario operativo del paso que esperaba timestamp actualizado.
 
 ### CIERRE FutbolWeb P0 post-fix 2026-07-05 — knockout ESPN sync verificado hasta monitoreo 91 pre-kickoff
 **Type:** decision  
 **Project:** futbolweb-app  
 
 Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió IDs de eventos para knockout posterior y los fixtures locales 89+ usan placeholders sin team codes; el matcher anterior dependía de fifaId o fecha+teamCode fijo, por eso no importó 89/90, no creó match_results, no corrió scoring, ranking no sumó y bracket 97 seguía con W89/W90. Fix commit b1b6d60 en futbolweb-app: matcher ESPN aplica bracket assignments con match_results previos y resuelve nombres/equipos antes de fallback por fecha/equipos; sync route carga existingResults antes de leer ESPN. Datos prod actualizados: 89 Paraguay 0-1 Francia y 90 Canada 0-3 Marruecos; scoring knockout ejecutado; prediction_scores 89=2 rows, 90=1 row; ranking Edgar Alberto P80 = 137.5; /api/tournament-reality muestra 97 Francia vs Marruecos; propagation pending []. Verificación post-fix para partido 91: al momento del monitoreo era pre-kickoff (generatedAt 2026-07-05T05:35Z, kickoff 2026-07-05T20:00Z); ESPN aún no incluye 91; match_results/scores 91 vacíos correcto; accepted predictions 91 existen para Alejo y Edgar Alberto. Próximo punto de monitoreo: después de FT de Brasil vs Noruega, confirmar ESPN import -> match_results 91 -> 2 scores -> ranking -> W91 en partido 99.
-
-### FutbolWeb knockout incident 2026-07-05: ESPN placeholder sync + 89/90 backfill
-**Type:** bugfix  
-**Project:** futbolweb-app  
-
-Incident: users reported knockout score hits not adding points, and /upcoming showed quarterfinal placeholders W89/W90 after real teams were known. Root cause found in lib/espn-world-cup.ts: ESPN events for later knockout rounds can use provider IDs that do not match stored fifaId values, and those fixtures have homeTeamCode/awayTeamCode null because they are placeholders. The fallback matcher only compared event date plus fixed team codes, so matches 89/90 (Paraguay-France and Canada-Morocco) were not imported. Because match_results rows were missing, scoring propagation never ran and bracket assignment had no W89/W90 winners. Fix commit b1b6d60: ESPN sync now accepts known match_results, applies knockout bracket assignments before fallback matching, resolves assigned team names to team codes, and sync route loads existing results before fetching ESPN. Tests: focused vitest, lint, build passed. Production data backfilled for mundial-2026-partido-089 (Paraguay 0-1 Francia) and 090 (Canada 0-3 Marruecos), then run_scoring_for_match_knockout executed. Result: prediction_scores inserted for 89/90 and ranking updated; /api/tournament-reality shows match 97 as Francia vs Marruecos.
 
 ---
 
@@ -331,15 +334,15 @@ Incident: users reported knockout score hits not adding points, and /upcoming sh
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 3.101  
+**Graph entropy:** 1.3944  
 
-- **Community 11** (657 nodes): Codex, CLI, DFL Engram Writing Convention v0.3
-- **Community 0** (465 nodes): Gobernanza, CANDIDATE VAULT, Jorge
-- **Community 1** (452 nodes): patrón, Declarar, Crear
-- **Community 2** (442 nodes): amOS, DFL, SaaS Factory
-- **Community 3** (267 nodes): CO-001, OpenAI, MCP
-- **Community 4** (231 nodes): ROJA, API, Ejemplo
+- **Community 11** (75 nodes): Matriz de Contención Operacional, Activo, Contextual Flow
+- **Community 0** (10 nodes): agLego-PTE-001, agLego, ag
+- **Community 1** (8 nodes): MERCADER BOS, Regla semántica del prefijo AG, Asset Index
+- **Community 3** (7 nodes): NBLM2, FutbolWeb, La Fábrica CF
+- **Community 2** (7 nodes): amOS, IAIM, @$go
+- **Community 4** (7 nodes): Fase 0 — Fundación, Leads
 
 ---
 
-*Mirror auto-generated 2026-07-05T05:36:57Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-05T18:37:14Z | La Garra → DFLghub/amos-context*
