@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-05T03:05:01Z  
+**Generated:** 2026-07-05T05:36:57Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -49,6 +49,12 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ## RECENT DECISIONS
 
+### CIERRE FutbolWeb P0 post-fix 2026-07-05 — knockout ESPN sync verificado hasta monitoreo 91 pre-kickoff
+**Type:** decision  
+**Project:** futbolweb-app  
+
+Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió IDs de eventos para knockout posterior y los fixtures locales 89+ usan placeholders sin team codes; el matcher anterior dependía de fifaId o fecha+teamCode fijo, por eso no importó 89/90, no creó match_results, no corrió scoring, ranking no sumó y bracket 97 seguía con W89/W90. Fix commit b1b6d60 en futbolweb-app: matcher ESPN aplica bracket assignments con match_results previos y resuelve nombres/equipos antes de fallback por fecha/equipos; sync route carga existingResults antes de leer ESPN. Datos prod actualizados: 89 Paraguay 0-1 Francia y 90 Canada 0-3 Marruecos; scoring knockout ejecutado; prediction_scores 89=2 rows, 90=1 row; ranking Edgar Alberto P80 = 137.5; /api/tournament-reality muestra 97 Francia vs Marruecos; propagation pending []. Verificación post-fix para partido 91: al momento del monitoreo era pre-kickoff (generatedAt 2026-07-05T05:35Z, kickoff 2026-07-05T20:00Z); ESPN aún no incluye 91; match_results/scores 91 vacíos correcto; accepted predictions 91 existen para Alejo y Edgar Alberto. Próximo punto de monitoreo: después de FT de Brasil vs Noruega, confirmar ESPN import -> match_results 91 -> 2 scores -> ranking -> W91 en partido 99.
+
 ### [DECISION:DFL] Onboarding @$go es solo lectura — cero mutaciones de estado
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -56,21 +62,6 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 **What**: El bootstrap `@$go` (o cualquier onboarding de un agente nuevo entrando a una sesión DFL) es SOLO LECTURA. Prohibido archivar, resolver, marcar [RESOLVED] o mutar el estado de cualquier observación de Engram durante el bootstrap — solo reportar lo encontrado a Jorge y esperar indicación explícita antes de escribir.
 **Why**: Corrección de Jorge 2026-07-04 — en un bootstrap @$go anterior, el agente EJECUTOR marcó la obs #156 (payload /go no refleja obs nuevas entre corridas de cron) como [RESOLVED] confundiéndola con un bug distinto ya cerrado (línea 34 de push_mirror.sh, que solo corrige el REPORTE de la línea MIRROR, no el contenido del payload). El archivado prematuro sin evidencia suficiente casi oculta una anomalía real y viva.
 **Learned**: Gate 4B incremental (mem_save durante la sesión al cerrar commits/decisiones/blockers) sigue vigente para trabajo activo — esta regla aplica específicamente a la ventana de bootstrap/onboarding, antes de que Jorge haya dado indicación de qué trabajar. Ver también [[ejecutor-annex-update-pending]] — esta regla debe incorporarse al anexo `agents/ejecutor.md` (pendiente, no ejecutado en esta sesión).
-
-### [CIERRE] P0 FutbolWeb 2026-07-04 — archivado de las 3 premisas del HLC original [CORREGIDO: deploy sí ocurrió]
-**Type:** decision  
-**Project:** futbolweb-app  
-
-**What**: Cierre formal de las 3 premisas del HLC-P0-2026-07-04 (FutbolWeb, octavos/bracket), cada una con su estado real verificado esta sesión.
-
-1. **"node_modules roto en /opt/futbolweb, bloquea npm test"** → [RESOLVED — la premisa era falsa]. Verificado: `npm run build` y `npm test` corren limpios (67/67, harness puntajeTigreKnockout >850 casos ok). Ver obs #147.
-
-2. **"Falta propagación automática de bracket para todas las rondas"** → [RESOLVED — la premisa era falsa]. La función `applyKnockoutBracketAssignments` (lib/knockout-reality.ts) ya cubre genéricamente 73→104 desde commit c4c6111 (preexistente). El bug real era más angosto: app/upcoming/page.tsx nunca la invocaba. Fix commiteado y pusheado a origin/main (92b6857). Ver obs #147/#148.
-
-3. **"Webhook GitHub→Vercel roto, producción congelada en 4a9112e"** → [CORREGIDO 2026-07-04 noche, tras cierre inicial erróneo]. El push de 92b6857 SÍ disparó deploy automático a producción — verificado por Jorge en Vercel dashboard (badge Production/Ready) y por mí en vivo (`curl https://www.futbolweb.app/upcoming` muestra Paraguay/Francia/Canadá/Marruecos en los partidos de Octavos, igual que en la verificación local). El webhook funcionó empíricamente esta noche. Estado correcto: **producción al día**. Lo que NO quedó investigado es la causa raíz histórica del congelamiento previo (por qué estuvo detenido en 4a9112e desde el 28-jun hasta ahora) — eso sigue sin diagnóstico, no el webhook en sí.
-
-**Resultado neto para el próximo agente**: código arreglado, pusheado, Y desplegado — producción refleja el fix. Misión P0 FutbolWeb: completa en su objetivo funcional (octavos con equipos reales en prod). Pendiente real remanente: ninguno funcional; opcionalmente investigar causa raíz histórica del freeze si se quiere prevenir recurrencia.
-**Where**: app/upcoming/page.tsx (commit 92b6857), obs #147, #148, #149.
 
 ### Fix: MIRROR verification bug — push_mirror.sh ahora emite commit real por stdout
 **Type:** decision  
@@ -248,50 +239,17 @@ Para estado actual de FutbolWeb consultar observaciones recientes o git log /opt
 --- SNAPSHOT ORIGINAL (2026-06-24) ---
 FutbolWeb / Oráculo Futbolero: producto operativo en producción durante Mundial 2026. Stack: Next.js + Supabase + Vercel (hobby). Repo: github.com/DFLghub/futbolweb-app. Código en /opt/futbolweb en La Garra. Pendientes críticos al 2026-06-24: (1) wiring DB layer KnockoutEngine — RESUELTO 2026-06-27; (2) sensibilidad mayúsculas realAdvancingTeam — RESUELTO 2026-06-27; (3) confirmar deploy commit 50316e3 — RESUELTO; (4) diagnosticar webhook GitHub-Vercel — pendiente verificación.
 
-### Session summary: futbolweb-app
-**Type:** session_summary  
+### CIERRE FutbolWeb P0 post-fix 2026-07-05 — knockout ESPN sync verificado hasta monitoreo 91 pre-kickoff
+**Type:** decision  
 **Project:** futbolweb-app  
 
-## Goal
-Ejecutar HLC "Fix /go multi-proyecto" (P1) para resolver obs #156/#159: el payload `/go` (y el mirror público amos-context.md) debía reflejar actividad de TODOS los proyectos DFL, no solo project="dfl".
+Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió IDs de eventos para knockout posterior y los fixtures locales 89+ usan placeholders sin team codes; el matcher anterior dependía de fifaId o fecha+teamCode fijo, por eso no importó 89/90, no creó match_results, no corrió scoring, ranking no sumó y bracket 97 seguía con W89/W90. Fix commit b1b6d60 en futbolweb-app: matcher ESPN aplica bracket assignments con match_results previos y resuelve nombres/equipos antes de fallback por fecha/equipos; sync route carga existingResults antes de leer ESPN. Datos prod actualizados: 89 Paraguay 0-1 Francia y 90 Canada 0-3 Marruecos; scoring knockout ejecutado; prediction_scores 89=2 rows, 90=1 row; ranking Edgar Alberto P80 = 137.5; /api/tournament-reality muestra 97 Francia vs Marruecos; propagation pending []. Verificación post-fix para partido 91: al momento del monitoreo era pre-kickoff (generatedAt 2026-07-05T05:35Z, kickoff 2026-07-05T20:00Z); ESPN aún no incluye 91; match_results/scores 91 vacíos correcto; accepted predictions 91 existen para Alejo y Edgar Alberto. Próximo punto de monitoreo: después de FT de Brasil vs Noruega, confirmar ESPN import -> match_results 91 -> 2 scores -> ranking -> W91 en partido 99.
 
-## Discoveries
-- Causa raíz confirmada: `main.py` hardcodeaba `project="dfl"` en las 3 queries de `/go`; Engram auto-detecta proyecto por git remote del cwd, así que trabajo hecho desde /opt/futbolweb (project=futbolweb-app) era estructuralmente invisible para /go.
-- Bug secundario en `_engram_recent_dfl`: el term-match del grafo KNL podía llenar toda la cuota sin nunca invocar el fallback de recencia pura — por eso actividad reciente no relacionada a ningún nodo del grafo (ej. trabajo de infra como backup off-host) tampoco aparecía.
-- `publish-amos-context.sh` nunca renderizaba el campo `recent_engram_dfl` del JSON al markdown público — existía en /go pero no llegaba al mirror.
-- Engram soporta descubrimiento dinámico de proyectos gratis: omitir el parámetro `project` en `/observations` y `/search` devuelve resultados cross-project con el campo `project` en cada obs — no hizo falta `/projects` endpoint ni lista ACTIVE_PROJECTS en config.env.
-
-## Accomplished
-- main.py: quitado el hardcode de project="dfl", agregado PER_PROJECT_CAP=2 en decisions/constraints/pending/recent_engram_dfl, arreglado el reserved-slots de recencia en _engram_recent_dfl.
-- publish-amos-context.sh: nueva sección "RECENT ACTIVITY (cross-project)" + labels "Project:" en decisions/constraints/pending.
-- Probado local (/go incluye futbolweb-app+dfl+tdf-01) y en el mirror público (contiene backup off-host/VM3/receiver/92b6857 — criterio de aceptación del HLC cumplido).
-- Commit af48db6 pusheado a DFLghub/dfl-context-proxy.
-- obs #156 y #159 marcadas [RESOLVED] con evidencia.
-- Corregida una memoria previa mal cerrada (#156 había sido marcada [RESOLVED] por error en el bootstrap de esta misma sesión, confundiendo el bug del reporte MIRROR con el bug del contenido del payload — Jorge la reabrió con evidencia).
-- Nueva regla guardada: onboarding @$go es solo lectura, cero mutaciones de estado (obs #157).
-- Tareas de infra completadas: push de DFLghub/dfl-context-proxy y DFLghub/dfl-knowledge (repos vacíos → con su primer push), verificación del backup off-host Engram→VM3 (cron cada 6h, corridas OK confirmadas vía rsync --list-only contra el receiver con forced-command).
-
-## Next Steps
-- Ninguno bloqueante. push_mirror.sh reportó `MIRROR: updated | commit bbd90d66d75abcd612bfb325e7d5a9f47f1c9282 | 2026-07-04 15:21:47 +0000` como cierre de este HLC.
-- El ORQUESTADOR va a verificar el mirror por fetch propio (pendiente de que Jorge confirme).
-
-## Relevant Files
-- /opt/dfl-context-proxy/main.py
-- /opt/dfl-context-proxy/publish-amos-context.sh
-- /opt/dfl-context-proxy/push_mirror.sh (no tocado)
-- /opt/dfl-context-proxy/config.env (no tocado)
-
-### [RESOLVED] Causa raíz #156 — /go hardcodeaba project=dfl, ciego a futbolweb-app
-**Type:** discovery  
+### FutbolWeb knockout incident 2026-07-05: ESPN placeholder sync + 89/90 backfill
+**Type:** bugfix  
 **Project:** futbolweb-app  
 
-**What**: `main.py` hardcodeaba `project="dfl"` en las 3 queries que arman `/go`.
-
-LIFECYCLE: resolved
-
-**Fix implementado 2026-07-04** (commit af48db6, repo DFLghub/dfl-context-proxy): se removió el filtro de project por default en `_engram_search`/`_fetch_observations` — Engram devuelve cross-project cuando se omite el parámetro, así que el "descubrimiento dinámico" pedido por Jorge no requirió tocar la API de Engram ni mantener una lista en config.env. Se agregó `PER_PROJECT_CAP=2` (constante en main.py) en las 4 secciones que categorizan observaciones (decisions, constraints, pending, recent_engram_dfl) para que un proyecto activo no desplace a los demás dentro de los topes globales existentes (6/5/-/5). Se corrigió además un bug latente en `_engram_recent_dfl`: retornaba apenas el term-match del grafo KNL llenaba la cuota, sin nunca invocar el fallback de recencia pura — ahora reserva 2 slots garantizados para eso. `publish-amos-context.sh` gana una sección `RECENT ACTIVITY (cross-project)` para que `recent_engram_dfl` (que antes solo vivía en el JSON) llegue al mirror público, más labels `Project:` en decisions/constraints/pending.
-**Verificación empírica** (criterio de aceptación del HLC): mirror público post-push contiene "backup off-host", "VM3", "receiver", "92b6857" — confirmado con curl directo contra raw.githubusercontent.com (Generated 2026-07-04T15:20:14Z).
-**Where**: /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/publish-amos-context.sh — commit af48db6, pusheado a DFLghub/dfl-context-proxy.
+Incident: users reported knockout score hits not adding points, and /upcoming showed quarterfinal placeholders W89/W90 after real teams were known. Root cause found in lib/espn-world-cup.ts: ESPN events for later knockout rounds can use provider IDs that do not match stored fifaId values, and those fixtures have homeTeamCode/awayTeamCode null because they are placeholders. The fallback matcher only compared event date plus fixed team codes, so matches 89/90 (Paraguay-France and Canada-Morocco) were not imported. Because match_results rows were missing, scoring propagation never ran and bracket assignment had no W89/W90 winners. Fix commit b1b6d60: ESPN sync now accepts known match_results, applies knockout bracket assignments before fallback matching, resolves assigned team names to team codes, and sync route loads existing results before fetching ESPN. Tests: focused vitest, lint, build passed. Production data backfilled for mundial-2026-partido-089 (Paraguay 0-1 Francia) and 090 (Canada 0-3 Marruecos), then run_scoring_for_match_knockout executed. Result: prediction_scores inserted for 89/90 and ranking updated; /api/tournament-reality shows match 97 as Francia vs Marruecos.
 
 ---
 
@@ -384,4 +342,4 @@ LIFECYCLE: resolved
 
 ---
 
-*Mirror auto-generated 2026-07-05T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-05T05:36:57Z | La Garra → DFLghub/amos-context*
