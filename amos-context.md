@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-05T18:37:14Z  
+**Generated:** 2026-07-07T01:42:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -49,19 +49,43 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ## RECENT DECISIONS
 
+**Type:** decision  
+**Project:** 360eventos  
+
+**Qué**: QA online del agMVP 360Eventos completado. URL pública validada: `https://360eventos.vercel.app` (encontrada manualmente por Jorge, proyecto Vercel `360eventos`). Documento: `/opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_ONLINE_DEMO_QA.md` (commit 1a0fe6a).
+
+**Resultado**: `/`, `/cotizar`, `/login` responden 200. `/cotizar` confirmado usando Nivel 0A (catálogo real Supabase, 8 servicios) — coincide exacto con la query directa hecha en la misión anterior: Producción general del evento, Decoración temática, Sonido profesional, Iluminación arquitectónica, Fotografía profesional, Video y transmisión en vivo, Transporte y montaje de equipos, Maestro de ceremonias. Formulario de cotización bien wireado a `submitCotizacion` (server action → insert en `solicitudes`), no se completó envío real para no escribir en DB de producción. Viewport responsive presente en las 3 páginas; home con 14 clases responsive Tailwind, cotizar con solo 2 (más simple pero funcional). Sin errores críticos visibles. No se aplicó ningún fix — no fue necesario.
+
+**Limitaciones para Rubén**: es demo funcional no comercial (Nivel 0B pendiente), cualquier envío real de /cotizar genera fila real en `solicitudes` de producción (no hay modo sandbox), no se validó /dashboard ni login con credenciales reales, no se hizo validación visual real en dispositivo móvil (solo estructural).
+
+**No se tocó**: DB (solo lecturas HTTP públicas), FutbolWeb, secrets, migraciones, seed. Cambios preexistentes ajenos en graphify-out/ag_topologo.py siguen intactos.
+
+**Type:** decision  
+**Project:** 360eventos  
+
+**Qué**: Corregido `/opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_PRICE_AUTHORITY_AND_SERVICE_TIERS.md` (commit b09b6fe) por decisión de Jorge tras el hallazgo de Nivel 0 vivo. Nueva jerarquía: Nivel 0A = Supabase real vivo (8 servicios activos, confirmado), válido para demo/agMVP. Nivel 0B = catálogo comercial oficialmente aprobado — pendiente, no existe. Nivel 1 (`seed-servicios.js`) marcado histórico/prohibido para esta demo. Nivel 2 (`BUSINESS_LOGIC.md`/`migration-02-servicios.sql`) marcado documentación desactualizada frente a runtime real, no se edita. Nivel 3 (`demo-servicios.ts`, landing) sin cambios. Service Tier Model recalculado sobre Nivel 0A: el catálogo real NO tiene tiers (cada servicio es precio único) — el modelo básico/avanzado de la versión anterior venía del seed histórico, ya no aplica. Zero Case 001 sigue `conditional accepted`; bloqueo pasó de "no existe Nivel 0" a "falta Nivel 0B".
+
+**Deployment BLOQUEADO**: sin credenciales de Vercel disponibles en este entorno (VM2/La Garra). Evidencia: no existe `.vercel/` en el repo, no hay `vercel.json`, no hay `VERCEL_TOKEN`/`VERCEL_ORG_ID`/`VERCEL_PROJECT_ID` en ningún perfil de shell ni en el repo, `gh` CLI no está instalado (no se puede verificar integración GitHub→Vercel), y `NEXT_PUBLIC_SITE_URL` en `.env.local` sigue en `http://localhost:3000` (sin evidencia de dominio público configurado). `npx vercel whoami` colgó sin responder (sin sesión cacheada). No se puede confirmar si ya existe una URL pública, ni crear un deployment nuevo, sin que Jorge provea un token de Vercel o confirme la URL manualmente.
+
+**No se tocó**: DB (solo SELECT read-only), no se corrió seed, no se corrió migración, no se tocó FutbolWeb, no se expusieron secrets (solo se usó la anon key pública, ya expuesta por diseño como NEXT_PUBLIC_*).
+
+### Commits: graphify-out state + 360eventos env/scripts
+**Type:** decision  
+**Project:** futbolweb-app  
+
+**What**: Dos commits pusheados a pedido explícito de Jorge, siguiendo hallazgos de la auditoría de backup (drift sin commitear detectado).
+1. `dfl-knowledge` repo, commit af61702: "chore(graphify): post-regen state v0.3 stable" — 4 archivos (.last_full_regen, .summary_graph_hash, GRAPH_SUMMARY.md, ag_topologo_alert.json). Quedaron OTROS archivos modificados sin commitear (graph.json, graph.json.prev deleted, graph_comparator.json, graph_context.json, graph_context_light.json, knl.json, scripts/ag_topologo.py) — no se tocaron porque no estaban en el pedido explícito.
+2. `360eventos` repo, commit b8a3553: "chore: environment config + seed scripts" — next-env.d.ts + scripts/create-admin.js + scripts/seed-servicios.js (nuevos). Verificado antes de commitear que ambos scripts leen credenciales de `.env.local` en runtime, sin secrets hardcodeados.
+
+**Why**: Jorge pidió explícitamente estos commits tras ver el reporte de auditoría que identificó working trees sucios como gap de protección.
+
+**Where**: /opt/dfl-knowledge, /opt/360eventos
+
 ### CIERRE FutbolWeb P0 post-fix 2026-07-05 — knockout ESPN sync verificado hasta monitoreo 91 pre-kickoff
 **Type:** decision  
 **Project:** futbolweb-app  
 
 Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió IDs de eventos para knockout posterior y los fixtures locales 89+ usan placeholders sin team codes; el matcher anterior dependía de fifaId o fecha+teamCode fijo, por eso no importó 89/90, no creó match_results, no corrió scoring, ranking no sumó y bracket 97 seguía con W89/W90. Fix commit b1b6d60 en futbolweb-app: matcher ESPN aplica bracket assignments con match_results previos y resuelve nombres/equipos antes de fallback por fecha/equipos; sync route carga existingResults antes de leer ESPN. Datos prod actualizados: 89 Paraguay 0-1 Francia y 90 Canada 0-3 Marruecos; scoring knockout ejecutado; prediction_scores 89=2 rows, 90=1 row; ranking Edgar Alberto P80 = 137.5; /api/tournament-reality muestra 97 Francia vs Marruecos; propagation pending []. Verificación post-fix para partido 91: al momento del monitoreo era pre-kickoff (generatedAt 2026-07-05T05:35Z, kickoff 2026-07-05T20:00Z); ESPN aún no incluye 91; match_results/scores 91 vacíos correcto; accepted predictions 91 existen para Alejo y Edgar Alberto. Próximo punto de monitoreo: después de FT de Brasil vs Noruega, confirmar ESPN import -> match_results 91 -> 2 scores -> ranking -> W91 en partido 99.
-
-### [DECISION:DFL] Onboarding @$go es solo lectura — cero mutaciones de estado
-**Type:** decision  
-**Project:** futbolweb-app  
-
-**What**: El bootstrap `@$go` (o cualquier onboarding de un agente nuevo entrando a una sesión DFL) es SOLO LECTURA. Prohibido archivar, resolver, marcar [RESOLVED] o mutar el estado de cualquier observación de Engram durante el bootstrap — solo reportar lo encontrado a Jorge y esperar indicación explícita antes de escribir.
-**Why**: Corrección de Jorge 2026-07-04 — en un bootstrap @$go anterior, el agente EJECUTOR marcó la obs #156 (payload /go no refleja obs nuevas entre corridas de cron) como [RESOLVED] confundiéndola con un bug distinto ya cerrado (línea 34 de push_mirror.sh, que solo corrige el REPORTE de la línea MIRROR, no el contenido del payload). El archivado prematuro sin evidencia suficiente casi oculta una anomalía real y viva.
-**Learned**: Gate 4B incremental (mem_save durante la sesión al cerrar commits/decisiones/blockers) sigue vigente para trabajo activo — esta regla aplica específicamente a la ventana de bootstrap/onboarding, antes de que Jorge haya dado indicación de qué trabajar. Ver también [[ejecutor-annex-update-pending]] — esta regla debe incorporarse al anexo `agents/ejecutor.md` (pendiente, no ejecutado en esta sesión).
 
 ### Fix: MIRROR verification bug — push_mirror.sh ahora emite commit real por stdout
 **Type:** decision  
@@ -91,86 +115,9 @@ Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió 
 
 **Learned**: No todo lo que vive en el repo `amos-context` pasa por `push_mirror.sh` — los anexos `agents/*.md` son estáticos y se versionan con git normal; solo `amos-context.md` se regenera desde el payload `/go`.
 
-### TDF-01 session close low_variance_probe Gate 4B complete
-**Type:** decision  
-**Project:** tdf-01  
-
-**Session close summary (`@$fin`)**
-
-**Project**: `tdf-01` in `/opt/nq-factory`.
-
-**Done**:
-- Generated/kept `data/sample/nq_10d_synthetic.csv`: 3910 synthetic 1-min OHLCV bars across 10 operated days, no external data purchase/accounts/API keys.
-- Analyzed VWAP R5 failure: daily PnL `[-950.0, -1027.0, -447.0, -932.5, -445.0, -972.0, -686.0, -541.5, -966.0, -1072.0]`, mean `-803.90`, population std `235.16`, CV `0.2925`.
-- Implemented `LowVarianceProbeStrategy`, available as `--strategy low_variance_probe`.
-- Compared strategies on `nq_10d_synthetic.csv`: `low_variance_probe` passes R4a/R4b/R4c/R5 with `CV=0.1346291201783626`; VWAP fails R4c/R5.
-- Committed local repo: `011bab1 feat(tdf-01): add low_variance_probe strategy — passes R4/R5; add 10d synthetic dataset`.
-- Gate 4B saved obs 138 with ranking and metrics.
-- Marked obs 135 as superseded by obs 138 via relation `rel-d366de964a1c68ee` and archived obs 135 with `[RESOLVED]` / `LIFECYCLE: archived`.
-
-**Verification**:
-- `.venv/bin/python -B -m pytest -q -o cache_dir=/tmp/nq-factory-pytest-cache` -> `7 passed in 1.39s`.
-- `git status --short` clean after commit.
-
-**Open caveat**: `objective_win_rate` remains an optional/configurable objective, not a contract rule, per obs 130. No protected surfaces touched: puntajeTigreKnockout, Supabase, Vercel, secrets untouched.
-
-### TDF-01 low_variance_probe pasa R4/R5 y supera VWAP baseline
-**Type:** decision  
-**Project:** tdf-01  
-
-**What**: Commit local `011bab1` (`feat(tdf-01): add low_variance_probe strategy — passes R4/R5; add 10d synthetic dataset`) agregó `data/sample/nq_10d_synthetic.csv` y la estrategia candidata `LowVarianceProbeStrategy` en `/opt/nq-factory`. La estrategia quedó disponible vía `--strategy low_variance_probe` y con test de validadores.
-
-**Dataset**: `data/sample/nq_10d_synthetic.csv`, 3910 barras 1-min OHLCV sintéticas, 10 días hábiles (`2026-07-06 09:30:00` a `2026-07-17 16:00:00`). No se compraron datos, no se crearon cuentas, no se usaron API keys.
-
-**Hallazgo clave**: `low_variance_probe` es la primera candidata registrada que pasa el contrato Eduardo completo R4/R5 sobre el dataset sintético extendido: R4a PASS, R4b PASS, R4c PASS, R5 PASS con `CV=0.1346291201783626` (`operated_days=10`, límite `0.20`). Es una candidata de consistencia/baja varianza, no una afirmación de edge de mercado.
-
-**Comparación VWAP baseline**:
-- `vwap`: `trades=542`, `net_pnl=-8039.0`, `costs=7859.0`, R4a PASS (`-1072.0 >= -2000`), R4b PASS (`-1022.0 >= -2000`), R4c FAIL (`min_cushion=-3007.95`), R5 FAIL (`CV=0.2925258352542665 > 0.20`, `operated_days=10`), `objective_win_rate` FAIL (`0.2823 < 0.59`).
-- Distribución diaria VWAP: `[-950.0, -1027.0, -447.0, -932.5, -445.0, -972.0, -686.0, -541.5, -966.0, -1072.0]`; media diaria `-803.90`, std poblacional `235.16`, CV `0.2925`.
-
-**Comparación low_variance_probe**:
-- `low_variance_probe`: `trades=10`, `net_pnl=-200.0`, `costs=145.0`, R4a PASS (`-24.5 >= -2000`), R4b PASS (`-24.5 >= -2000`), R4c PASS (`min_cushion=4817.55`), R5 PASS (`CV=0.1346291201783626 <= 0.20`, `operated_days=10`), `objective_win_rate` FAIL (`0.0 < 0.59`).
-- Distribución diaria low_variance_probe: `[-19.5, -19.5, -24.5, -24.5, -19.5, -19.5, -19.5, -14.5, -19.5, -19.5]`.
-
-**Ranking Eduardo**: 1) `low_variance_probe` porque pasa R4 completo y R5; 2) `vwap` porque falla R4c y R5. `objective_win_rate` se mantiene como objetivo configurable/no canónico según obs 130, no como regla obligatoria del contrato Eduardo.
-
-**Evidence**: `.venv/bin/python -B -m pytest -q -o cache_dir=/tmp/nq-factory-pytest-cache` -> `7 passed in 1.39s`. Demos ejecutados con `nq_10d_synthetic.csv`: VWAP -> `validations_failed=R4c_trailing_hwm_floor,R5_consistency_cv,objective_win_rate`; low_variance_probe -> `validations_failed=objective_win_rate`.
-
-**Supersedes**: Esta observación supera operativamente obs 135 en ranking de estrategias: obs 135 dejó la base VWAP/validadores implementada; esta observación identifica la primera candidata que pasa R4/R5 completo.
-
 ---
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
-
-### FutbolWeb — Motor Scoring Knockout (puntajeTigreKnockout) Protegido
-**Type:** fact  
-**Project:** dfl  
-
-OBS_ID: DFL-OBS-20260624-007
-TIPO: fact
-PROYECTO: futbolweb
-PLATFORM: vercel
-SUBSISTEMA: futbolweb/knockout
-PRECEDENCIA: D
-AUTHORITY: operational
-LIFECYCLE: active
-CONFIDENCE: high
-LAST_VERIFIED: 2026-06-24
-SOURCE: session
-SOURCE_REF_TYPE: session_id
-SOURCE_REF: MPGE_2026-06-23
-SUPERSEDE: ninguno
-PROMOTION_CANDIDATE: no
-PROMOTION_TARGET: none
-TOPIC_KEY: futbolweb/knockout/scoring-rules
-
-QUÉ: Motor de scoring knockout en FutbolWeb: función puntajeTigreKnockout en packages/scoring. Engine protegido y estable. Tests exhaustivos agregados 2026-06-23 (synthetic harness). Lógica: evaluación de resultados en fase eliminatoria con cálculo de puntaje Tigre incluyendo penaltis y goles de visita.
-
-POR QUÉ IMPORTA: Es la lógica core del Oráculo Futbolero para torneos knockout. Cualquier cambio afecta predicciones en producción.
-
-DÓNDE APLICA: packages/scoring, Vercel runtime, toda UI que muestre predicciones de fase eliminatoria.
-
-PRÓXIMO AGENTE DEBE: NO modificar puntajeTigreKnockout sin PRP explícito y autorización. Tests de synthetic harness deben seguir pasando antes de cualquier deploy.
 
 ---
 
@@ -185,6 +132,43 @@ Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT,
 **Project:** dfl  
 
 Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21). Gate 2 (Execution Perimeter): PASS limpio — perímetro declarado con claridad inusual desde el diseño. Gate 4 (Closure Integrity): PASS — 859/859 harness, diff cero, pendientes explícitos. Gate 1 (Decision Resurrection): ESCALATE — el Candidate Vault NO fue consultado en ningún momento del PRP-001; TSL sirvió como validación de riesgo pero no como chequeo de decisiones archivadas. Hallazgo clave: el checklist necesita una tercera categoría de respuesta (NOT_VERIFIABLE / PARTIAL) además de SÍ/NO — se improvisó durante la evaluación. Gate 4 es el más automatizable (diff/harness son verificables mecánicamente). Gate 1 requiere lectura semántica humana (distinguir 'consulta a TSL' de 'consulta al Candidate Vault'). Conclusión operacional: antes de ejecutar cualquier PRP, consultar 04_Candidate_Vault/ activamente — no solo a agentes. Este hallazgo viene de Gate_Engine_Caso01_PRP001.md en audited_pass/.
+
+### Session summary: futbolweb-app
+**Project:** futbolweb-app  
+
+## Goal
+Resolver el onboarding incompleto del @go DFL para que cualquier agente nuevo llegue listo sin preguntas.
+
+## Instructions
+Mínimos tokens, máximo resultado. Solo bloqueadores y estado final al usuario.
+
+## Discoveries
+- El hook SessionStart en settings.json inyecta stdout del script como contexto — misma mecánica que el plugin Engram. No requiere formato especial, markdown plano funciona.
+- PATCH /observations/{id} en Engram API (7437) acepta campos parciales — no hace falta reenviar todo el objeto.
+- El filtro LIFECYCLE en /go debe parsear el contenido de texto de la obs línea por línea — no hay campo DB dedicado para lifecycle.
+- OBS-005 tenía LIFECYCLE: active pero el incidente estaba resuelto — estaba contaminando el namespace de active_constraints.
+- CLAUDE.md acepta `@/ruta/absoluta` para importar archivos externos al contexto CC.
+
+## Accomplished
+- ✅ OBS-005 archivada — LIFECYCLE: active → archived via PATCH Engram ID 64
+- ✅ Proxy /go: filtro LIFECYCLE: archived (método _is_archived añadido a main.py)
+- ✅ Campo cc_bootstrap en /go response (6 claves: step_1-3, precedencia, protegido, alerta)
+- ✅ Hook SessionStart creado: /opt/dfl-context-proxy/cc-atgo-hook.sh
+- ✅ settings.json actualizado con hook SessionStart → cc-atgo-hook.sh (timeout 10s)
+- ✅ CLAUDE.md futbolweb: sección 11 (DFL Bootstrap) + @import DFL_Agent_Onboarding_Config.md
+- ✅ dfl-context-proxy reiniciado y verificado activo
+- ✅ Hook testeado: output completo con decisiones, constraints, pendientes, CC Bootstrap
+
+## Next Steps
+- Verificar que el hook aparece en la próxima sesión CC como sistema mensaje al inicio
+- Considerar crear /opt/dfl-knowledge/CLAUDE.md para agentes que abran CC desde ese directorio
+- OBS-10 (inventario servicios) tiene DNS pendiente como "aún no verificados" — actualizar a verified (DNS ya está activo)
+
+## Relevant Files
+- /opt/dfl-context-proxy/main.py — proxy @go: LIFECYCLE filter + cc_bootstrap field
+- /opt/dfl-context-proxy/cc-atgo-hook.sh — nuevo hook SessionStart CC
+- /root/.claude/settings.json — hook SessionStart registrado
+- /opt/futbolweb/CLAUDE.md — sección 11 + @import onboarding config
 
 ---
 
@@ -234,25 +218,25 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### IAIM Graphify Fase 1 — graph.json regenerado con agTopologo v0.3
-**Type:** fact  
-**Project:** dfl  
-
-What: En /opt/dfl-knowledge se ejecutó Paso 3A-3C autorizado por Jorge. graphify-out/graph.json v0.1 fue movido a graphify-out/graph.json.v0.1.bak y se regeneró graphify-out/graph.json con scripts/ag_topologo.py usando --full --llm --source /opt/dfl-knowledge --out /opt/dfl-knowledge/graphify-out.
-
-Evidence:
-- Backup previo: graph.json v0.1, schema agTopologo-DFL-v0.1, 3261 nodes, tamaño 2.9M, timestamp Jul 5 04:05.
-- Nuevo grafo: schema agTopologo-DFL-v0.3, 140 nodes, tamaño 255K, generado Jul 5 18:28.
-- ag_topologo output: [OK] graph.json: 140 nodos semánticos desde 1206 nodos estructurales; [OK] graph_context.json: capas semantic y str escritas sin mezcla.
-- Warnings no fatales durante extracción PDF: Could not get FontBBox from font descriptor because None cannot be parsed as 4 floats.
-
-Caveat: graphify-out/.last_full_regen NO se actualizó durante esta ejecución; stat Modify siguió en 2026-06-26 23:26:49 +0000. El metadata.last_regen del nuevo graph.json imprimió None. Esto contradice el comentario operativo del paso que esperaba timestamp actualizado.
-
-### CIERRE FutbolWeb P0 post-fix 2026-07-05 — knockout ESPN sync verificado hasta monitoreo 91 pre-kickoff
 **Type:** decision  
-**Project:** futbolweb-app  
+**Project:** 360eventos  
 
-Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió IDs de eventos para knockout posterior y los fixtures locales 89+ usan placeholders sin team codes; el matcher anterior dependía de fifaId o fecha+teamCode fijo, por eso no importó 89/90, no creó match_results, no corrió scoring, ranking no sumó y bracket 97 seguía con W89/W90. Fix commit b1b6d60 en futbolweb-app: matcher ESPN aplica bracket assignments con match_results previos y resuelve nombres/equipos antes de fallback por fecha/equipos; sync route carga existingResults antes de leer ESPN. Datos prod actualizados: 89 Paraguay 0-1 Francia y 90 Canada 0-3 Marruecos; scoring knockout ejecutado; prediction_scores 89=2 rows, 90=1 row; ranking Edgar Alberto P80 = 137.5; /api/tournament-reality muestra 97 Francia vs Marruecos; propagation pending []. Verificación post-fix para partido 91: al momento del monitoreo era pre-kickoff (generatedAt 2026-07-05T05:35Z, kickoff 2026-07-05T20:00Z); ESPN aún no incluye 91; match_results/scores 91 vacíos correcto; accepted predictions 91 existen para Alejo y Edgar Alberto. Próximo punto de monitoreo: después de FT de Brasil vs Noruega, confirmar ESPN import -> match_results 91 -> 2 scores -> ranking -> W91 en partido 99.
+**Qué**: QA online del agMVP 360Eventos completado. URL pública validada: `https://360eventos.vercel.app` (encontrada manualmente por Jorge, proyecto Vercel `360eventos`). Documento: `/opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_ONLINE_DEMO_QA.md` (commit 1a0fe6a).
+
+**Resultado**: `/`, `/cotizar`, `/login` responden 200. `/cotizar` confirmado usando Nivel 0A (catálogo real Supabase, 8 servicios) — coincide exacto con la query directa hecha en la misión anterior: Producción general del evento, Decoración temática, Sonido profesional, Iluminación arquitectónica, Fotografía profesional, Video y transmisión en vivo, Transporte y montaje de equipos, Maestro de ceremonias. Formulario de cotización bien wireado a `submitCotizacion` (server action → insert en `solicitudes`), no se completó envío real para no escribir en DB de producción. Viewport responsive presente en las 3 páginas; home con 14 clases responsive Tailwind, cotizar con solo 2 (más simple pero funcional). Sin errores críticos visibles. No se aplicó ningún fix — no fue necesario.
+
+**Limitaciones para Rubén**: es demo funcional no comercial (Nivel 0B pendiente), cualquier envío real de /cotizar genera fila real en `solicitudes` de producción (no hay modo sandbox), no se validó /dashboard ni login con credenciales reales, no se hizo validación visual real en dispositivo móvil (solo estructural).
+
+**No se tocó**: DB (solo lecturas HTTP públicas), FutbolWeb, secrets, migraciones, seed. Cambios preexistentes ajenos en graphify-out/ag_topologo.py siguen intactos.
+
+**Type:** decision  
+**Project:** 360eventos  
+
+**Qué**: Corregido `/opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_PRICE_AUTHORITY_AND_SERVICE_TIERS.md` (commit b09b6fe) por decisión de Jorge tras el hallazgo de Nivel 0 vivo. Nueva jerarquía: Nivel 0A = Supabase real vivo (8 servicios activos, confirmado), válido para demo/agMVP. Nivel 0B = catálogo comercial oficialmente aprobado — pendiente, no existe. Nivel 1 (`seed-servicios.js`) marcado histórico/prohibido para esta demo. Nivel 2 (`BUSINESS_LOGIC.md`/`migration-02-servicios.sql`) marcado documentación desactualizada frente a runtime real, no se edita. Nivel 3 (`demo-servicios.ts`, landing) sin cambios. Service Tier Model recalculado sobre Nivel 0A: el catálogo real NO tiene tiers (cada servicio es precio único) — el modelo básico/avanzado de la versión anterior venía del seed histórico, ya no aplica. Zero Case 001 sigue `conditional accepted`; bloqueo pasó de "no existe Nivel 0" a "falta Nivel 0B".
+
+**Deployment BLOQUEADO**: sin credenciales de Vercel disponibles en este entorno (VM2/La Garra). Evidencia: no existe `.vercel/` en el repo, no hay `vercel.json`, no hay `VERCEL_TOKEN`/`VERCEL_ORG_ID`/`VERCEL_PROJECT_ID` en ningún perfil de shell ni en el repo, `gh` CLI no está instalado (no se puede verificar integración GitHub→Vercel), y `NEXT_PUBLIC_SITE_URL` en `.env.local` sigue en `http://localhost:3000` (sin evidencia de dominio público configurado). `npx vercel whoami` colgó sin responder (sin sesión cacheada). No se puede confirmar si ya existe una URL pública, ni crear un deployment nuevo, sin que Jorge provea un token de Vercel o confirme la URL manualmente.
+
+**No se tocó**: DB (solo SELECT read-only), no se corrió seed, no se corrió migración, no se tocó FutbolWeb, no se expusieron secrets (solo se usó la anon key pública, ya expuesta por diseño como NEXT_PUBLIC_*).
 
 ---
 
@@ -345,4 +329,4 @@ Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió 
 
 ---
 
-*Mirror auto-generated 2026-07-05T18:37:14Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-07T01:42:01Z | La Garra → DFLghub/amos-context*
