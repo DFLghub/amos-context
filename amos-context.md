@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-07T01:46:57Z  
+**Generated:** 2026-07-07T01:49:08Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -52,6 +52,15 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 **Type:** decision  
 **Project:** 360eventos  
 
+**Qué**: Jorge confirmó que ya envió el link de https://360eventos.vercel.app a Rubén, explícitamente para que "abra y mire el demo funcional (agMVP) — un producto mínimo viable PERO FUNCIONAL". Lo enmarca como "Prueba" (test), no como oferta comercial.
+
+**Impacto en Price Authority**: esto NO es una confirmación de Nivel 0B (catálogo comercial oficialmente aprobado). Sigue pendiente. El catálogo de 8 servicios reales en Supabase sigue siendo Nivel 0A (real vivo, válido para demo), usado aquí explícitamente en modo demo/prueba para Rubén, consistente con la política definida en FOF_CASE_01_360EVENTOS_PRICE_AUTHORITY_AND_SERVICE_TIERS.md (ready_to_send demo, no comercial).
+
+**Why**: Jorge quiere que quede claro que el criterio de éxito ahora mismo es "MVP funcional demostrable", no "catálogo comercial validado". No se requiere ninguna acción adicional de mi parte — es una actualización de estado del Caso 01, no una nueva misión.
+
+**Type:** decision  
+**Project:** 360eventos  
+
 **Qué**: QA online del agMVP 360Eventos completado. URL pública validada: `https://360eventos.vercel.app` (encontrada manualmente por Jorge, proyecto Vercel `360eventos`). Documento: `/opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_ONLINE_DEMO_QA.md` (commit 1a0fe6a).
 
 **Resultado**: `/`, `/cotizar`, `/login` responden 200. `/cotizar` confirmado usando Nivel 0A (catálogo real Supabase, 8 servicios) — coincide exacto con la query directa hecha en la misión anterior: Producción general del evento, Decoración temática, Sonido profesional, Iluminación arquitectónica, Fotografía profesional, Video y transmisión en vivo, Transporte y montaje de equipos, Maestro de ceremonias. Formulario de cotización bien wireado a `submitCotizacion` (server action → insert en `solicitudes`), no se completó envío real para no escribir en DB de producción. Viewport responsive presente en las 3 páginas; home con 14 clases responsive Tailwind, cotizar con solo 2 (más simple pero funcional). Sin errores críticos visibles. No se aplicó ningún fix — no fue necesario.
@@ -59,17 +68,6 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 **Limitaciones para Rubén**: es demo funcional no comercial (Nivel 0B pendiente), cualquier envío real de /cotizar genera fila real en `solicitudes` de producción (no hay modo sandbox), no se validó /dashboard ni login con credenciales reales, no se hizo validación visual real en dispositivo móvil (solo estructural).
 
 **No se tocó**: DB (solo lecturas HTTP públicas), FutbolWeb, secrets, migraciones, seed. Cambios preexistentes ajenos en graphify-out/ag_topologo.py siguen intactos.
-
-**Type:** decision  
-**Project:** 360eventos  
-
-**Qué**: Corregido `/opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_PRICE_AUTHORITY_AND_SERVICE_TIERS.md` (commit b09b6fe) por decisión de Jorge tras el hallazgo de Nivel 0 vivo. Nueva jerarquía: Nivel 0A = Supabase real vivo (8 servicios activos, confirmado), válido para demo/agMVP. Nivel 0B = catálogo comercial oficialmente aprobado — pendiente, no existe. Nivel 1 (`seed-servicios.js`) marcado histórico/prohibido para esta demo. Nivel 2 (`BUSINESS_LOGIC.md`/`migration-02-servicios.sql`) marcado documentación desactualizada frente a runtime real, no se edita. Nivel 3 (`demo-servicios.ts`, landing) sin cambios. Service Tier Model recalculado sobre Nivel 0A: el catálogo real NO tiene tiers (cada servicio es precio único) — el modelo básico/avanzado de la versión anterior venía del seed histórico, ya no aplica. Zero Case 001 sigue `conditional accepted`; bloqueo pasó de "no existe Nivel 0" a "falta Nivel 0B".
-
-**Deployment BLOQUEADO**: sin credenciales de Vercel disponibles en este entorno (VM2/La Garra). Evidencia: no existe `.vercel/` en el repo, no hay `vercel.json`, no hay `VERCEL_TOKEN`/`VERCEL_ORG_ID`/`VERCEL_PROJECT_ID` en ningún perfil de shell ni en el repo, `gh` CLI no está instalado (no se puede verificar integración GitHub→Vercel), y `NEXT_PUBLIC_SITE_URL` en `.env.local` sigue en `http://localhost:3000` (sin evidencia de dominio público configurado). `npx vercel whoami` colgó sin responder (sin sesión cacheada). No se puede confirmar si ya existe una URL pública, ni crear un deployment nuevo, sin que Jorge provea un token de Vercel o confirme la URL manualmente.
-
-[RESOLVED 2026-07-07 ~01:31]: Jorge encontró manualmente la URL pública ya desplegada — https://360eventos.vercel.app (proyecto Vercel `360eventos`). QA online confirmó `/`, `/cotizar`, `/login` en 200, catálogo real Nivel 0A visible y correcto (8 servicios), formulario de cotización bien wireado a `submitCotizacion`. Documento: `FOF_CASE_01_360EVENTOS_ONLINE_DEMO_QA.md`, commit `1a0fe6a`. El bloqueo de credenciales de Vercel sigue siendo cierto para *disparar* un deploy nuevo desde este entorno, pero ya no bloquea el caso — no hacía falta deployar, ya existía.
-
-**No se tocó**: DB (solo SELECT read-only), no se corrió seed, no se corrió migración, no se tocó FutbolWeb, no se expusieron secrets (solo se usó la anon key pública, ya expuesta por diseño como NEXT_PUBLIC_*).
 
 ### Commits: graphify-out state + 360eventos env/scripts
 **Type:** decision  
@@ -225,55 +223,36 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 **Project:** futbolweb-app  
 
 ## Goal
-Fundar y validar FoF Caso 01 (Factory of Factories) usando 360Eventos como primera fábrica real de prueba, de punta a punta: Factory Brief → Gates → Caso Cero → SFAT → Delivery Packet, y dejar el agMVP visible online para Rubén (Colombia). Trabajo ejecutado en una sesión SSH directa a VM2/La Garra (67.205.166.199) que murió por "Broken pipe" antes de poder correr `@$fin`; esta entrada cierra esa sesión con la evidencia que Jorge pegó del transcript, verificada contra el estado real del filesystem/git en la misma VM.
+Sesión CC en `/opt/futbolweb` (VM2/La Garra) que arrancó con `@$go` (bootstrap, confirmó rol EJECUTOR y estado limpio de FutbolWeb), y luego se usó para cerrar (`@$fin` de emergencia) una sesión SSH distinta que murió por "Broken pipe" a mitad del reporte final de FoF Caso 01 — 360Eventos.
 
 ## Instructions
-- Jorge da misiones largas en formato HLC (rol + misión + contexto + reglas + stop conditions + entregable) pensadas para pegar directo en Claude Code — seguir esa estructura da resultados limpios con él.
-- Regla dura de gobernanza: "la fábrica prepara, el humano aprueba" — nunca inventar precios/disponibilidad, siempre placeholders explícitos.
-- Cuando la realidad viva (DB, runtime) contradice documentación previa, la realidad manda — corregir el documento, no torcer la realidad para que encaje.
-- @$go bootstrap es solo lectura (regla activa ya conocida); @$fin sí puede mutar/archivar observaciones.
+- Cuando una sesión de La Garra muere sin `@$fin` propio, se puede reconstruir el cierre desde el transcript pegado por Jorge, verificando contra el filesystem/git real antes de dar por bueno nada del transcript.
+- `@$go` es solo lectura; `@$fin` sí puede archivar/actualizar observaciones de Engram.
 
 ## Discoveries
-- El repo `/opt/360eventos` (SaaS Factory V5, Next.js + Supabase) coincidía en nombre pero NO en dominio con el brief inicial de FoF Caso 01 (mobiliario/Boca Raton vs. productora de eventos en Colombia) — se detectó y corrigió vía Domain Alignment antes de correr el Caso Cero, evitando probar "otra fábrica".
-- Existían 4 fuentes de catálogo distintas y discrepantes: seed-servicios.js (12 ítems), demo-servicios.ts (6 ítems, landing), BUSINESS_LOGIC.md (cifras narrativas), y la tabla `servicios` real en Supabase (8 ítems) — ninguna documentación mencionaba que la última ya estaba viva y poblada.
-- migration-02-servicios.sql tiene un comentario "STOP POINT — no aplicar sin autorización" pero la migración ya había corrido contra producción; la documentación (BUSINESS_LOGIC.md §10) no reflejaba esto. Lección: verificar runtime real (query de solo lectura) antes de confiar en checklists de migración.
-- El catálogo real (Nivel 0A) no tiene tiers de servicio (básico/avanzado) — cada servicio es precio único; el modelo de tiers de la primera versión del documento venía del seed histórico y no aplicaba.
-- No hay credenciales de Vercel en este entorno (VM2) para disparar deploys nuevos — pero el proyecto ya estaba deployado; Jorge encontró la URL manualmente (https://360eventos.vercel.app) sin necesidad de token.
+- Ninguna nueva en esta sesión — el trabajo de fondo (Domain Alignment, Zero Case 001, Price Authority Nivel 0A/0B, QA online) ya quedó documentado en la sesión anterior (`cc-360eventos-fof-caso01-closure`, obs #174 actualizada).
 
 ## Accomplished
-- ✅ FOF_CASE_01_360EVENTOS_FACTORY_P0.md creado (commit 53d4eaf) en `/opt/dfl-knowledge/projects/fof/cases/360eventos/` — Factory Brief, Unit of Value Contract, 4 Gates, BOS Charter, Factory Floor, Loading/Receiving Deck, SFAT, Kill Criteria.
-- ✅ Domain Alignment Correction (commit 0a77891) — realineado contra `/opt/360eventos/BUSINESS_LOGIC.md` (producción de eventos Colombia/COP, no mobiliario genérico).
-- ✅ Zero Case 001 ejecutado (commit 0671b5b) — caso Laura Restrepo/Bogotá, SFAT `conditional accepted`.
-- ✅ FOF_CASE_01_360EVENTOS_PRICE_AUTHORITY_AND_SERVICE_TIERS.md creado (commit 22a515d), luego corregido (commit b09b6fe) al descubrir que Nivel 0 (Supabase real) sí existe — jerarquía final: Nivel 0A (real vivo, válido para demo) / Nivel 0B (comercial aprobado, pendiente) / Nivel 1 (seed histórico, prohibido) / Nivel 2 (docs desactualizados) / Nivel 3 (landing, no cotizable).
-- ✅ QA online de la demo pública (commit 1a0fe6a) — https://360eventos.vercel.app validado: `/`, `/cotizar`, `/login` en 200, catálogo real Nivel 0A visible (8 servicios), formulario wireado a `submitCotizacion`, sin envío real para no escribir en DB de producción.
-- ✅ Obs #174 (Engram) actualizada — bloqueo de deployment marcado [RESOLVED], ya no aplica.
-- 🔲 Nivel 0B (aprobación comercial humana del catálogo) sigue pendiente — ninguna cotización de 360Eventos es oferta vinculante todavía.
-- 🔲 Validación visual real en dispositivo móvil (solo se validó estructuralmente vía viewport/clases Tailwind).
-- 🔲 Envío real de prueba del formulario /cotizar (deliberadamente no ejecutado para no ensuciar `solicitudes` de producción).
+- ✅ `@$go` bootstrap: confirmado rol EJECUTOR (bash/git/Engram activos, `/go` local respondió en 127.0.0.1:8091), FutbolWeb en `main` limpio, último commit `b1b6d60`.
+- ✅ Cierre de emergencia de la sesión SSH caída: verificados los 6 commits del transcript contra git real en `/opt/dfl-knowledge` (53d4eaf → 1a0fe6a), obs #174 actualizada a [RESOLVED] sobre el bloqueo de deployment, session summary guardado, `push_mirror.sh` corrido.
+- ✅ Jorge confirmó que ya envió el link de `https://360eventos.vercel.app` a Rubén como demo/MVP funcional de prueba — no como catálogo comercial aprobado (Nivel 0B sigue pendiente). Guardado como obs #177.
 
 ## Next Steps
-- Si Jorge quiere avanzar el Caso 01: decidir si el catálogo de 8 servicios reales es Nivel 0B (comercialmente aprobado) o sigue siendo dato de prueba de otra sesión.
-- Evaluar Portfolio Governance para este caso (quedó cortado por el broken pipe justo en ese punto del reporte final — no hay contenido perdido de valor, era la sección de cierre del reporte, no trabajo sin guardar).
-- Compartir la URL con Rubén con la aclaración explícita de que es demo, no oferta comercial vinculante.
+- Nivel 0B (aprobación comercial humana del catálogo de 8 servicios) sigue pendiente si Jorge quiere avanzar 360Eventos más allá de demo.
+- Esperar feedback de Rubén sobre el demo.
+- FutbolWeb: sin pendientes urgentes; próximo hito conocido es el monitoreo del partido 91 pre-kickoff (knockout ESPN sync).
 
 ## Relevant Files
-- /opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_FACTORY_P0.md — documento fundacional del caso, con nota de Domain Alignment Correction inline.
-- /opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_ZERO_CASE_001.md — Caso Cero ejecutado, SFAT conditional accepted.
-- /opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_PRICE_AUTHORITY_AND_SERVICE_TIERS.md — jerarquía de fuentes de precio, corregida tras descubrir Nivel 0A vivo.
-- /opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_ONLINE_DEMO_QA.md — evidencia de QA sobre la demo pública en producción.
-- /opt/360eventos/BUSINESS_LOGIC.md — fuente de verdad de dominio (parcialmente desactualizada frente al runtime real, no editada).
-- No se tocó FutbolWeb ni /opt/futbolweb en ningún punto de esta cadena de misiones.
+- Ninguno modificado en `/opt/futbolweb` en esta sesión — trabajo de contenido fue en `/opt/dfl-knowledge/projects/fof/cases/360eventos/` (sesión previa) y Engram (obs #174, #177).
 
 **Type:** decision  
 **Project:** 360eventos  
 
-**Qué**: QA online del agMVP 360Eventos completado. URL pública validada: `https://360eventos.vercel.app` (encontrada manualmente por Jorge, proyecto Vercel `360eventos`). Documento: `/opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_ONLINE_DEMO_QA.md` (commit 1a0fe6a).
+**Qué**: Jorge confirmó que ya envió el link de https://360eventos.vercel.app a Rubén, explícitamente para que "abra y mire el demo funcional (agMVP) — un producto mínimo viable PERO FUNCIONAL". Lo enmarca como "Prueba" (test), no como oferta comercial.
 
-**Resultado**: `/`, `/cotizar`, `/login` responden 200. `/cotizar` confirmado usando Nivel 0A (catálogo real Supabase, 8 servicios) — coincide exacto con la query directa hecha en la misión anterior: Producción general del evento, Decoración temática, Sonido profesional, Iluminación arquitectónica, Fotografía profesional, Video y transmisión en vivo, Transporte y montaje de equipos, Maestro de ceremonias. Formulario de cotización bien wireado a `submitCotizacion` (server action → insert en `solicitudes`), no se completó envío real para no escribir en DB de producción. Viewport responsive presente en las 3 páginas; home con 14 clases responsive Tailwind, cotizar con solo 2 (más simple pero funcional). Sin errores críticos visibles. No se aplicó ningún fix — no fue necesario.
+**Impacto en Price Authority**: esto NO es una confirmación de Nivel 0B (catálogo comercial oficialmente aprobado). Sigue pendiente. El catálogo de 8 servicios reales en Supabase sigue siendo Nivel 0A (real vivo, válido para demo), usado aquí explícitamente en modo demo/prueba para Rubén, consistente con la política definida en FOF_CASE_01_360EVENTOS_PRICE_AUTHORITY_AND_SERVICE_TIERS.md (ready_to_send demo, no comercial).
 
-**Limitaciones para Rubén**: es demo funcional no comercial (Nivel 0B pendiente), cualquier envío real de /cotizar genera fila real en `solicitudes` de producción (no hay modo sandbox), no se validó /dashboard ni login con credenciales reales, no se hizo validación visual real en dispositivo móvil (solo estructural).
-
-**No se tocó**: DB (solo lecturas HTTP públicas), FutbolWeb, secrets, migraciones, seed. Cambios preexistentes ajenos en graphify-out/ag_topologo.py siguen intactos.
+**Why**: Jorge quiere que quede claro que el criterio de éxito ahora mismo es "MVP funcional demostrable", no "catálogo comercial validado". No se requiere ninguna acción adicional de mi parte — es una actualización de estado del Caso 01, no una nueva misión.
 
 ---
 
@@ -366,4 +345,4 @@ Fundar y validar FoF Caso 01 (Factory of Factories) usando 360Eventos como prime
 
 ---
 
-*Mirror auto-generated 2026-07-07T01:46:57Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-07T01:49:08Z | La Garra → DFLghub/amos-context*
