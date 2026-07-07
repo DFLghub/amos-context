@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-07T01:49:08Z  
+**Generated:** 2026-07-07T03:05:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -345,4 +345,4 @@ Sesión CC en `/opt/futbolweb` (VM2/La Garra) que arrancó con `@$go` (bootstrap
 
 ---
 
-*Mirror auto-generated 2026-07-07T01:49:08Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-07T03:05:01Z | La Garra → DFLghub/amos-context*
