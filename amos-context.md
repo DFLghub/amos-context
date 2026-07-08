@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-08T23:33:14Z  
+**Generated:** 2026-07-08T23:34:08Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -70,6 +70,37 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ## RECENT DECISIONS
 
+### CIERRE — acceso uniforme DFL por contrato, no por transporte
+**Type:** decision  
+**Project:** dfl  
+
+**Qué se hizo**: Se corrigió el onboarding/outboarding DFL para resolver el error conceptual: MCP no es el lobby uniforme, sino una puerta posible. `@$go` y `@$fin` quedan definidos como comandos uniformes por contrato semántico, con adaptadores por capacidad real de sesión.
+
+**Arquitectura resultante**:
+- EJECUTOR: shell/Engram/git; `@$go` vía `/go` + Engram; `@$fin` real con Gate 4B + `push_mirror.sh`.
+- ORQUESTADOR: fetch público si disponible; cierre por bitácora de relay.
+- CONSULTOR: snapshot pegado/memoria local; no intenta fetch bloqueado; cierre por `RESUMEN DE SESIÓN` para EJECUTOR.
+- El perfil se decide por capacidades observables de la sesión, no por marca de agente. Codex puede ser EJECUTOR si tiene shell+Engram; ChatGPT web queda CONSULTOR mientras su allowlist bloquee fetch.
+
+**Commits**:
+- `/opt/amos-context-mirror` commit `a941ad2` (`docs: clarify DFL access adapters`) y mirror generado commit `a9f5cc28c94b170feb19b069942715697a910ff1`.
+- `/opt/dfl-context-proxy` commit `fee934d8ae8dea19673adcfa402385a71408182d` (`feat: expose DFL access model`), pusheado a origin/main.
+
+**Evidencia**:
+- `systemctl restart dfl-context-proxy` OK.
+- `curl -s http://127.0.0.1:8091/health` OK.
+- `python3 tests/test_knl_contract.py` OK fuera del sandbox.
+- GitHub raw `amos-context.md` contiene `ACCESS MODEL — UNIFORM CONTRACT, DIFFERENT TRANSPORTS`.
+
+**Archivos afectados**:
+- `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`
+- `/opt/amos-context-mirror/agents/consultor.md`
+- `/opt/dfl-context-proxy/main.py`
+- `/opt/dfl-context-proxy/publish-amos-context.sh`
+- `/opt/dfl-context-proxy/tests/test_knl_contract.py`
+
+**No tocado**: `/opt/dfl-context-proxy/engram-backup-offhost.sh` seguía modificado antes de la tarea y quedó intacto.
+
 ### DFL onboarding/outboarding — contrato uniforme por adaptadores de capacidad
 **Type:** decision  
 **Project:** dfl  
@@ -83,22 +114,6 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 **Why**: Garantizar intercambio entre IAs/agentes sin depender de MCP como transporte universal. MCP es una puerta posible al lobby, no el lobby.
 
 **Gate 4B**: hito guardado incrementalmente después del commit del mirror. Pendiente en esta misma sesión: commitear cambios del proxy `/go` y publicar mirror regenerado.
-
-### [RESOLVED] DFL Context Bridge descartado por evidencia — 4/4 hostings públicos bloqueados en ChatGPT web.run
-**Type:** decision  
-**Project:** dfl  
-
-**[RESOLVED 2026-07-08]**: cierre definitivo de la línea de investigación "bridge para CONSULTOR". Se evaluó además un DFL MCP Server (tools @$go/@$fin/mem_save/mem_search agnósticos a proveedor) y Jorge decidió NO construirlo — CONSULTOR = memory-local queda como arquitectura FINAL, documentada en `AGENT_CAPABILITY_MATRIX.md` (commit `a5d6be3`, sección "## CONSULTOR (ChatGPT, Codex, etc.)"). No reabrir esta investigación sin una razón nueva y concreta. LIFECYCLE: archived.
-
----
-
-**Qué**: Investigado con evidencia real si un "DFL Context Bridge" hosteado públicamente podía resolver el bloqueo de ChatGPT `web.run`. Resultado: descartado por evidencia. 4 URLs distintas (dominio propio, GitHub raw, jsDelivr CDN, `360eventos.vercel.app`) fallaron con el mismo patrón — allowlist de red a nivel de sesión, no reputación de un dominio en particular.
-
-**Cambios aplicados**: Paso 0 en `AGENT_CAPABILITY_MATRIX.md` (commit `1f23663`) y `main.py` (commit `cd649f3`) exigen un intento real de fetch antes de reclamar ORQUESTADOR.
-
-**Hallazgo sistémico recurrente (auditor de secretos)**: sigue sin resolverse, ver obs #180.
-
-**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
 
 **Type:** decision  
 **Project:** 360eventos  
@@ -241,6 +256,37 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### CIERRE — acceso uniforme DFL por contrato, no por transporte
+**Type:** decision  
+**Project:** dfl  
+
+**Qué se hizo**: Se corrigió el onboarding/outboarding DFL para resolver el error conceptual: MCP no es el lobby uniforme, sino una puerta posible. `@$go` y `@$fin` quedan definidos como comandos uniformes por contrato semántico, con adaptadores por capacidad real de sesión.
+
+**Arquitectura resultante**:
+- EJECUTOR: shell/Engram/git; `@$go` vía `/go` + Engram; `@$fin` real con Gate 4B + `push_mirror.sh`.
+- ORQUESTADOR: fetch público si disponible; cierre por bitácora de relay.
+- CONSULTOR: snapshot pegado/memoria local; no intenta fetch bloqueado; cierre por `RESUMEN DE SESIÓN` para EJECUTOR.
+- El perfil se decide por capacidades observables de la sesión, no por marca de agente. Codex puede ser EJECUTOR si tiene shell+Engram; ChatGPT web queda CONSULTOR mientras su allowlist bloquee fetch.
+
+**Commits**:
+- `/opt/amos-context-mirror` commit `a941ad2` (`docs: clarify DFL access adapters`) y mirror generado commit `a9f5cc28c94b170feb19b069942715697a910ff1`.
+- `/opt/dfl-context-proxy` commit `fee934d8ae8dea19673adcfa402385a71408182d` (`feat: expose DFL access model`), pusheado a origin/main.
+
+**Evidencia**:
+- `systemctl restart dfl-context-proxy` OK.
+- `curl -s http://127.0.0.1:8091/health` OK.
+- `python3 tests/test_knl_contract.py` OK fuera del sandbox.
+- GitHub raw `amos-context.md` contiene `ACCESS MODEL — UNIFORM CONTRACT, DIFFERENT TRANSPORTS`.
+
+**Archivos afectados**:
+- `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`
+- `/opt/amos-context-mirror/agents/consultor.md`
+- `/opt/dfl-context-proxy/main.py`
+- `/opt/dfl-context-proxy/publish-amos-context.sh`
+- `/opt/dfl-context-proxy/tests/test_knl_contract.py`
+
+**No tocado**: `/opt/dfl-context-proxy/engram-backup-offhost.sh` seguía modificado antes de la tarea y quedó intacto.
+
 ### dfl-context-proxy /go expone access_model para agentes heterogéneos
 **Type:** architecture  
 **Project:** dfl  
@@ -257,20 +303,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 **Evidencia**: `systemctl restart dfl-context-proxy`; `curl -s http://127.0.0.1:8091/health` OK; `python3 tests/test_knl_contract.py` OK fuera del sandbox por localhost; `curl -s http://127.0.0.1:8091/go` muestra `access_model`.
 
 **No tocado**: cambio preexistente en `/opt/dfl-context-proxy/engram-backup-offhost.sh` quedó fuera del commit.
-
-### DFL onboarding/outboarding — contrato uniforme por adaptadores de capacidad
-**Type:** decision  
-**Project:** dfl  
-
-**Qué**: Se corrigió el contrato público de onboarding/outboarding para explicitar que `@$go` y `@$fin` son uniformes por contrato semántico, no por transporte. El perfil se decide por capacidades reales de sesión, no por marca de agente/modelo.
-
-**Cambio aplicado**: commit `a941ad2` en `/opt/amos-context-mirror` (`docs: clarify DFL access adapters`). Archivos: `AGENT_CAPABILITY_MATRIX.md`, `agents/consultor.md`.
-
-**Decisión**: EJECUTOR usa shell/Engram/git; ORQUESTADOR usa fetch público si lo tiene; CONSULTOR usa snapshot pegado/memoria local y entrega `RESUMEN DE SESIÓN` para relay a EJECUTOR. ChatGPT web no recibe acceso vivo si su allowlist bloquea fetch; Codex puede ser EJECUTOR cuando tiene shell+Engram, como esta sesión.
-
-**Why**: Garantizar intercambio entre IAs/agentes sin depender de MCP como transporte universal. MCP es una puerta posible al lobby, no el lobby.
-
-**Gate 4B**: hito guardado incrementalmente después del commit del mirror. Pendiente en esta misma sesión: commitear cambios del proxy `/go` y publicar mirror regenerado.
 
 ---
 
@@ -363,4 +395,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-08T23:33:14Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-08T23:34:08Z | La Garra → DFLghub/amos-context*
