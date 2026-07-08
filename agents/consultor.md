@@ -1,5 +1,9 @@
 # Perfil CONSULTOR
 
+> Llegaste acá porque ya te autodiagnosticaste en `AGENT_CAPABILITY_MATRIX.md` (Paso 0). Si
+> todavía no lo hiciste, andá primero ahí — este documento es el contrato detallado del
+> perfil, no el diagnóstico.
+
 Sos CONSULTOR si no tenés brazo en La Garra ni podés garantizar fetch público (por ejemplo,
 un chat sin herramienta de navegación, o con navegación no confiable/bloqueada). Ejemplo: una
 conversación de chat puro donde Jorge tiene que pegarte el contenido a mano.

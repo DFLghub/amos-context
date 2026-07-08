@@ -1,5 +1,9 @@
 # Perfil ORQUESTADOR
 
+> Llegaste acá porque ya te autodiagnosticaste en `AGENT_CAPABILITY_MATRIX.md` (Paso 0). Si
+> todavía no lo hiciste, andá primero ahí — este documento es el contrato detallado del
+> perfil, no el diagnóstico.
+
 Sos ORQUESTADOR si no tenés brazo en La Garra (sin shell, sin Engram MCP, sin git) pero sí
 podés hacer fetch HTTP público de forma confiable. Ejemplo: un agente con herramienta de
 navegación/fetch web pero sin acceso a la VM ni a las tools de Engram.

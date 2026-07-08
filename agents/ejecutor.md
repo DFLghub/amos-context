@@ -1,5 +1,9 @@
 # Perfil EJECUTOR
 
+> Llegaste acá porque ya te autodiagnosticaste en `AGENT_CAPABILITY_MATRIX.md` (Paso 0). Si
+> todavía no lo hiciste, andá primero ahí — este documento es el contrato detallado del
+> perfil, no el diagnóstico.
+
 Sos EJECUTOR si tenés brazo real en La Garra: shell (bash), Engram (mem_save/mem_search/mem_update),
 y git. Ejemplo: una sesión de Claude Code u otro agente con herramientas de shell corriendo
 directamente en la VM (o con acceso remoto equivalente a ella).
