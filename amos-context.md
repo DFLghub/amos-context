@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-08T23:52:17Z  
+**Generated:** 2026-07-08T23:58:11Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -284,6 +284,26 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Auditoría Engram 2026-07-08 — sin limpieza programada y sync parcial por proyectos
+**Type:** discovery  
+**Project:** dfl  
+
+**Qué se revisó**: Estado operativo de Engram local en La Garra tras la implementación de @$go VALIDATION GATE.
+
+**Hallazgos principales**:
+- Engram local sano: `/health` OK, DB `/root/.engram/engram.db` ~2.9MB.
+- Volumen actual: 177 observations, 307 user_prompts, 54 sessions, 31 memory_relations.
+- Distribución observations: dfl 104, futbolweb-app 53, 360eventos 16, tdf-01 4.
+- No hay relaciones pendientes: `memory_relations.judgment_status='pending'` = 0.
+- Hay backup off-host cada 6h y sync cron cada 5 min.
+- No se encontró limpieza/depuración semántica programada.
+- `engram-sync-cron.sh` sincroniza solo proyectos `dfl` y `futbolweb`; quedan mutaciones sin ACK en proyectos usados realmente: `futbolweb-app` 744, `360eventos` 38, `tdf-01` 7, además de otros namespaces menores.
+- Calidad semántica: 92 observations sin `review_after`, 8 títulos vacíos, ~54 observations con señales de cierre/resuelto/snapshot/stale, y varias observaciones recientes sobre onboarding/outboarding solapadas que podrían compactarse.
+
+**Riesgo**: Engram tiene durabilidad, pero no metabolismo: acumula snapshots/cierres/iteraciones sin ciclo formal de compactación, archivado y promoción a canonical facts.
+
+**Recomendación preliminar**: crear `engram-maintenance` semanal o quincenal: audit-only primero, luego compactación supervisada. No borrar por defecto; archivar/compactar/promover. Ajustar sync cron para cubrir proyectos activos reales (`futbolweb-app`, `360eventos`, `tdf-01`) o normalizar nombres de proyecto.
+
 ### CIERRE — @$go VALIDATION GATE publicado y auditoría de mirror ajustada
 **Type:** bugfix  
 **Project:** dfl  
@@ -303,22 +323,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 - `push_mirror.sh` imprimió: `MIRROR: updated | commit 569d9c91d266d352d28070be79ee05764b7c6956 | 2026-07-08 23:51:50 +0000`.
 
 **No tocado**: `/opt/dfl-context-proxy/engram-backup-offhost.sh` sigue modificado desde antes y quedó intacto.
-
-### @$go VALIDATION GATE obligatorio para todos los agentes
-**Type:** decision  
-**Project:** dfl  
-
-**Qué**: Se implementó un gate compacto obligatorio posterior a `@$go` para evitar onboarding falso, contexto viejo o confusión de perfil. Nadie queda operativo solo por declarar perfil: debe responder SOURCE, PROFILE, ACCESS, FIN y NO_TOUCH.
-
-**Diseño**: One-shot gate de máximo 6 líneas. Una corrección permitida; segundo fallo implica degradar a CONSULTOR o pedir EJECUTOR. No es una skill ni un loop infinito: es un handshake de protocolo.
-
-**Cambios**:
-- `/opt/dfl-context-proxy` commit `029a5a1` (`feat: require @$go validation gate`): agrega `protocol_update_alert` y `validation_gate` a `/go`, renderizado en `publish-amos-context.sh`, y test de contrato.
-- `/opt/amos-context-mirror` commit `f8f225b` (`docs: add @$go validation gate`): agrega alerta de actualización y gate en `AGENT_CAPABILITY_MATRIX.md`.
-
-**Evidencia**: `systemctl restart dfl-context-proxy` OK; `/go` muestra `protocol_update_alert` y `validation_gate`; `python3 tests/test_knl_contract.py` OK.
-
-**No tocado**: cambio preexistente en `/opt/dfl-context-proxy/engram-backup-offhost.sh` quedó intacto.
 
 ---
 
@@ -411,4 +415,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-08T23:52:17Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-08T23:58:11Z | La Garra → DFLghub/amos-context*
