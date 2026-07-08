@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-08T23:51:49Z  
+**Generated:** 2026-07-08T23:52:17Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -284,6 +284,26 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### CIERRE — @$go VALIDATION GATE publicado y auditoría de mirror ajustada
+**Type:** bugfix  
+**Project:** dfl  
+
+**Qué se hizo**: Se publicó el `@$go VALIDATION GATE` obligatorio para todos los agentes, junto con una `PROTOCOL UPDATE ALERT` visible al inicio del mirror público. El gate exige 5 líneas: SOURCE, PROFILE, ACCESS, FIN y NO_TOUCH. Una corrección permitida; segundo fallo degrada a CONSULTOR o pide EJECUTOR.
+
+**Commits**:
+- `/opt/amos-context-mirror` commit `f8f225b` (`docs: add @$go validation gate`) — agrega alerta y gate en `AGENT_CAPABILITY_MATRIX.md`.
+- `/opt/dfl-context-proxy` commit `029a5a1` (`feat: require @$go validation gate`) — agrega `protocol_update_alert` y `validation_gate` a `/go`, renderizado en `amos-context.md`, y test de contrato.
+- `/opt/dfl-context-proxy` commit `607f1af` (`fix: allow protected path mention in mirror`) — permite mencionar `/etc/dfl-secrets` como superficie protegida sin bloquear la publicación como secreto.
+
+**Evidencia**:
+- `systemctl restart dfl-context-proxy` OK.
+- `/go` muestra `protocol_update_alert` y `validation_gate`.
+- `python3 tests/test_knl_contract.py` OK.
+- GitHub raw `amos-context.md` generado `2026-07-08T23:51:49Z` contiene `PROTOCOL UPDATE ALERT` y `## @$go VALIDATION GATE`.
+- `push_mirror.sh` imprimió: `MIRROR: updated | commit 569d9c91d266d352d28070be79ee05764b7c6956 | 2026-07-08 23:51:50 +0000`.
+
+**No tocado**: `/opt/dfl-context-proxy/engram-backup-offhost.sh` sigue modificado desde antes y quedó intacto.
+
 ### @$go VALIDATION GATE obligatorio para todos los agentes
 **Type:** decision  
 **Project:** dfl  
@@ -299,37 +319,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 **Evidencia**: `systemctl restart dfl-context-proxy` OK; `/go` muestra `protocol_update_alert` y `validation_gate`; `python3 tests/test_knl_contract.py` OK.
 
 **No tocado**: cambio preexistente en `/opt/dfl-context-proxy/engram-backup-offhost.sh` quedó intacto.
-
-### CIERRE — acceso uniforme DFL por contrato, no por transporte
-**Type:** decision  
-**Project:** dfl  
-
-**Qué se hizo**: Se corrigió el onboarding/outboarding DFL para resolver el error conceptual: MCP no es el lobby uniforme, sino una puerta posible. `@$go` y `@$fin` quedan definidos como comandos uniformes por contrato semántico, con adaptadores por capacidad real de sesión.
-
-**Arquitectura resultante**:
-- EJECUTOR: shell/Engram/git; `@$go` vía `/go` + Engram; `@$fin` real con Gate 4B + `push_mirror.sh`.
-- ORQUESTADOR: fetch público si disponible; cierre por bitácora de relay.
-- CONSULTOR: snapshot pegado/memoria local; no intenta fetch bloqueado; cierre por `RESUMEN DE SESIÓN` para EJECUTOR.
-- El perfil se decide por capacidades observables de la sesión, no por marca de agente. Codex puede ser EJECUTOR si tiene shell+Engram; ChatGPT web queda CONSULTOR mientras su allowlist bloquee fetch.
-
-**Commits**:
-- `/opt/amos-context-mirror` commit `a941ad2` (`docs: clarify DFL access adapters`) y mirror generado commit `a9f5cc28c94b170feb19b069942715697a910ff1`.
-- `/opt/dfl-context-proxy` commit `fee934d8ae8dea19673adcfa402385a71408182d` (`feat: expose DFL access model`), pusheado a origin/main.
-
-**Evidencia**:
-- `systemctl restart dfl-context-proxy` OK.
-- `curl -s http://127.0.0.1:8091/health` OK.
-- `python3 tests/test_knl_contract.py` OK fuera del sandbox.
-- GitHub raw `amos-context.md` contiene `ACCESS MODEL — UNIFORM CONTRACT, DIFFERENT TRANSPORTS`.
-
-**Archivos afectados**:
-- `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`
-- `/opt/amos-context-mirror/agents/consultor.md`
-- `/opt/dfl-context-proxy/main.py`
-- `/opt/dfl-context-proxy/publish-amos-context.sh`
-- `/opt/dfl-context-proxy/tests/test_knl_contract.py`
-
-**No tocado**: `/opt/dfl-context-proxy/engram-backup-offhost.sh` seguía modificado antes de la tarea y quedó intacto.
 
 ---
 
@@ -422,4 +411,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-08T23:51:49Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-08T23:52:17Z | La Garra → DFLghub/amos-context*
