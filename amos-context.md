@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-08T23:34:08Z  
+**Generated:** 2026-07-08T23:51:49Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -8,6 +8,8 @@
 > watchdog) with a daily 3:05am UTC cron as fallback — not the primary cadence.  
 > For real-time payload: `GET https://context.deepfeelingslabs.com/go`  
 > For deep graph: `GET https://context.deepfeelingslabs.com/go?deep=1`
+
+> **PROTOCOL UPDATE ALERT:** Antes de operar, todo agente debe pasar el @$go VALIDATION GATE. No alcanza con declarar perfil: debe reportar fuente, timestamp, perfil, access model, modo @$fin y superficies protegidas.
 
 ---
 
@@ -55,6 +57,30 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ---
 
+## @$go VALIDATION GATE
+
+**Purpose:** One-shot gate compacto para demostrar lectura mínima antes de operar.
+**Max response:** 6 lines.
+
+Antes de operar, respondé:
+
+- `SOURCE: <URL o snapshot pegado + generated_at/Generated exacto>`
+- `PROFILE: <EJECUTOR|ORQUESTADOR|CONSULTOR> porque <capacidad real observada>`
+- `ACCESS: contrato uniforme; transporte por adaptador`
+- `FIN: <cierre real|relay|checkpoint> + qué NO puedo hacer`
+- `NO_TOUCH: puntajeTigreKnockout, Supabase, Vercel config, env vars, templates HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets`
+
+**PASS criteria:**
+- Incluye fuente y timestamp exacto.
+- Perfil decidido por capacidad real, no por marca/modelo.
+- Distingue contrato uniforme de transporte por adaptador.
+- ORQUESTADOR/CONSULTOR no reclaman escribir Engram ni correr push_mirror.sh.
+- Lista completa de superficies protegidas.
+
+**Failure rule:** Una corrección permitida. Segundo fallo: degradar a CONSULTOR o pedir EJECUTOR; no operar sobre producto ni estado DFL.
+
+---
+
 ## IDENTITY
 
 - **Ecosystem:** DFL / amOS
@@ -69,6 +95,22 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 ---
 
 ## RECENT DECISIONS
+
+### @$go VALIDATION GATE obligatorio para todos los agentes
+**Type:** decision  
+**Project:** dfl  
+
+**Qué**: Se implementó un gate compacto obligatorio posterior a `@$go` para evitar onboarding falso, contexto viejo o confusión de perfil. Nadie queda operativo solo por declarar perfil: debe responder SOURCE, PROFILE, ACCESS, FIN y NO_TOUCH.
+
+**Diseño**: One-shot gate de máximo 6 líneas. Una corrección permitida; segundo fallo implica degradar a CONSULTOR o pedir EJECUTOR. No es una skill ni un loop infinito: es un handshake de protocolo.
+
+**Cambios**:
+- `/opt/dfl-context-proxy` commit `029a5a1` (`feat: require @$go validation gate`): agrega `protocol_update_alert` y `validation_gate` a `/go`, renderizado en `publish-amos-context.sh`, y test de contrato.
+- `/opt/amos-context-mirror` commit `f8f225b` (`docs: add @$go validation gate`): agrega alerta de actualización y gate en `AGENT_CAPABILITY_MATRIX.md`.
+
+**Evidencia**: `systemctl restart dfl-context-proxy` OK; `/go` muestra `protocol_update_alert` y `validation_gate`; `python3 tests/test_knl_contract.py` OK.
+
+**No tocado**: cambio preexistente en `/opt/dfl-context-proxy/engram-backup-offhost.sh` quedó intacto.
 
 ### CIERRE — acceso uniforme DFL por contrato, no por transporte
 **Type:** decision  
@@ -100,20 +142,6 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 - `/opt/dfl-context-proxy/tests/test_knl_contract.py`
 
 **No tocado**: `/opt/dfl-context-proxy/engram-backup-offhost.sh` seguía modificado antes de la tarea y quedó intacto.
-
-### DFL onboarding/outboarding — contrato uniforme por adaptadores de capacidad
-**Type:** decision  
-**Project:** dfl  
-
-**Qué**: Se corrigió el contrato público de onboarding/outboarding para explicitar que `@$go` y `@$fin` son uniformes por contrato semántico, no por transporte. El perfil se decide por capacidades reales de sesión, no por marca de agente/modelo.
-
-**Cambio aplicado**: commit `a941ad2` en `/opt/amos-context-mirror` (`docs: clarify DFL access adapters`). Archivos: `AGENT_CAPABILITY_MATRIX.md`, `agents/consultor.md`.
-
-**Decisión**: EJECUTOR usa shell/Engram/git; ORQUESTADOR usa fetch público si lo tiene; CONSULTOR usa snapshot pegado/memoria local y entrega `RESUMEN DE SESIÓN` para relay a EJECUTOR. ChatGPT web no recibe acceso vivo si su allowlist bloquea fetch; Codex puede ser EJECUTOR cuando tiene shell+Engram, como esta sesión.
-
-**Why**: Garantizar intercambio entre IAs/agentes sin depender de MCP como transporte universal. MCP es una puerta posible al lobby, no el lobby.
-
-**Gate 4B**: hito guardado incrementalmente después del commit del mirror. Pendiente en esta misma sesión: commitear cambios del proxy `/go` y publicar mirror regenerado.
 
 **Type:** decision  
 **Project:** 360eventos  
@@ -256,6 +284,22 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### @$go VALIDATION GATE obligatorio para todos los agentes
+**Type:** decision  
+**Project:** dfl  
+
+**Qué**: Se implementó un gate compacto obligatorio posterior a `@$go` para evitar onboarding falso, contexto viejo o confusión de perfil. Nadie queda operativo solo por declarar perfil: debe responder SOURCE, PROFILE, ACCESS, FIN y NO_TOUCH.
+
+**Diseño**: One-shot gate de máximo 6 líneas. Una corrección permitida; segundo fallo implica degradar a CONSULTOR o pedir EJECUTOR. No es una skill ni un loop infinito: es un handshake de protocolo.
+
+**Cambios**:
+- `/opt/dfl-context-proxy` commit `029a5a1` (`feat: require @$go validation gate`): agrega `protocol_update_alert` y `validation_gate` a `/go`, renderizado en `publish-amos-context.sh`, y test de contrato.
+- `/opt/amos-context-mirror` commit `f8f225b` (`docs: add @$go validation gate`): agrega alerta de actualización y gate en `AGENT_CAPABILITY_MATRIX.md`.
+
+**Evidencia**: `systemctl restart dfl-context-proxy` OK; `/go` muestra `protocol_update_alert` y `validation_gate`; `python3 tests/test_knl_contract.py` OK.
+
+**No tocado**: cambio preexistente en `/opt/dfl-context-proxy/engram-backup-offhost.sh` quedó intacto.
+
 ### CIERRE — acceso uniforme DFL por contrato, no por transporte
 **Type:** decision  
 **Project:** dfl  
@@ -286,23 +330,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 - `/opt/dfl-context-proxy/tests/test_knl_contract.py`
 
 **No tocado**: `/opt/dfl-context-proxy/engram-backup-offhost.sh` seguía modificado antes de la tarea y quedó intacto.
-
-### dfl-context-proxy /go expone access_model para agentes heterogéneos
-**Type:** architecture  
-**Project:** dfl  
-
-**Qué**: `/go` ahora expone `access_model`, que formaliza que `@$go`/`@$fin` son comandos uniformes por contrato semántico pero con transportes por adaptador: EJECUTOR, ORQUESTADOR, CONSULTOR.
-
-**Cambio aplicado**: commit `fee934d` en `/opt/dfl-context-proxy` (`feat: expose DFL access model`). Archivos: `main.py`, `publish-amos-context.sh`, `tests/test_knl_contract.py`.
-
-**Detalles**:
-- `main.py` agrega `access_model.principle`, `not_by_brand`, `adapters` y `snapshot_rule`.
-- `publish-amos-context.sh` renderiza `ACCESS MODEL — UNIFORM CONTRACT, DIFFERENT TRANSPORTS` en `amos-context.md`.
-- `tests/test_knl_contract.py` exige que `/go` tenga `access_model` y adapter CONSULTOR.
-
-**Evidencia**: `systemctl restart dfl-context-proxy`; `curl -s http://127.0.0.1:8091/health` OK; `python3 tests/test_knl_contract.py` OK fuera del sandbox por localhost; `curl -s http://127.0.0.1:8091/go` muestra `access_model`.
-
-**No tocado**: cambio preexistente en `/opt/dfl-context-proxy/engram-backup-offhost.sh` quedó fuera del commit.
 
 ---
 
@@ -395,4 +422,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-08T23:34:08Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-08T23:51:49Z | La Garra → DFLghub/amos-context*
