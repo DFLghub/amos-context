@@ -7,6 +7,10 @@ intentos fallidos. Un agente que adivina, sí.
 Regla dura: **si tu diagnóstico dice que no tenés una capacidad, no la intentes.** No pruebes
 "a ver si funciona" — reportá tu perfil y seguí el fallback de esa fila.
 
+Principio de lobby: `@$go` y `@$fin` son uniformes por **contrato semántico**, no por
+transporte. Todos entran al mismo lobby informacional, pero cada perfil usa el adaptador que
+sus capacidades reales permiten: shell/Engram/git, fetch público, o snapshot de chat con relay.
+
 ---
 
 ## PASO 0 — AUTO-DIAGNÓSTICO (NECESARIO antes de cualquier acción)
@@ -78,22 +82,22 @@ propongas un quinto espejo "a ver si ese sí". El bloqueo es de sesión/allowlis
 
 ---
 
-## CONSULTOR (ChatGPT, Codex, etc.)
+## CONSULTOR (perfil por capacidad, no por marca)
 
-`@$go`: NO (imposible — allowlist de red de OpenAI)
+`@$go`: NO directo (sin brazo ni fetch confiable)
 `@$fin`: PARTIAL (reporta, espera EJECUTOR)
 
 Cómo funciona:
-- Jorge proporciona "memoria local": campos mínimos (`identity`, `recent_decisions`,
-  `active_constraints`, `pending`)
+- Jorge proporciona "memoria local" o snapshot fechado: campos mínimos (`identity`,
+  `recent_decisions`, `active_constraints`, `pending`, `SESSION CONTRACT`)
 - CONSULTOR lee eso, trabaja desde ahí
-- Al cerrar: reporta qué hizo, genera un "checkpoint local"
+- Al cerrar: reporta qué hizo, genera un `RESUMEN DE SESIÓN` listo para relay
 - EJECUTOR luego hace `@$fin` real (archiva, cierra, pushea)
 
-**Estado: FINAL (no provisional).** No es un fallback de último recurso a mejorar más
-adelante con un bridge, un MCP server o un Custom GPT Action — es la arquitectura correcta y
-definitiva para este perfil. La investigación de canales alternativos (ver tabla arriba) ya se
-hizo y se cerró.
+**Estado: FINAL para sesiones sin brazo ni fetch confiable.** No es un fallback de último
+recurso a mejorar con un bridge público genérico. Si en el futuro una sesión concreta recibe
+una herramienta real alcanzable (por ejemplo una Action/connector aprobado), esa sesión deja
+de ser CONSULTOR y se re-diagnostica como ORQUESTADOR o EJECUTOR según corresponda.
 
 ---
 
@@ -103,7 +107,7 @@ hizo y se cerró.
 |---|---|---|---|---|---|
 | **EJECUTOR** | FULL | `curl`/fetch a `/go` (o el hook `SessionStart` ya lo hizo) + `mem_search` + operar directo | CIERRE (FULL) | `mem_save` resumen + Gate 4B archivado + `bash push_mirror.sh` + reportar la línea `MIRROR: ...` | Degradar a ORQUESTADOR: avisar explícito a Jorge "perdí el brazo, sigo como ORQUESTADOR" y producir bitácora de relay |
 | **ORQUESTADOR** | PARTIAL | Fetch de Fuente A (`amos-context.md`) o Fuente B (`/go`) vía HTTP, solo lectura, sin escribir a Engram | PARTIAL (relay) | Producir **bitácora semántica de relay** para que un EJECUTOR corra el Gate 4B real. Nunca intentar `bash`/`push_mirror.sh` | Degradar a CONSULTOR: pedirle a Jorge que pegue el contenido |
-| **CONSULTOR** | NONE | **No intentar.** Decir explícitamente: *"No puedo hacer @$go, necesito que me pegues `amos-context.md` o que un EJECUTOR/ORQUESTADOR opere por mí."* | CHECKPOINT (relay) | **Resumen estructurado** en texto para que Jorge lo lleve a una sesión EJECUTOR | — ya es el piso, no hay más abajo |
+| **CONSULTOR** | NONE directo | **No intentar fetch bloqueado.** Usar snapshot pegado/memoria local de sesión y declarar fecha/fuente del snapshot. | CHECKPOINT (relay) | **Resumen estructurado** en texto para que Jorge lo lleve a una sesión EJECUTOR | — ya es el piso, no hay más abajo |
 
 ---
 

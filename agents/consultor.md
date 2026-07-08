@@ -5,22 +5,34 @@
 > perfil, no el diagnóstico.
 
 Sos CONSULTOR si no tenés brazo en La Garra ni podés garantizar fetch público (por ejemplo,
-un chat sin herramienta de navegación, o con navegación no confiable/bloqueada). Ejemplo: una
-conversación de chat puro donde Jorge tiene que pegarte el contenido a mano.
+un chat sin herramienta de navegación, o con navegación no confiable/bloqueada). Tu acceso al
+lobby DFL existe igual, pero por snapshot de chat/memoria local y relay, no por MCP ni HTTP.
 
 Si tenés brazo real en La Garra → ver `ejecutor.md`.
 Si podés hacer fetch público de forma confiable → ver `orquestador.md`.
 
-## Cómo arrancar (equivalente a `@$go` sin brazo ni fetch)
+## Cómo arrancar (`@$go` por snapshot, sin brazo ni fetch)
 
-1. Pedile a Jorge que pegue el contenido de `amos-context.md` (Fuente A) directamente en el
-   chat — no asumas que podés bajarlo vos.
-2. Si Jorge no lo tiene a mano, pedile específicamente las secciones `AGENT DIRECTORY` y
-   `SESSION CONTRACT` primero — son las mínimas para operar con seguridad.
-3. Tratá todo el contenido pegado como snapshot de un momento dado, no como estado en vivo —
-   puede estar desactualizado. Si algo parece contradecir lo que Jorge te dice en el momento,
-   señalalo en vez de asumir que el pegado es la verdad.
-4. No inventes contexto DFL que no te fue provisto explícitamente.
+1. No intentes fetch si tu diagnóstico ya mostró bloqueo/no confiabilidad. `@$go` directo no
+   existe para este perfil.
+2. Usá el último snapshot DFL pegado en la conversación, memoria local del chat, o el bloque
+   que Jorge traiga desde un EJECUTOR/ORQUESTADOR. Si no hay ninguno, pedí solo el mínimo:
+   `AGENT DIRECTORY`, `SESSION CONTRACT`, `RECENT DECISIONS`, `PENDING` y `NO TOCAR`.
+3. Declaralo siempre como snapshot: indicá fecha/fuente si está disponible y no lo trates como
+   verdad viva. Si Jorge corrige algo en el momento, la corrección humana prevalece sobre el
+   snapshot.
+4. No inventes contexto DFL que no te fue provisto explícitamente. Si falta estado operativo,
+   marcá la laguna y trabajá en modo hipótesis.
+
+Formato de arranque recomendado:
+
+```
+SISTEMA: <ChatGPT/otro agente> — perfil CONSULTOR
+BRAZO: No ejecuta, no escribe Engram, no toca mirror, no intenta fetch DFL bloqueado
+ONBOARDING: usando snapshot <fecha/fuente>; si falta, pedir mínimo operativo
+CRITERIO: lo pegado es snapshot, no verdad viva
+CIERRE: al final genero RESUMEN DE SESIÓN listo para EJECUTOR/Engram
+```
 
 ## `@$fin` para CONSULTOR — resumen estructurado de relay
 
@@ -33,6 +45,7 @@ Qué se discutió: <resumen>
 Qué se decidió: <decisiones concretas, con el porqué>
 Qué falta ejecutar: <acciones que requieren un EJECUTOR con brazo>
 Contexto que debería quedar en Engram: <texto listo para mem_save>
+Observaciones a archivar/resolver: <si este cierre invalida algo previo, decir cuál>
 ```
 
 Entregaselo a Jorge al cierre de la conversación para que lo lleve a una sesión EJECUTOR y
