@@ -76,14 +76,24 @@ hosting público nuevo va a funcionar** — dominio propio, GitHub raw, un CDN d
 reputación (jsDelivr) y una app en un dominio genérico (`vercel.app`) fallaron igual. No
 propongas un quinto espejo "a ver si ese sí". El bloqueo es de sesión/allowlist, no de sitio.
 
-**Únicas vías que podrían funcionar de verdad para este tipo de sesión** (requieren que Jorge
-las configure del lado de ChatGPT, no son algo que un agente pueda activar solo):
-1. **Custom GPT Action** con schema OpenAPI apuntando a `/go` — el fetch de una Action
-   registrada no pasa por el filtro de `web.run`, es un mecanismo distinto.
-2. **MCP Connector** de ChatGPT (si el plan de Jorge lo soporta) apuntando a un servidor MCP
-   de contexto DFL — mismo principio: canal autorizado explícito, no navegación libre.
-3. Si ninguna de las dos aplica: **CONSULTOR/copy-paste no es un fallback de último recurso
-   acá — es la única vía real**, y está bien que lo sea. No es una falla del protocolo.
+---
+
+## CONSULTOR (ChatGPT, Codex, etc.)
+
+`@$go`: NO (imposible — allowlist de red de OpenAI)
+`@$fin`: PARTIAL (reporta, espera EJECUTOR)
+
+Cómo funciona:
+- Jorge proporciona "memoria local": campos mínimos (`identity`, `recent_decisions`,
+  `active_constraints`, `pending`)
+- CONSULTOR lee eso, trabaja desde ahí
+- Al cerrar: reporta qué hizo, genera un "checkpoint local"
+- EJECUTOR luego hace `@$fin` real (archiva, cierra, pushea)
+
+**Estado: FINAL (no provisional).** No es un fallback de último recurso a mejorar más
+adelante con un bridge, un MCP server o un Custom GPT Action — es la arquitectura correcta y
+definitiva para este perfil. La investigación de canales alternativos (ver tabla arriba) ya se
+hizo y se cerró.
 
 ---
 
