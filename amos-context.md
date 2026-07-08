@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-08T00:31:31Z  
+**Generated:** 2026-07-08T00:40:38Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -43,13 +43,37 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 - **Ecosystem:** DFL / amOS
 - **Grounding anchor:** La Garra — 67.205.166.199 (DigitalOcean NYC1)
-- **Source A (this file):** https://raw.githubusercontent.com/DFLghub/amos-context/main/amos-context.md
-- **Source B (live JSON):** https://context.deepfeelingslabs.com/go
+- **Source A — PRIMARY (this file):** https://raw.githubusercontent.com/DFLghub/amos-context/main/amos-context.md
+  - PRIMARY — probá esto primero, siempre. GitHub raw está allowlisteado en la gran mayoría de sandboxes de agentes LLM (lo necesitan pip/npm/git); un dominio custom como context.deepfeelingslabs.com casi nunca lo está.
+- **Source B — SECONDARY (live JSON):** https://context.deepfeelingslabs.com/go
+  - SECONDARY — payload JSON vivo (decisiones/constraints/pending/KNL), más rico que el markdown estático de Source A. Intentalo después de Source A, y solo si tu sandbox permite egress a dominios custom (no solo a github.com).
 - **Restriction:** Este payload es suficiente para operar. PROHIBIDO solicitar MASTER_INDEX, MASTER_BITACORA o archivos adicionales de /opt/dfl-knowledge/ después de recibir este payload. Para grafo completo: GET /go?deep=1
+- **Sandbox network note:** Muchos sandboxes de agentes LLM restringen el egress HTTP a un allowlist que incluye github.com/raw.githubusercontent.com pero NO dominios custom como context.deepfeelingslabs.com. Si el fetch a Source B falla, cuelga o hace timeout, no es un error del servicio — es una restricción de red de tu entorno. Seguí operando con Source A (amos-context.md), que ya tenés si estás leyendo esto. Si reportás el bloqueo, decilo así de claro: 'No pude alcanzar context.deepfeelingslabs.com (probable restricción de egress del sandbox); usando amos-context.md (GitHub raw) como fuente operativa.'
 
 ---
 
 ## RECENT DECISIONS
+
+### @$go/@$fin uniformidad multi-agente — AGENT_CAPABILITY_MATRIX + fix generador vs artefacto
+**Type:** decision  
+**Project:** dfl  
+
+**Qué**: Resuelta la asimetría de capacidades entre agentes (CC/Codex con bash vs ChatGPT/Gemini sin bash vs chat puro) que hacía fallar @$go/@$fin silenciosamente y quemaba tokens de Jorge en intentos imposibles.
+
+**Descubrimiento arquitectónico clave**: `amos-context.md` (Fuente A, el "Constitution-like" doc que cualquier agente nuevo lee primero) es 100% auto-generado — `publish-amos-context.sh` hace `git reset --hard origin/main` sobre `/opt/amos-context-mirror` y luego sobreescribe `amos-context.md` completo desde un template Python hardcodeado en el propio script, que renderiza el JSON servido por `/opt/dfl-context-proxy/main.py`. Editar `amos-context.md` a mano y comitearlo NO sobrevive — el próximo `push_mirror.sh` (cron 3:05am UTC, @$fin de cualquier EJECUTOR, o watchdog) lo pisa de vuelta. Solo sobreviven ediciones manuales a `agents/*.md` (los anexos) y a archivos nuevos que el script nunca toca, porque `publish-amos-context.sh` únicamente hace `git add amos-context.md` — nada más.
+
+**Solución implementada** (3 commits):
+1. `DFLghub/amos-context` commit `241ecec`: `AGENT_CAPABILITY_MATRIX.md` nuevo (barrera de entrada única, Paso 0 binario: bash+git+Engram→EJECUTOR, sin bash pero fetch confiable→ORQUESTADOR, ninguno→CONSULTOR) + pointer de una línea agregado al inicio de `agents/{ejecutor,orquestador,consultor}.md` para no duplicar el diagnóstico 3 veces.
+2. `DFLghub/dfl-context-proxy` commit `a5e4868`: editado el generador real (no el archivo generado) — `main.py` (`agent_directory.step_0`, `capability_matrix_url`, y por perfil `go_capability`/`fin_mode`/`fallback_if_capability_lost`) + `publish-amos-context.sh` (tabla AGENT DIRECTORY ahora incluye columnas `@$go`/`@$fin` y pointer a la matriz). Servicio `dfl-context-proxy` reiniciado para levantar el cambio de `main.py`.
+3. Verificado en vivo: `push_mirror.sh` corrido dos veces — primera vez `updated` (commit `501112f`), segunda vez `unchanged` (dedup por hash correcto, sin duplicar commits). `/go` público y `amos-context.md` público reflejan el cambio; `AGENT_CAPABILITY_MATRIX.md` accesible por raw.githubusercontent.com.
+
+**Patrón reutilizable (amOS learning)**: cuando un problema pide "editar el doc X", primero verificar si X es fuente o es artefacto derivado. Si es derivado, localizar el generador real y editarlo ahí — de lo contrario el fix es cosmético y se revierte solo en el próximo ciclo de regeneración. Aplica a cualquier futuro "documento espejo" en el ecosistema DFL (KNL, graph_context, etc.).
+
+**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/amos-context-mirror/agents/*.md`, `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh`.
+
+**No se tocó**: el archivo de secretos protegido bajo /etc (ruta omitida acá a propósito — mencionarla textual dispara el auditor anti-leak de publish-amos-context.sh como falso positivo), env vars, Supabase, `puntajeTigreKnockout`. `engram-backup-offhost.sh` tenía cambios preexistentes sin comitear ajenos a esta misión — no se tocó ni se comiteó.
+
+**Nota operativa**: si necesitás referenciar esa ruta protegida en una obs de Engram a futuro, evitá escribirla literal — cualquier mención textual que llegue a `recent_decisions`/`recent_engram_dfl` del payload `/go` hace abortar `publish-amos-context.sh` (bloqueó un `push_mirror.sh` real el 2026-07-08 hasta que se redactó esta obs).
 
 **Type:** decision  
 **Project:** 360eventos  
@@ -104,18 +128,6 @@ Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió 
 **Where**: `/opt/dfl-context-proxy/push_mirror.sh`, `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh`, `/opt/amos-context-mirror/agents/ejecutor.md` (commit e9760d1, pusheado).
 
 **Verificado en vivo**: servicio reiniciado sin sesiones concurrentes activas, `/go` sirviendo `agent_directory`+`checkpoint_mode`+texto corregido, mirror publicado con SESSION CONTRACT corregido (commit `c28e036`, `2026-07-03 22:19:21 UTC`), coincide exactamente con lo que `push_mirror.sh` reportó por stdout.
-
-### ejecutor.md — nota de traducción de tool names (CC vs Codex)
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Agregada nota de traducción en `agents/ejecutor.md` (repo amos-context): CC usa `mem_save`/`mem_search`/`mem_update`, Codex (vía `engram-mcp`) usa `save_memory`/`search_memory`/`update_memory`. Mismo Gate 4B, mismos pasos, distinto nombre de tool.
-
-**Why**: El documento usaba nombres de CC como si fueran universales. Un EJECUTOR-Codex real que lo lea sin esta nota buscaría tools que no existen bajo esos nombres.
-
-**Where**: `/opt/amos-context-mirror/agents/ejecutor.md`, commit `a9667c9` (pusheado a DFLghub/amos-context). `push_mirror.sh` corrido y confirmado no-op — correcto, ejecutor.md no es parte del payload `/go`, se publica por commit directo al repo, no por regeneración del mirror.
-
-**Learned**: No todo lo que vive en el repo `amos-context` pasa por `push_mirror.sh` — los anexos `agents/*.md` son estáticos y se versionan con git normal; solo `amos-context.md` se regenera desde el payload `/go`.
 
 ---
 
@@ -220,6 +232,27 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### @$go/@$fin uniformidad multi-agente — AGENT_CAPABILITY_MATRIX + fix generador vs artefacto
+**Type:** decision  
+**Project:** dfl  
+
+**Qué**: Resuelta la asimetría de capacidades entre agentes (CC/Codex con bash vs ChatGPT/Gemini sin bash vs chat puro) que hacía fallar @$go/@$fin silenciosamente y quemaba tokens de Jorge en intentos imposibles.
+
+**Descubrimiento arquitectónico clave**: `amos-context.md` (Fuente A, el "Constitution-like" doc que cualquier agente nuevo lee primero) es 100% auto-generado — `publish-amos-context.sh` hace `git reset --hard origin/main` sobre `/opt/amos-context-mirror` y luego sobreescribe `amos-context.md` completo desde un template Python hardcodeado en el propio script, que renderiza el JSON servido por `/opt/dfl-context-proxy/main.py`. Editar `amos-context.md` a mano y comitearlo NO sobrevive — el próximo `push_mirror.sh` (cron 3:05am UTC, @$fin de cualquier EJECUTOR, o watchdog) lo pisa de vuelta. Solo sobreviven ediciones manuales a `agents/*.md` (los anexos) y a archivos nuevos que el script nunca toca, porque `publish-amos-context.sh` únicamente hace `git add amos-context.md` — nada más.
+
+**Solución implementada** (3 commits):
+1. `DFLghub/amos-context` commit `241ecec`: `AGENT_CAPABILITY_MATRIX.md` nuevo (barrera de entrada única, Paso 0 binario: bash+git+Engram→EJECUTOR, sin bash pero fetch confiable→ORQUESTADOR, ninguno→CONSULTOR) + pointer de una línea agregado al inicio de `agents/{ejecutor,orquestador,consultor}.md` para no duplicar el diagnóstico 3 veces.
+2. `DFLghub/dfl-context-proxy` commit `a5e4868`: editado el generador real (no el archivo generado) — `main.py` (`agent_directory.step_0`, `capability_matrix_url`, y por perfil `go_capability`/`fin_mode`/`fallback_if_capability_lost`) + `publish-amos-context.sh` (tabla AGENT DIRECTORY ahora incluye columnas `@$go`/`@$fin` y pointer a la matriz). Servicio `dfl-context-proxy` reiniciado para levantar el cambio de `main.py`.
+3. Verificado en vivo: `push_mirror.sh` corrido dos veces — primera vez `updated` (commit `501112f`), segunda vez `unchanged` (dedup por hash correcto, sin duplicar commits). `/go` público y `amos-context.md` público reflejan el cambio; `AGENT_CAPABILITY_MATRIX.md` accesible por raw.githubusercontent.com.
+
+**Patrón reutilizable (amOS learning)**: cuando un problema pide "editar el doc X", primero verificar si X es fuente o es artefacto derivado. Si es derivado, localizar el generador real y editarlo ahí — de lo contrario el fix es cosmético y se revierte solo en el próximo ciclo de regeneración. Aplica a cualquier futuro "documento espejo" en el ecosistema DFL (KNL, graph_context, etc.).
+
+**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/amos-context-mirror/agents/*.md`, `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh`.
+
+**No se tocó**: el archivo de secretos protegido bajo /etc (ruta omitida acá a propósito — mencionarla textual dispara el auditor anti-leak de publish-amos-context.sh como falso positivo), env vars, Supabase, `puntajeTigreKnockout`. `engram-backup-offhost.sh` tenía cambios preexistentes sin comitear ajenos a esta misión — no se tocó ni se comiteó.
+
+**Nota operativa**: si necesitás referenciar esa ruta protegida en una obs de Engram a futuro, evitá escribirla literal — cualquier mención textual que llegue a `recent_decisions`/`recent_engram_dfl` del payload `/go` hace abortar `publish-amos-context.sh` (bloqueó un `push_mirror.sh` real el 2026-07-08 hasta que se redactó esta obs).
+
 ### Session summary: futbolweb-app
 **Type:** session_summary  
 **Project:** futbolweb-app  
@@ -246,15 +279,6 @@ Sesión CC en `/opt/futbolweb` (VM2/La Garra) que arrancó con `@$go` (bootstrap
 
 ## Relevant Files
 - Ninguno modificado en `/opt/futbolweb` en esta sesión — trabajo de contenido fue en `/opt/dfl-knowledge/projects/fof/cases/360eventos/` (sesión previa) y Engram (obs #174, #177).
-
-**Type:** decision  
-**Project:** 360eventos  
-
-**Qué**: Jorge confirmó que ya envió el link de https://360eventos.vercel.app a Rubén, explícitamente para que "abra y mire el demo funcional (agMVP) — un producto mínimo viable PERO FUNCIONAL". Lo enmarca como "Prueba" (test), no como oferta comercial.
-
-**Impacto en Price Authority**: esto NO es una confirmación de Nivel 0B (catálogo comercial oficialmente aprobado). Sigue pendiente. El catálogo de 8 servicios reales en Supabase sigue siendo Nivel 0A (real vivo, válido para demo), usado aquí explícitamente en modo demo/prueba para Rubén, consistente con la política definida en FOF_CASE_01_360EVENTOS_PRICE_AUTHORITY_AND_SERVICE_TIERS.md (ready_to_send demo, no comercial).
-
-**Why**: Jorge quiere que quede claro que el criterio de éxito ahora mismo es "MVP funcional demostrable", no "catálogo comercial validado". No se requiere ninguna acción adicional de mi parte — es una actualización de estado del Caso 01, no una nueva misión.
 
 ---
 
@@ -347,4 +371,4 @@ Sesión CC en `/opt/futbolweb` (VM2/La Garra) que arrancó con `@$go` (bootstrap
 
 ---
 
-*Mirror auto-generated 2026-07-08T00:31:31Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-08T00:40:38Z | La Garra → DFLghub/amos-context*
