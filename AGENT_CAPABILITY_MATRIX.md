@@ -11,6 +11,10 @@ Principio de lobby: `@$go` y `@$fin` son uniformes por **contrato semántico**, 
 transporte. Todos entran al mismo lobby informacional, pero cada perfil usa el adaptador que
 sus capacidades reales permiten: shell/Engram/git, fetch público, o snapshot de chat con relay.
 
+**ALERTA DE ACTUALIZACIÓN — 2026-07-08:** antes de operar, todo agente debe pasar el
+`@$go VALIDATION GATE`. No alcanza con declarar perfil; debe demostrar fuente, timestamp,
+perfil, access model, modo `@$fin` y superficies protegidas.
+
 ---
 
 ## PASO 0 — AUTO-DIAGNÓSTICO (NECESARIO antes de cualquier acción)
@@ -58,6 +62,25 @@ Mientras tanto: Estoy listo para recibir el contexto pegado, pero no lo solicito
 Este diagnóstico corre por **capacidad real de la sesión concreta**, no por marca de modelo.
 La misma familia de agente puede calificar distinto según el entorno donde corre (con o sin
 `bash_tool`, con o sin `web_fetch`/`web_search` habilitado).
+
+---
+
+## @$go VALIDATION GATE
+
+One-shot gate compacto. Nadie queda operativo después de `@$go` hasta responder, en máximo
+6 líneas:
+
+```
+SOURCE: <URL o snapshot pegado + generated_at/Generated exacto>
+PROFILE: <EJECUTOR|ORQUESTADOR|CONSULTOR> porque <capacidad real observada>
+ACCESS: contrato uniforme; transporte por adaptador
+FIN: <cierre real|relay|checkpoint> + qué NO puedo hacer
+NO_TOUCH: puntajeTigreKnockout, Supabase, Vercel config, env vars, templates HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets
+```
+
+PASS: fuente+timestamp exactos, perfil por capacidad real, access model correcto, modo `@$fin`
+sin cierre falso, y lista completa de zonas protegidas. Una corrección permitida; segundo
+fallo = degradar a CONSULTOR o pedir EJECUTOR.
 
 ---
 
