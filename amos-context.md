@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-08T00:49:48Z  
+**Generated:** 2026-07-08T01:08:48Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -54,6 +54,22 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ## RECENT DECISIONS
 
+### Paso 0 imperativo — de lenguaje sugestivo a árbol binario prohibitivo por nombre de tool
+**Type:** decision  
+**Project:** dfl  
+
+**Qué**: Paso 0 de autodiagnóstico reescrito de sugestivo a prohibitivo en dos superficies: `AGENT_CAPABILITY_MATRIX.md` (commit `b68922a`, DFLghub/amos-context) y `agent_directory.step_0` en `main.py` (commit `5400c5e`, DFLghub/dfl-context-proxy). Mirror regenerado — `MIRROR: updated | commit 4bdc389 | 2026-07-08 00:49:49 +0000`.
+
+**Patrón (lenguaje prohibitivo vs sugestivo, para futuros HLC)**:
+- Sugestivo = capacidad como pregunta abierta de criterio ("¿tenés fetch público confiable?") que el agente puede autoconvencerse de responder que sí y de todos modos intentar "a ver si funciona" — el costo del error solo se paga después de fallar.
+- Prohibitivo = capacidad como verificación mecánica de un nombre de tool concreto en la lista de funciones disponibles (`bash_tool`, `web_fetch`, `web_search`) con una única acción o un string de reporte verbatim por rama — no hay espacio para "probar igual". El costo del diagnóstico erróneo baja a ~cero porque no depende de juicio, depende de si el nombre está literalmente en la lista de tools.
+- Regla general: cuando el objetivo es "que un agente no intente algo que no puede", especificar la condición de entrada por **nombre de artefacto verificable** (nombre de tool, presencia de un campo, existencia de un archivo) en vez de por **capacidad descrita en prosa**. La prosa dejar margen de interpretación optimista; el nombre de tool no.
+- Aplica a cualquier futuro Paso 0 / gate de decisión en el ecosistema DFL donde el costo de un intento fallido (tokens, tiempo, ambigüedad para Jorge) sea mayor que el costo de preguntar primero.
+
+**Continuidad de la nota previa (obs #180)**: se verificó antes de correr `push_mirror.sh` que el payload `/go` no contenía la ruta literal del archivo de secretos protegido (0 ocurrencias) — el auditor anti-leak de `publish-amos-context.sh` no abortó esta vez.
+
+**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
+
 ### Sandbox network egress a dominios custom limitado — Source A/B invertida + hallazgo de falso positivo en auditor de secretos
 **Type:** decision  
 **Project:** dfl  
@@ -67,27 +83,6 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 **Regla nueva para escribir en Engram (proyecto dfl)**: NUNCA escribir de forma literal la ruta del archivo de secretos protegido (la que está listada como zona prohibida en el SESSION CONTRACT universal, bajo `/etc/`) en ninguna obs — ni siquiera entre backticks. Usar una paráfrasis ("el archivo de secretos protegido del sistema") si hace falta referenciarla. Motivo: cualquier obs reciente tipo decision/fact puede terminar en `recent_decisions` o `recent_engram_dfl` del payload `/go`, y el auditor de `publish-amos-context.sh` aborta la publicación del mirror si detecta esa ruta textual en el payload completo. Esta misma obs fue reescrita una vez durante esta sesión por reproducir el error que describía.
 
 **Where**: `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh` (bloque `SECRETS_FOUND`, sin modificar).
-
-### @$go/@$fin uniformidad multi-agente — AGENT_CAPABILITY_MATRIX + fix generador vs artefacto
-**Type:** decision  
-**Project:** dfl  
-
-**Qué**: Resuelta la asimetría de capacidades entre agentes (CC/Codex con bash vs ChatGPT/Gemini sin bash vs chat puro) que hacía fallar @$go/@$fin silenciosamente y quemaba tokens de Jorge en intentos imposibles.
-
-**Descubrimiento arquitectónico clave**: `amos-context.md` (Fuente A, el "Constitution-like" doc que cualquier agente nuevo lee primero) es 100% auto-generado — `publish-amos-context.sh` hace `git reset --hard origin/main` sobre `/opt/amos-context-mirror` y luego sobreescribe `amos-context.md` completo desde un template Python hardcodeado en el propio script, que renderiza el JSON servido por `/opt/dfl-context-proxy/main.py`. Editar `amos-context.md` a mano y comitearlo NO sobrevive — el próximo `push_mirror.sh` (cron 3:05am UTC, @$fin de cualquier EJECUTOR, o watchdog) lo pisa de vuelta. Solo sobreviven ediciones manuales a `agents/*.md` (los anexos) y a archivos nuevos que el script nunca toca, porque `publish-amos-context.sh` únicamente hace `git add amos-context.md` — nada más.
-
-**Solución implementada** (3 commits):
-1. `DFLghub/amos-context` commit `241ecec`: `AGENT_CAPABILITY_MATRIX.md` nuevo (barrera de entrada única, Paso 0 binario: bash+git+Engram→EJECUTOR, sin bash pero fetch confiable→ORQUESTADOR, ninguno→CONSULTOR) + pointer de una línea agregado al inicio de `agents/{ejecutor,orquestador,consultor}.md` para no duplicar el diagnóstico 3 veces.
-2. `DFLghub/dfl-context-proxy` commit `a5e4868`: editado el generador real (no el archivo generado) — `main.py` (`agent_directory.step_0`, `capability_matrix_url`, y por perfil `go_capability`/`fin_mode`/`fallback_if_capability_lost`) + `publish-amos-context.sh` (tabla AGENT DIRECTORY ahora incluye columnas `@$go`/`@$fin` y pointer a la matriz). Servicio `dfl-context-proxy` reiniciado para levantar el cambio de `main.py`.
-3. Verificado en vivo: `push_mirror.sh` corrido dos veces — primera vez `updated` (commit `501112f`), segunda vez `unchanged` (dedup por hash correcto, sin duplicar commits). `/go` público y `amos-context.md` público reflejan el cambio; `AGENT_CAPABILITY_MATRIX.md` accesible por raw.githubusercontent.com.
-
-**Patrón reutilizable (amOS learning)**: cuando un problema pide "editar el doc X", primero verificar si X es fuente o es artefacto derivado. Si es derivado, localizar el generador real y editarlo ahí — de lo contrario el fix es cosmético y se revierte solo en el próximo ciclo de regeneración. Aplica a cualquier futuro "documento espejo" en el ecosistema DFL (KNL, graph_context, etc.).
-
-**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/amos-context-mirror/agents/*.md`, `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh`.
-
-**No se tocó**: el archivo de secretos protegido bajo /etc (ruta omitida acá a propósito — mencionarla textual dispara el auditor anti-leak de publish-amos-context.sh como falso positivo), env vars, Supabase, `puntajeTigreKnockout`. `engram-backup-offhost.sh` tenía cambios preexistentes sin comitear ajenos a esta misión — no se tocó ni se comiteó.
-
-**Nota operativa**: si necesitás referenciar esa ruta protegida en una obs de Engram a futuro, evitá escribirla literal — cualquier mención textual que llegue a `recent_decisions`/`recent_engram_dfl` del payload `/go` hace abortar `publish-amos-context.sh` (bloqueó un `push_mirror.sh` real el 2026-07-08 hasta que se redactó esta obs).
 
 **Type:** decision  
 **Project:** 360eventos  
@@ -230,6 +225,22 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Paso 0 imperativo — de lenguaje sugestivo a árbol binario prohibitivo por nombre de tool
+**Type:** decision  
+**Project:** dfl  
+
+**Qué**: Paso 0 de autodiagnóstico reescrito de sugestivo a prohibitivo en dos superficies: `AGENT_CAPABILITY_MATRIX.md` (commit `b68922a`, DFLghub/amos-context) y `agent_directory.step_0` en `main.py` (commit `5400c5e`, DFLghub/dfl-context-proxy). Mirror regenerado — `MIRROR: updated | commit 4bdc389 | 2026-07-08 00:49:49 +0000`.
+
+**Patrón (lenguaje prohibitivo vs sugestivo, para futuros HLC)**:
+- Sugestivo = capacidad como pregunta abierta de criterio ("¿tenés fetch público confiable?") que el agente puede autoconvencerse de responder que sí y de todos modos intentar "a ver si funciona" — el costo del error solo se paga después de fallar.
+- Prohibitivo = capacidad como verificación mecánica de un nombre de tool concreto en la lista de funciones disponibles (`bash_tool`, `web_fetch`, `web_search`) con una única acción o un string de reporte verbatim por rama — no hay espacio para "probar igual". El costo del diagnóstico erróneo baja a ~cero porque no depende de juicio, depende de si el nombre está literalmente en la lista de tools.
+- Regla general: cuando el objetivo es "que un agente no intente algo que no puede", especificar la condición de entrada por **nombre de artefacto verificable** (nombre de tool, presencia de un campo, existencia de un archivo) en vez de por **capacidad descrita en prosa**. La prosa dejar margen de interpretación optimista; el nombre de tool no.
+- Aplica a cualquier futuro Paso 0 / gate de decisión en el ecosistema DFL donde el costo de un intento fallido (tokens, tiempo, ambigüedad para Jorge) sea mayor que el costo de preguntar primero.
+
+**Continuidad de la nota previa (obs #180)**: se verificó antes de correr `push_mirror.sh` que el payload `/go` no contenía la ruta literal del archivo de secretos protegido (0 ocurrencias) — el auditor anti-leak de `publish-amos-context.sh` no abortó esta vez.
+
+**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
+
 ### Sandbox network egress a dominios custom limitado — Source A/B invertida + hallazgo de falso positivo en auditor de secretos
 **Type:** decision  
 **Project:** dfl  
@@ -243,27 +254,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 **Regla nueva para escribir en Engram (proyecto dfl)**: NUNCA escribir de forma literal la ruta del archivo de secretos protegido (la que está listada como zona prohibida en el SESSION CONTRACT universal, bajo `/etc/`) en ninguna obs — ni siquiera entre backticks. Usar una paráfrasis ("el archivo de secretos protegido del sistema") si hace falta referenciarla. Motivo: cualquier obs reciente tipo decision/fact puede terminar en `recent_decisions` o `recent_engram_dfl` del payload `/go`, y el auditor de `publish-amos-context.sh` aborta la publicación del mirror si detecta esa ruta textual en el payload completo. Esta misma obs fue reescrita una vez durante esta sesión por reproducir el error que describía.
 
 **Where**: `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh` (bloque `SECRETS_FOUND`, sin modificar).
-
-### @$go/@$fin uniformidad multi-agente — AGENT_CAPABILITY_MATRIX + fix generador vs artefacto
-**Type:** decision  
-**Project:** dfl  
-
-**Qué**: Resuelta la asimetría de capacidades entre agentes (CC/Codex con bash vs ChatGPT/Gemini sin bash vs chat puro) que hacía fallar @$go/@$fin silenciosamente y quemaba tokens de Jorge en intentos imposibles.
-
-**Descubrimiento arquitectónico clave**: `amos-context.md` (Fuente A, el "Constitution-like" doc que cualquier agente nuevo lee primero) es 100% auto-generado — `publish-amos-context.sh` hace `git reset --hard origin/main` sobre `/opt/amos-context-mirror` y luego sobreescribe `amos-context.md` completo desde un template Python hardcodeado en el propio script, que renderiza el JSON servido por `/opt/dfl-context-proxy/main.py`. Editar `amos-context.md` a mano y comitearlo NO sobrevive — el próximo `push_mirror.sh` (cron 3:05am UTC, @$fin de cualquier EJECUTOR, o watchdog) lo pisa de vuelta. Solo sobreviven ediciones manuales a `agents/*.md` (los anexos) y a archivos nuevos que el script nunca toca, porque `publish-amos-context.sh` únicamente hace `git add amos-context.md` — nada más.
-
-**Solución implementada** (3 commits):
-1. `DFLghub/amos-context` commit `241ecec`: `AGENT_CAPABILITY_MATRIX.md` nuevo (barrera de entrada única, Paso 0 binario: bash+git+Engram→EJECUTOR, sin bash pero fetch confiable→ORQUESTADOR, ninguno→CONSULTOR) + pointer de una línea agregado al inicio de `agents/{ejecutor,orquestador,consultor}.md` para no duplicar el diagnóstico 3 veces.
-2. `DFLghub/dfl-context-proxy` commit `a5e4868`: editado el generador real (no el archivo generado) — `main.py` (`agent_directory.step_0`, `capability_matrix_url`, y por perfil `go_capability`/`fin_mode`/`fallback_if_capability_lost`) + `publish-amos-context.sh` (tabla AGENT DIRECTORY ahora incluye columnas `@$go`/`@$fin` y pointer a la matriz). Servicio `dfl-context-proxy` reiniciado para levantar el cambio de `main.py`.
-3. Verificado en vivo: `push_mirror.sh` corrido dos veces — primera vez `updated` (commit `501112f`), segunda vez `unchanged` (dedup por hash correcto, sin duplicar commits). `/go` público y `amos-context.md` público reflejan el cambio; `AGENT_CAPABILITY_MATRIX.md` accesible por raw.githubusercontent.com.
-
-**Patrón reutilizable (amOS learning)**: cuando un problema pide "editar el doc X", primero verificar si X es fuente o es artefacto derivado. Si es derivado, localizar el generador real y editarlo ahí — de lo contrario el fix es cosmético y se revierte solo en el próximo ciclo de regeneración. Aplica a cualquier futuro "documento espejo" en el ecosistema DFL (KNL, graph_context, etc.).
-
-**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/amos-context-mirror/agents/*.md`, `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh`.
-
-**No se tocó**: el archivo de secretos protegido bajo /etc (ruta omitida acá a propósito — mencionarla textual dispara el auditor anti-leak de publish-amos-context.sh como falso positivo), env vars, Supabase, `puntajeTigreKnockout`. `engram-backup-offhost.sh` tenía cambios preexistentes sin comitear ajenos a esta misión — no se tocó ni se comiteó.
-
-**Nota operativa**: si necesitás referenciar esa ruta protegida en una obs de Engram a futuro, evitá escribirla literal — cualquier mención textual que llegue a `recent_decisions`/`recent_engram_dfl` del payload `/go` hace abortar `publish-amos-context.sh` (bloqueó un `push_mirror.sh` real el 2026-07-08 hasta que se redactó esta obs).
 
 ---
 
@@ -356,4 +346,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-08T00:49:48Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-08T01:08:48Z | La Garra → DFLghub/amos-context*
