@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-08T01:08:48Z  
+**Generated:** 2026-07-08T01:27:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -54,35 +54,35 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ## RECENT DECISIONS
 
-### Paso 0 imperativo — de lenguaje sugestivo a árbol binario prohibitivo por nombre de tool
+### [RESOLVED] DFL Context Bridge descartado por evidencia — 4/4 hostings públicos bloqueados en ChatGPT web.run
 **Type:** decision  
 **Project:** dfl  
 
-**Qué**: Paso 0 de autodiagnóstico reescrito de sugestivo a prohibitivo en dos superficies: `AGENT_CAPABILITY_MATRIX.md` (commit `b68922a`, DFLghub/amos-context) y `agent_directory.step_0` en `main.py` (commit `5400c5e`, DFLghub/dfl-context-proxy). Mirror regenerado — `MIRROR: updated | commit 4bdc389 | 2026-07-08 00:49:49 +0000`.
+**[RESOLVED 2026-07-08]**: cierre definitivo de la línea de investigación "bridge para CONSULTOR". Se evaluó además un DFL MCP Server (tools @$go/@$fin/mem_save/mem_search agnósticos a proveedor) y Jorge decidió NO construirlo — CONSULTOR = memory-local queda como arquitectura FINAL, documentada en `AGENT_CAPABILITY_MATRIX.md` (commit `a5d6be3`, sección "## CONSULTOR (ChatGPT, Codex, etc.)"). No reabrir esta investigación sin una razón nueva y concreta. LIFECYCLE: archived.
 
-**Patrón (lenguaje prohibitivo vs sugestivo, para futuros HLC)**:
-- Sugestivo = capacidad como pregunta abierta de criterio ("¿tenés fetch público confiable?") que el agente puede autoconvencerse de responder que sí y de todos modos intentar "a ver si funciona" — el costo del error solo se paga después de fallar.
-- Prohibitivo = capacidad como verificación mecánica de un nombre de tool concreto en la lista de funciones disponibles (`bash_tool`, `web_fetch`, `web_search`) con una única acción o un string de reporte verbatim por rama — no hay espacio para "probar igual". El costo del diagnóstico erróneo baja a ~cero porque no depende de juicio, depende de si el nombre está literalmente en la lista de tools.
-- Regla general: cuando el objetivo es "que un agente no intente algo que no puede", especificar la condición de entrada por **nombre de artefacto verificable** (nombre de tool, presencia de un campo, existencia de un archivo) en vez de por **capacidad descrita en prosa**. La prosa dejar margen de interpretación optimista; el nombre de tool no.
-- Aplica a cualquier futuro Paso 0 / gate de decisión en el ecosistema DFL donde el costo de un intento fallido (tokens, tiempo, ambigüedad para Jorge) sea mayor que el costo de preguntar primero.
+---
 
-**Continuidad de la nota previa (obs #180)**: se verificó antes de correr `push_mirror.sh` que el payload `/go` no contenía la ruta literal del archivo de secretos protegido (0 ocurrencias) — el auditor anti-leak de `publish-amos-context.sh` no abortó esta vez.
+**Qué**: Investigado con evidencia real si un "DFL Context Bridge" hosteado públicamente podía resolver el bloqueo de ChatGPT `web.run`. Resultado: descartado por evidencia. 4 URLs distintas (dominio propio, GitHub raw, jsDelivr CDN, `360eventos.vercel.app`) fallaron con el mismo patrón — allowlist de red a nivel de sesión, no reputación de un dominio en particular.
+
+**Cambios aplicados**: Paso 0 en `AGENT_CAPABILITY_MATRIX.md` (commit `1f23663`) y `main.py` (commit `cd649f3`) exigen un intento real de fetch antes de reclamar ORQUESTADOR.
+
+**Hallazgo sistémico recurrente (auditor de secretos)**: sigue sin resolverse, ver obs #180.
 
 **Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
 
-### Sandbox network egress a dominios custom limitado — Source A/B invertida + hallazgo de falso positivo en auditor de secretos
+### [RESOLVED] Paso 0 imperativo — de lenguaje sugestivo a árbol binario prohibitivo por nombre de tool
 **Type:** decision  
 **Project:** dfl  
 
-**Qué**: Sandboxes de agentes LLM (tipo ChatGPT/Codex code-execution) tienen egress HTTP restringido a un allowlist que típicamente incluye github.com/raw.githubusercontent.com (lo necesitan pip/npm/git) pero NO dominios custom como context.deepfeelingslabs.com. Un agente en ese tipo de sandbox puede fetchear amos-context.md (Fuente A, GitHub raw) sin problema pero su fetch a /go (Fuente B, dominio custom) falla o cuelga — no por caída del servicio sino por restricción de red del propio entorno del agente.
+**[RESOLVED 2026-07-08]**: superseded por la decisión final — CONSULTOR = memory-local (AGENT_CAPABILITY_MATRIX.md, commit a5d6be3). El árbol binario del Paso 0 sigue vigente tal cual quedó documentado acá; lo que se cierra es la fase de investigación de canales, no esta corrección. LIFECYCLE: archived.
 
-**Fix**: invertida la prioridad documentada en `identity` del payload `/go` — Source A (GitHub raw) ahora es explícitamente PRIMARY con `source_a_role` explicando por qué es más alcanzable; Source B (dominio custom) es SECONDARY con `source_b_role` aclarando que requiere egress más amplio. Nuevo campo `sandbox_network_note` explica el patrón general y da el texto exacto que un agente bloqueado debería reportar. Mirroreado en la sección IDENTITY de `amos-context.md`. Commit `da91d1a` en `DFLghub/dfl-context-proxy`, mirror publicado en commit `e0366a2`.
+---
 
-**Hallazgo colateral durante esta misión**: `publish-amos-context.sh` tiene un auditor anti-secretos que escanea el payload `/go` completo (incluyendo `recent_decisions`/`recent_engram_dfl`) buscando patrones de rutas protegidas conocidas. Es un **falso positivo por diseño** — dispara con cualquier mención textual de esa ruta como nombre de superficie protegida, no solo con una fuga real de contenido. Bloqueó un `push_mirror.sh` real (2026-07-08 00:39 UTC) porque una obs de la sesión anterior (#179) mencionaba esa ruta protegida de forma literal en su lista de "no se tocó". Se resolvió redactando esa obs (sin tocar el regex del auditor, que es un control de seguridad legítimo).
+**Qué**: Paso 0 de autodiagnóstico reescrito de sugestivo a prohibitivo en `AGENT_CAPABILITY_MATRIX.md` (commit `b68922a`) y `agent_directory.step_0` en `main.py` (commit `5400c5e`).
 
-**Regla nueva para escribir en Engram (proyecto dfl)**: NUNCA escribir de forma literal la ruta del archivo de secretos protegido (la que está listada como zona prohibida en el SESSION CONTRACT universal, bajo `/etc/`) en ninguna obs — ni siquiera entre backticks. Usar una paráfrasis ("el archivo de secretos protegido del sistema") si hace falta referenciarla. Motivo: cualquier obs reciente tipo decision/fact puede terminar en `recent_decisions` o `recent_engram_dfl` del payload `/go`, y el auditor de `publish-amos-context.sh` aborta la publicación del mirror si detecta esa ruta textual en el payload completo. Esta misma obs fue reescrita una vez durante esta sesión por reproducir el error que describía.
+**Patrón (lenguaje prohibitivo vs sugestivo, para futuros HLC)**: especificar la condición de entrada por **nombre de artefacto verificable** (nombre de tool, presencia de un campo, existencia de un archivo) en vez de por **capacidad descrita en prosa** — la prosa deja margen de interpretación optimista, el nombre de tool no.
 
-**Where**: `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh` (bloque `SECRETS_FOUND`, sin modificar).
+**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
 
 **Type:** decision  
 **Project:** 360eventos  
@@ -225,35 +225,35 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Paso 0 imperativo — de lenguaje sugestivo a árbol binario prohibitivo por nombre de tool
+### [RESOLVED] DFL Context Bridge descartado por evidencia — 4/4 hostings públicos bloqueados en ChatGPT web.run
 **Type:** decision  
 **Project:** dfl  
 
-**Qué**: Paso 0 de autodiagnóstico reescrito de sugestivo a prohibitivo en dos superficies: `AGENT_CAPABILITY_MATRIX.md` (commit `b68922a`, DFLghub/amos-context) y `agent_directory.step_0` en `main.py` (commit `5400c5e`, DFLghub/dfl-context-proxy). Mirror regenerado — `MIRROR: updated | commit 4bdc389 | 2026-07-08 00:49:49 +0000`.
+**[RESOLVED 2026-07-08]**: cierre definitivo de la línea de investigación "bridge para CONSULTOR". Se evaluó además un DFL MCP Server (tools @$go/@$fin/mem_save/mem_search agnósticos a proveedor) y Jorge decidió NO construirlo — CONSULTOR = memory-local queda como arquitectura FINAL, documentada en `AGENT_CAPABILITY_MATRIX.md` (commit `a5d6be3`, sección "## CONSULTOR (ChatGPT, Codex, etc.)"). No reabrir esta investigación sin una razón nueva y concreta. LIFECYCLE: archived.
 
-**Patrón (lenguaje prohibitivo vs sugestivo, para futuros HLC)**:
-- Sugestivo = capacidad como pregunta abierta de criterio ("¿tenés fetch público confiable?") que el agente puede autoconvencerse de responder que sí y de todos modos intentar "a ver si funciona" — el costo del error solo se paga después de fallar.
-- Prohibitivo = capacidad como verificación mecánica de un nombre de tool concreto en la lista de funciones disponibles (`bash_tool`, `web_fetch`, `web_search`) con una única acción o un string de reporte verbatim por rama — no hay espacio para "probar igual". El costo del diagnóstico erróneo baja a ~cero porque no depende de juicio, depende de si el nombre está literalmente en la lista de tools.
-- Regla general: cuando el objetivo es "que un agente no intente algo que no puede", especificar la condición de entrada por **nombre de artefacto verificable** (nombre de tool, presencia de un campo, existencia de un archivo) en vez de por **capacidad descrita en prosa**. La prosa dejar margen de interpretación optimista; el nombre de tool no.
-- Aplica a cualquier futuro Paso 0 / gate de decisión en el ecosistema DFL donde el costo de un intento fallido (tokens, tiempo, ambigüedad para Jorge) sea mayor que el costo de preguntar primero.
+---
 
-**Continuidad de la nota previa (obs #180)**: se verificó antes de correr `push_mirror.sh` que el payload `/go` no contenía la ruta literal del archivo de secretos protegido (0 ocurrencias) — el auditor anti-leak de `publish-amos-context.sh` no abortó esta vez.
+**Qué**: Investigado con evidencia real si un "DFL Context Bridge" hosteado públicamente podía resolver el bloqueo de ChatGPT `web.run`. Resultado: descartado por evidencia. 4 URLs distintas (dominio propio, GitHub raw, jsDelivr CDN, `360eventos.vercel.app`) fallaron con el mismo patrón — allowlist de red a nivel de sesión, no reputación de un dominio en particular.
+
+**Cambios aplicados**: Paso 0 en `AGENT_CAPABILITY_MATRIX.md` (commit `1f23663`) y `main.py` (commit `cd649f3`) exigen un intento real de fetch antes de reclamar ORQUESTADOR.
+
+**Hallazgo sistémico recurrente (auditor de secretos)**: sigue sin resolverse, ver obs #180.
 
 **Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
 
-### Sandbox network egress a dominios custom limitado — Source A/B invertida + hallazgo de falso positivo en auditor de secretos
+### [RESOLVED] Paso 0 imperativo — de lenguaje sugestivo a árbol binario prohibitivo por nombre de tool
 **Type:** decision  
 **Project:** dfl  
 
-**Qué**: Sandboxes de agentes LLM (tipo ChatGPT/Codex code-execution) tienen egress HTTP restringido a un allowlist que típicamente incluye github.com/raw.githubusercontent.com (lo necesitan pip/npm/git) pero NO dominios custom como context.deepfeelingslabs.com. Un agente en ese tipo de sandbox puede fetchear amos-context.md (Fuente A, GitHub raw) sin problema pero su fetch a /go (Fuente B, dominio custom) falla o cuelga — no por caída del servicio sino por restricción de red del propio entorno del agente.
+**[RESOLVED 2026-07-08]**: superseded por la decisión final — CONSULTOR = memory-local (AGENT_CAPABILITY_MATRIX.md, commit a5d6be3). El árbol binario del Paso 0 sigue vigente tal cual quedó documentado acá; lo que se cierra es la fase de investigación de canales, no esta corrección. LIFECYCLE: archived.
 
-**Fix**: invertida la prioridad documentada en `identity` del payload `/go` — Source A (GitHub raw) ahora es explícitamente PRIMARY con `source_a_role` explicando por qué es más alcanzable; Source B (dominio custom) es SECONDARY con `source_b_role` aclarando que requiere egress más amplio. Nuevo campo `sandbox_network_note` explica el patrón general y da el texto exacto que un agente bloqueado debería reportar. Mirroreado en la sección IDENTITY de `amos-context.md`. Commit `da91d1a` en `DFLghub/dfl-context-proxy`, mirror publicado en commit `e0366a2`.
+---
 
-**Hallazgo colateral durante esta misión**: `publish-amos-context.sh` tiene un auditor anti-secretos que escanea el payload `/go` completo (incluyendo `recent_decisions`/`recent_engram_dfl`) buscando patrones de rutas protegidas conocidas. Es un **falso positivo por diseño** — dispara con cualquier mención textual de esa ruta como nombre de superficie protegida, no solo con una fuga real de contenido. Bloqueó un `push_mirror.sh` real (2026-07-08 00:39 UTC) porque una obs de la sesión anterior (#179) mencionaba esa ruta protegida de forma literal en su lista de "no se tocó". Se resolvió redactando esa obs (sin tocar el regex del auditor, que es un control de seguridad legítimo).
+**Qué**: Paso 0 de autodiagnóstico reescrito de sugestivo a prohibitivo en `AGENT_CAPABILITY_MATRIX.md` (commit `b68922a`) y `agent_directory.step_0` en `main.py` (commit `5400c5e`).
 
-**Regla nueva para escribir en Engram (proyecto dfl)**: NUNCA escribir de forma literal la ruta del archivo de secretos protegido (la que está listada como zona prohibida en el SESSION CONTRACT universal, bajo `/etc/`) en ninguna obs — ni siquiera entre backticks. Usar una paráfrasis ("el archivo de secretos protegido del sistema") si hace falta referenciarla. Motivo: cualquier obs reciente tipo decision/fact puede terminar en `recent_decisions` o `recent_engram_dfl` del payload `/go`, y el auditor de `publish-amos-context.sh` aborta la publicación del mirror si detecta esa ruta textual en el payload completo. Esta misma obs fue reescrita una vez durante esta sesión por reproducir el error que describía.
+**Patrón (lenguaje prohibitivo vs sugestivo, para futuros HLC)**: especificar la condición de entrada por **nombre de artefacto verificable** (nombre de tool, presencia de un campo, existencia de un archivo) en vez de por **capacidad descrita en prosa** — la prosa deja margen de interpretación optimista, el nombre de tool no.
 
-**Where**: `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh` (bloque `SECRETS_FOUND`, sin modificar).
+**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
 
 ---
 
@@ -346,4 +346,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-08T01:08:48Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-08T01:27:02Z | La Garra → DFLghub/amos-context*
