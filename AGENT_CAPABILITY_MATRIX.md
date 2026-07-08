@@ -9,26 +9,44 @@ Regla dura: **si tu diagnóstico dice que no tenés una capacidad, no la intente
 
 ---
 
-## PASO 0 — Autodiagnóstico (binario, antes de leer nada más)
+## PASO 0 — AUTO-DIAGNÓSTICO (NECESARIO antes de cualquier acción)
 
-Respondé en orden. Frená en la primera respuesta SÍ.
+Leé esto una sola vez al arrancar. Una pregunta por línea. **Es prohibitivo, no sugestivo:**
+si tu respuesta te manda a "reportá y parate", NO INTENTES la acción de todos modos "a ver si
+funciona". Eso es exactamente lo que cuesta tokens sin necesidad.
 
-1. **¿Puedo ejecutar comandos de shell reales sobre La Garra** (no "sugerir" comandos — correrlos
-   de verdad), con **git** y con las **tools de Engram** (`mem_save`/`mem_search` o sus
-   equivalentes `save_memory`/`search_memory`) disponibles en la misma sesión?
-   → **SÍ: sos EJECUTOR.** Leé `agents/ejecutor.md`. Fin del diagnóstico.
-   → NO: seguí a la pregunta 2.
+**Pregunta 1:** ¿Ves `bash_tool` en tu lista de funciones disponibles?
+  - SÍ → Sos **EJECUTOR**. Leé `agents/ejecutor.md`. Ejecutá:
+    `curl https://raw.githubusercontent.com/DFLghub/amos-context/main/amos-context.md`
+  - NO → Pregunta 2
 
-2. **¿Puedo hacer fetch HTTP a URLs públicas y ver el contenido real** (no inventado ni
-   alucinado) de forma confiable?
-   → **SÍ: sos ORQUESTADOR.** Leé `agents/orquestador.md`. Fin del diagnóstico.
-   → NO: sos CONSULTOR.
+**Pregunta 2:** ¿Ves `web_fetch` O `web_search` en tu lista de funciones disponibles?
+  - SÍ → Sos **ORQUESTADOR**. Leé `agents/orquestador.md`. Reportá a Jorge exactamente:
+    *"ORQUESTADOR: no puedo hacer @$go solo. Necesito que me pases el contexto manualmente o
+    que CC ejecute curl."*
+  - NO → Pregunta 3
 
-3. **Si llegaste hasta acá: sos CONSULTOR.** Leé `agents/consultor.md`. No intentes `@$go`.
+**Pregunta 3:** ¿Ves alguna otra función que permita acceder a URLs externas (`tool_search`,
+`image_search`, u otra herramienta de red)?
+  - SÍ → Sos **ORQUESTADOR** (forma alternativa). Mismo reporte que en la Pregunta 2: reportá y
+    esperá.
+  - NO → Sos **CONSULTOR**. Reportá esto EXACTAMENTE, sin parafrasear:
+
+```
+CONSULTOR: No tengo capacidades de red disponibles.
+
+¿Qué significa?: No puedo hacer @$go (requiere acceso HTTP). No puedo ejecutar comandos. No
+puedo modificar estado. Solo puedo leer contexto que Jorge me proporcione manualmente.
+
+Siguiente paso: Jorge debe pasar el contenido de amos-context.md a mano, o usar EJECUTOR (CC)
+para traerlo.
+
+Mientras tanto: Estoy listo para recibir el contexto pegado, pero no lo solicito activamente.
+```
 
 Este diagnóstico corre por **capacidad real de la sesión concreta**, no por marca de modelo.
 La misma familia de agente puede calificar distinto según el entorno donde corre (con o sin
-shell, con o sin browsing habilitado).
+`bash_tool`, con o sin `web_fetch`/`web_search` habilitado).
 
 ---
 
