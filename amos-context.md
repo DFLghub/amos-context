@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-08T00:40:38Z  
+**Generated:** 2026-07-08T00:49:48Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -53,6 +53,20 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 ---
 
 ## RECENT DECISIONS
+
+### Sandbox network egress a dominios custom limitado — Source A/B invertida + hallazgo de falso positivo en auditor de secretos
+**Type:** decision  
+**Project:** dfl  
+
+**Qué**: Sandboxes de agentes LLM (tipo ChatGPT/Codex code-execution) tienen egress HTTP restringido a un allowlist que típicamente incluye github.com/raw.githubusercontent.com (lo necesitan pip/npm/git) pero NO dominios custom como context.deepfeelingslabs.com. Un agente en ese tipo de sandbox puede fetchear amos-context.md (Fuente A, GitHub raw) sin problema pero su fetch a /go (Fuente B, dominio custom) falla o cuelga — no por caída del servicio sino por restricción de red del propio entorno del agente.
+
+**Fix**: invertida la prioridad documentada en `identity` del payload `/go` — Source A (GitHub raw) ahora es explícitamente PRIMARY con `source_a_role` explicando por qué es más alcanzable; Source B (dominio custom) es SECONDARY con `source_b_role` aclarando que requiere egress más amplio. Nuevo campo `sandbox_network_note` explica el patrón general y da el texto exacto que un agente bloqueado debería reportar. Mirroreado en la sección IDENTITY de `amos-context.md`. Commit `da91d1a` en `DFLghub/dfl-context-proxy`, mirror publicado en commit `e0366a2`.
+
+**Hallazgo colateral durante esta misión**: `publish-amos-context.sh` tiene un auditor anti-secretos que escanea el payload `/go` completo (incluyendo `recent_decisions`/`recent_engram_dfl`) buscando patrones de rutas protegidas conocidas. Es un **falso positivo por diseño** — dispara con cualquier mención textual de esa ruta como nombre de superficie protegida, no solo con una fuga real de contenido. Bloqueó un `push_mirror.sh` real (2026-07-08 00:39 UTC) porque una obs de la sesión anterior (#179) mencionaba esa ruta protegida de forma literal en su lista de "no se tocó". Se resolvió redactando esa obs (sin tocar el regex del auditor, que es un control de seguridad legítimo).
+
+**Regla nueva para escribir en Engram (proyecto dfl)**: NUNCA escribir de forma literal la ruta del archivo de secretos protegido (la que está listada como zona prohibida en el SESSION CONTRACT universal, bajo `/etc/`) en ninguna obs — ni siquiera entre backticks. Usar una paráfrasis ("el archivo de secretos protegido del sistema") si hace falta referenciarla. Motivo: cualquier obs reciente tipo decision/fact puede terminar en `recent_decisions` o `recent_engram_dfl` del payload `/go`, y el auditor de `publish-amos-context.sh` aborta la publicación del mirror si detecta esa ruta textual en el payload completo. Esta misma obs fue reescrita una vez durante esta sesión por reproducir el error que describía.
+
+**Where**: `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh` (bloque `SECRETS_FOUND`, sin modificar).
 
 ### @$go/@$fin uniformidad multi-agente — AGENT_CAPABILITY_MATRIX + fix generador vs artefacto
 **Type:** decision  
@@ -112,22 +126,6 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 **Project:** futbolweb-app  
 
 Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió IDs de eventos para knockout posterior y los fixtures locales 89+ usan placeholders sin team codes; el matcher anterior dependía de fifaId o fecha+teamCode fijo, por eso no importó 89/90, no creó match_results, no corrió scoring, ranking no sumó y bracket 97 seguía con W89/W90. Fix commit b1b6d60 en futbolweb-app: matcher ESPN aplica bracket assignments con match_results previos y resuelve nombres/equipos antes de fallback por fecha/equipos; sync route carga existingResults antes de leer ESPN. Datos prod actualizados: 89 Paraguay 0-1 Francia y 90 Canada 0-3 Marruecos; scoring knockout ejecutado; prediction_scores 89=2 rows, 90=1 row; ranking Edgar Alberto P80 = 137.5; /api/tournament-reality muestra 97 Francia vs Marruecos; propagation pending []. Verificación post-fix para partido 91: al momento del monitoreo era pre-kickoff (generatedAt 2026-07-05T05:35Z, kickoff 2026-07-05T20:00Z); ESPN aún no incluye 91; match_results/scores 91 vacíos correcto; accepted predictions 91 existen para Alejo y Edgar Alberto. Próximo punto de monitoreo: después de FT de Brasil vs Noruega, confirmar ESPN import -> match_results 91 -> 2 scores -> ranking -> W91 en partido 99.
-
-### Fix: MIRROR verification bug — push_mirror.sh ahora emite commit real por stdout
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Corregido un bug de reporte encontrado en producción: una sesión Codex, tras correr `push_mirror.sh` en `@$fin`, no pudo verificar el push por `curl raw.githubusercontent.com` (posible restricción de su sandbox bubblewrap) y usó `/go` como fallback para "confirmar" el timestamp — pero `/go` regenera `generated_at` en cada request, sin importar si algo se publicó de verdad. Reportó `22:11:22Z` como timestamp del mirror cuando el commit real era `22:09:02Z` (2min de diferencia, fuente equivocada).
-
-**Fix aplicado**:
-- `push_mirror.sh` reescrito: ahora imprime siempre por stdout una línea `MIRROR: <updated|unchanged> | commit <hash> | <fecha UTC>`, verificada con `git -C /opt/amos-context-mirror log -1` real, en los 4 puntos de salida del script (lock busy, hash-fail fallback, no-op, update). Testeado en vivo: ambos caminos (`updated`/`unchanged`) coinciden exactamente con `git log`.
-- 3 fuentes de instrucción sincronizadas para apuntar a esa línea en vez de a `/go`: `agents/ejecutor.md` (repo amos-context, commits e9760d1), `main.py` (`closure_contract.on_receive`), `publish-amos-context.sh` (bloque estático SESSION CONTRACT).
-
-**Hallazgo colateral durante el fix**: `/opt/amos-context-mirror` es a la vez (a) working dir de anexos editados a mano (`agents/*.md`) y (b) target de `git reset --hard origin/main` en cada corrida de `publish-amos-context.sh`. Edité `ejecutor.md`, no lo comiteé, corrí `push_mirror.sh` para testear el fix de arriba, y el reset silencioso descartó mi propio edit — tuve que rehacerlo. Documentado ahora como advertencia explícita en `ejecutor.md`: comitear+pushear anexos ANTES de correr `push_mirror.sh`, nunca después.
-
-**Where**: `/opt/dfl-context-proxy/push_mirror.sh`, `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh`, `/opt/amos-context-mirror/agents/ejecutor.md` (commit e9760d1, pusheado).
-
-**Verificado en vivo**: servicio reiniciado sin sesiones concurrentes activas, `/go` sirviendo `agent_directory`+`checkpoint_mode`+texto corregido, mirror publicado con SESSION CONTRACT corregido (commit `c28e036`, `2026-07-03 22:19:21 UTC`), coincide exactamente con lo que `push_mirror.sh` reportó por stdout.
 
 ---
 
@@ -232,6 +230,20 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Sandbox network egress a dominios custom limitado — Source A/B invertida + hallazgo de falso positivo en auditor de secretos
+**Type:** decision  
+**Project:** dfl  
+
+**Qué**: Sandboxes de agentes LLM (tipo ChatGPT/Codex code-execution) tienen egress HTTP restringido a un allowlist que típicamente incluye github.com/raw.githubusercontent.com (lo necesitan pip/npm/git) pero NO dominios custom como context.deepfeelingslabs.com. Un agente en ese tipo de sandbox puede fetchear amos-context.md (Fuente A, GitHub raw) sin problema pero su fetch a /go (Fuente B, dominio custom) falla o cuelga — no por caída del servicio sino por restricción de red del propio entorno del agente.
+
+**Fix**: invertida la prioridad documentada en `identity` del payload `/go` — Source A (GitHub raw) ahora es explícitamente PRIMARY con `source_a_role` explicando por qué es más alcanzable; Source B (dominio custom) es SECONDARY con `source_b_role` aclarando que requiere egress más amplio. Nuevo campo `sandbox_network_note` explica el patrón general y da el texto exacto que un agente bloqueado debería reportar. Mirroreado en la sección IDENTITY de `amos-context.md`. Commit `da91d1a` en `DFLghub/dfl-context-proxy`, mirror publicado en commit `e0366a2`.
+
+**Hallazgo colateral durante esta misión**: `publish-amos-context.sh` tiene un auditor anti-secretos que escanea el payload `/go` completo (incluyendo `recent_decisions`/`recent_engram_dfl`) buscando patrones de rutas protegidas conocidas. Es un **falso positivo por diseño** — dispara con cualquier mención textual de esa ruta como nombre de superficie protegida, no solo con una fuga real de contenido. Bloqueó un `push_mirror.sh` real (2026-07-08 00:39 UTC) porque una obs de la sesión anterior (#179) mencionaba esa ruta protegida de forma literal en su lista de "no se tocó". Se resolvió redactando esa obs (sin tocar el regex del auditor, que es un control de seguridad legítimo).
+
+**Regla nueva para escribir en Engram (proyecto dfl)**: NUNCA escribir de forma literal la ruta del archivo de secretos protegido (la que está listada como zona prohibida en el SESSION CONTRACT universal, bajo `/etc/`) en ninguna obs — ni siquiera entre backticks. Usar una paráfrasis ("el archivo de secretos protegido del sistema") si hace falta referenciarla. Motivo: cualquier obs reciente tipo decision/fact puede terminar en `recent_decisions` o `recent_engram_dfl` del payload `/go`, y el auditor de `publish-amos-context.sh` aborta la publicación del mirror si detecta esa ruta textual en el payload completo. Esta misma obs fue reescrita una vez durante esta sesión por reproducir el error que describía.
+
+**Where**: `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh` (bloque `SECRETS_FOUND`, sin modificar).
+
 ### @$go/@$fin uniformidad multi-agente — AGENT_CAPABILITY_MATRIX + fix generador vs artefacto
 **Type:** decision  
 **Project:** dfl  
@@ -252,33 +264,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 **No se tocó**: el archivo de secretos protegido bajo /etc (ruta omitida acá a propósito — mencionarla textual dispara el auditor anti-leak de publish-amos-context.sh como falso positivo), env vars, Supabase, `puntajeTigreKnockout`. `engram-backup-offhost.sh` tenía cambios preexistentes sin comitear ajenos a esta misión — no se tocó ni se comiteó.
 
 **Nota operativa**: si necesitás referenciar esa ruta protegida en una obs de Engram a futuro, evitá escribirla literal — cualquier mención textual que llegue a `recent_decisions`/`recent_engram_dfl` del payload `/go` hace abortar `publish-amos-context.sh` (bloqueó un `push_mirror.sh` real el 2026-07-08 hasta que se redactó esta obs).
-
-### Session summary: futbolweb-app
-**Type:** session_summary  
-**Project:** futbolweb-app  
-
-## Goal
-Sesión CC en `/opt/futbolweb` (VM2/La Garra) que arrancó con `@$go` (bootstrap, confirmó rol EJECUTOR y estado limpio de FutbolWeb), y luego se usó para cerrar (`@$fin` de emergencia) una sesión SSH distinta que murió por "Broken pipe" a mitad del reporte final de FoF Caso 01 — 360Eventos.
-
-## Instructions
-- Cuando una sesión de La Garra muere sin `@$fin` propio, se puede reconstruir el cierre desde el transcript pegado por Jorge, verificando contra el filesystem/git real antes de dar por bueno nada del transcript.
-- `@$go` es solo lectura; `@$fin` sí puede archivar/actualizar observaciones de Engram.
-
-## Discoveries
-- Ninguna nueva en esta sesión — el trabajo de fondo (Domain Alignment, Zero Case 001, Price Authority Nivel 0A/0B, QA online) ya quedó documentado en la sesión anterior (`cc-360eventos-fof-caso01-closure`, obs #174 actualizada).
-
-## Accomplished
-- ✅ `@$go` bootstrap: confirmado rol EJECUTOR (bash/git/Engram activos, `/go` local respondió en 127.0.0.1:8091), FutbolWeb en `main` limpio, último commit `b1b6d60`.
-- ✅ Cierre de emergencia de la sesión SSH caída: verificados los 6 commits del transcript contra git real en `/opt/dfl-knowledge` (53d4eaf → 1a0fe6a), obs #174 actualizada a [RESOLVED] sobre el bloqueo de deployment, session summary guardado, `push_mirror.sh` corrido.
-- ✅ Jorge confirmó que ya envió el link de `https://360eventos.vercel.app` a Rubén como demo/MVP funcional de prueba — no como catálogo comercial aprobado (Nivel 0B sigue pendiente). Guardado como obs #177.
-
-## Next Steps
-- Nivel 0B (aprobación comercial humana del catálogo de 8 servicios) sigue pendiente si Jorge quiere avanzar 360Eventos más allá de demo.
-- Esperar feedback de Rubén sobre el demo.
-- FutbolWeb: sin pendientes urgentes; próximo hito conocido es el monitoreo del partido 91 pre-kickoff (knockout ESPN sync).
-
-## Relevant Files
-- Ninguno modificado en `/opt/futbolweb` en esta sesión — trabajo de contenido fue en `/opt/dfl-knowledge/projects/fof/cases/360eventos/` (sesión previa) y Engram (obs #174, #177).
 
 ---
 
@@ -371,4 +356,4 @@ Sesión CC en `/opt/futbolweb` (VM2/La Garra) que arrancó con `@$go` (bootstrap
 
 ---
 
-*Mirror auto-generated 2026-07-08T00:40:38Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-08T00:49:48Z | La Garra → DFLghub/amos-context*
