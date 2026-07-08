@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-08T23:24:02Z  
+**Generated:** 2026-07-08T23:33:14Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -31,11 +31,27 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 - **`@$go`** — comando del agente que activa el bootstrap. **`/go`** — ruta HTTP del proxy. No son lo mismo, no se intercambian.
 - **`@$fin`** — comando de cierre del agente, simétrico a `@$go`. Local, no tiene ruta HTTP.
+- **Uniformidad real:** `@$go`/`@$fin` son uniformes por contrato semántico, no por transporte. EJECUTOR usa shell/Engram/git; ORQUESTADOR usa fetch público si puede; CONSULTOR usa snapshot pegado o memoria local y entrega relay.
+- **Perfil por capacidad, no por marca:** Claude, Codex, ChatGPT, Hermes, OpenClaw u otros agentes se clasifican por capacidades observables de esa sesión, no por nombre del modelo.
   - **Modo CIERRE** (default): Gate 4B final (`mem_save` del resumen + `mem_search`/`mem_update` de lo que este cierre archiva) + `push_mirror.sh` + reportar la línea `MIRROR: ...` que imprime (commit real vía git log — nunca re-consultar `/go` para esto).
   - **Modo CHECKPOINT** (solo si Jorge lo pide explícitamente con esa palabra): `mem_save` del progreso parcial, sin barrido de archivado y sin `push_mirror.sh` — la sesión sigue abierta.
 - **Gate 4B incremental**: `mem_save` en cada commit, decisión o blocker resuelto durante la sesión — no esperar al cierre. Es lo que hace sobrevivir el estado si la sesión muere sin `@$fin`.
 - **Zonas protegidas** (no tocar sin PRP explícito): `puntajeTigreKnockout`, Supabase, Vercel config, environment variables, templates HLC-T01/T02/T03, CRON 3:05am UTC, `/etc/dfl-secrets`.
 - **Precedencia**: A (Constitution) > B (Routing/MASTER_INDEX) > C (Jurisprudence/MASTER_BITACORA) > D (Operation — Engram, PRPs, skills) > E (Archive). Engram es capa D — nunca invalida A ni B.
+
+---
+
+## ACCESS MODEL — UNIFORM CONTRACT, DIFFERENT TRANSPORTS
+
+- **Principle:** @$go y @$fin son comandos uniformes por contrato semántico; el transporte no es uniforme. Cada agente usa el adaptador permitido por sus capacidades reales de sesión.
+- **Not by brand:** El perfil se decide por capacidades observables, no por marca de modelo. Codex, Claude, ChatGPT, Hermes u OpenClaw pueden caer en perfiles distintos según tengan shell/Engram/git, fetch público confiable o solo chat.
+- **Snapshot rule:** Para CONSULTOR, el contexto pegado es snapshot fechado, no verdad viva. Debe razonar con ese contexto y marcar cualquier acción concreta para relay.
+
+| Perfil | `@$go` adapter | `@$fin` adapter | Escritura de estado |
+|---|---|---|---|
+| **EJECUTOR** | curl/fetch a /go + leer anexo + search_memory('contexto DFL') | save_memory/mem_save + archivado Gate 4B + push_mirror.sh | direct |
+| **ORQUESTADOR** | fetch público del mirror/payload si la red lo permite | bitácora de relay para que un EJECUTOR cierre Gate 4B | relay |
+| **CONSULTOR** | snapshot pegado o memoria local de sesión; no intenta fetch bloqueado | RESUMEN DE SESIÓN listo para EJECUTOR/Engram | relay |
 
 ---
 
@@ -54,6 +70,20 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 
 ## RECENT DECISIONS
 
+### DFL onboarding/outboarding — contrato uniforme por adaptadores de capacidad
+**Type:** decision  
+**Project:** dfl  
+
+**Qué**: Se corrigió el contrato público de onboarding/outboarding para explicitar que `@$go` y `@$fin` son uniformes por contrato semántico, no por transporte. El perfil se decide por capacidades reales de sesión, no por marca de agente/modelo.
+
+**Cambio aplicado**: commit `a941ad2` en `/opt/amos-context-mirror` (`docs: clarify DFL access adapters`). Archivos: `AGENT_CAPABILITY_MATRIX.md`, `agents/consultor.md`.
+
+**Decisión**: EJECUTOR usa shell/Engram/git; ORQUESTADOR usa fetch público si lo tiene; CONSULTOR usa snapshot pegado/memoria local y entrega `RESUMEN DE SESIÓN` para relay a EJECUTOR. ChatGPT web no recibe acceso vivo si su allowlist bloquea fetch; Codex puede ser EJECUTOR cuando tiene shell+Engram, como esta sesión.
+
+**Why**: Garantizar intercambio entre IAs/agentes sin depender de MCP como transporte universal. MCP es una puerta posible al lobby, no el lobby.
+
+**Gate 4B**: hito guardado incrementalmente después del commit del mirror. Pendiente en esta misma sesión: commitear cambios del proxy `/go` y publicar mirror regenerado.
+
 ### [RESOLVED] DFL Context Bridge descartado por evidencia — 4/4 hostings públicos bloqueados en ChatGPT web.run
 **Type:** decision  
 **Project:** dfl  
@@ -67,20 +97,6 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 **Cambios aplicados**: Paso 0 en `AGENT_CAPABILITY_MATRIX.md` (commit `1f23663`) y `main.py` (commit `cd649f3`) exigen un intento real de fetch antes de reclamar ORQUESTADOR.
 
 **Hallazgo sistémico recurrente (auditor de secretos)**: sigue sin resolverse, ver obs #180.
-
-**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
-
-### [RESOLVED] Paso 0 imperativo — de lenguaje sugestivo a árbol binario prohibitivo por nombre de tool
-**Type:** decision  
-**Project:** dfl  
-
-**[RESOLVED 2026-07-08]**: superseded por la decisión final — CONSULTOR = memory-local (AGENT_CAPABILITY_MATRIX.md, commit a5d6be3). El árbol binario del Paso 0 sigue vigente tal cual quedó documentado acá; lo que se cierra es la fase de investigación de canales, no esta corrección. LIFECYCLE: archived.
-
----
-
-**Qué**: Paso 0 de autodiagnóstico reescrito de sugestivo a prohibitivo en `AGENT_CAPABILITY_MATRIX.md` (commit `b68922a`) y `agent_directory.step_0` en `main.py` (commit `5400c5e`).
-
-**Patrón (lenguaje prohibitivo vs sugestivo, para futuros HLC)**: especificar la condición de entrada por **nombre de artefacto verificable** (nombre de tool, presencia de un campo, existencia de un archivo) en vez de por **capacidad descrita en prosa** — la prosa deja margen de interpretación optimista, el nombre de tool no.
 
 **Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
 
@@ -225,35 +241,36 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### [RESOLVED] DFL Context Bridge descartado por evidencia — 4/4 hostings públicos bloqueados en ChatGPT web.run
+### dfl-context-proxy /go expone access_model para agentes heterogéneos
+**Type:** architecture  
+**Project:** dfl  
+
+**Qué**: `/go` ahora expone `access_model`, que formaliza que `@$go`/`@$fin` son comandos uniformes por contrato semántico pero con transportes por adaptador: EJECUTOR, ORQUESTADOR, CONSULTOR.
+
+**Cambio aplicado**: commit `fee934d` en `/opt/dfl-context-proxy` (`feat: expose DFL access model`). Archivos: `main.py`, `publish-amos-context.sh`, `tests/test_knl_contract.py`.
+
+**Detalles**:
+- `main.py` agrega `access_model.principle`, `not_by_brand`, `adapters` y `snapshot_rule`.
+- `publish-amos-context.sh` renderiza `ACCESS MODEL — UNIFORM CONTRACT, DIFFERENT TRANSPORTS` en `amos-context.md`.
+- `tests/test_knl_contract.py` exige que `/go` tenga `access_model` y adapter CONSULTOR.
+
+**Evidencia**: `systemctl restart dfl-context-proxy`; `curl -s http://127.0.0.1:8091/health` OK; `python3 tests/test_knl_contract.py` OK fuera del sandbox por localhost; `curl -s http://127.0.0.1:8091/go` muestra `access_model`.
+
+**No tocado**: cambio preexistente en `/opt/dfl-context-proxy/engram-backup-offhost.sh` quedó fuera del commit.
+
+### DFL onboarding/outboarding — contrato uniforme por adaptadores de capacidad
 **Type:** decision  
 **Project:** dfl  
 
-**[RESOLVED 2026-07-08]**: cierre definitivo de la línea de investigación "bridge para CONSULTOR". Se evaluó además un DFL MCP Server (tools @$go/@$fin/mem_save/mem_search agnósticos a proveedor) y Jorge decidió NO construirlo — CONSULTOR = memory-local queda como arquitectura FINAL, documentada en `AGENT_CAPABILITY_MATRIX.md` (commit `a5d6be3`, sección "## CONSULTOR (ChatGPT, Codex, etc.)"). No reabrir esta investigación sin una razón nueva y concreta. LIFECYCLE: archived.
+**Qué**: Se corrigió el contrato público de onboarding/outboarding para explicitar que `@$go` y `@$fin` son uniformes por contrato semántico, no por transporte. El perfil se decide por capacidades reales de sesión, no por marca de agente/modelo.
 
----
+**Cambio aplicado**: commit `a941ad2` en `/opt/amos-context-mirror` (`docs: clarify DFL access adapters`). Archivos: `AGENT_CAPABILITY_MATRIX.md`, `agents/consultor.md`.
 
-**Qué**: Investigado con evidencia real si un "DFL Context Bridge" hosteado públicamente podía resolver el bloqueo de ChatGPT `web.run`. Resultado: descartado por evidencia. 4 URLs distintas (dominio propio, GitHub raw, jsDelivr CDN, `360eventos.vercel.app`) fallaron con el mismo patrón — allowlist de red a nivel de sesión, no reputación de un dominio en particular.
+**Decisión**: EJECUTOR usa shell/Engram/git; ORQUESTADOR usa fetch público si lo tiene; CONSULTOR usa snapshot pegado/memoria local y entrega `RESUMEN DE SESIÓN` para relay a EJECUTOR. ChatGPT web no recibe acceso vivo si su allowlist bloquea fetch; Codex puede ser EJECUTOR cuando tiene shell+Engram, como esta sesión.
 
-**Cambios aplicados**: Paso 0 en `AGENT_CAPABILITY_MATRIX.md` (commit `1f23663`) y `main.py` (commit `cd649f3`) exigen un intento real de fetch antes de reclamar ORQUESTADOR.
+**Why**: Garantizar intercambio entre IAs/agentes sin depender de MCP como transporte universal. MCP es una puerta posible al lobby, no el lobby.
 
-**Hallazgo sistémico recurrente (auditor de secretos)**: sigue sin resolverse, ver obs #180.
-
-**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
-
-### [RESOLVED] Paso 0 imperativo — de lenguaje sugestivo a árbol binario prohibitivo por nombre de tool
-**Type:** decision  
-**Project:** dfl  
-
-**[RESOLVED 2026-07-08]**: superseded por la decisión final — CONSULTOR = memory-local (AGENT_CAPABILITY_MATRIX.md, commit a5d6be3). El árbol binario del Paso 0 sigue vigente tal cual quedó documentado acá; lo que se cierra es la fase de investigación de canales, no esta corrección. LIFECYCLE: archived.
-
----
-
-**Qué**: Paso 0 de autodiagnóstico reescrito de sugestivo a prohibitivo en `AGENT_CAPABILITY_MATRIX.md` (commit `b68922a`) y `agent_directory.step_0` en `main.py` (commit `5400c5e`).
-
-**Patrón (lenguaje prohibitivo vs sugestivo, para futuros HLC)**: especificar la condición de entrada por **nombre de artefacto verificable** (nombre de tool, presencia de un campo, existencia de un archivo) en vez de por **capacidad descrita en prosa** — la prosa deja margen de interpretación optimista, el nombre de tool no.
-
-**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/dfl-context-proxy/main.py`.
+**Gate 4B**: hito guardado incrementalmente después del commit del mirror. Pendiente en esta misma sesión: commitear cambios del proxy `/go` y publicar mirror regenerado.
 
 ---
 
@@ -346,4 +363,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-08T23:24:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-08T23:33:14Z | La Garra → DFLghub/amos-context*
