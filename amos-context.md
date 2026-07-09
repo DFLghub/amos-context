@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-09T01:14:27Z  
+**Generated:** 2026-07-09T01:25:07Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -273,58 +273,39 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### FASE 2 DECISIÓN — Opción elegida para automatización metabolismo
-**Type:** decision  
+### SYSTEM_HEALTH_CHECK
+**Type:** metric  
 **Project:** dfl  
 
-**What**: Fase 2 (decisión, no implementación) del mandato de actualización del sistema de navegación DFL (Engram/agTopologo/Graphify/KNL). Con base en Fase 0 (mapeo, CC) y Fase 1 (diagnóstico, Codex), se eligió OPCIÓN A: Orchestrator único (`engram-metabolismo.sh`), como wrapper delgado que llama a los scripts existentes (`daily_check.sh`, `regen_graph.sh`, `push_mirror.sh`) sin reescribirlos, agrega audit step de cobertura Engram, reporta (no ejecuta) staleness de Graphify por ausencia de componente instalado, y log único `/var/log/dfl-metabolismo.log`.
+Memoria/Navegabilidad: 100%
 
-metadata.option: A
-metadata.futbolweb_decision: técnica (futbolweb-app es real con 53 obs, futbolweb es legacy con 0 obs — confirmado independientemente por CC Fase 0 y Codex Fase 1)
-
-**Why**: C descartada por mandato explícito de automatización real. B descartada porque el propio diagnóstico ya muestra desincronización activa (autosync systemd + cron 5min sin contrato claro, sync cubriendo proyecto equivocado) — agregar más timers independientes multiplicaría puntos de fallo en vez de centralizarlos. A es además menor esfuerzo real: `regen_graph.sh`/`daily_check.sh` YA encadenan agTopologo→gen_summary→knl_builder→publish, es una extensión, no una reescritura.
-
-**Where**: /home/claude/DECISION_ESTRATEGIA_FASE2.md (justificación completa, riesgos, implementación a alto nivel para Fase 3)
-
-**Learned**:
-- Fix de cobertura de engram-sync-cron.sh (futbolweb→futbolweb-app, +360eventos, +tdf-01) NO requiere autorización adicional de Jorge — no está en la lista NO_TOUCH del contrato DFL (puntajeTigreKnockout, Supabase, Vercel, env vars, templates HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets). Se documenta como cambio atómico separado para Fase 3, no ejecutado en esta fase.
-- Riesgo identificado a vigilar en Fase 3: no tocar el CRON protegido de 3:05am UTC al integrar publish al orquestador — solo invocarlo, nunca reemplazarlo/reagendarlo.
-- No se resuelve en esta fase la ambigüedad autosync vs cron (binario engram cerrado, no auditable) — queda como reporte del audit step, no como fix.
-
-STATUS: active | DECISION_REQUIRED: false | Sin bloqueos. Esperando PROMPT 3 (implementación Fase 3) — no se ejecutó nada del sistema en esta fase.
-
-### FASE 1 DIAGNÓSTICO — Estado Engram/Graphify/agTopologo
+### FASE 3 CHECKPOINT — Rollback point para CC FASE 4
 **Type:** fact  
 **Project:** dfl  
 
 TYPE: checkpoint
 STATUS: active
 DATE: 2026-07-09
-SOURCE_FILE: /home/claude/DIAGNOSTICO_ESTADO_FASE1.md
-metadata.projects: [dfl, futbolweb-app, 360eventos, tdf-01, futbolweb]
-metadata.ambiguities: [futbolweb vs futbolweb-app inconsistency, graph.html stale vs graph.json, Graphify external/no active script in /opt/dfl-knowledge/scripts, Source A/B order mismatch between cc-atgo-hook.sh and amos-context.md, ENGRAM_CLOUD_AUTOSYNC plus cron redundancy]
-decision_required: true
+metadata.phase3_status: completo
+metadata.backup_path: /root/dfl-metabolismo-backup-20260709-010039.tar.gz
+metadata.scripts_created: [/opt/dfl-knowledge/scripts/engram-metabolismo.sh, /opt/dfl-knowledge/scripts/METABOLISMO_POLICY.md]
+metadata.cron_registered: si
+metadata.health_score: 100
+metadata.report_file: /home/claude/IMPLEMENTACION_CAMBIOS_FASE3.md
+decision_required: false
 
-RESUMEN TABLA:
-- Engram: servicio local de memoria en 127.0.0.1:7437; health OK HTTP 200. Guarda observations/prompts/relations en /root/.engram/engram.db. Sync cron cada 5 min via /opt/dfl-context-proxy/engram-sync-cron.sh para proyectos dfl y futbolweb; backup off-host cada 6h; systemd tiene ENGRAM_CLOUD_AUTOSYNC=1.
-- agTopologo: productor canonico de /opt/dfl-knowledge/graphify-out/graph.json desde corpus /opt/dfl-knowledge. Existe /opt/dfl-knowledge/scripts/ag_topologo.py, mtime Jul 5 18:26, version v0.3. graph.json existe, mtime 2026-07-05 18:37 UTC, 94928 bytes, edad 3.26 dias; no stale critico. Corre semanal por regen_graph.sh y puede correr diario via daily_check.sh si hay >5 .md cambiados.
-- Graphify/KNL: no hay script graphify* en /opt/dfl-knowledge/scripts. Capa activa verificada: knl_builder.py consume graph.json y produce knl.json, graph_context_light.json y graph_comparator.json. knl.json mtime 2026-07-08 03:00 UTC. graph.html/manifest/cost mtime 2026-06-26, stale probable frente a graph.json.
+RESUMEN ROLLBACK POINT PARA CC FASE 4:
+- Backup previo completo: /root/dfl-metabolismo-backup-20260709-010039.tar.gz, tamano 1368691 bytes.
+- Script creado: /opt/dfl-knowledge/scripts/engram-metabolismo.sh, ejecutable, orquestador audit Engram -> regen agTopologo -> rebuild KNL -> health score. Usa regen_graph.sh existente para no duplicar secretos/circuit breaker/publish.
+- Politica creada: /opt/dfl-knowledge/scripts/METABOLISMO_POLICY.md.
+- engram-sync fix aplicado en /opt/dfl-context-proxy/engram-sync-cron.sh: reemplazado futbolweb legacy por futbolweb-app y agregados 360eventos y tdf-01. Backup puntual del script: /opt/dfl-context-proxy/engram-sync-cron.sh.phase3.bak.
+- Cron registrado: 0 3 * * 0 /opt/dfl-knowledge/scripts/engram-metabolismo.sh >> /var/log/dfl-metabolismo.log 2>&1.
+- Logs: /var/log/dfl-metabolismo.log y /var/log/dfl-graphify.log.
+- Tests: dry-run OK health 100; ejecucion completa OK; regen_graph.sh OK; circuit breaker pasado 140 -> 140 nodos, minimo 126; knl_builder.py OK; mirror publish OK; Engram /health final OK HTTP 200.
+- Outputs regenerados: /opt/dfl-knowledge/graphify-out/graph.json y knl.json con mtime Jul 9 01:14 UTC.
 
-CONTEOS ENGRAM (API limit=10000): dfl=106, futbolweb-app=53, 360eventos=16, tdf-01=4, futbolweb=0.
-
-CONEXIONES:
-- /go consume knl.json: si, via KNL_PATH en /opt/dfl-context-proxy/main.py.
-- knl_builder.py lee Engram: no; consume archivos locales graph.json/graph.json.prev.
-- Graphify consume graph.json: por contrato/pipeline, pero en scripts activos quien consume graph.json es knl_builder.py; no se encontro binario graphify activo.
-- Ciclos de dependencia: no ciclo duro detectado. Engram alimenta /go; agTopologo produce graph.json; knl_builder produce knl.json; /go consume knl.json; mirror consume /go.
-
-RIESGOS:
-- Alto: sync explicito no cubre futbolweb-app, 360eventos ni tdf-01; solo dfl/futbolweb. futbolweb-app es el namespace real con 53 obs, futbolweb tiene 0.
-- Medio: graph.html/manifest/cost pueden representar una visualizacion vieja (Jun 26) frente a graph.json vigente (Jul 5).
-- Medio: ENGRAM_CLOUD_AUTOSYNC=1 y cron cada 5 min conviven sin contrato claro; no se confirmo si compiten o complementan.
-- Bajo/medio: desalineacion Source A/B entre cc-atgo-hook.sh y amos-context.md.
-
-BLOQUEOS: ninguno. Engram health OK; /opt/dfl-knowledge accesible; graph.json <7 dias; no evidencia de borrado no auditado de observaciones.
+BLOQUEOS: ninguno.
+NO ES CIERRE DE SESION: checkpoint para verificacion/continuacion de CC FASE 4.
 
 ---
 
@@ -417,4 +398,4 @@ BLOQUEOS: ninguno. Engram health OK; /opt/dfl-knowledge accesible; graph.json <7
 
 ---
 
-*Mirror auto-generated 2026-07-09T01:14:27Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-09T01:25:07Z | La Garra → DFLghub/amos-context*
