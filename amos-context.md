@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-09T01:25:07Z  
+**Generated:** 2026-07-09T01:37:41Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,12 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### FASE 4 CIERRE — Metabolismo memoria/navegabilidad completado
+**Type:** decision  
+**Project:** dfl  
+
+METABOLISMO v1.0 COMPLETADO. Resumen fases: FASE 0 mapeo de flujos DFL (CC, OBS #189) → FASE 1 diagnóstico de estado (Codex, OBS #190) → FASE 2 decisión de estrategia (CC, OBS #191) → FASE 3 implementación (Codex, OBS #192) → FASE 4 cierre y verificación (CC, esta obs). Health score final: 100% (5/5 checks: Engram /health ok, cron sync registrado, graph.json fresco <24h, knl.json fresco <24h, 0 obs bloqueadas). Cambios vigentes: engram-metabolismo.sh (orquestador, /opt/dfl-knowledge/scripts/), engram-sync-cron.sh actualizado con futbolweb-app/360eventos/tdf-01, METABOLISMO_POLICY.md (política de retención), cron domingos 3am UTC (0 3 * * 0), log /var/log/dfl-metabolismo.log. Backup restaurable verificado: /root/dfl-metabolismo-backup-20260709-010039.tar.gz. Mirror publicado: commit 756e6fd60fa55ff9734ec6c288f71dcb5643fb89 (2026-07-09 01:25 UTC). Evidencia: OBS #189, #190, #191, #192, OBS-METRIC #194, OBS-FINAL esta. Threshold éxito: health ≥80%; si <60% revisar.
+
 ### FASE 2 DECISIÓN — Opción elegida para automatización metabolismo
 **Type:** decision  
 **Project:** dfl  
@@ -115,22 +121,6 @@ metadata.futbolweb_decision: técnica (futbolweb-app es real con 53 obs, futbolw
 - No se resuelve en esta fase la ambigüedad autosync vs cron (binario engram cerrado, no auditable) — queda como reporte del audit step, no como fix.
 
 STATUS: active | DECISION_REQUIRED: false | Sin bloqueos. Esperando PROMPT 3 (implementación Fase 3) — no se ejecutó nada del sistema en esta fase.
-
-### @$go VALIDATION GATE obligatorio para todos los agentes
-**Type:** decision  
-**Project:** dfl  
-
-**Qué**: Se implementó un gate compacto obligatorio posterior a `@$go` para evitar onboarding falso, contexto viejo o confusión de perfil. Nadie queda operativo solo por declarar perfil: debe responder SOURCE, PROFILE, ACCESS, FIN y NO_TOUCH.
-
-**Diseño**: One-shot gate de máximo 6 líneas. Una corrección permitida; segundo fallo implica degradar a CONSULTOR o pedir EJECUTOR. No es una skill ni un loop infinito: es un handshake de protocolo.
-
-**Cambios**:
-- `/opt/dfl-context-proxy` commit `029a5a1` (`feat: require @$go validation gate`): agrega `protocol_update_alert` y `validation_gate` a `/go`, renderizado en `publish-amos-context.sh`, y test de contrato.
-- `/opt/amos-context-mirror` commit `f8f225b` (`docs: add @$go validation gate`): agrega alerta de actualización y gate en `AGENT_CAPABILITY_MATRIX.md`.
-
-**Evidencia**: `systemctl restart dfl-context-proxy` OK; `/go` muestra `protocol_update_alert` y `validation_gate`; `python3 tests/test_knl_contract.py` OK.
-
-**No tocado**: cambio preexistente en `/opt/dfl-context-proxy/engram-backup-offhost.sh` quedó intacto.
 
 **Type:** decision  
 **Project:** 360eventos  
@@ -183,10 +173,16 @@ Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió 
 
 Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT, Gemini) arrancar con contexto completo DFL en un paso. Fuente A: amos-context.md en DFLghub/amos-context (commit edd5f51). Fuente B: GET https://context.deepfeelingslabs.com/go — devuelve JSON con identity, recent_decisions, active_constraints, pending, generated_at. Backend: dfl-context-proxy en 127.0.0.1:8091 consulta Engram local 127.0.0.1:7437 con queries: "decisiones activas estado", "restricciones prohibido no tocar", "pendientes criticos". Sin auth requerida en /go. @go v1.0 activo y verificado.
 
-### Gate Engine v0 Caso 01: Gate 1 es el gate más débil (PRP-001 retroactivo)
+### [VERIFIED] /go pending filter — resolved/stale cleanup
 **Project:** dfl  
 
-Evaluación retroactiva del PRP-001 contra Gate Engine v0 checklist (2026-06-21). Gate 2 (Execution Perimeter): PASS limpio — perímetro declarado con claridad inusual desde el diseño. Gate 4 (Closure Integrity): PASS — 859/859 harness, diff cero, pendientes explícitos. Gate 1 (Decision Resurrection): ESCALATE — el Candidate Vault NO fue consultado en ningún momento del PRP-001; TSL sirvió como validación de riesgo pero no como chequeo de decisiones archivadas. Hallazgo clave: el checklist necesita una tercera categoría de respuesta (NOT_VERIFIABLE / PARTIAL) además de SÍ/NO — se improvisó durante la evaluación. Gate 4 es el más automatizable (diff/harness son verificables mecánicamente). Gate 1 requiere lectura semántica humana (distinguir 'consulta a TSL' de 'consulta al Candidate Vault'). Conclusión operacional: antes de ejecutar cualquier PRP, consultar 04_Candidate_Vault/ activamente — no solo a agentes. Este hallazgo viene de Gate_Engine_Caso01_PRP001.md en audited_pass/.
+**What**: /opt/dfl-context-proxy/main.py ahora excluye de pending observaciones con título [RESOLVED] o [STALE], y aplica _is_archived(obs) — consistente con el loop de decisions/constraints.
+
+**Why**: Engram #14 (incidente FW 2026-06-19, RESOLVED) seguía apareciendo en pending porque el loop no tenía filtros de estado. El query "pendientes" matchea cualquier obs que mencione la palabra, sin importar si está resuelta.
+
+**Where**: /opt/dfl-context-proxy/main.py — loop pending en _handle_go(), +4 líneas.
+
+**Learned**: El patrón [RESOLVED]/[STALE] como prefijo de título es suficiente para filtrar sin tocar el schema de Engram. _is_archived() ya existía pero no se aplicaba al loop de pending — ahora es consistente en los tres loops (decisions, constraints, pending). Engram #14 ya no aparece como pending activo. recent_decisions permanece intacto.
 
 ### Session summary: futbolweb-app
 **Project:** futbolweb-app  
@@ -273,39 +269,25 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### SYSTEM_HEALTH_CHECK
-**Type:** metric  
-**Project:** dfl  
-
-Memoria/Navegabilidad: 100%
-
-### FASE 3 CHECKPOINT — Rollback point para CC FASE 4
+### Codex @$go/@$fin bootstrap + metabolismo v1 recibido — 2026-07-09
 **Type:** fact  
 **Project:** dfl  
 
-TYPE: checkpoint
-STATUS: active
-DATE: 2026-07-09
-metadata.phase3_status: completo
-metadata.backup_path: /root/dfl-metabolismo-backup-20260709-010039.tar.gz
-metadata.scripts_created: [/opt/dfl-knowledge/scripts/engram-metabolismo.sh, /opt/dfl-knowledge/scripts/METABOLISMO_POLICY.md]
-metadata.cron_registered: si
-metadata.health_score: 100
-metadata.report_file: /home/claude/IMPLEMENTACION_CAMBIOS_FASE3.md
-decision_required: false
+**What**: Sesión Codex ejecutó `@$go`, validó perfil EJECUTOR con payload local `/go` (`generated_at=2026-07-09T01:28:19Z`), consultó Engram `search_memory("contexto DFL")`, y recibió de Jorge el resumen completo de METABOLISMO MEMORIA/NAVEGABILIDAD DFL v1.0.
 
-RESUMEN ROLLBACK POINT PARA CC FASE 4:
-- Backup previo completo: /root/dfl-metabolismo-backup-20260709-010039.tar.gz, tamano 1368691 bytes.
-- Script creado: /opt/dfl-knowledge/scripts/engram-metabolismo.sh, ejecutable, orquestador audit Engram -> regen agTopologo -> rebuild KNL -> health score. Usa regen_graph.sh existente para no duplicar secretos/circuit breaker/publish.
-- Politica creada: /opt/dfl-knowledge/scripts/METABOLISMO_POLICY.md.
-- engram-sync fix aplicado en /opt/dfl-context-proxy/engram-sync-cron.sh: reemplazado futbolweb legacy por futbolweb-app y agregados 360eventos y tdf-01. Backup puntual del script: /opt/dfl-context-proxy/engram-sync-cron.sh.phase3.bak.
-- Cron registrado: 0 3 * * 0 /opt/dfl-knowledge/scripts/engram-metabolismo.sh >> /var/log/dfl-metabolismo.log 2>&1.
-- Logs: /var/log/dfl-metabolismo.log y /var/log/dfl-graphify.log.
-- Tests: dry-run OK health 100; ejecucion completa OK; regen_graph.sh OK; circuit breaker pasado 140 -> 140 nodos, minimo 126; knl_builder.py OK; mirror publish OK; Engram /health final OK HTTP 200.
-- Outputs regenerados: /opt/dfl-knowledge/graphify-out/graph.json y knl.json con mtime Jul 9 01:14 UTC.
+**Context accepted as vigente**: Metabolismo v1.0 completado en fases 0-4; health 100%; automatización semanal vigente; cron domingos 3am UTC para `/opt/dfl-knowledge/scripts/engram-metabolismo.sh`; mirror commit `756e6fd` publicado 2026-07-09 01:25:08 UTC; OBS Engram #189, #190, #191, #192, #194, #195; backup `/root/dfl-metabolismo-backup-20260709-010039.tar.gz`.
 
-BLOQUEOS: ninguno.
-NO ES CIERRE DE SESION: checkpoint para verificacion/continuacion de CC FASE 4.
+**Files affected by this Codex session**: ninguno.
+
+**Product operations**: ninguna; no se operó sobre `/opt/360eventos`, `/opt/futbolweb`, Supabase, Vercel, env vars ni rutas protegidas.
+
+**Closure**: `@$fin` recibido en modo CIERRE. No hay blocker resuelto ni decisión nueva de producto que archive observaciones previas; solo persistencia del contexto recibido y cierre ordenado.
+
+### FASE 4 CIERRE — Metabolismo memoria/navegabilidad completado
+**Type:** decision  
+**Project:** dfl  
+
+METABOLISMO v1.0 COMPLETADO. Resumen fases: FASE 0 mapeo de flujos DFL (CC, OBS #189) → FASE 1 diagnóstico de estado (Codex, OBS #190) → FASE 2 decisión de estrategia (CC, OBS #191) → FASE 3 implementación (Codex, OBS #192) → FASE 4 cierre y verificación (CC, esta obs). Health score final: 100% (5/5 checks: Engram /health ok, cron sync registrado, graph.json fresco <24h, knl.json fresco <24h, 0 obs bloqueadas). Cambios vigentes: engram-metabolismo.sh (orquestador, /opt/dfl-knowledge/scripts/), engram-sync-cron.sh actualizado con futbolweb-app/360eventos/tdf-01, METABOLISMO_POLICY.md (política de retención), cron domingos 3am UTC (0 3 * * 0), log /var/log/dfl-metabolismo.log. Backup restaurable verificado: /root/dfl-metabolismo-backup-20260709-010039.tar.gz. Mirror publicado: commit 756e6fd60fa55ff9734ec6c288f71dcb5643fb89 (2026-07-09 01:25 UTC). Evidencia: OBS #189, #190, #191, #192, OBS-METRIC #194, OBS-FINAL esta. Threshold éxito: health ≥80%; si <60% revisar.
 
 ---
 
@@ -398,4 +380,4 @@ NO ES CIERRE DE SESION: checkpoint para verificacion/continuacion de CC FASE 4.
 
 ---
 
-*Mirror auto-generated 2026-07-09T01:25:07Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-09T01:37:41Z | La Garra → DFLghub/amos-context*
