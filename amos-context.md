@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-09T01:09:01Z  
+**Generated:** 2026-07-09T01:14:27Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -406,15 +406,15 @@ BLOQUEOS: ninguno. Engram health OK; /opt/dfl-knowledge accesible; graph.json <7
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 1.3944  
+**Graph entropy:** 1.1581  
 
-- **Community 11** (75 nodes): Matriz de Contención Operacional, Activo, Contextual Flow
-- **Community 0** (10 nodes): agLego-PTE-001, agLego, ag
-- **Community 1** (8 nodes): MERCADER BOS, Regla semántica del prefijo AG, Asset Index
-- **Community 3** (7 nodes): NBLM2, FutbolWeb, La Fábrica CF
-- **Community 2** (7 nodes): amOS, IAIM, @$go
-- **Community 4** (7 nodes): Fase 0 — Fundación, Leads
+- **Community 11** (84 nodes): Matriz de Contención Operacional, Activo, Pasaporte Cognitivo
+- **Community 0** (12 nodes): agLego, amOS, IAIM
+- **Community 1** (6 nodes): @$go, KNL v1.0, Builder
+- **Community 2** (5 nodes): agMétricas, analytics_projection, aggregate_root_store
+- **Community 3** (5 nodes): Función del REVISOR, Riesgos residuales, Candidate Vault
+- **Community 6** (4 nodes): NBLM2, FutbolWeb, La Fábrica CF
 
 ---
 
-*Mirror auto-generated 2026-07-09T01:09:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-09T01:14:27Z | La Garra → DFLghub/amos-context*
