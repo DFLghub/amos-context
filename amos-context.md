@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-08T23:58:11Z  
+**Generated:** 2026-07-09T00:51:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -284,6 +284,30 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### FASE 0 MAPEO — Rutas de flujo documentadas
+**Type:** discovery  
+**Project:** dfl  
+
+**What**: Mandato FASE 0 (mapeo, no auditoría) ejecutado por CC/EJECUTOR en La Garra. Documentadas con evidencia real (bash/curl/systemctl/crontab/grep, sin adivinar) tres rutas de flujo DFL en `/home/claude/MAPEO_FLUJOS_DFL_FASE0.md`:
+- Ruta 1 (Escritura→Lectura→Publicación): engram-serve.service (7437) → /root/.engram/engram.db → engram-sync-cron.sh (*/5min, cloud) → dfl-context-proxy main.py /go (8091) → push_mirror.sh/publish-amos-context.sh → git push DFLghub/amos-context.
+- Ruta 2 (Topología→Visualización): ag_topologo.py (solo vía regen_graph.sh domingos 4am o daily_check.sh si >5 .md modificados) → graph.json → [Graphify externo, no encontrado como script propio] → knl_builder.py (corre en ambos crons) → knl.json → embebido directo en /go (lectura de archivo, no Engram).
+- Ruta 3 (@$go): hook SessionStart cc-atgo-hook.sh prioriza Fuente B (context.deepfeelingslabs.com/go) con fallback KNL local; documento público amos-context.md le indica a un agente manual priorizar Fuente A (GitHub raw) — secuencias no idénticas aunque convergen en contenido. VALIDATION GATE (SOURCE/PROFILE/ACCESS/FIN/NO_TOUCH) obligatorio desde 2026-07-08.
+
+**Why**: PROMPT 0 de una secuencia multi-fase (FASE 0 mapeo → esperando PROMPT 1) para entender el flujo de datos real antes de cualquier cambio.
+
+**Where**: /home/claude/MAPEO_FLUJOS_DFL_FASE0.md (archivo completo con comandos de verificación por punto)
+
+**Learned** (5 ambigüedades documentadas en detalle en el archivo):
+1. engram-sync-cron.sh sincroniza `--project dfl`/`futbolweb` pero el proyecto real en uso es `futbolweb-app` (y 360eventos/tdf-01 sin cobertura) — ya señalado en auditoría previa (obs 2026-07-08), solo re-confirmado.
+2. graph.html/manifest.json/cost.json tienen mtime Jun 26 mientras graph.json es Jul 5 — no se regeneran en el mismo ciclo, generador de graph.html no identificado en los crons auditados.
+3. No se encontró script/paquete `graphify` propio en el árbol de La Garra (find -iname "*graphify*" solo devuelve la carpeta de salida graphify-out/) — parece herramienta externa.
+4. Fuente A vs Fuente B en @$go: hook automático y documento público no coinciden en cuál priorizar primero.
+5. engram-serve.service tiene ENGRAM_CLOUD_AUTOSYNC=1 además del cron explícito de 5 min — no se pudo confirmar si son redundantes o complementarios (binario cerrado, no auditable desde scripts).
+
+Sin bloqueos: La Garra alcanzable, Engram /health OK, 3/3 puntos de inicio de cada ruta encontrados.
+
+STATUS: active | DECISION_REQUIRED: false | Esperando PROMPT 1 — no se avanzó a FASE 1 por instrucción explícita del mandato.
+
 ### Auditoría Engram 2026-07-08 — sin limpieza programada y sync parcial por proyectos
 **Type:** discovery  
 **Project:** dfl  
@@ -303,26 +327,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 **Riesgo**: Engram tiene durabilidad, pero no metabolismo: acumula snapshots/cierres/iteraciones sin ciclo formal de compactación, archivado y promoción a canonical facts.
 
 **Recomendación preliminar**: crear `engram-maintenance` semanal o quincenal: audit-only primero, luego compactación supervisada. No borrar por defecto; archivar/compactar/promover. Ajustar sync cron para cubrir proyectos activos reales (`futbolweb-app`, `360eventos`, `tdf-01`) o normalizar nombres de proyecto.
-
-### CIERRE — @$go VALIDATION GATE publicado y auditoría de mirror ajustada
-**Type:** bugfix  
-**Project:** dfl  
-
-**Qué se hizo**: Se publicó el `@$go VALIDATION GATE` obligatorio para todos los agentes, junto con una `PROTOCOL UPDATE ALERT` visible al inicio del mirror público. El gate exige 5 líneas: SOURCE, PROFILE, ACCESS, FIN y NO_TOUCH. Una corrección permitida; segundo fallo degrada a CONSULTOR o pide EJECUTOR.
-
-**Commits**:
-- `/opt/amos-context-mirror` commit `f8f225b` (`docs: add @$go validation gate`) — agrega alerta y gate en `AGENT_CAPABILITY_MATRIX.md`.
-- `/opt/dfl-context-proxy` commit `029a5a1` (`feat: require @$go validation gate`) — agrega `protocol_update_alert` y `validation_gate` a `/go`, renderizado en `amos-context.md`, y test de contrato.
-- `/opt/dfl-context-proxy` commit `607f1af` (`fix: allow protected path mention in mirror`) — permite mencionar `/etc/dfl-secrets` como superficie protegida sin bloquear la publicación como secreto.
-
-**Evidencia**:
-- `systemctl restart dfl-context-proxy` OK.
-- `/go` muestra `protocol_update_alert` y `validation_gate`.
-- `python3 tests/test_knl_contract.py` OK.
-- GitHub raw `amos-context.md` generado `2026-07-08T23:51:49Z` contiene `PROTOCOL UPDATE ALERT` y `## @$go VALIDATION GATE`.
-- `push_mirror.sh` imprimió: `MIRROR: updated | commit 569d9c91d266d352d28070be79ee05764b7c6956 | 2026-07-08 23:51:50 +0000`.
-
-**No tocado**: `/opt/dfl-context-proxy/engram-backup-offhost.sh` sigue modificado desde antes y quedó intacto.
 
 ---
 
@@ -415,4 +419,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-08T23:58:11Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-09T00:51:02Z | La Garra → DFLghub/amos-context*
