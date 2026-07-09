@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-09T00:54:01Z  
+**Generated:** 2026-07-09T01:09:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,26 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### FASE 2 DECISIÓN — Opción elegida para automatización metabolismo
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Fase 2 (decisión, no implementación) del mandato de actualización del sistema de navegación DFL (Engram/agTopologo/Graphify/KNL). Con base en Fase 0 (mapeo, CC) y Fase 1 (diagnóstico, Codex), se eligió OPCIÓN A: Orchestrator único (`engram-metabolismo.sh`), como wrapper delgado que llama a los scripts existentes (`daily_check.sh`, `regen_graph.sh`, `push_mirror.sh`) sin reescribirlos, agrega audit step de cobertura Engram, reporta (no ejecuta) staleness de Graphify por ausencia de componente instalado, y log único `/var/log/dfl-metabolismo.log`.
+
+metadata.option: A
+metadata.futbolweb_decision: técnica (futbolweb-app es real con 53 obs, futbolweb es legacy con 0 obs — confirmado independientemente por CC Fase 0 y Codex Fase 1)
+
+**Why**: C descartada por mandato explícito de automatización real. B descartada porque el propio diagnóstico ya muestra desincronización activa (autosync systemd + cron 5min sin contrato claro, sync cubriendo proyecto equivocado) — agregar más timers independientes multiplicaría puntos de fallo en vez de centralizarlos. A es además menor esfuerzo real: `regen_graph.sh`/`daily_check.sh` YA encadenan agTopologo→gen_summary→knl_builder→publish, es una extensión, no una reescritura.
+
+**Where**: /home/claude/DECISION_ESTRATEGIA_FASE2.md (justificación completa, riesgos, implementación a alto nivel para Fase 3)
+
+**Learned**:
+- Fix de cobertura de engram-sync-cron.sh (futbolweb→futbolweb-app, +360eventos, +tdf-01) NO requiere autorización adicional de Jorge — no está en la lista NO_TOUCH del contrato DFL (puntajeTigreKnockout, Supabase, Vercel, env vars, templates HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets). Se documenta como cambio atómico separado para Fase 3, no ejecutado en esta fase.
+- Riesgo identificado a vigilar en Fase 3: no tocar el CRON protegido de 3:05am UTC al integrar publish al orquestador — solo invocarlo, nunca reemplazarlo/reagendarlo.
+- No se resuelve en esta fase la ambigüedad autosync vs cron (binario engram cerrado, no auditable) — queda como reporte del audit step, no como fix.
+
+STATUS: active | DECISION_REQUIRED: false | Sin bloqueos. Esperando PROMPT 3 (implementación Fase 3) — no se ejecutó nada del sistema en esta fase.
+
 ### @$go VALIDATION GATE obligatorio para todos los agentes
 **Type:** decision  
 **Project:** dfl  
@@ -111,37 +131,6 @@ Antes de operar, respondé:
 **Evidencia**: `systemctl restart dfl-context-proxy` OK; `/go` muestra `protocol_update_alert` y `validation_gate`; `python3 tests/test_knl_contract.py` OK.
 
 **No tocado**: cambio preexistente en `/opt/dfl-context-proxy/engram-backup-offhost.sh` quedó intacto.
-
-### CIERRE — acceso uniforme DFL por contrato, no por transporte
-**Type:** decision  
-**Project:** dfl  
-
-**Qué se hizo**: Se corrigió el onboarding/outboarding DFL para resolver el error conceptual: MCP no es el lobby uniforme, sino una puerta posible. `@$go` y `@$fin` quedan definidos como comandos uniformes por contrato semántico, con adaptadores por capacidad real de sesión.
-
-**Arquitectura resultante**:
-- EJECUTOR: shell/Engram/git; `@$go` vía `/go` + Engram; `@$fin` real con Gate 4B + `push_mirror.sh`.
-- ORQUESTADOR: fetch público si disponible; cierre por bitácora de relay.
-- CONSULTOR: snapshot pegado/memoria local; no intenta fetch bloqueado; cierre por `RESUMEN DE SESIÓN` para EJECUTOR.
-- El perfil se decide por capacidades observables de la sesión, no por marca de agente. Codex puede ser EJECUTOR si tiene shell+Engram; ChatGPT web queda CONSULTOR mientras su allowlist bloquee fetch.
-
-**Commits**:
-- `/opt/amos-context-mirror` commit `a941ad2` (`docs: clarify DFL access adapters`) y mirror generado commit `a9f5cc28c94b170feb19b069942715697a910ff1`.
-- `/opt/dfl-context-proxy` commit `fee934d8ae8dea19673adcfa402385a71408182d` (`feat: expose DFL access model`), pusheado a origin/main.
-
-**Evidencia**:
-- `systemctl restart dfl-context-proxy` OK.
-- `curl -s http://127.0.0.1:8091/health` OK.
-- `python3 tests/test_knl_contract.py` OK fuera del sandbox.
-- GitHub raw `amos-context.md` contiene `ACCESS MODEL — UNIFORM CONTRACT, DIFFERENT TRANSPORTS`.
-
-**Archivos afectados**:
-- `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`
-- `/opt/amos-context-mirror/agents/consultor.md`
-- `/opt/dfl-context-proxy/main.py`
-- `/opt/dfl-context-proxy/publish-amos-context.sh`
-- `/opt/dfl-context-proxy/tests/test_knl_contract.py`
-
-**No tocado**: `/opt/dfl-context-proxy/engram-backup-offhost.sh` seguía modificado antes de la tarea y quedó intacto.
 
 **Type:** decision  
 **Project:** 360eventos  
@@ -284,6 +273,26 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### FASE 2 DECISIÓN — Opción elegida para automatización metabolismo
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Fase 2 (decisión, no implementación) del mandato de actualización del sistema de navegación DFL (Engram/agTopologo/Graphify/KNL). Con base en Fase 0 (mapeo, CC) y Fase 1 (diagnóstico, Codex), se eligió OPCIÓN A: Orchestrator único (`engram-metabolismo.sh`), como wrapper delgado que llama a los scripts existentes (`daily_check.sh`, `regen_graph.sh`, `push_mirror.sh`) sin reescribirlos, agrega audit step de cobertura Engram, reporta (no ejecuta) staleness de Graphify por ausencia de componente instalado, y log único `/var/log/dfl-metabolismo.log`.
+
+metadata.option: A
+metadata.futbolweb_decision: técnica (futbolweb-app es real con 53 obs, futbolweb es legacy con 0 obs — confirmado independientemente por CC Fase 0 y Codex Fase 1)
+
+**Why**: C descartada por mandato explícito de automatización real. B descartada porque el propio diagnóstico ya muestra desincronización activa (autosync systemd + cron 5min sin contrato claro, sync cubriendo proyecto equivocado) — agregar más timers independientes multiplicaría puntos de fallo en vez de centralizarlos. A es además menor esfuerzo real: `regen_graph.sh`/`daily_check.sh` YA encadenan agTopologo→gen_summary→knl_builder→publish, es una extensión, no una reescritura.
+
+**Where**: /home/claude/DECISION_ESTRATEGIA_FASE2.md (justificación completa, riesgos, implementación a alto nivel para Fase 3)
+
+**Learned**:
+- Fix de cobertura de engram-sync-cron.sh (futbolweb→futbolweb-app, +360eventos, +tdf-01) NO requiere autorización adicional de Jorge — no está en la lista NO_TOUCH del contrato DFL (puntajeTigreKnockout, Supabase, Vercel, env vars, templates HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets). Se documenta como cambio atómico separado para Fase 3, no ejecutado en esta fase.
+- Riesgo identificado a vigilar en Fase 3: no tocar el CRON protegido de 3:05am UTC al integrar publish al orquestador — solo invocarlo, nunca reemplazarlo/reagendarlo.
+- No se resuelve en esta fase la ambigüedad autosync vs cron (binario engram cerrado, no auditable) — queda como reporte del audit step, no como fix.
+
+STATUS: active | DECISION_REQUIRED: false | Sin bloqueos. Esperando PROMPT 3 (implementación Fase 3) — no se ejecutó nada del sistema en esta fase.
+
 ### FASE 1 DIAGNÓSTICO — Estado Engram/Graphify/agTopologo
 **Type:** fact  
 **Project:** dfl  
@@ -316,30 +325,6 @@ RIESGOS:
 - Bajo/medio: desalineacion Source A/B entre cc-atgo-hook.sh y amos-context.md.
 
 BLOQUEOS: ninguno. Engram health OK; /opt/dfl-knowledge accesible; graph.json <7 dias; no evidencia de borrado no auditado de observaciones.
-
-### FASE 0 MAPEO — Rutas de flujo documentadas
-**Type:** discovery  
-**Project:** dfl  
-
-**What**: Mandato FASE 0 (mapeo, no auditoría) ejecutado por CC/EJECUTOR en La Garra. Documentadas con evidencia real (bash/curl/systemctl/crontab/grep, sin adivinar) tres rutas de flujo DFL en `/home/claude/MAPEO_FLUJOS_DFL_FASE0.md`:
-- Ruta 1 (Escritura→Lectura→Publicación): engram-serve.service (7437) → /root/.engram/engram.db → engram-sync-cron.sh (*/5min, cloud) → dfl-context-proxy main.py /go (8091) → push_mirror.sh/publish-amos-context.sh → git push DFLghub/amos-context.
-- Ruta 2 (Topología→Visualización): ag_topologo.py (solo vía regen_graph.sh domingos 4am o daily_check.sh si >5 .md modificados) → graph.json → [Graphify externo, no encontrado como script propio] → knl_builder.py (corre en ambos crons) → knl.json → embebido directo en /go (lectura de archivo, no Engram).
-- Ruta 3 (@$go): hook SessionStart cc-atgo-hook.sh prioriza Fuente B (context.deepfeelingslabs.com/go) con fallback KNL local; documento público amos-context.md le indica a un agente manual priorizar Fuente A (GitHub raw) — secuencias no idénticas aunque convergen en contenido. VALIDATION GATE (SOURCE/PROFILE/ACCESS/FIN/NO_TOUCH) obligatorio desde 2026-07-08.
-
-**Why**: PROMPT 0 de una secuencia multi-fase (FASE 0 mapeo → esperando PROMPT 1) para entender el flujo de datos real antes de cualquier cambio.
-
-**Where**: /home/claude/MAPEO_FLUJOS_DFL_FASE0.md (archivo completo con comandos de verificación por punto)
-
-**Learned** (5 ambigüedades documentadas en detalle en el archivo):
-1. engram-sync-cron.sh sincroniza `--project dfl`/`futbolweb` pero el proyecto real en uso es `futbolweb-app` (y 360eventos/tdf-01 sin cobertura) — ya señalado en auditoría previa (obs 2026-07-08), solo re-confirmado.
-2. graph.html/manifest.json/cost.json tienen mtime Jun 26 mientras graph.json es Jul 5 — no se regeneran en el mismo ciclo, generador de graph.html no identificado en los crons auditados.
-3. No se encontró script/paquete `graphify` propio en el árbol de La Garra (find -iname "*graphify*" solo devuelve la carpeta de salida graphify-out/) — parece herramienta externa.
-4. Fuente A vs Fuente B en @$go: hook automático y documento público no coinciden en cuál priorizar primero.
-5. engram-serve.service tiene ENGRAM_CLOUD_AUTOSYNC=1 además del cron explícito de 5 min — no se pudo confirmar si son redundantes o complementarios (binario cerrado, no auditable desde scripts).
-
-Sin bloqueos: La Garra alcanzable, Engram /health OK, 3/3 puntos de inicio de cada ruta encontrados.
-
-STATUS: active | DECISION_REQUIRED: false | Esperando PROMPT 1 — no se avanzó a FASE 1 por instrucción explícita del mandato.
 
 ---
 
@@ -432,4 +417,4 @@ STATUS: active | DECISION_REQUIRED: false | Esperando PROMPT 1 — no se avanzó
 
 ---
 
-*Mirror auto-generated 2026-07-09T00:54:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-09T01:09:01Z | La Garra → DFLghub/amos-context*
