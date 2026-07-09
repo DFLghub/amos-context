@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-09T01:37:41Z  
+**Generated:** 2026-07-09T01:39:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -269,6 +269,29 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Session summary: futbolweb-app
+**Type:** session_summary  
+**Project:** futbolweb-app  
+
+## Goal
+Cerrar FASE 4 del Metabolismo Memoria/Navegabilidad DFL v1.0 (mandato CC): verificar implementación Codex, calcular health score, persistir métricas y publicar cierre.
+
+## Discoveries
+- La API REST de Engram (127.0.0.1:7437) exige session_id existente para POST /observations; POST /sessions requiere {id, project}. Se creó sesión `cc-fase4-cierre-20260709` en proyecto dfl.
+- El endpoint /observations devuelve array plano, no envelope {data:[...]} — los jq del mandato necesitaron .[] en vez de .data[].
+- push_mirror.sh resetea el cwd del shell a /opt/futbolweb.
+
+## Accomplished
+METABOLISMO v1.0 COMPLETADO (FASES 0-4). FASE 4: (1) verificados todos los cambios de Codex — backup /root/dfl-metabolismo-backup-20260709-010039.tar.gz restaurable, engram-metabolismo.sh ejecutable, cron 0 3 * * 0 registrado, engram-sync-cron.sh cubre futbolweb-app/360eventos/tdf-01, graph.json y knl.json frescos (2026-07-09 01:14 UTC); (2) health score 100% (5/5 checks); (3) OBS-METRIC #194 en proyecto dfl; (4) mirror commit 756e6fd; (5) OBS-FINAL #195; (6) /home/claude/CIERRE_METABOLISMO_FASE4.md generado. Memoria persistente CC actualizada (project-state.md corte 2026-07-09).
+
+## Next Steps
+- Eduardo/TDF-01 (próxima sesión, anunciado por Jorge).
+- Ciclo automático: domingos 3am UTC corre engram-metabolismo.sh; threshold health ≥80%, si <60% revisar /var/log/dfl-metabolismo.log.
+- Pendientes previos siguen abiertos: Gate Engine v0 Caso 01 (Gate 1 débil, PRP-001 retroactivo), monitoreo P0 post-FT Brasil vs Noruega.
+
+## Relevant Files
+/opt/dfl-knowledge/scripts/engram-metabolismo.sh, /opt/dfl-knowledge/scripts/METABOLISMO_POLICY.md, /opt/dfl-context-proxy/engram-sync-cron.sh, /var/log/dfl-metabolismo.log, /home/claude/CIERRE_METABOLISMO_FASE4.md, /root/dfl-metabolismo-backup-20260709-010039.tar.gz
+
 ### Codex @$go/@$fin bootstrap + metabolismo v1 recibido — 2026-07-09
 **Type:** fact  
 **Project:** dfl  
@@ -282,12 +305,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 **Product operations**: ninguna; no se operó sobre `/opt/360eventos`, `/opt/futbolweb`, Supabase, Vercel, env vars ni rutas protegidas.
 
 **Closure**: `@$fin` recibido en modo CIERRE. No hay blocker resuelto ni decisión nueva de producto que archive observaciones previas; solo persistencia del contexto recibido y cierre ordenado.
-
-### FASE 4 CIERRE — Metabolismo memoria/navegabilidad completado
-**Type:** decision  
-**Project:** dfl  
-
-METABOLISMO v1.0 COMPLETADO. Resumen fases: FASE 0 mapeo de flujos DFL (CC, OBS #189) → FASE 1 diagnóstico de estado (Codex, OBS #190) → FASE 2 decisión de estrategia (CC, OBS #191) → FASE 3 implementación (Codex, OBS #192) → FASE 4 cierre y verificación (CC, esta obs). Health score final: 100% (5/5 checks: Engram /health ok, cron sync registrado, graph.json fresco <24h, knl.json fresco <24h, 0 obs bloqueadas). Cambios vigentes: engram-metabolismo.sh (orquestador, /opt/dfl-knowledge/scripts/), engram-sync-cron.sh actualizado con futbolweb-app/360eventos/tdf-01, METABOLISMO_POLICY.md (política de retención), cron domingos 3am UTC (0 3 * * 0), log /var/log/dfl-metabolismo.log. Backup restaurable verificado: /root/dfl-metabolismo-backup-20260709-010039.tar.gz. Mirror publicado: commit 756e6fd60fa55ff9734ec6c288f71dcb5643fb89 (2026-07-09 01:25 UTC). Evidencia: OBS #189, #190, #191, #192, OBS-METRIC #194, OBS-FINAL esta. Threshold éxito: health ≥80%; si <60% revisar.
 
 ---
 
@@ -380,4 +397,4 @@ METABOLISMO v1.0 COMPLETADO. Resumen fases: FASE 0 mapeo de flujos DFL (CC, OBS 
 
 ---
 
-*Mirror auto-generated 2026-07-09T01:37:41Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-09T01:39:02Z | La Garra → DFLghub/amos-context*
