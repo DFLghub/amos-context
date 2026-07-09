@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-09T00:51:02Z  
+**Generated:** 2026-07-09T00:54:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -284,6 +284,39 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### FASE 1 DIAGNÓSTICO — Estado Engram/Graphify/agTopologo
+**Type:** fact  
+**Project:** dfl  
+
+TYPE: checkpoint
+STATUS: active
+DATE: 2026-07-09
+SOURCE_FILE: /home/claude/DIAGNOSTICO_ESTADO_FASE1.md
+metadata.projects: [dfl, futbolweb-app, 360eventos, tdf-01, futbolweb]
+metadata.ambiguities: [futbolweb vs futbolweb-app inconsistency, graph.html stale vs graph.json, Graphify external/no active script in /opt/dfl-knowledge/scripts, Source A/B order mismatch between cc-atgo-hook.sh and amos-context.md, ENGRAM_CLOUD_AUTOSYNC plus cron redundancy]
+decision_required: true
+
+RESUMEN TABLA:
+- Engram: servicio local de memoria en 127.0.0.1:7437; health OK HTTP 200. Guarda observations/prompts/relations en /root/.engram/engram.db. Sync cron cada 5 min via /opt/dfl-context-proxy/engram-sync-cron.sh para proyectos dfl y futbolweb; backup off-host cada 6h; systemd tiene ENGRAM_CLOUD_AUTOSYNC=1.
+- agTopologo: productor canonico de /opt/dfl-knowledge/graphify-out/graph.json desde corpus /opt/dfl-knowledge. Existe /opt/dfl-knowledge/scripts/ag_topologo.py, mtime Jul 5 18:26, version v0.3. graph.json existe, mtime 2026-07-05 18:37 UTC, 94928 bytes, edad 3.26 dias; no stale critico. Corre semanal por regen_graph.sh y puede correr diario via daily_check.sh si hay >5 .md cambiados.
+- Graphify/KNL: no hay script graphify* en /opt/dfl-knowledge/scripts. Capa activa verificada: knl_builder.py consume graph.json y produce knl.json, graph_context_light.json y graph_comparator.json. knl.json mtime 2026-07-08 03:00 UTC. graph.html/manifest/cost mtime 2026-06-26, stale probable frente a graph.json.
+
+CONTEOS ENGRAM (API limit=10000): dfl=106, futbolweb-app=53, 360eventos=16, tdf-01=4, futbolweb=0.
+
+CONEXIONES:
+- /go consume knl.json: si, via KNL_PATH en /opt/dfl-context-proxy/main.py.
+- knl_builder.py lee Engram: no; consume archivos locales graph.json/graph.json.prev.
+- Graphify consume graph.json: por contrato/pipeline, pero en scripts activos quien consume graph.json es knl_builder.py; no se encontro binario graphify activo.
+- Ciclos de dependencia: no ciclo duro detectado. Engram alimenta /go; agTopologo produce graph.json; knl_builder produce knl.json; /go consume knl.json; mirror consume /go.
+
+RIESGOS:
+- Alto: sync explicito no cubre futbolweb-app, 360eventos ni tdf-01; solo dfl/futbolweb. futbolweb-app es el namespace real con 53 obs, futbolweb tiene 0.
+- Medio: graph.html/manifest/cost pueden representar una visualizacion vieja (Jun 26) frente a graph.json vigente (Jul 5).
+- Medio: ENGRAM_CLOUD_AUTOSYNC=1 y cron cada 5 min conviven sin contrato claro; no se confirmo si compiten o complementan.
+- Bajo/medio: desalineacion Source A/B entre cc-atgo-hook.sh y amos-context.md.
+
+BLOQUEOS: ninguno. Engram health OK; /opt/dfl-knowledge accesible; graph.json <7 dias; no evidencia de borrado no auditado de observaciones.
+
 ### FASE 0 MAPEO — Rutas de flujo documentadas
 **Type:** discovery  
 **Project:** dfl  
@@ -307,26 +340,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 Sin bloqueos: La Garra alcanzable, Engram /health OK, 3/3 puntos de inicio de cada ruta encontrados.
 
 STATUS: active | DECISION_REQUIRED: false | Esperando PROMPT 1 — no se avanzó a FASE 1 por instrucción explícita del mandato.
-
-### Auditoría Engram 2026-07-08 — sin limpieza programada y sync parcial por proyectos
-**Type:** discovery  
-**Project:** dfl  
-
-**Qué se revisó**: Estado operativo de Engram local en La Garra tras la implementación de @$go VALIDATION GATE.
-
-**Hallazgos principales**:
-- Engram local sano: `/health` OK, DB `/root/.engram/engram.db` ~2.9MB.
-- Volumen actual: 177 observations, 307 user_prompts, 54 sessions, 31 memory_relations.
-- Distribución observations: dfl 104, futbolweb-app 53, 360eventos 16, tdf-01 4.
-- No hay relaciones pendientes: `memory_relations.judgment_status='pending'` = 0.
-- Hay backup off-host cada 6h y sync cron cada 5 min.
-- No se encontró limpieza/depuración semántica programada.
-- `engram-sync-cron.sh` sincroniza solo proyectos `dfl` y `futbolweb`; quedan mutaciones sin ACK en proyectos usados realmente: `futbolweb-app` 744, `360eventos` 38, `tdf-01` 7, además de otros namespaces menores.
-- Calidad semántica: 92 observations sin `review_after`, 8 títulos vacíos, ~54 observations con señales de cierre/resuelto/snapshot/stale, y varias observaciones recientes sobre onboarding/outboarding solapadas que podrían compactarse.
-
-**Riesgo**: Engram tiene durabilidad, pero no metabolismo: acumula snapshots/cierres/iteraciones sin ciclo formal de compactación, archivado y promoción a canonical facts.
-
-**Recomendación preliminar**: crear `engram-maintenance` semanal o quincenal: audit-only primero, luego compactación supervisada. No borrar por defecto; archivar/compactar/promover. Ajustar sync cron para cubrir proyectos activos reales (`futbolweb-app`, `360eventos`, `tdf-01`) o normalizar nombres de proyecto.
 
 ---
 
@@ -419,4 +432,4 @@ STATUS: active | DECISION_REQUIRED: false | Esperando PROMPT 1 — no se avanzó
 
 ---
 
-*Mirror auto-generated 2026-07-09T00:51:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-09T00:54:01Z | La Garra → DFLghub/amos-context*
