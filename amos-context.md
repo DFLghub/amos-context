@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-10T18:27:01Z  
+**Generated:** 2026-07-10T19:06:09Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,32 +96,35 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### FASE 4 CIERRE — Metabolismo memoria/navegabilidad completado
+### [RESOLVED] A1 push completado — decisión F1 tomada (Opción A) y ejecutada, ver OBS #204
 **Type:** decision  
 **Project:** dfl  
 
-METABOLISMO v1.0 COMPLETADO. Resumen fases: FASE 0 mapeo de flujos DFL (CC, OBS #189) → FASE 1 diagnóstico de estado (Codex, OBS #190) → FASE 2 decisión de estrategia (CC, OBS #191) → FASE 3 implementación (Codex, OBS #192) → FASE 4 cierre y verificación (CC, esta obs). Health score final: 100% (5/5 checks: Engram /health ok, cron sync registrado, graph.json fresco <24h, knl.json fresco <24h, 0 obs bloqueadas). Cambios vigentes: engram-metabolismo.sh (orquestador, /opt/dfl-knowledge/scripts/), engram-sync-cron.sh actualizado con futbolweb-app/360eventos/tdf-01, METABOLISMO_POLICY.md (política de retención), cron domingos 3am UTC (0 3 * * 0), log /var/log/dfl-metabolismo.log. Backup restaurable verificado: /root/dfl-metabolismo-backup-20260709-010039.tar.gz. Mirror publicado: commit 756e6fd60fa55ff9734ec6c288f71dcb5643fb89 (2026-07-09 01:25 UTC). Evidencia: OBS #189, #190, #191, #192, OBS-METRIC #194, OBS-FINAL esta. Threshold éxito: health ≥80%; si <60% revisar.
+**What**: `git push origin main` en /opt/dfl-knowledge con autorización explícita de Jorge (misión PUSH+CIERRE F1, 2026-07-10). Remoto actualizado af61702→a1d8203. Publicados: 8e1b418 (fix metabolismo/agTopologo) + a1d8203 (flock/cron) + 6 commits previos que estaban solo locales (53d4eaf, 0a77877/0a77891, 0671b5b, 22c/22c54d, b09b6fe, 1a0fe6a — serie docs(fof) Caso 01 360Eventos + QA demo). Verificado con git log origin/main.
 
-### FASE 2 DECISIÓN — Opción elegida para automatización metabolismo
+**Contexto F1 restante**: Opción A (enroll) confirmada viable — CLI tiene `engram cloud enroll <project>`; futbolweb-app/360eventos/tdf-01 ya están configured hacia engram.deepfeelingslabs.com (mismo server que dfl, que sincroniza OK). Esperando decisión Jorge: Opción A (enrolar) vs Opción B (quitar --cloud del wrapper).
+
+**Where**: github.com:DFLghub/dfl-knowledge main.
+
+STATUS: active
+
+### A1 ACCIÓN 3 EJECUTADA — commits 8e1b418 + a1d8203 protegen fix agTopologo, metabolismo y flock
 **Type:** decision  
 **Project:** dfl  
 
-**What**: Fase 2 (decisión, no implementación) del mandato de actualización del sistema de navegación DFL (Engram/agTopologo/Graphify/KNL). Con base en Fase 0 (mapeo, CC) y Fase 1 (diagnóstico, Codex), se eligió OPCIÓN A: Orchestrator único (`engram-metabolismo.sh`), como wrapper delgado que llama a los scripts existentes (`daily_check.sh`, `regen_graph.sh`, `push_mirror.sh`) sin reescribirlos, agrega audit step de cobertura Engram, reporta (no ejecuta) staleness de Graphify por ausencia de componente instalado, y log único `/var/log/dfl-metabolismo.log`.
+**What**: Cierre de las 3 acciones autorizadas Nivel A (2026-07-10) del Audit health-v1. Commits en /opt/dfl-knowledge (main, sin push — la autorización especificaba solo add+commit):
+- 8e1b418 fix(metabolismo): ag_topologo.py (+2 líneas circuit_ok schema-mismatch, load-bearing desde 2026-07-05) + engram-metabolismo.sh + METABOLISMO_POLICY.md — exactamente los 3 archivos de la autorización.
+- a1d8203 fix(cron): flock en regen_graph.sh + header documentando retiro de CRON 2 dominical (commit separado: no estaba en la lista de 3 archivos de ACCIÓN 3 pero dejarlo sin commitear recreaba F2).
 
-metadata.option: A
-metadata.futbolweb_decision: técnica (futbolweb-app es real con 53 obs, futbolweb es legacy con 0 obs — confirmado independientemente por CC Fase 0 y Codex Fase 1)
+**Estado post-ejecución de OBS #198 (audit)**: F1 dfl RESUELTO (sync ok, obs #200) / F1 unenrolled ABIERTO (3 proyectos, decisión Jorge) / F2 RESUELTO (commits) / F3 RESUELTO (obs #199) — el domingo 2026-07-12 3am corre solo metabolismo con flock / F4-F8 ABIERTOS (drift graphify-out, comparator baseline, watchdog false-positives, alert stale, health ciego, retención).
 
-**Why**: C descartada por mandato explícito de automatización real. B descartada porque el propio diagnóstico ya muestra desincronización activa (autosync systemd + cron 5min sin contrato claro, sync cubriendo proyecto equivocado) — agregar más timers independientes multiplicaría puntos de fallo en vez de centralizarlos. A es además menor esfuerzo real: `regen_graph.sh`/`daily_check.sh` YA encadenan agTopologo→gen_summary→knl_builder→publish, es una extensión, no una reescritura.
+**Pendiente de Jorge**: (1) push de 8e1b418+a1d8203 si lo quiere en remoto; (2) decisión enroll vs des-cloud para futbolweb-app/360eventos/tdf-01; (3) acciones F4-F8 (media/baja, sin fecha límite).
 
-**Where**: /home/claude/DECISION_ESTRATEGIA_FASE2.md (justificación completa, riesgos, implementación a alto nivel para Fase 3)
+**Where**: /opt/dfl-knowledge git main; crontab root; /opt/dfl-knowledge/audits/health-v1/ (reporte, evidencia, backup crontab).
 
-**Learned**:
-- Fix de cobertura de engram-sync-cron.sh (futbolweb→futbolweb-app, +360eventos, +tdf-01) NO requiere autorización adicional de Jorge — no está en la lista NO_TOUCH del contrato DFL (puntajeTigreKnockout, Supabase, Vercel, env vars, templates HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets). Se documenta como cambio atómico separado para Fase 3, no ejecutado en esta fase.
-- Riesgo identificado a vigilar en Fase 3: no tocar el CRON protegido de 3:05am UTC al integrar publish al orquestador — solo invocarlo, nunca reemplazarlo/reagendarlo.
-- No se resuelve en esta fase la ambigüedad autosync vs cron (binario engram cerrado, no auditable) — queda como reporte del audit step, no como fix.
+STATUS: active | DECISION_REQUIRED: true (push + unenrolled + F4-F8)
 
-STATUS: active | DECISION_REQUIRED: false | Sin bloqueos. Esperando PROMPT 3 (implementación Fase 3) — no se ejecutó nada del sistema en esta fase.
-
+### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
 **Project:** 360eventos  
 
@@ -131,6 +134,7 @@ STATUS: active | DECISION_REQUIRED: false | Sin bloqueos. Esperando PROMPT 3 (im
 
 **Why**: Jorge quiere que quede claro que el criterio de éxito ahora mismo es "MVP funcional demostrable", no "catálogo comercial validado". No se requiere ninguna acción adicional de mi parte — es una actualización de estado del Caso 01, no una nueva misión.
 
+### QA online demo 360eventos.vercel.app completado
 **Type:** decision  
 **Project:** 360eventos  
 
@@ -269,42 +273,43 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Session summary: futbolweb-app
+### Session summary: dfl-knowledge
 **Type:** session_summary  
-**Project:** futbolweb-app  
+**Project:** dfl-knowledge  
 
 ## Goal
-Cerrar FASE 4 del Metabolismo Memoria/Navegabilidad DFL v1.0 (mandato CC): verificar implementación Codex, calcular health score, persistir métricas y publicar cierre.
+Sesión @$go→@$fin 2026-07-10: Misión A1 (audit health-v1) + ejecución de acciones críticas autorizadas Nivel A + push y cierre F1.
 
 ## Discoveries
-- La API REST de Engram (127.0.0.1:7437) exige session_id existente para POST /observations; POST /sessions requiere {id, project}. Se creó sesión `cc-fase4-cierre-20260709` en proyecto dfl.
-- El endpoint /observations devuelve array plano, no envelope {data:[...]} — los jq del mandato necesitaron .[] en vez de .data[].
-- push_mirror.sh resetea el cwd del shell a /opt/futbolweb.
+- Health score 100% del Metabolismo v1.0 era ciego: sync cloud roto 4/4 proyectos, fix load-bearing sin commitear, colisión de crons dominical.
+- Patrón de bloqueo legacy-mutation en Engram cloud: session.directory vacío (sesiones REST con solo {id,project}) y observation.title vacío; el repair es determinista solo tras arreglar el estado local (UPDATE directory / PATCH title), luego repair --apply.
+- regen_graph.sh dispara regen LLM real si se invoca directo (carga /etc/dfl-secrets); testear cambios solo por el camino SKIP bajo flock sostenido.
+- El watchdog reapea sesiones CC vivas ociosas (heartbeat solo en tool use, STALE_SECONDS=600) — verificado con esta misma sesión a las 18:27 (F5, abierto).
+- No hay PATCH /sessions en la API HTTP de Engram; PATCH /observations/{id} sí acepta campos parciales.
+- MISION_A1_FORMAL.md no existía en amos-context ni local; se operó con mandato inline documentado en /opt/dfl-knowledge/MISION_A1.md.
 
 ## Accomplished
-METABOLISMO v1.0 COMPLETADO (FASES 0-4). FASE 4: (1) verificados todos los cambios de Codex — backup /root/dfl-metabolismo-backup-20260709-010039.tar.gz restaurable, engram-metabolismo.sh ejecutable, cron 0 3 * * 0 registrado, engram-sync-cron.sh cubre futbolweb-app/360eventos/tdf-01, graph.json y knl.json frescos (2026-07-09 01:14 UTC); (2) health score 100% (5/5 checks); (3) OBS-METRIC #194 en proyecto dfl; (4) mirror commit 756e6fd; (5) OBS-FINAL #195; (6) /home/claude/CIERRE_METABOLISMO_FASE4.md generado. Memoria persistente CC actualizada (project-state.md corte 2026-07-09).
+- Audit health-v1 completo (8 hallazgos F1-F8, health real ~65% vs 100% reportado): audits/health-v1/{AUDIT_HEALTH_V1.md,EVIDENCE.md} + MISION_A1.md. OBS #198.
+- F3 resuelto: CRON 2 dominical (0 4 * * 0) retirado (backup crontab-backup-1783708852.txt) + flock en regen_graph.sh testeado. OBS #199. Corrección al borrador de Jorge: la línea era 0 4 * * 0, no 0 3 * * 0.
+- F1 dfl: directory de sesión cc-fase4-cierre-20260709 ''→'/opt', repair --apply, sync con backlog exportado. OBS #200.
+- F2 resuelto: commits 8e1b418 + a1d8203. OBS #201.
+- Push origin/main af61702→a1d8203 (incluye 6 commits fof previos solo locales). OBS #203.
+- F1 completo (Opción A, elegida por Jorge): enroll de futbolweb-app/360eventos/tdf-01; títulos a 8 obs 360eventos (169-175,177) vía PATCH; directory sesión tdf-01 → /opt/nq-factory; repairs applied; wrapper sync limpio para los 4 proyectos. OBS #204.
 
 ## Next Steps
-- Eduardo/TDF-01 (próxima sesión, anunciado por Jorge).
-- Ciclo automático: domingos 3am UTC corre engram-metabolismo.sh; threshold health ≥80%, si <60% revisar /var/log/dfl-metabolismo.log.
-- Pendientes previos siguen abiertos: Gate Engine v0 Caso 01 (Gate 1 débil, PRP-001 retroactivo), monitoreo P0 post-FT Brasil vs Noruega.
+- F4-F8 del audit abiertos (media/baja): drift graphify-out + estrategia git, ciclo .prev/comparator baseline, watchdog STALE_SECONDS/heartbeat, limpiar ag_topologo_alert.json en éxito, health score v2, retención graph.json.v0.1.bak y permisos.
+- Domingo 2026-07-12 03:00 UTC: primera corrida dominical del metabolismo sin CRON 2 — revisar dfl-metabolismo.log y dfl-graphify.log (esperado: una sola regen, posible SKIP por flock).
+- Verificar /var/log/engram-sync.log limpio en próximos ticks de 5 min.
+- MISION_A1.md y audits/health-v1/ sin commitear (no se pidió) — decidir si se versionan.
 
 ## Relevant Files
-/opt/dfl-knowledge/scripts/engram-metabolismo.sh, /opt/dfl-knowledge/scripts/METABOLISMO_POLICY.md, /opt/dfl-context-proxy/engram-sync-cron.sh, /var/log/dfl-metabolismo.log, /home/claude/CIERRE_METABOLISMO_FASE4.md, /root/dfl-metabolismo-backup-20260709-010039.tar.gz
+/opt/dfl-knowledge/audits/health-v1/AUDIT_HEALTH_V1.md, EVIDENCE.md, /opt/dfl-knowledge/MISION_A1.md, scripts/regen_graph.sh, scripts/ag_topologo.py, scripts/engram-metabolismo.sh, /opt/dfl-context-proxy/engram-sync-cron.sh, /root/.engram/engram.db, /var/log/engram-sync.log, /var/log/dfl-metabolismo.log
 
-### Codex @$go/@$fin bootstrap + metabolismo v1 recibido — 2026-07-09
+### TDF01_NQ_DATASOURCE_PENDING
 **Type:** fact  
 **Project:** dfl  
 
-**What**: Sesión Codex ejecutó `@$go`, validó perfil EJECUTOR con payload local `/go` (`generated_at=2026-07-09T01:28:19Z`), consultó Engram `search_memory("contexto DFL")`, y recibió de Jorge el resumen completo de METABOLISMO MEMORIA/NAVEGABILIDAD DFL v1.0.
-
-**Context accepted as vigente**: Metabolismo v1.0 completado en fases 0-4; health 100%; automatización semanal vigente; cron domingos 3am UTC para `/opt/dfl-knowledge/scripts/engram-metabolismo.sh`; mirror commit `756e6fd` publicado 2026-07-09 01:25:08 UTC; OBS Engram #189, #190, #191, #192, #194, #195; backup `/root/dfl-metabolismo-backup-20260709-010039.tar.gz`.
-
-**Files affected by this Codex session**: ninguno.
-
-**Product operations**: ninguna; no se operó sobre `/opt/360eventos`, `/opt/futbolweb`, Supabase, Vercel, env vars ni rutas protegidas.
-
-**Closure**: `@$fin` recibido en modo CIERRE. No hay blocker resuelto ni decisión nueva de producto que archive observaciones previas; solo persistencia del contexto recibido y cierre ordenado.
+TDF-01 needs a real NQ 1m datasource. Current /opt/nq-factory demo uses synthetic sample data only. Real market-data evidence requires Jorge authorization for provider, budget, and secret handling outside repos. Status: blocker for market-data claims; synthetic demo remains runnable. Note: attempted save to project tdf-01 returned HTTP 400 via MCP, so this blocker is recorded under dfl for visibility.
 
 ---
 
@@ -354,7 +359,7 @@ METABOLISMO v1.0 COMPLETADO (FASES 0-4). FASE 4: (1) verificados todos los cambi
 **Entrypoints:**
 - `cd /opt/futbolweb && npm test -- lib/espn-world-cup.test.ts lib/scoring-propagation.test.ts lib/puntaje-tigre-knockout.harness.test.ts` — Focused scoring pipeline evidence.
 
-### estado
+### context-proxy
 **Root:** `/opt/dfl-context-proxy`  
 **Restriction:** No mostrar secretos.  
 **Restriction:** No modificar graph.json desde KNL.  
@@ -397,4 +402,4 @@ METABOLISMO v1.0 COMPLETADO (FASES 0-4). FASE 4: (1) verificados todos los cambi
 
 ---
 
-*Mirror auto-generated 2026-07-10T18:27:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-10T19:06:09Z | La Garra → DFLghub/amos-context*
