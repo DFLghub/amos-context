@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-10T19:14:43Z  
+**Generated:** 2026-07-10T19:27:34Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -177,6 +177,17 @@ Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió 
 
 Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT, Gemini) arrancar con contexto completo DFL en un paso. Fuente A: amos-context.md en DFLghub/amos-context (commit edd5f51). Fuente B: GET https://context.deepfeelingslabs.com/go — devuelve JSON con identity, recent_decisions, active_constraints, pending, generated_at. Backend: dfl-context-proxy en 127.0.0.1:8091 consulta Engram local 127.0.0.1:7437 con queries: "decisiones activas estado", "restricciones prohibido no tocar", "pendientes criticos". Sin auth requerida en /go. @go v1.0 activo y verificado.
 
+### Reminder Layer Phase 1a — contacto manual Alejo iniciado
+**Project:** futbolweb-app  
+
+**What**: Jorge contactó manualmente a Alejo vía WhatsApp para corregir 5 pronósticos KO incompletos (1-1 sin advancing_team).
+**Why**: Phase 1a aprobada — ciclo manual documentado antes de activar automatización.
+**Where**: prediction_intake, grupo EGRESADOS FRANCISCANOS TULUÁ, phone +57316****311
+**Partidos pendientes**: mundial-2026-partido-074 (Alemania vs Paraguay), -075 (Países Bajos vs Marruecos), -079 (México vs Ecuador), -082 (Bélgica vs Senegal), -084 (España vs Austria)
+**Fecha contacto**: 2026-06-28
+**Estado**: esperando corrección de Alejo. Verificar con dry-run GET /api/admin/reminder-candidates — cuando caseBKoDrawIncomplete = 1 (solo KO Prod Probe), Phase 1a cerrada.
+**Condición para Phase 1b**: reminder_log en DB + template Meta aprobado + este ciclo documentado con corrección confirmada.
+
 ### [VERIFIED] /go pending filter — resolved/stale cleanup
 **Project:** dfl  
 
@@ -273,60 +284,39 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### CODEX_B3_RESOLUCION_DEUDA_PARCIAL_COMPLETADA
-**Type:** fact  
-**Project:** dfl  
-
-**Session**: Codex B3 ejecución deuda técnica, cierre `@$fin` 2026-07-10.
-
-**Resolved / committed / pushed**:
-1. `/opt/dfl-knowledge` graphify debt snapshot closed. Commit `bbc5266` pushed to `origin/main`: `fix: close B3 graphify debt snapshot`. Included B3 artifacts and graphify snapshot; ignored `graphify-out/*.bak`.
-2. `/opt/360eventos` quality gates restored. Commit `6a86b5b` pushed to `origin/main`: `fix: restore quality scripts`. Added `eslint.config.mjs`; scripts `lint`, `typecheck`, `test`; fixed internal anchors to `next/link`. Verified `npm run lint`, `npm run typecheck`, `npm run test` all pass.
-3. `/opt/dfl-knowledge` KNL god node clarified. Commit `b72c549` pushed to `origin/main`: `fix: clarify KNL context proxy node`. Changed node `estado` -> `context-proxy`; regenerated `knl.json` and `graph_context_light.json`; verified `python3 scripts/knl_builder.py --check`.
-4. TDF-01 NQ real datasource blocker recorded as Engram #205 under project `dfl` because project `tdf-01` save returned HTTP 400.
-
-**Skipped / blocked**:
-- `/opt/nq-factory` remote unresolved: spec expects `DFLghub/nq-research-factory`, but `git ls-remote` with escalated network returned `Repository not found` for both `DFLghub/nq-research-factory.git` and `DFLghub/nq-factory.git`. No fake origin configured.
-- Real NQ 1m data source requires Jorge decision/authorization and secret handling outside repos.
-- Optional dependency updates were started but interrupted by user; final repo statuses after interruption showed no visible modifications in `/opt/futbolweb` or `/opt/360eventos`.
-
-**Remaining local untracked not touched**: A1 artifacts in `/opt/dfl-knowledge`: `MISION_A1.md`, `audits/health-v1/AUDIT_HEALTH_V1.md`, `audits/health-v1/EVIDENCE.md`, `audits/health-v1/crontab-backup-1783708852.txt`.
-
-**No-touch respected**: no Supabase, Vercel secrets/config, env vars, `/etc/dfl-secrets`, or `puntajeTigreKnockout` modified.
-
-**Counts**: Resolved 3 implementation items + 1 Engram blocker registration; blocked/skipped 2 TDF external decisions; optional dependency update aborted by user.
-
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
 **Project:** dfl-knowledge  
 
 ## Goal
-Sesión @$go→@$fin 2026-07-10: Misión A1 (audit health-v1) + ejecución de acciones críticas autorizadas Nivel A + push y cierre F1.
-
-## Discoveries
-- Health score 100% del Metabolismo v1.0 era ciego: sync cloud roto 4/4 proyectos, fix load-bearing sin commitear, colisión de crons dominical.
-- Patrón de bloqueo legacy-mutation en Engram cloud: session.directory vacío (sesiones REST con solo {id,project}) y observation.title vacío; el repair es determinista solo tras arreglar el estado local (UPDATE directory / PATCH title), luego repair --apply.
-- regen_graph.sh dispara regen LLM real si se invoca directo (carga /etc/dfl-secrets); testear cambios solo por el camino SKIP bajo flock sostenido.
-- El watchdog reapea sesiones CC vivas ociosas (heartbeat solo en tool use, STALE_SECONDS=600) — verificado con esta misma sesión a las 18:27 (F5, abierto).
-- No hay PATCH /sessions en la API HTTP de Engram; PATCH /observations/{id} sí acepta campos parciales.
-- MISION_A1_FORMAL.md no existía en amos-context ni local; se operó con mandato inline documentado en /opt/dfl-knowledge/MISION_A1.md.
+Segunda fase de la sesión 2026-07-10 (post @$fin anterior): completar pendientes B3 de Codex con herramientas de La Garra + renombrado contractual A1.
 
 ## Accomplished
-- Audit health-v1 completo (8 hallazgos F1-F8, health real ~65% vs 100% reportado): audits/health-v1/{AUDIT_HEALTH_V1.md,EVIDENCE.md} + MISION_A1.md. OBS #198.
-- F3 resuelto: CRON 2 dominical (0 4 * * 0) retirado (backup crontab-backup-1783708852.txt) + flock en regen_graph.sh testeado. OBS #199. Corrección al borrador de Jorge: la línea era 0 4 * * 0, no 0 3 * * 0.
-- F1 dfl: directory de sesión cc-fase4-cierre-20260709 ''→'/opt', repair --apply, sync con backlog exportado. OBS #200.
-- F2 resuelto: commits 8e1b418 + a1d8203. OBS #201.
-- Push origin/main af61702→a1d8203 (incluye 6 commits fof previos solo locales). OBS #203.
-- F1 completo (Opción A, elegida por Jorge): enroll de futbolweb-app/360eventos/tdf-01; títulos a 8 obs 360eventos (169-175,177) vía PATCH; directory sesión tdf-01 → /opt/nq-factory; repairs applied; wrapper sync limpio para los 4 proyectos. OBS #204.
+- 360eventos verificado con acceso directo: npm install limpio, lint/typecheck/test pasan con cero errores (confirma commit 6a86b5b de Codex). Nota: test es alias de typecheck, no hay suite real.
+- graphify-out/ a .gitignore con des-trackeo completo (126 archivos, git rm -r --cached): commit 4745376 pusheado. Cierra mitad "drift" de F4. Disco intacto, KNL/proxy leen filesystem.
+- tdf-01 remote POSPUESTO por Jorge: repos candidatos no existen bajo DFLghub, sin gh CLI ni token GitHub en secrets. /opt/nq-factory sigue local (HEAD 011bab1).
+- Renombrado contractual A1: AUDIT_HEALTH_V1.md→INVENTARIO-A1.md, EVIDENCE.md→EVIDENCIAS-A1.md, cross-refs actualizadas, commit c464578 pusheado (primera vez versionados). Para downstream B1.
+- OBS: #208 (CODEX_B3_COMPLETADA), #209 (renombrado).
 
 ## Next Steps
-- F4-F8 del audit abiertos (media/baja): drift graphify-out + estrategia git, ciclo .prev/comparator baseline, watchdog STALE_SECONDS/heartbeat, limpiar ag_topologo_alert.json en éxito, health score v2, retención graph.json.v0.1.bak y permisos.
-- Domingo 2026-07-12 03:00 UTC: primera corrida dominical del metabolismo sin CRON 2 — revisar dfl-metabolismo.log y dfl-graphify.log (esperado: una sola regen, posible SKIP por flock).
-- Verificar /var/log/engram-sync.log limpio en próximos ticks de 5 min.
-- MISION_A1.md y audits/health-v1/ sin commitear (no se pidió) — decidir si se versionan.
+- B1 consolidación consume INVENTARIO-A1.md + EVIDENCIAS-A1.md.
+- tdf-01: cuando Jorge cree el repo o dé URL → remote add + push (OBS #208).
+- Abiertos del audit: F5-F8 + mitad comparator de F4.
+- Domingo 2026-07-12 3am UTC: primera corrida dominical del metabolismo sin CRON 2 — revisar logs.
+- Untracked restantes: MISION_A1.md, crontab-backup-1783708852.txt.
 
 ## Relevant Files
-/opt/dfl-knowledge/audits/health-v1/AUDIT_HEALTH_V1.md, EVIDENCE.md, /opt/dfl-knowledge/MISION_A1.md, scripts/regen_graph.sh, scripts/ag_topologo.py, scripts/engram-metabolismo.sh, /opt/dfl-context-proxy/engram-sync-cron.sh, /root/.engram/engram.db, /var/log/engram-sync.log, /var/log/dfl-metabolismo.log
+/opt/dfl-knowledge/audits/health-v1/INVENTARIO-A1.md, EVIDENCIAS-A1.md, /opt/dfl-knowledge/.gitignore, /opt/360eventos/package.json, /opt/nq-factory
+
+### A1 artefactos renombrados a nombres contractuales — INVENTARIO-A1.md + EVIDENCIAS-A1.md (commit c464578)
+**Type:** fact  
+**Project:** dfl  
+
+**What**: Renombrado contractual de artefactos A1 en /opt/dfl-knowledge/audits/health-v1/ (autorización Jorge 2026-07-10): AUDIT_HEALTH_V1.md → INVENTARIO-A1.md, EVIDENCE.md → EVIDENCIAS-A1.md, con referencias cruzadas internas actualizadas. Commit c464578 pusheado a origin/main — primera vez que estos artefactos quedan versionados (antes untracked). Propósito: cumplir contrato A1 para downstream B1 (consolidación).
+
+**Nota para B1**: toda referencia previa en Engram (OBS #198, #201, #208) a AUDIT_HEALTH_V1.md/EVIDENCE.md apunta ahora a INVENTARIO-A1.md/EVIDENCIAS-A1.md. Siguen untracked: MISION_A1.md y crontab-backup-1783708852.txt (no incluidos en el mandato).
+
+STATUS: active
 
 ---
 
@@ -419,4 +409,4 @@ Sesión @$go→@$fin 2026-07-10: Misión A1 (audit health-v1) + ejecución de ac
 
 ---
 
-*Mirror auto-generated 2026-07-10T19:14:43Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-10T19:27:34Z | La Garra → DFLghub/amos-context*
