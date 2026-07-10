@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-10T19:06:09Z  
+**Generated:** 2026-07-10T19:14:43Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -273,6 +273,29 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### CODEX_B3_RESOLUCION_DEUDA_PARCIAL_COMPLETADA
+**Type:** fact  
+**Project:** dfl  
+
+**Session**: Codex B3 ejecución deuda técnica, cierre `@$fin` 2026-07-10.
+
+**Resolved / committed / pushed**:
+1. `/opt/dfl-knowledge` graphify debt snapshot closed. Commit `bbc5266` pushed to `origin/main`: `fix: close B3 graphify debt snapshot`. Included B3 artifacts and graphify snapshot; ignored `graphify-out/*.bak`.
+2. `/opt/360eventos` quality gates restored. Commit `6a86b5b` pushed to `origin/main`: `fix: restore quality scripts`. Added `eslint.config.mjs`; scripts `lint`, `typecheck`, `test`; fixed internal anchors to `next/link`. Verified `npm run lint`, `npm run typecheck`, `npm run test` all pass.
+3. `/opt/dfl-knowledge` KNL god node clarified. Commit `b72c549` pushed to `origin/main`: `fix: clarify KNL context proxy node`. Changed node `estado` -> `context-proxy`; regenerated `knl.json` and `graph_context_light.json`; verified `python3 scripts/knl_builder.py --check`.
+4. TDF-01 NQ real datasource blocker recorded as Engram #205 under project `dfl` because project `tdf-01` save returned HTTP 400.
+
+**Skipped / blocked**:
+- `/opt/nq-factory` remote unresolved: spec expects `DFLghub/nq-research-factory`, but `git ls-remote` with escalated network returned `Repository not found` for both `DFLghub/nq-research-factory.git` and `DFLghub/nq-factory.git`. No fake origin configured.
+- Real NQ 1m data source requires Jorge decision/authorization and secret handling outside repos.
+- Optional dependency updates were started but interrupted by user; final repo statuses after interruption showed no visible modifications in `/opt/futbolweb` or `/opt/360eventos`.
+
+**Remaining local untracked not touched**: A1 artifacts in `/opt/dfl-knowledge`: `MISION_A1.md`, `audits/health-v1/AUDIT_HEALTH_V1.md`, `audits/health-v1/EVIDENCE.md`, `audits/health-v1/crontab-backup-1783708852.txt`.
+
+**No-touch respected**: no Supabase, Vercel secrets/config, env vars, `/etc/dfl-secrets`, or `puntajeTigreKnockout` modified.
+
+**Counts**: Resolved 3 implementation items + 1 Engram blocker registration; blocked/skipped 2 TDF external decisions; optional dependency update aborted by user.
+
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
 **Project:** dfl-knowledge  
@@ -304,12 +327,6 @@ Sesión @$go→@$fin 2026-07-10: Misión A1 (audit health-v1) + ejecución de ac
 
 ## Relevant Files
 /opt/dfl-knowledge/audits/health-v1/AUDIT_HEALTH_V1.md, EVIDENCE.md, /opt/dfl-knowledge/MISION_A1.md, scripts/regen_graph.sh, scripts/ag_topologo.py, scripts/engram-metabolismo.sh, /opt/dfl-context-proxy/engram-sync-cron.sh, /root/.engram/engram.db, /var/log/engram-sync.log, /var/log/dfl-metabolismo.log
-
-### TDF01_NQ_DATASOURCE_PENDING
-**Type:** fact  
-**Project:** dfl  
-
-TDF-01 needs a real NQ 1m datasource. Current /opt/nq-factory demo uses synthetic sample data only. Real market-data evidence requires Jorge authorization for provider, budget, and secret handling outside repos. Status: blocker for market-data claims; synthetic demo remains runnable. Note: attempted save to project tdf-01 returned HTTP 400 via MCP, so this blocker is recorded under dfl for visibility.
 
 ---
 
@@ -402,4 +419,4 @@ TDF-01 needs a real NQ 1m datasource. Current /opt/nq-factory demo uses syntheti
 
 ---
 
-*Mirror auto-generated 2026-07-10T19:06:09Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-10T19:14:43Z | La Garra → DFLghub/amos-context*
