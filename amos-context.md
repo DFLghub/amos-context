@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-10T19:27:34Z  
+**Generated:** 2026-07-10T19:49:50Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -284,6 +284,12 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### CODEX @$fin cierre - Graphify handoff parcial 2026-07-10
+**Type:** fact  
+**Project:** dfl  
+
+Cierre @$fin ejecutado por Codex el 2026-07-10. Estado de la mision Graphify: se entrego handoff para Claude Code, sin commit final ni Engram de remediacion completa. Cambios locales sin commitear en /opt/dfl-knowledge: scripts/ag_topologo.py, scripts/gen_summary.py, scripts/knl_compare.py, scripts/regen_graph.sh y nuevo scripts/test_knl_compare.py. Hallazgos/cambios: source_file singular agregado de forma deterministica desde source_files; edges heredan procedencia por interseccion/union de fuentes; regen_graph.sh retiene graph.json.prev; knl_compare compara nodos/edges/atributos/trazabilidad/issues; gen_summary.py regenera GRAPH_REPORT.md. Validaciones: python3 scripts/test_knl_compare.py OK; grafo temporal con 140/140 nodos y 596/596 edges con source_file. Riesgo: se ejecuto regeneracion local de graphify-out/graph.json con --llm pero DNS fallo, por lo que aunque llm_enabled=True, el contenido quedo por fallback heuristico; graphify-out esta ignorado por Git. No se tocaron documentos canonicos ni productos externos. Proximo agente: revisar diff, regenerar con red/LLM real si corresponde, crear artefactos en audits/health-v1/graphify, clasificar nodos grado bajo y contradice, commit/push si cierra criterios.
+
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
 **Project:** dfl-knowledge  
@@ -307,16 +313,6 @@ Segunda fase de la sesión 2026-07-10 (post @$fin anterior): completar pendiente
 
 ## Relevant Files
 /opt/dfl-knowledge/audits/health-v1/INVENTARIO-A1.md, EVIDENCIAS-A1.md, /opt/dfl-knowledge/.gitignore, /opt/360eventos/package.json, /opt/nq-factory
-
-### A1 artefactos renombrados a nombres contractuales — INVENTARIO-A1.md + EVIDENCIAS-A1.md (commit c464578)
-**Type:** fact  
-**Project:** dfl  
-
-**What**: Renombrado contractual de artefactos A1 en /opt/dfl-knowledge/audits/health-v1/ (autorización Jorge 2026-07-10): AUDIT_HEALTH_V1.md → INVENTARIO-A1.md, EVIDENCE.md → EVIDENCIAS-A1.md, con referencias cruzadas internas actualizadas. Commit c464578 pusheado a origin/main — primera vez que estos artefactos quedan versionados (antes untracked). Propósito: cumplir contrato A1 para downstream B1 (consolidación).
-
-**Nota para B1**: toda referencia previa en Engram (OBS #198, #201, #208) a AUDIT_HEALTH_V1.md/EVIDENCE.md apunta ahora a INVENTARIO-A1.md/EVIDENCIAS-A1.md. Siguen untracked: MISION_A1.md y crontab-backup-1783708852.txt (no incluidos en el mandato).
-
-STATUS: active
 
 ---
 
@@ -409,4 +405,4 @@ STATUS: active
 
 ---
 
-*Mirror auto-generated 2026-07-10T19:27:34Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-10T19:49:50Z | La Garra → DFLghub/amos-context*
