@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-10T20:27:01Z  
+**Generated:** 2026-07-10T20:59:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -293,6 +293,12 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### @$fin cierre Codex - Modelo B2 Salud Institucional
+**Type:** fact  
+**Project:** dfl  
+
+Cierre @$fin ejecutado por Codex el 2026-07-10. Trabajo realizado: creado el artefacto /opt/dfl-knowledge/audits/organismo-v1/MODELO-SALUD-INSTITUCIONAL-DFL-B2.md con el Modelo B2 de Salud Institucional de DFL; copiado tambien a /root/DFL-ChatGPT/MODELO-SALUD-INSTITUCIONAL-DFL-B2.md como destino Google Drive/local solicitado. El documento cambia el marco desde auditoria de organos/componentes hacia medicina interna institucional: dimensiones de salud estrategica, arquitectonica, operacional, metabolica, cognitiva, organizacional, economica, Digital Workforce, fabricas, BOS y ecosistema; incluye sistema permanente de vigilancia, panel clinico, critica del informe anterior y relectura del stack Gentleman Programming/Alan. Tambien se dejo previamente el suplemento /opt/dfl-knowledge/audits/organismo-v1/INFORME-CODEX-AUDITORIA-ORGANISMO.md. No se hizo commit de estos nuevos artefactos B2.
+
 ### Graphify provenance/comparator/report completado — handoff Codex validado con LLM real y commiteado (29b36bf)
 **Type:** decision  
 **Project:** dfl  
@@ -317,12 +323,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 PROXIMO_AGENTE_DEBE: los 7 edges contradice y 104 nodos grado ≤1 de CLASIFICACION-A1.md son insumo para revisión doctrinal humana (Jorge) — no borrar ni consolidar sin PRP.
 
 STATUS: active | F4 del audit COMPLETO (drift + comparator); quedan F5-F8
-
-### Guardrail literal para @$go y @$fin
-**Type:** bugfix  
-**Project:** dfl  
-
-Se corrigio una fragilidad operativa de onboarding/outboarding: los tokens institucionales @$go y @$fin deben preservarse literalmente, sin quitar @ ni abreviar. Cambios en /opt/dfl-knowledge: CLAUDE.md y DFL_Agent_Onboarding_Config.md declaran la preservacion literal obligatoria; nuevo scripts/test_onboarding_tokens.py verifica que ambos contratos contengan @$go/@$fin y falla si aparece una forma mutilada sin @. Validacion ejecutada: python3 scripts/test_onboarding_tokens.py -> onboarding token guard ok. Commit: 306559b fix: guard literal onboarding tokens.
 
 ---
 
@@ -415,4 +415,4 @@ Se corrigio una fragilidad operativa de onboarding/outboarding: los tokens insti
 
 ---
 
-*Mirror auto-generated 2026-07-10T20:27:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-10T20:59:01Z | La Garra → DFLghub/amos-context*
