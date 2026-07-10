@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-10T19:49:50Z  
+**Generated:** 2026-07-10T20:27:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,31 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Graphify provenance/comparator/report completado — handoff Codex validado con LLM real y commiteado (29b36bf)
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Cierre del handoff de Codex sobre mejoras Graphify (Codex implementó, no commiteó, y su regen LLM falló por DNS del sandbox). CC validó, regeneró con LLM real y commiteó. Commit 29b36bf pusheado a origin/main (sobre 306559b "guard literal onboarding tokens" de sesión concurrente).
+
+**Cambios commiteados**:
+- ag_topologo.py: enrich_provenance() — source_file singular determinístico en nodos y edges (edges heredan por intersección de fuentes origen/destino, unión como fallback, regla registrada en provenance_rule).
+- regen_graph.sh: conserva graph.json.prev tras éxito (antes lo borraba) — cierra la mitad "comparator baseline permanente" de F4 del Audit health-v1.
+- knl_compare.py: delta nodos/edges añadidos/retirados, cambios de atributos, trazabilidad, issues; test scripts/test_knl_compare.py (pasa).
+- gen_summary.py: regenera GRAPH_REPORT.md (estaba stale desde 2026-06-27) con timestamp/commit/métricas/trazabilidad.
+
+**Validación (CC)**: regen LLM real bajo flock, preservando graph.json.prev (baseline 07-09). Resultado: 140n/98e, trazabilidad 100% (vs 58.58% baseline), 0 edges unresolved, issues de extracción 437→196 (clase menor nueva "missing confidence"). Comparator por primera vez con delta real: status stable, previous_available true. gen_summary + knl_builder --check OK. Artefactos: audits/health-v1/graphify/VALIDACION-REGEN-A1.md + CLASIFICACION-A1.{md,json} — 104 nodos grado ≤1 y 7 edges contradice clasificados SIN modificar semántica. graphify-out/ no commiteado (gitignored).
+
+**Learned**:
+- Dos corridas LLM sobre el mismo corpus eligen conjuntos de conceptos parcialmente distintos (~50 labels de churn manteniendo 140 nodos) — varianza de extracción no determinista, visible ahora por el comparator; trabajo futuro si se quiere anclaje de conceptos.
+- El grafo heurístico intermedio (fallback sin LLM) produce ~6x más edges (596 vs 98) — un llm_enabled:true en metadata no garantiza extracción LLM real; verificar conteo de edges contra la serie histórica.
+- Sesiones concurrentes sobre el mismo checkout pueden des-stagear cambios ajenos (commit+reset+recommit entre mi add y mi commit) — releer git status/reflog antes de asumir pérdida.
+
+**Misterio 437 vs 479 resuelto (Codex)**: eran ejecuciones distintas (07-05/07-08 con 110 edges → 479 issues; 07-09/07-10 con 98-99 edges → 437), no métricas simultáneas.
+
+PROXIMO_AGENTE_DEBE: los 7 edges contradice y 104 nodos grado ≤1 de CLASIFICACION-A1.md son insumo para revisión doctrinal humana (Jorge) — no borrar ni consolidar sin PRP.
+
+STATUS: active | F4 del audit COMPLETO (drift + comparator); quedan F5-F8
+
 ### [RESOLVED] A1 push completado — decisión F1 tomada (Opción A) y ejecutada, ver OBS #204
 **Type:** decision  
 **Project:** dfl  
@@ -107,22 +132,6 @@ Antes de operar, respondé:
 **Where**: github.com:DFLghub/dfl-knowledge main.
 
 STATUS: active
-
-### A1 ACCIÓN 3 EJECUTADA — commits 8e1b418 + a1d8203 protegen fix agTopologo, metabolismo y flock
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Cierre de las 3 acciones autorizadas Nivel A (2026-07-10) del Audit health-v1. Commits en /opt/dfl-knowledge (main, sin push — la autorización especificaba solo add+commit):
-- 8e1b418 fix(metabolismo): ag_topologo.py (+2 líneas circuit_ok schema-mismatch, load-bearing desde 2026-07-05) + engram-metabolismo.sh + METABOLISMO_POLICY.md — exactamente los 3 archivos de la autorización.
-- a1d8203 fix(cron): flock en regen_graph.sh + header documentando retiro de CRON 2 dominical (commit separado: no estaba en la lista de 3 archivos de ACCIÓN 3 pero dejarlo sin commitear recreaba F2).
-
-**Estado post-ejecución de OBS #198 (audit)**: F1 dfl RESUELTO (sync ok, obs #200) / F1 unenrolled ABIERTO (3 proyectos, decisión Jorge) / F2 RESUELTO (commits) / F3 RESUELTO (obs #199) — el domingo 2026-07-12 3am corre solo metabolismo con flock / F4-F8 ABIERTOS (drift graphify-out, comparator baseline, watchdog false-positives, alert stale, health ciego, retención).
-
-**Pendiente de Jorge**: (1) push de 8e1b418+a1d8203 si lo quiere en remoto; (2) decisión enroll vs des-cloud para futbolweb-app/360eventos/tdf-01; (3) acciones F4-F8 (media/baja, sin fecha límite).
-
-**Where**: /opt/dfl-knowledge git main; crontab root; /opt/dfl-knowledge/audits/health-v1/ (reporte, evidencia, backup crontab).
-
-STATUS: active | DECISION_REQUIRED: true (push + unenrolled + F4-F8)
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -240,17 +249,17 @@ Mínimos tokens, máximo resultado. Solo bloqueadores y estado final al usuario.
 
 ## RECENT ACTIVITY (cross-project)
 
-### AgMaster_amOS_3 — vocabulario y reglas IAIM
+### amOS Event Model — veredicto auditoría 2026-06-23
+**Type:** decision  
+**Project:** dfl  
+
+Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (AgMaster_amOS_3, AI_amOS_Acta_Fundacional v1.1, Protocolo MS→amOS). Veredicto: B — Existe parcialmente pero disperso. Cobertura: Peso/costo metabólico→confidence+value en tabla events (Parcial, consolidar); Persistencia→status Origin Chain+estados Candidate Vault (Parcial, consolidar); Intención→scope+forbidden_uses agLego+Layer3 VALUE (Implícita, nombrar); Propagación→C-009+G-002 Protocol Taxonomy (Incompleta, GAP REAL); Relación con estado→Layer6+tabla asset_states (Existe, conservar). Conclusión: NO hace falta constructo nuevo tipo 'Light Signals'. Hace falta unificar y nombrar lo disperso. Gap real confirmado: G-002 Protocol Taxonomy (propagación, marcado como no cerrado en el Acta Fundacional). Próximo paso: cerrar G-002 dentro del Libro 1 amOS o como PRP independiente. Prerequisito: localizar RFC-DFL-001 (puede contener Event Model más completo).
+
+### amOS — ontología activa 13 capas (Acta Fundacional v1.1)
 **Type:** fact  
 **Project:** dfl  
 
-AgMaster_amOS_3 es el documento maestro v3 del ecosistema (USAR ESTA, versiones 1 y 2 obsoletas). Vocabulario mínimo para IA invitada: amOS=sistema operativo conceptual/metodológico para absorber/metabolizar información manteniendo soberanía; IAIM=Invisible Augmented Intelligence Mesh, red invisible de IAs aliadas sin nodos fijos, orquestada por HI; HI=Jorge, decisión final soberana; ag10=ChatGPT como router/integrador/destilador/última yarda (no oráculo ni jefe); agPregunta=pregunta aumentada con propósito/dominio/límite/criterio; agLego=pieza conceptual candidata modular trazable; Candado Soberano=restricciones no negociables: no-exec, candidate_only, human-review-first. Prefijo 'ag'=augmented+governed+generative-but-contained. AG10-AUSTERITY-LOCK para fases de cierre/patch/gate. Origin Chain obligatorio para todo agLego. Frase núcleo v3: 'La red ilumina. La HI orquesta. ag10 destila. El candado audita. amOS asimila la cicatriz, no la herida.' Paralelo permitido: máximo 2 nodos, candidate_only, revisión HI.
-
-### MERCADER — contexto operativo completo y restricciones duras
-**Type:** fact  
-**Project:** dfl  
-
-MERCADER BOS v0.1 (2026-05-20): motor económico digital. Jerarquía: amOS/IAIM→Apps Factory→MERCADER→MERCADER BOS. Objetivo inmediato: cerrar circuito económico mínimo (lead capture→Gmail→registro→seguimiento→venta→aprendizaje). Las 5 capas BOS: (1)Contexto — qué es, qué vende, a quién, límites éticos; (2)Datos — 11 campos: nombre/email/tel/ciudad/fuente/producto/urgencia/presupuesto/estado/próx.acción/resultado; (3)Inteligencia — síntesis diaria: leads calientes, objeciones, canales; (4)Automatización — permitida: capturar/notificar/registrar/recordar; PROHIBIDA: cobrar sin revisión, inventar precios/inventario, hacerse pasar por Jorge; (5)Build — landing+formulario+Gmail+Sheets/Postgres+dashboard leads. Restricciones duras: sin empleados; sin storage propio; sin capital inicial fuerte; bajo costo operativo; humano en el cierre sensible; NO mezclar MERCADER con Bazaar ni con videos bioarmónicos. Modelo comercial: broker/coordinador/conector liviano. Score de oportunidad: Dolor+Urgencia+Capacidad+Claridad+Fit (máx 50). Morning Briefing + Evening Reflection operativos. Primer agLego: agLego-MERCADER-LEAD-CAPTURE-v0.1.
+13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -284,35 +293,36 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### CODEX @$fin cierre - Graphify handoff parcial 2026-07-10
-**Type:** fact  
+### Graphify provenance/comparator/report completado — handoff Codex validado con LLM real y commiteado (29b36bf)
+**Type:** decision  
 **Project:** dfl  
 
-Cierre @$fin ejecutado por Codex el 2026-07-10. Estado de la mision Graphify: se entrego handoff para Claude Code, sin commit final ni Engram de remediacion completa. Cambios locales sin commitear en /opt/dfl-knowledge: scripts/ag_topologo.py, scripts/gen_summary.py, scripts/knl_compare.py, scripts/regen_graph.sh y nuevo scripts/test_knl_compare.py. Hallazgos/cambios: source_file singular agregado de forma deterministica desde source_files; edges heredan procedencia por interseccion/union de fuentes; regen_graph.sh retiene graph.json.prev; knl_compare compara nodos/edges/atributos/trazabilidad/issues; gen_summary.py regenera GRAPH_REPORT.md. Validaciones: python3 scripts/test_knl_compare.py OK; grafo temporal con 140/140 nodos y 596/596 edges con source_file. Riesgo: se ejecuto regeneracion local de graphify-out/graph.json con --llm pero DNS fallo, por lo que aunque llm_enabled=True, el contenido quedo por fallback heuristico; graphify-out esta ignorado por Git. No se tocaron documentos canonicos ni productos externos. Proximo agente: revisar diff, regenerar con red/LLM real si corresponde, crear artefactos en audits/health-v1/graphify, clasificar nodos grado bajo y contradice, commit/push si cierra criterios.
+**What**: Cierre del handoff de Codex sobre mejoras Graphify (Codex implementó, no commiteó, y su regen LLM falló por DNS del sandbox). CC validó, regeneró con LLM real y commiteó. Commit 29b36bf pusheado a origin/main (sobre 306559b "guard literal onboarding tokens" de sesión concurrente).
 
-### Session summary: dfl-knowledge
-**Type:** session_summary  
-**Project:** dfl-knowledge  
+**Cambios commiteados**:
+- ag_topologo.py: enrich_provenance() — source_file singular determinístico en nodos y edges (edges heredan por intersección de fuentes origen/destino, unión como fallback, regla registrada en provenance_rule).
+- regen_graph.sh: conserva graph.json.prev tras éxito (antes lo borraba) — cierra la mitad "comparator baseline permanente" de F4 del Audit health-v1.
+- knl_compare.py: delta nodos/edges añadidos/retirados, cambios de atributos, trazabilidad, issues; test scripts/test_knl_compare.py (pasa).
+- gen_summary.py: regenera GRAPH_REPORT.md (estaba stale desde 2026-06-27) con timestamp/commit/métricas/trazabilidad.
 
-## Goal
-Segunda fase de la sesión 2026-07-10 (post @$fin anterior): completar pendientes B3 de Codex con herramientas de La Garra + renombrado contractual A1.
+**Validación (CC)**: regen LLM real bajo flock, preservando graph.json.prev (baseline 07-09). Resultado: 140n/98e, trazabilidad 100% (vs 58.58% baseline), 0 edges unresolved, issues de extracción 437→196 (clase menor nueva "missing confidence"). Comparator por primera vez con delta real: status stable, previous_available true. gen_summary + knl_builder --check OK. Artefactos: audits/health-v1/graphify/VALIDACION-REGEN-A1.md + CLASIFICACION-A1.{md,json} — 104 nodos grado ≤1 y 7 edges contradice clasificados SIN modificar semántica. graphify-out/ no commiteado (gitignored).
 
-## Accomplished
-- 360eventos verificado con acceso directo: npm install limpio, lint/typecheck/test pasan con cero errores (confirma commit 6a86b5b de Codex). Nota: test es alias de typecheck, no hay suite real.
-- graphify-out/ a .gitignore con des-trackeo completo (126 archivos, git rm -r --cached): commit 4745376 pusheado. Cierra mitad "drift" de F4. Disco intacto, KNL/proxy leen filesystem.
-- tdf-01 remote POSPUESTO por Jorge: repos candidatos no existen bajo DFLghub, sin gh CLI ni token GitHub en secrets. /opt/nq-factory sigue local (HEAD 011bab1).
-- Renombrado contractual A1: AUDIT_HEALTH_V1.md→INVENTARIO-A1.md, EVIDENCE.md→EVIDENCIAS-A1.md, cross-refs actualizadas, commit c464578 pusheado (primera vez versionados). Para downstream B1.
-- OBS: #208 (CODEX_B3_COMPLETADA), #209 (renombrado).
+**Learned**:
+- Dos corridas LLM sobre el mismo corpus eligen conjuntos de conceptos parcialmente distintos (~50 labels de churn manteniendo 140 nodos) — varianza de extracción no determinista, visible ahora por el comparator; trabajo futuro si se quiere anclaje de conceptos.
+- El grafo heurístico intermedio (fallback sin LLM) produce ~6x más edges (596 vs 98) — un llm_enabled:true en metadata no garantiza extracción LLM real; verificar conteo de edges contra la serie histórica.
+- Sesiones concurrentes sobre el mismo checkout pueden des-stagear cambios ajenos (commit+reset+recommit entre mi add y mi commit) — releer git status/reflog antes de asumir pérdida.
 
-## Next Steps
-- B1 consolidación consume INVENTARIO-A1.md + EVIDENCIAS-A1.md.
-- tdf-01: cuando Jorge cree el repo o dé URL → remote add + push (OBS #208).
-- Abiertos del audit: F5-F8 + mitad comparator de F4.
-- Domingo 2026-07-12 3am UTC: primera corrida dominical del metabolismo sin CRON 2 — revisar logs.
-- Untracked restantes: MISION_A1.md, crontab-backup-1783708852.txt.
+**Misterio 437 vs 479 resuelto (Codex)**: eran ejecuciones distintas (07-05/07-08 con 110 edges → 479 issues; 07-09/07-10 con 98-99 edges → 437), no métricas simultáneas.
 
-## Relevant Files
-/opt/dfl-knowledge/audits/health-v1/INVENTARIO-A1.md, EVIDENCIAS-A1.md, /opt/dfl-knowledge/.gitignore, /opt/360eventos/package.json, /opt/nq-factory
+PROXIMO_AGENTE_DEBE: los 7 edges contradice y 104 nodos grado ≤1 de CLASIFICACION-A1.md son insumo para revisión doctrinal humana (Jorge) — no borrar ni consolidar sin PRP.
+
+STATUS: active | F4 del audit COMPLETO (drift + comparator); quedan F5-F8
+
+### Guardrail literal para @$go y @$fin
+**Type:** bugfix  
+**Project:** dfl  
+
+Se corrigio una fragilidad operativa de onboarding/outboarding: los tokens institucionales @$go y @$fin deben preservarse literalmente, sin quitar @ ni abreviar. Cambios en /opt/dfl-knowledge: CLAUDE.md y DFL_Agent_Onboarding_Config.md declaran la preservacion literal obligatoria; nuevo scripts/test_onboarding_tokens.py verifica que ambos contratos contengan @$go/@$fin y falla si aparece una forma mutilada sin @. Validacion ejecutada: python3 scripts/test_onboarding_tokens.py -> onboarding token guard ok. Commit: 306559b fix: guard literal onboarding tokens.
 
 ---
 
@@ -394,15 +404,15 @@ Segunda fase de la sesión 2026-07-10 (post @$fin anterior): completar pendiente
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 1.1581  
+**Graph entropy:** 1.0741  
 
-- **Community 11** (84 nodes): Matriz de Contención Operacional, Activo, Pasaporte Cognitivo
-- **Community 0** (12 nodes): agLego, amOS, IAIM
-- **Community 1** (6 nodes): @$go, KNL v1.0, Builder
-- **Community 2** (5 nodes): agMétricas, analytics_projection, aggregate_root_store
-- **Community 3** (5 nodes): Función del REVISOR, Riesgos residuales, Candidate Vault
-- **Community 6** (4 nodes): NBLM2, FutbolWeb, La Fábrica CF
+- **Community 11** (83 nodes): Monetización de Contexto Distribuido, Data Lake Artesanal, agLego-PATTERN-ASYNC_INSPECTION_SPLIT
+- **Community 0** (17 nodes): agLego-PTE-001, agLego, amOS
+- **Community 1** (4 nodes): Dependencias de FutbolWeb, Estado Operativo de Engram, Business OS
+- **Community 2** (4 nodes): Zapata3
+- **Community 3** (4 nodes): Minimum Circulation Engine, Fábrica CF, Fórmula de Tracción Operacional
+- **Community 4** (4 nodes): agTopólogo
 
 ---
 
-*Mirror auto-generated 2026-07-10T19:49:50Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-10T20:27:01Z | La Garra → DFLghub/amos-context*
