@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-11T22:27:01Z  
+**Generated:** 2026-07-11T22:37:22Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -292,32 +292,40 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### [VERIFIED] Hook SessionStart @go operativo en sesión CC 2026-07-11 — PROXIMO_AGENTE_DEBE FutbolWeb cumplido
+### Session summary: futbolweb-app
+**Type:** session_summary  
+**Project:** futbolweb-app  
+
+## Goal
+Completar el Diagnóstico Institucional DFL v1 (misión retomada tras corte de conexión): auditoría solo-lectura de La Garra con separación evidencia/inventario/interpretación/diagnóstico y clasificación explícita de certeza. Cierre con estado de la casa y orden institucional, NO propuesta tecnológica.
+
+## Accomplished
+- Verificado estado persistido tras el corte: 17 archivos de evidencia en EVIDENCE/ sobrevivieron; ningún artefacto de análisis existía; Engram sin registro de la misión (murió antes del Gate 4B).
+- Cerrados 2 huecos de evidencia (solo lectura): git-remotes-redactado.txt (PAT detectado por prefijo, valor jamás registrado) y git-dirty-detalle.txt.
+- Escritos los 5 artefactos en /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/: 00-README (método + taxonomía [V]/[I]/[NV]/[D]), 01-INVENTARIO-INFRAESTRUCTURA, 02-INTERPRETACION, 03-HALLAZGOS (18 hallazgos: 1 crítico, 6 altos, 5 medios, 6 bajos), 04-DIAGNOSTICO-INSTITUCIONAL (orden: ACLARAR → VERIFICAR → CONSOLIDAR → GOBERNAR → RETIRAR).
+
+## Discoveries (clave)
+- H-01 CRÍTICO: PAT GitHub en remote de prediccion2026 (obs #218) — registrado sin rotar por mandato.
+- H-02 ALTO: backups off-host de Engram NO verificables desde La Garra (ssh denegado + receptor rechaza inspección) — durabilidad es hipótesis, no hecho.
+- H-03 ALTO: engram-backup-offhost.sh y engram-sync-cron.sh corren desde working tree sin commit — crons ejecutan código que git no declara.
+- H-04 ALTO: producto público (360eventos demo a Rubén, futbolweb) servido por next dev servers NODE_ENV=development en puertos públicos; explica swap 1.4Gi/2.0Gi.
+- H-05 ALTO: saas-factory-setup V5 (5e42124) local con remote apuntando a org externa saas-factory-community — push reflejo filtraría IP de fábrica.
+- H-06/H-07: n8n público dormido desde 2026-05-17; futbolweb-env-backup.zip en Drive sin verificar.
+- Organismo intacto: cero correcciones, reinicios, limpiezas o actualizaciones.
+
+## Next Steps
+- Bloques 1º-2º del diagnóstico antes de cualquier evolución: aclarar alcance del PAT, registro vivo/muerto de órganos /opt, rol n8n, dry-run metabolismo, destino V5; verificar backups desde VM3, auth n8n/8080, vigencia PAT.
+- Commitear el expediente de auditoría en dfl-knowledge (C-2) cuando Jorge autorice.
+
+## Relevant Files
+- /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/{00-README,01-INVENTARIO-INFRAESTRUCTURA,02-INTERPRETACION,03-HALLAZGOS,04-DIAGNOSTICO-INSTITUCIONAL}.md
+- EVIDENCE/ (19 archivos, incl. git-remotes-redactado.txt y git-dirty-detalle.txt nuevos)
+
+### [CRÍTICO] H-01: PAT GitHub embebido en remote de prediccion2026 — registrado sin rotar (mandato misión)
 **Type:** discovery  
 **Project:** futbolweb-app  
 
-[VERIFIED] Hook SessionStart @go apareció correctamente en sesión CC del 2026-07-11: el hook inyectó el payload @go v1.1 completo (decisiones activas, pendientes, CC bootstrap, cierre @$fin) al arrancar la sesión en /opt/futbolweb. PROXIMO_AGENTE_DEBE de FutbolWeb ("verificar que el hook aparece en la próxima sesión CC") queda cumplido. Proxy dfl-context-proxy /go responde HTTP 200 en 127.0.0.1:8091. Perfil EJECUTOR confirmado vía amos-context AGENT DIRECTORY (anexo agents/ejecutor.md).
-
-### CIERRE — Diseño conceptual Fábrica de Fábricas y Digital Force
-**Type:** session_summary  
-**Project:** dfl  
-
-DATE: 2026-07-11
-PROJECT: dfl
-TYPE: session_summary
-STATUS: active
-
-Jorge pidió comprender integralmente SaaS Factory y Business OS. Se auditó en solo lectura /opt/saas-factory-setup con autorización explícita. Estado observado: main en commit local 5e42124; graphify-out permanece untracked e intacto. V5 es principalmente un Factory OS basado en instrucciones/skills: 32 SKILL.md físicos aunque la documentación declara 30. Business OS no existe como módulo formal; aparece distribuido en outcomes, acquisition, mission-control, guardian, factory-brain, cost-optimizer, onboarding y vertical-pack. Varias capacidades son procedimentales, no infraestructura operativa encendida. No se modificó ningún archivo.
-
-Dirección conceptual acordada: estudiar y extraer patrones de SaaS Factory, no adoptar su filosofía Agent-First. Construir una Fábrica de Fábricas soberana bajo gobernanza, homeostasis, dashboards soberanos/clínicos/operacionales, metabolismo ligero, ecología, modularidad, intercambiabilidad, filosofía flaco de acero, automatización durable y aprendizaje progresivo gobernado. Separar Observatorio, Laboratorio, Candidate Vault y Núcleo Operacional. SaaS Factory sería espécimen/adaptador, no kernel.
-
-Arquitectura propuesta: monolito modular Python/FastAPI/Pydantic; PostgreSQL como estado canónico; Temporal para workflows durables; transactional outbox y NATS JetStream solo al escalar; OPA para policy-as-code; Next.js para dashboard soberano; Grafana/OpenTelemetry/Prometheus/Loki/Tempo para operación; Git para doctrina; MinIO para evidencia; runtimes/modelos mediante puertos intercambiables. Docker Compose/systemd antes de Kubernetes.
-
-Digital Force: separar control plane y execution plane; vender capacidades/procesos gobernados, no personajes-agente. Roles persistentes, ejecutores/subagentes efímeros; multi-tenancy, contratos, autoridad, presupuestos, SLA, evaluación, billing, lifecycle, aislamiento y aprendizaje privado/anónimo/global con gates.
-
-Skill Canon v0.1 puede definirse antes de implementar, distinguiendo policy, función, workflow, skill, agente y fábrica. Se propusieron familias: gobernanza, comprensión/diseño, construcción, validación, operación/homeostasis, aprendizaje/metabolismo, Digital Force y Fábrica de Fábricas. La implementación debe validar granularidad y promover/deprecar skills por evidencia.
-
-PROXIMO_AGENTE_DEBE: no modificar /opt/saas-factory-setup sin nueva autorización explícita. Si Jorge ordena crear laboratorio, recomendar clon local de /opt/saas-factory-setup a /root/saas-factory-lab para preservar 5e42124 sin incluir graphify-out y con push inicialmente deshabilitado.
+HALLAZGO CRÍTICO H-01 (Diagnóstico Institucional DFL v1, 2026-07-11): PAT de GitHub embebido en texto plano en la URL del remote origin de /opt/prediccion2026 (.git/config). Confirmado por prefijo de token; el VALOR NO fue mostrado, copiado ni registrado en ningún artefacto. Repo muerto desde 2026-06-15 — secreto vivo sin vigilancia, legible por cualquier acceso al filesystem. Alcance de permisos del PAT: desconocido. ESTADO: registrado, NO rotado ni modificado, por mandato explícito de la misión. Acción futura requiere: (1) verificar vigencia y alcance del token en GitHub, (2) rotarlo, (3) limpiar la URL del remote. Evidencia redactada: /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/EVIDENCE/git-remotes-redactado.txt. Expediente completo: 03-HALLAZGOS.md (H-01) y 04-DIAGNOSTICO-INSTITUCIONAL.md (bloques A-1/V-4).
 
 ---
 
@@ -410,4 +418,4 @@ PROXIMO_AGENTE_DEBE: no modificar /opt/saas-factory-setup sin nueva autorizació
 
 ---
 
-*Mirror auto-generated 2026-07-11T22:27:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-11T22:37:22Z | La Garra → DFLghub/amos-context*
