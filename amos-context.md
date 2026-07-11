@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-11T03:05:38Z  
+**Generated:** 2026-07-11T21:53:00Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,17 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### SaaS Factory V5 consolidada en commit local 5e42124
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/saas-factory/v5-local-commit
+TYPE: decision
+STATUS: active
+DATE: 2026-07-11
+SUMMARY: Con autorización explícita de Jorge, se consolidó la capa operativa SaaS Factory V5 existente sobre la base Git V4 del repositorio /opt/saas-factory-setup. Commit local: 5e42124aa0a070701f0a400b714d2a133b361a86, mensaje `feat: establish SaaS Factory V5 operational layer`, rama main, base previa 99f51b3. Alcance: 67 archivos, incluyendo CHANGELOG 5.0.0, CLAUDE/GEMINI y nuevos skills V5 con referencias. Validación: 32 SKILL.md físicos con frontmatter mínimo válido; escaneo de patrones conocidos sin secretos; commit verificado. Exclusión intencional: saas-factory/graphify-out/ permanece untracked por ser salida diagnóstica generada. No se hizo push.
+PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o confirmar autorización explícita de push; no incluir graphify-out salvo orden específica.
+
 ### Graphify provenance/comparator/report completado — handoff Codex validado con LLM real y commiteado (29b36bf)
 **Type:** decision  
 **Project:** dfl  
@@ -120,18 +131,6 @@ Antes de operar, respondé:
 PROXIMO_AGENTE_DEBE: los 7 edges contradice y 104 nodos grado ≤1 de CLASIFICACION-A1.md son insumo para revisión doctrinal humana (Jorge) — no borrar ni consolidar sin PRP.
 
 STATUS: active | F4 del audit COMPLETO (drift + comparator); quedan F5-F8
-
-### [RESOLVED] A1 push completado — decisión F1 tomada (Opción A) y ejecutada, ver OBS #204
-**Type:** decision  
-**Project:** dfl  
-
-**What**: `git push origin main` en /opt/dfl-knowledge con autorización explícita de Jorge (misión PUSH+CIERRE F1, 2026-07-10). Remoto actualizado af61702→a1d8203. Publicados: 8e1b418 (fix metabolismo/agTopologo) + a1d8203 (flock/cron) + 6 commits previos que estaban solo locales (53d4eaf, 0a77877/0a77891, 0671b5b, 22c/22c54d, b09b6fe, 1a0fe6a — serie docs(fof) Caso 01 360Eventos + QA demo). Verificado con git log origin/main.
-
-**Contexto F1 restante**: Opción A (enroll) confirmada viable — CLI tiene `engram cloud enroll <project>`; futbolweb-app/360eventos/tdf-01 ya están configured hacia engram.deepfeelingslabs.com (mismo server que dfl, que sincroniza OK). Esperando decisión Jorge: Opción A (enrolar) vs Opción B (quitar --cloud del wrapper).
-
-**Where**: github.com:DFLghub/dfl-knowledge main.
-
-STATUS: active
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -293,36 +292,37 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### @$fin cierre Codex - Modelo B2 Salud Institucional
-**Type:** fact  
+### CIERRE — Diseño conceptual Fábrica de Fábricas y Digital Force
+**Type:** session_summary  
 **Project:** dfl  
 
-Cierre @$fin ejecutado por Codex el 2026-07-10. Trabajo realizado: creado el artefacto /opt/dfl-knowledge/audits/organismo-v1/MODELO-SALUD-INSTITUCIONAL-DFL-B2.md con el Modelo B2 de Salud Institucional de DFL; copiado tambien a /root/DFL-ChatGPT/MODELO-SALUD-INSTITUCIONAL-DFL-B2.md como destino Google Drive/local solicitado. El documento cambia el marco desde auditoria de organos/componentes hacia medicina interna institucional: dimensiones de salud estrategica, arquitectonica, operacional, metabolica, cognitiva, organizacional, economica, Digital Workforce, fabricas, BOS y ecosistema; incluye sistema permanente de vigilancia, panel clinico, critica del informe anterior y relectura del stack Gentleman Programming/Alan. Tambien se dejo previamente el suplemento /opt/dfl-knowledge/audits/organismo-v1/INFORME-CODEX-AUDITORIA-ORGANISMO.md. No se hizo commit de estos nuevos artefactos B2.
+DATE: 2026-07-11
+PROJECT: dfl
+TYPE: session_summary
+STATUS: active
 
-### Graphify provenance/comparator/report completado — handoff Codex validado con LLM real y commiteado (29b36bf)
+Jorge pidió comprender integralmente SaaS Factory y Business OS. Se auditó en solo lectura /opt/saas-factory-setup con autorización explícita. Estado observado: main en commit local 5e42124; graphify-out permanece untracked e intacto. V5 es principalmente un Factory OS basado en instrucciones/skills: 32 SKILL.md físicos aunque la documentación declara 30. Business OS no existe como módulo formal; aparece distribuido en outcomes, acquisition, mission-control, guardian, factory-brain, cost-optimizer, onboarding y vertical-pack. Varias capacidades son procedimentales, no infraestructura operativa encendida. No se modificó ningún archivo.
+
+Dirección conceptual acordada: estudiar y extraer patrones de SaaS Factory, no adoptar su filosofía Agent-First. Construir una Fábrica de Fábricas soberana bajo gobernanza, homeostasis, dashboards soberanos/clínicos/operacionales, metabolismo ligero, ecología, modularidad, intercambiabilidad, filosofía flaco de acero, automatización durable y aprendizaje progresivo gobernado. Separar Observatorio, Laboratorio, Candidate Vault y Núcleo Operacional. SaaS Factory sería espécimen/adaptador, no kernel.
+
+Arquitectura propuesta: monolito modular Python/FastAPI/Pydantic; PostgreSQL como estado canónico; Temporal para workflows durables; transactional outbox y NATS JetStream solo al escalar; OPA para policy-as-code; Next.js para dashboard soberano; Grafana/OpenTelemetry/Prometheus/Loki/Tempo para operación; Git para doctrina; MinIO para evidencia; runtimes/modelos mediante puertos intercambiables. Docker Compose/systemd antes de Kubernetes.
+
+Digital Force: separar control plane y execution plane; vender capacidades/procesos gobernados, no personajes-agente. Roles persistentes, ejecutores/subagentes efímeros; multi-tenancy, contratos, autoridad, presupuestos, SLA, evaluación, billing, lifecycle, aislamiento y aprendizaje privado/anónimo/global con gates.
+
+Skill Canon v0.1 puede definirse antes de implementar, distinguiendo policy, función, workflow, skill, agente y fábrica. Se propusieron familias: gobernanza, comprensión/diseño, construcción, validación, operación/homeostasis, aprendizaje/metabolismo, Digital Force y Fábrica de Fábricas. La implementación debe validar granularidad y promover/deprecar skills por evidencia.
+
+PROXIMO_AGENTE_DEBE: no modificar /opt/saas-factory-setup sin nueva autorización explícita. Si Jorge ordena crear laboratorio, recomendar clon local de /opt/saas-factory-setup a /root/saas-factory-lab para preservar 5e42124 sin incluir graphify-out y con push inicialmente deshabilitado.
+
+### SaaS Factory V5 consolidada en commit local 5e42124
 **Type:** decision  
 **Project:** dfl  
 
-**What**: Cierre del handoff de Codex sobre mejoras Graphify (Codex implementó, no commiteó, y su regen LLM falló por DNS del sandbox). CC validó, regeneró con LLM real y commiteó. Commit 29b36bf pusheado a origin/main (sobre 306559b "guard literal onboarding tokens" de sesión concurrente).
-
-**Cambios commiteados**:
-- ag_topologo.py: enrich_provenance() — source_file singular determinístico en nodos y edges (edges heredan por intersección de fuentes origen/destino, unión como fallback, regla registrada en provenance_rule).
-- regen_graph.sh: conserva graph.json.prev tras éxito (antes lo borraba) — cierra la mitad "comparator baseline permanente" de F4 del Audit health-v1.
-- knl_compare.py: delta nodos/edges añadidos/retirados, cambios de atributos, trazabilidad, issues; test scripts/test_knl_compare.py (pasa).
-- gen_summary.py: regenera GRAPH_REPORT.md (estaba stale desde 2026-06-27) con timestamp/commit/métricas/trazabilidad.
-
-**Validación (CC)**: regen LLM real bajo flock, preservando graph.json.prev (baseline 07-09). Resultado: 140n/98e, trazabilidad 100% (vs 58.58% baseline), 0 edges unresolved, issues de extracción 437→196 (clase menor nueva "missing confidence"). Comparator por primera vez con delta real: status stable, previous_available true. gen_summary + knl_builder --check OK. Artefactos: audits/health-v1/graphify/VALIDACION-REGEN-A1.md + CLASIFICACION-A1.{md,json} — 104 nodos grado ≤1 y 7 edges contradice clasificados SIN modificar semántica. graphify-out/ no commiteado (gitignored).
-
-**Learned**:
-- Dos corridas LLM sobre el mismo corpus eligen conjuntos de conceptos parcialmente distintos (~50 labels de churn manteniendo 140 nodos) — varianza de extracción no determinista, visible ahora por el comparator; trabajo futuro si se quiere anclaje de conceptos.
-- El grafo heurístico intermedio (fallback sin LLM) produce ~6x más edges (596 vs 98) — un llm_enabled:true en metadata no garantiza extracción LLM real; verificar conteo de edges contra la serie histórica.
-- Sesiones concurrentes sobre el mismo checkout pueden des-stagear cambios ajenos (commit+reset+recommit entre mi add y mi commit) — releer git status/reflog antes de asumir pérdida.
-
-**Misterio 437 vs 479 resuelto (Codex)**: eran ejecuciones distintas (07-05/07-08 con 110 edges → 479 issues; 07-09/07-10 con 98-99 edges → 437), no métricas simultáneas.
-
-PROXIMO_AGENTE_DEBE: los 7 edges contradice y 104 nodos grado ≤1 de CLASIFICACION-A1.md son insumo para revisión doctrinal humana (Jorge) — no borrar ni consolidar sin PRP.
-
-STATUS: active | F4 del audit COMPLETO (drift + comparator); quedan F5-F8
+TOPIC: dfl/saas-factory/v5-local-commit
+TYPE: decision
+STATUS: active
+DATE: 2026-07-11
+SUMMARY: Con autorización explícita de Jorge, se consolidó la capa operativa SaaS Factory V5 existente sobre la base Git V4 del repositorio /opt/saas-factory-setup. Commit local: 5e42124aa0a070701f0a400b714d2a133b361a86, mensaje `feat: establish SaaS Factory V5 operational layer`, rama main, base previa 99f51b3. Alcance: 67 archivos, incluyendo CHANGELOG 5.0.0, CLAUDE/GEMINI y nuevos skills V5 con referencias. Validación: 32 SKILL.md físicos con frontmatter mínimo válido; escaneo de patrones conocidos sin secretos; commit verificado. Exclusión intencional: saas-factory/graphify-out/ permanece untracked por ser salida diagnóstica generada. No se hizo push.
+PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o confirmar autorización explícita de push; no incluir graphify-out salvo orden específica.
 
 ---
 
@@ -415,4 +415,4 @@ STATUS: active | F4 del audit COMPLETO (drift + comparator); quedan F5-F8
 
 ---
 
-*Mirror auto-generated 2026-07-11T03:05:38Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-11T21:53:00Z | La Garra → DFLghub/amos-context*
