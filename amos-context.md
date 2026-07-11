@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-11T23:21:01Z  
+**Generated:** 2026-07-11T23:22:31Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,24 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Primera Ola de Remediación Institucional DFL cerrada — commit local bbf76ba
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/institutional-remediation/wave-1-close
+TYPE: decision
+STATUS: active
+DATE: 2026-07-11
+SUMMARY: Primera Ola de Remediación Institucional DFL cerrada formalmente en /opt/dfl-knowledge mediante commit local bbf76ba58e4d5861133e41e877cec4373e616b09 (`chore(dfl): close institutional remediation wave 1`), 13 archivos y 442 inserciones. No se hizo push del repositorio.
+
+HECHOS NUEVOS CERRADOS: expediente 08/09/10 y evidencia b1-b5 preservados; remote prediccion2026 saneado a SSH; DOCKER-USER IPv4/IPv6 bloquea ingreso externo a n8n:5678 y persiste por @reboot, con Caddy/auth intactos; SaaS Factory origin soberano preparado y upstream push bloqueado; co-001, nq-factory y env FutbolWeb preservados cifrados y restauración verificada; revisión de secretos del staging limpia.
+
+RESIDUALES JORGE/EXTERNOS: (1) revocar PAT clásico en GitHub y comprobar 401; el valor sigue en transcript CC viejo, que no debe sanearse ni borrarse sin autorización específica; (2) sonda off-host de n8n:5678, sin más cambios; (3) crear repo privado DFLghub/saas-factory-setup y autorizar publicación; (4) decidir colocación off-host de bundles; (5) autorizar por separado eliminación futura del ZIP viejo FutbolWeb, hoy intacto y owner-only en Drive.
+
+RIESGOS ACTIVOS: PAT vigente hasta revocación; n8n sin verificación off-host; backups en el mismo disco; SaaS Factory V5 inédita; ZIP viejo con configuración sensible aún conservado.
+
+GIT FINAL: sin cambios tracked; permanecen untracked preexistentes MISION_A1.md, audits/health-v1/crontab-backup-1783708852.txt y audits/organismo-v1/. No se invalidaron ni archivaron observaciones anteriores.
+
 ### Bloque ACLARAR completado (commit 42b9da6): A-1 PAT crítico, A-6 zip cifrado, A-4 metabolismo real, V-3 n8n auth+expuesto — 5 decisiones para Jorge
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -130,31 +148,6 @@ STATUS: active
 DATE: 2026-07-11
 SUMMARY: Con autorización explícita de Jorge, se consolidó la capa operativa SaaS Factory V5 existente sobre la base Git V4 del repositorio /opt/saas-factory-setup. Commit local: 5e42124aa0a070701f0a400b714d2a133b361a86, mensaje `feat: establish SaaS Factory V5 operational layer`, rama main, base previa 99f51b3. Alcance: 67 archivos, incluyendo CHANGELOG 5.0.0, CLAUDE/GEMINI y nuevos skills V5 con referencias. Validación: 32 SKILL.md físicos con frontmatter mínimo válido; escaneo de patrones conocidos sin secretos; commit verificado. Exclusión intencional: saas-factory/graphify-out/ permanece untracked por ser salida diagnóstica generada. No se hizo push.
 PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o confirmar autorización explícita de push; no incluir graphify-out salvo orden específica.
-
-### Graphify provenance/comparator/report completado — handoff Codex validado con LLM real y commiteado (29b36bf)
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Cierre del handoff de Codex sobre mejoras Graphify (Codex implementó, no commiteó, y su regen LLM falló por DNS del sandbox). CC validó, regeneró con LLM real y commiteó. Commit 29b36bf pusheado a origin/main (sobre 306559b "guard literal onboarding tokens" de sesión concurrente).
-
-**Cambios commiteados**:
-- ag_topologo.py: enrich_provenance() — source_file singular determinístico en nodos y edges (edges heredan por intersección de fuentes origen/destino, unión como fallback, regla registrada en provenance_rule).
-- regen_graph.sh: conserva graph.json.prev tras éxito (antes lo borraba) — cierra la mitad "comparator baseline permanente" de F4 del Audit health-v1.
-- knl_compare.py: delta nodos/edges añadidos/retirados, cambios de atributos, trazabilidad, issues; test scripts/test_knl_compare.py (pasa).
-- gen_summary.py: regenera GRAPH_REPORT.md (estaba stale desde 2026-06-27) con timestamp/commit/métricas/trazabilidad.
-
-**Validación (CC)**: regen LLM real bajo flock, preservando graph.json.prev (baseline 07-09). Resultado: 140n/98e, trazabilidad 100% (vs 58.58% baseline), 0 edges unresolved, issues de extracción 437→196 (clase menor nueva "missing confidence"). Comparator por primera vez con delta real: status stable, previous_available true. gen_summary + knl_builder --check OK. Artefactos: audits/health-v1/graphify/VALIDACION-REGEN-A1.md + CLASIFICACION-A1.{md,json} — 104 nodos grado ≤1 y 7 edges contradice clasificados SIN modificar semántica. graphify-out/ no commiteado (gitignored).
-
-**Learned**:
-- Dos corridas LLM sobre el mismo corpus eligen conjuntos de conceptos parcialmente distintos (~50 labels de churn manteniendo 140 nodos) — varianza de extracción no determinista, visible ahora por el comparator; trabajo futuro si se quiere anclaje de conceptos.
-- El grafo heurístico intermedio (fallback sin LLM) produce ~6x más edges (596 vs 98) — un llm_enabled:true en metadata no garantiza extracción LLM real; verificar conteo de edges contra la serie histórica.
-- Sesiones concurrentes sobre el mismo checkout pueden des-stagear cambios ajenos (commit+reset+recommit entre mi add y mi commit) — releer git status/reflog antes de asumir pérdida.
-
-**Misterio 437 vs 479 resuelto (Codex)**: eran ejecuciones distintas (07-05/07-08 con 110 edges → 479 issues; 07-09/07-10 con 98-99 edges → 437), no métricas simultáneas.
-
-PROXIMO_AGENTE_DEBE: los 7 edges contradice y 104 nodos grado ≤1 de CLASIFICACION-A1.md son insumo para revisión doctrinal humana (Jorge) — no borrar ni consolidar sin PRP.
-
-STATUS: active | F4 del audit COMPLETO (drift + comparator); quedan F5-F8
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -217,38 +210,28 @@ Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT,
 **Project:** futbolweb-app  
 
 ## Goal
-Resolver el onboarding incompleto del @go DFL para que cualquier agente nuevo llegue listo sin preguntas.
+Cierre de incidente P0 de seguridad en 360Eventos: service role key de Supabase comprometida, rotada y verificada en producción.
 
 ## Instructions
-Mínimos tokens, máximo resultado. Solo bloqueadores y estado final al usuario.
+Sin cambios de preferencia registrados en esta sesión.
 
 ## Discoveries
-- El hook SessionStart en settings.json inyecta stdout del script como contexto — misma mecánica que el plugin Engram. No requiere formato especial, markdown plano funciona.
-- PATCH /observations/{id} en Engram API (7437) acepta campos parciales — no hace falta reenviar todo el objeto.
-- El filtro LIFECYCLE en /go debe parsear el contenido de texto de la obs línea por línea — no hay campo DB dedicado para lifecycle.
-- OBS-005 tenía LIFECYCLE: active pero el incidente estaba resuelto — estaba contaminando el namespace de active_constraints.
-- CLAUDE.md acepta `@/ruta/absoluta` para importar archivos externos al contexto CC.
+- Engram obs #112 fue creado en proyecto `futbolweb-app` por herencia del cwd (`/opt/futbolweb`) aunque el incidente pertenecía a 360Eventos. `mem_update` no soporta reasignación de proyecto — workaround: crear nuevo obs en proyecto correcto + marcar el original como MIGRADO.
+- `mem_delete` no está disponible como herramienta deferred en este entorno.
 
 ## Accomplished
-- ✅ OBS-005 archivada — LIFECYCLE: active → archived via PATCH Engram ID 64
-- ✅ Proxy /go: filtro LIFECYCLE: archived (método _is_archived añadido a main.py)
-- ✅ Campo cc_bootstrap en /go response (6 claves: step_1-3, precedencia, protegido, alerta)
-- ✅ Hook SessionStart creado: /opt/dfl-context-proxy/cc-atgo-hook.sh
-- ✅ settings.json actualizado con hook SessionStart → cc-atgo-hook.sh (timeout 10s)
-- ✅ CLAUDE.md futbolweb: sección 11 (DFL Bootstrap) + @import DFL_Agent_Onboarding_Config.md
-- ✅ dfl-context-proxy reiniciado y verificado activo
-- ✅ Hook testeado: output completo con decisiones, constraints, pendientes, CC Bootstrap
+- ✅ Bootstrap @$go completado — contexto DFL activo al 2026-06-30
+- ✅ Incidente P0 360Eventos cerrado: key `sb_secret_qcasL...` eliminada, producción migrada a `sb_secret_5E52V...`, Vercel actualizado, /cotizar verificado
+- ✅ Engram obs #121 creado en proyecto `360eventos` con resolución completa
+- ✅ Engram obs #112 marcado como MIGRADO (apunta a #121)
 
 ## Next Steps
-- Verificar que el hook aparece en la próxima sesión CC como sistema mensaje al inicio
-- Considerar crear /opt/dfl-knowledge/CLAUDE.md para agentes que abran CC desde ese directorio
-- OBS-10 (inventario servicios) tiene DNS pendiente como "aún no verificados" — actualizar a verified (DNS ya está activo)
+- Pendientes FutbolWeb activos: knockout DB layer wiring, case-sensitivity de realAdvancingTeam, diagnóstico webhook GitHub-Vercel
+- Verificar deploy commit `50316e3` en Vercel
 
 ## Relevant Files
-- /opt/dfl-context-proxy/main.py — proxy @go: LIFECYCLE filter + cc_bootstrap field
-- /opt/dfl-context-proxy/cc-atgo-hook.sh — nuevo hook SessionStart CC
-- /root/.claude/settings.json — hook SessionStart registrado
-- /opt/futbolweb/CLAUDE.md — sección 11 + @import onboarding config
+- Supabase proyecto 360Eventos: uvdunupmjrbndistyrwn (key rotada)
+- Vercel env vars 360Eventos: actualizadas con secret_key_2
 
 ---
 
@@ -298,6 +281,24 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Primera Ola de Remediación Institucional DFL cerrada — commit local bbf76ba
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/institutional-remediation/wave-1-close
+TYPE: decision
+STATUS: active
+DATE: 2026-07-11
+SUMMARY: Primera Ola de Remediación Institucional DFL cerrada formalmente en /opt/dfl-knowledge mediante commit local bbf76ba58e4d5861133e41e877cec4373e616b09 (`chore(dfl): close institutional remediation wave 1`), 13 archivos y 442 inserciones. No se hizo push del repositorio.
+
+HECHOS NUEVOS CERRADOS: expediente 08/09/10 y evidencia b1-b5 preservados; remote prediccion2026 saneado a SSH; DOCKER-USER IPv4/IPv6 bloquea ingreso externo a n8n:5678 y persiste por @reboot, con Caddy/auth intactos; SaaS Factory origin soberano preparado y upstream push bloqueado; co-001, nq-factory y env FutbolWeb preservados cifrados y restauración verificada; revisión de secretos del staging limpia.
+
+RESIDUALES JORGE/EXTERNOS: (1) revocar PAT clásico en GitHub y comprobar 401; el valor sigue en transcript CC viejo, que no debe sanearse ni borrarse sin autorización específica; (2) sonda off-host de n8n:5678, sin más cambios; (3) crear repo privado DFLghub/saas-factory-setup y autorizar publicación; (4) decidir colocación off-host de bundles; (5) autorizar por separado eliminación futura del ZIP viejo FutbolWeb, hoy intacto y owner-only en Drive.
+
+RIESGOS ACTIVOS: PAT vigente hasta revocación; n8n sin verificación off-host; backups en el mismo disco; SaaS Factory V5 inédita; ZIP viejo con configuración sensible aún conservado.
+
+GIT FINAL: sin cambios tracked; permanecen untracked preexistentes MISION_A1.md, audits/health-v1/crontab-backup-1783708852.txt y audits/organismo-v1/. No se invalidaron ni archivaron observaciones anteriores.
+
 ### Bloque ACLARAR completado (commit 42b9da6): A-1 PAT crítico, A-6 zip cifrado, A-4 metabolismo real, V-3 n8n auth+expuesto — 5 decisiones para Jorge
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -315,12 +316,6 @@ DECISIONES PARA JORGE (5): D-1 autorizar rotación PAT+limpieza remote; D-2 dest
 RIESGOS ACTIVOS: R-1 PAT crítico, R-2 push V5 externo, R-3 2.4GB copia única, R-4 exposición directa 5678/3000/3010, R-5 env zip ZipCrypto en Drive, R-6 durabilidad Engram sin verificar (heredado), R-7 engram-mcp+ingest sin git.
 
 PRÓXIMO: revisar con Jorge y decidir; NO remediar aún. Encadena [[cr-tico-h-01-pat-github...]] y [[expediente-diagn-stico-v1-commiteado-local-e2265bf...]].
-
-### Expediente diagnóstico v1 commiteado local (e2265bf) tras revisión de secretos limpia — próximo: bloque ACLARAR
-**Type:** decision  
-**Project:** futbolweb-app  
-
-Commit local del expediente Diagnóstico Institucional DFL v1 en dfl-knowledge: e2265bf5857fa8865859b2df4cc7d23327d2839e (2026-07-11 22:41 UTC, main, ahead 1 de origin, SIN push por mandato). 23 archivos, 932 líneas: 5 artefactos + 19 evidencias (incl. 2 nuevas: git-remotes-redactado.txt, git-dirty-detalle.txt). Revisión de exposición de secretos PREVIA al commit: limpia — sin PATs completos, tokens, claves privadas, contraseñas ni URLs autenticadas; verificado por comparación booleana contra valores reales de /etc/dfl-secrets, DFL_TOKEN, token cloud.json y el PAT real de prediccion2026 (valores jamás impresos). Dos falsos positivos descartados: ENGRAM_CLOUD_SERVER=endpoint local 127.0.0.1:8090 y ENGRAM_DATA_DIR=/root/.engram son config no sensible dentro de dfl-secrets. Esto cierra C-2/H-13 SOLO para este expediente; MISION_A1.md, audits/health-v1/ y audits/organismo-v1/ siguen untracked deliberadamente (no mezclar). PRÓXIMO PASO acordado con Jorge: revisar el diagnóstico y decidir el bloque ACLARAR (A-1..A-6 de 04-DIAGNOSTICO-INSTITUCIONAL.md) — no corregir aún los 18 hallazgos.
 
 ---
 
@@ -413,4 +408,4 @@ Commit local del expediente Diagnóstico Institucional DFL v1 en dfl-knowledge: 
 
 ---
 
-*Mirror auto-generated 2026-07-11T23:21:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-11T23:22:31Z | La Garra → DFLghub/amos-context*
