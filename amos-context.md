@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-11T21:53:00Z  
+**Generated:** 2026-07-11T22:27:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -292,6 +292,12 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### [VERIFIED] Hook SessionStart @go operativo en sesión CC 2026-07-11 — PROXIMO_AGENTE_DEBE FutbolWeb cumplido
+**Type:** discovery  
+**Project:** futbolweb-app  
+
+[VERIFIED] Hook SessionStart @go apareció correctamente en sesión CC del 2026-07-11: el hook inyectó el payload @go v1.1 completo (decisiones activas, pendientes, CC bootstrap, cierre @$fin) al arrancar la sesión en /opt/futbolweb. PROXIMO_AGENTE_DEBE de FutbolWeb ("verificar que el hook aparece en la próxima sesión CC") queda cumplido. Proxy dfl-context-proxy /go responde HTTP 200 en 127.0.0.1:8091. Perfil EJECUTOR confirmado vía amos-context AGENT DIRECTORY (anexo agents/ejecutor.md).
+
 ### CIERRE — Diseño conceptual Fábrica de Fábricas y Digital Force
 **Type:** session_summary  
 **Project:** dfl  
@@ -312,17 +318,6 @@ Digital Force: separar control plane y execution plane; vender capacidades/proce
 Skill Canon v0.1 puede definirse antes de implementar, distinguiendo policy, función, workflow, skill, agente y fábrica. Se propusieron familias: gobernanza, comprensión/diseño, construcción, validación, operación/homeostasis, aprendizaje/metabolismo, Digital Force y Fábrica de Fábricas. La implementación debe validar granularidad y promover/deprecar skills por evidencia.
 
 PROXIMO_AGENTE_DEBE: no modificar /opt/saas-factory-setup sin nueva autorización explícita. Si Jorge ordena crear laboratorio, recomendar clon local de /opt/saas-factory-setup a /root/saas-factory-lab para preservar 5e42124 sin incluir graphify-out y con push inicialmente deshabilitado.
-
-### SaaS Factory V5 consolidada en commit local 5e42124
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/v5-local-commit
-TYPE: decision
-STATUS: active
-DATE: 2026-07-11
-SUMMARY: Con autorización explícita de Jorge, se consolidó la capa operativa SaaS Factory V5 existente sobre la base Git V4 del repositorio /opt/saas-factory-setup. Commit local: 5e42124aa0a070701f0a400b714d2a133b361a86, mensaje `feat: establish SaaS Factory V5 operational layer`, rama main, base previa 99f51b3. Alcance: 67 archivos, incluyendo CHANGELOG 5.0.0, CLAUDE/GEMINI y nuevos skills V5 con referencias. Validación: 32 SKILL.md físicos con frontmatter mínimo válido; escaneo de patrones conocidos sin secretos; commit verificado. Exclusión intencional: saas-factory/graphify-out/ permanece untracked por ser salida diagnóstica generada. No se hizo push.
-PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o confirmar autorización explícita de push; no incluir graphify-out salvo orden específica.
 
 ---
 
@@ -415,4 +410,4 @@ PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o con
 
 ---
 
-*Mirror auto-generated 2026-07-11T21:53:00Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-11T22:27:01Z | La Garra → DFLghub/amos-context*
