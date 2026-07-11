@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-11T23:37:01Z  
+**Generated:** 2026-07-11T23:47:47Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,20 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Cierre condicionado ZIP antiguo — Drive inaccesible; respaldo nuevo íntegro
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/institutional-remediation/zip-residual-close
+TYPE: decision
+STATUS: active
+DATE: 2026-07-11
+SUMMARY: Se ejecutó el checkpoint parcial #225 y se intentó cerrar el único residual. Codex no tiene conector Google Drive ni OAuth/API local autorizada; por ello no fue posible localizar/eliminar el fileId 1eeYfC0o8hyP2z9QqfIYQVRFDcPJ8T29e, vaciar papelera ni verificar búsqueda posterior. No se borró el ZIP Drive ni la copia local, evitando un estado asimétrico.
+
+EVIDENCIA: metadatos locales registrados (524 bytes, sha256 4c3dd829569cf799616f870431e77d35eef0cfc70539686038819c3e7f6b4192); Drive metadata previamente registrada owner-only, owner jtigre@gmail.com, created 2026-06-13. Nuevo env cifrado sha256 404f5a567bea73e941b53acf5e6833335e378761fee88908bf0f4881143a4120 y MANIFEST sha256 fc2e9c7d0f5c27b34a272713ea0eb3d053e39b454df7e1e0746f0ea4b2314a6e intactos; restore off-host repetido OK, sha_match=yes, 2 claves.
+
+COMMIT: 05234cf (`docs(dfl): record zip residual closure gate`), 5 archivos, sin push. Expediente actualizado con 13-CIERRE-ZIP-ANTIGUO.md y evidencia b11-b13. Residual real único: ejecutar en sesión con Google Drive borrar solo ese fileId, vaciar papelera, verificar ausencia y recién después borrar la copia local equivalente.
+
 ### Cierre de residuales críticos Ola 1 — PAT/n8n/SaaS/off-host cerrados; ZIP Drive pendiente
 **Type:** decision  
 **Project:** dfl  
@@ -135,17 +149,6 @@ PRÓXIMO: revisar con Jorge y decidir; NO remediar aún. Encadena [[cr-tico-h-01
 **Project:** futbolweb-app  
 
 Commit local del expediente Diagnóstico Institucional DFL v1 en dfl-knowledge: e2265bf5857fa8865859b2df4cc7d23327d2839e (2026-07-11 22:41 UTC, main, ahead 1 de origin, SIN push por mandato). 23 archivos, 932 líneas: 5 artefactos + 19 evidencias (incl. 2 nuevas: git-remotes-redactado.txt, git-dirty-detalle.txt). Revisión de exposición de secretos PREVIA al commit: limpia — sin PATs completos, tokens, claves privadas, contraseñas ni URLs autenticadas; verificado por comparación booleana contra valores reales de /etc/dfl-secrets, DFL_TOKEN, token cloud.json y el PAT real de prediccion2026 (valores jamás impresos). Dos falsos positivos descartados: ENGRAM_CLOUD_SERVER=endpoint local 127.0.0.1:8090 y ENGRAM_DATA_DIR=/root/.engram son config no sensible dentro de dfl-secrets. Esto cierra C-2/H-13 SOLO para este expediente; MISION_A1.md, audits/health-v1/ y audits/organismo-v1/ siguen untracked deliberadamente (no mezclar). PRÓXIMO PASO acordado con Jorge: revisar el diagnóstico y decidir el bloque ACLARAR (A-1..A-6 de 04-DIAGNOSTICO-INSTITUCIONAL.md) — no corregir aún los 18 hallazgos.
-
-### SaaS Factory V5 consolidada en commit local 5e42124
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/v5-local-commit
-TYPE: decision
-STATUS: active
-DATE: 2026-07-11
-SUMMARY: Con autorización explícita de Jorge, se consolidó la capa operativa SaaS Factory V5 existente sobre la base Git V4 del repositorio /opt/saas-factory-setup. Commit local: 5e42124aa0a070701f0a400b714d2a133b361a86, mensaje `feat: establish SaaS Factory V5 operational layer`, rama main, base previa 99f51b3. Alcance: 67 archivos, incluyendo CHANGELOG 5.0.0, CLAUDE/GEMINI y nuevos skills V5 con referencias. Validación: 32 SKILL.md físicos con frontmatter mínimo válido; escaneo de patrones conocidos sin secretos; commit verificado. Exclusión intencional: saas-factory/graphify-out/ permanece untracked por ser salida diagnóstica generada. No se hizo push.
-PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o confirmar autorización explícita de push; no incluir graphify-out salvo orden específica.
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -279,39 +282,29 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Cierre de residuales críticos Ola 1 — PAT/n8n/SaaS/off-host cerrados; ZIP Drive pendiente
+### Cierre condicionado ZIP antiguo — Drive inaccesible; respaldo nuevo íntegro
 **Type:** decision  
 **Project:** dfl  
 
-TOPIC: dfl/institutional-remediation/wave-1-critical-residuals-close
+TOPIC: dfl/institutional-remediation/zip-residual-close
 TYPE: decision
 STATUS: active
 DATE: 2026-07-11
-SUMMARY: Cierre acotado posterior a Ola 1 completado en commit local dfl-knowledge 0395a50 (`chore(dfl): close wave 1 critical residuals`), 9 archivos/132 inserciones, sin push de dfl-knowledge.
+SUMMARY: Se ejecutó el checkpoint parcial #225 y se intentó cerrar el único residual. Codex no tiene conector Google Drive ni OAuth/API local autorizada; por ello no fue posible localizar/eliminar el fileId 1eeYfC0o8hyP2z9QqfIYQVRFDcPJ8T29e, vaciar papelera ni verificar búsqueda posterior. No se borró el ZIP Drive ni la copia local, evitando un estado asimétrico.
 
-CERRADO: (1) PAT clásico revocado vía GitHub credentials/revoke (202) y autenticación posterior 401; transcript único saneado atómicamente, JSONL válido, cero holders por patrón completo en scopes solicitados/procesos, remote prediccion2026 SSH operativo. (2) n8n: sonda externa 5/5 timeouts a 67.205.166.199:5678; HTTPS/TLS/auth 401, contenedor/datos y DOCKER-USER+cron intactos. (3) SaaS Factory V5 publicada en repo privado DFLghub/saas-factory-setup, main remoto 5e42124aa0a070701f0a400b714d2a133b361a86; upstream comunitario trazable y push bloqueado. (4) co-001, nq-factory, env FutbolWeb y MANIFEST copiados a VM3 /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; hashes/tamaños 4/4 coinciden y restore env desde off-host verificado; sin passphrases off-host.
+EVIDENCIA: metadatos locales registrados (524 bytes, sha256 4c3dd829569cf799616f870431e77d35eef0cfc70539686038819c3e7f6b4192); Drive metadata previamente registrada owner-only, owner jtigre@gmail.com, created 2026-06-13. Nuevo env cifrado sha256 404f5a567bea73e941b53acf5e6833335e378761fee88908bf0f4881143a4120 y MANIFEST sha256 fc2e9c7d0f5c27b34a272713ea0eb3d053e39b454df7e1e0746f0ea4b2314a6e intactos; restore off-host repetido OK, sha_match=yes, 2 claves.
 
-RESIDUAL REAL EXTERNO: ZIP antiguo FutbolWeb en Google Drive. Los tres gates técnicos cumplen, pero Codex no tiene conector Drive ni credencial API local; no se eliminó de Drive ni localmente y no se tocó otro archivo. Requiere sesión con Drive: borrar solo fileId 1eeYfC0o8hyP2z9QqfIYQVRFDcPJ8T29e y verificar ausencia en ubicación original y papelera accesible.
+COMMIT: 05234cf (`docs(dfl): record zip residual closure gate`), 5 archivos, sin push. Expediente actualizado con 13-CIERRE-ZIP-ANTIGUO.md y evidencia b11-b13. Residual real único: ejecutar en sesión con Google Drive borrar solo ese fileId, vaciar papelera, verificar ausencia y recién después borrar la copia local equivalente.
 
-PROTECCIONES: no Ola 2, no diagnóstico nuevo, no cambios firewall adicionales, no publicación comunitaria, no push dfl-knowledge.
+### CHECKPOINT parcial — residual ZIP Drive pendiente
+**Type:** fact  
+**Project:** dfl  
 
-### Bloque ACLARAR completado (commit 42b9da6): A-1 PAT crítico, A-6 zip cifrado, A-4 metabolismo real, V-3 n8n auth+expuesto — 5 decisiones para Jorge
-**Type:** decision  
-**Project:** futbolweb-app  
-
-Bloque ACLARAR del Diagnóstico Institucional DFL v1 completado y commiteado local: 42b9da6b38e7ce218601e5e60e233c613866a0b0 (2026-07-11 22:55 UTC, dfl-knowledge main ahead 2, SIN push). Solo verificación, cero remediación. Artefactos: 05-ACLARAR-VERIFICACIONES, 06-REGISTRO-VIVO-DE-ORGANOS-OPT, 07-DECISIONES-PENDIENTES + 6 evidencias.
-
-RESULTADOS:
-- A-1 PAT prediccion2026: VIGENTE Y CRÍTICO. Verificado vía api.github.com (token nunca impreso). Scope=repo (write total a TODOS los repos privados de la cuenta DFLghub: futbolweb-app, dfl-knowledge, dfl-context-proxy, 360eventos, amos-context, prediccion2026). Expira 2026-09-13. admin+push confirmado en prediccion2026. NO rotado (mandato).
-- A-6 futbolweb-env-backup.zip: CIFRADO ZipCrypto (mitigante), 1 archivo .env.local (300B, de Mac macgopro, 2026-05-25), duplicado en Drive, 0644 root. Nombres de clave/valores NO legibles sin password. NO_VERIFICABLE con indicio de secreto de prod. Original intacto.
-- A-4 metabolismo: dry-run es flag manual ($1) intencional; cron 0 3 * * 0 corre REAL; métrica SÍ persiste (1 OBS-METRIC SYSTEM_HEALTH_CHECK en Engram dfl). '100%'=liveness de 6 chequeos de infra memoria/navegabilidad, NO salud institucional. Cron dominical aún sin primera ocurrencia (script creado 2026-07-09, próx domingo 07-13).
-- V-3 n8n: auth FORZADA (401 en workflows/executions/credentials/login, local Y público; email auth, setup completo). PERO ufw abre 5678/tcp + 3000 + 3010 a Anywhere → n8n alcanzable directo por HTTP sin TLS; sin consumidor desde 2026-05-17.
-
-DECISIONES PARA JORGE (5): D-1 autorizar rotación PAT+limpieza remote; D-2 destino soberano V5 (DFLghub vs community — origin actual es org externa saas-factory-community, 5e42124 inédito local, push reflejo filtraría IP); D-3 futuro n8n (Nivel 2 con dueño+fecha o retirar); D-4 ratificar registro /opt y dar remote/backup a co-001+nq-factory y versionar ~2.4GB sin git (futbolweb-v2 807M, mercader-comisiones 790M, roof-issues-mini 595M, mercader); D-5 verificar/decidir env zip.
-
-RIESGOS ACTIVOS: R-1 PAT crítico, R-2 push V5 externo, R-3 2.4GB copia única, R-4 exposición directa 5678/3000/3010, R-5 env zip ZipCrypto en Drive, R-6 durabilidad Engram sin verificar (heredado), R-7 engram-mcp+ingest sin git.
-
-PRÓXIMO: revisar con Jorge y decidir; NO remediar aún. Encadena [[cr-tico-h-01-pat-github...]] y [[expediente-diagn-stico-v1-commiteado-local-e2265bf...]].
+TOPIC: dfl/institutional-remediation/zip-residual-checkpoint
+TYPE: checkpoint
+STATUS: active
+DATE: 2026-07-11
+Cierre parcial solicitado por Jorge, sin cerrar sesión, sin archivado y sin mirror. Estado preservado: commit local 0395a5045c113703f134bc9c5e15cfad47d4a9fb; PAT/n8n/SaaS/off-host cerrados; único residual pendiente = futbolweb-env-backup.zip en Google Drive y copia local equivalente. Condiciones técnicas ya verificadas: respaldo cifrado nuevo, copia VM3, hashes coincidentes y restore correcto. Próxima acción única autorizada: registrar metadatos, borrar ZIP Drive y papelera, verificar ausencia, borrar solo copia local obsoleta, revalidar respaldo nuevo, documentar y commit local sin push.
 
 ---
 
@@ -404,4 +397,4 @@ PRÓXIMO: revisar con Jorge y decidir; NO remediar aún. Encadena [[cr-tico-h-01
 
 ---
 
-*Mirror auto-generated 2026-07-11T23:37:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-11T23:47:47Z | La Garra → DFLghub/amos-context*
