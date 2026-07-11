@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-11T23:22:31Z  
+**Generated:** 2026-07-11T23:37:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,23 +96,21 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### Primera Ola de Remediación Institucional DFL cerrada — commit local bbf76ba
+### Cierre de residuales críticos Ola 1 — PAT/n8n/SaaS/off-host cerrados; ZIP Drive pendiente
 **Type:** decision  
 **Project:** dfl  
 
-TOPIC: dfl/institutional-remediation/wave-1-close
+TOPIC: dfl/institutional-remediation/wave-1-critical-residuals-close
 TYPE: decision
 STATUS: active
 DATE: 2026-07-11
-SUMMARY: Primera Ola de Remediación Institucional DFL cerrada formalmente en /opt/dfl-knowledge mediante commit local bbf76ba58e4d5861133e41e877cec4373e616b09 (`chore(dfl): close institutional remediation wave 1`), 13 archivos y 442 inserciones. No se hizo push del repositorio.
+SUMMARY: Cierre acotado posterior a Ola 1 completado en commit local dfl-knowledge 0395a50 (`chore(dfl): close wave 1 critical residuals`), 9 archivos/132 inserciones, sin push de dfl-knowledge.
 
-HECHOS NUEVOS CERRADOS: expediente 08/09/10 y evidencia b1-b5 preservados; remote prediccion2026 saneado a SSH; DOCKER-USER IPv4/IPv6 bloquea ingreso externo a n8n:5678 y persiste por @reboot, con Caddy/auth intactos; SaaS Factory origin soberano preparado y upstream push bloqueado; co-001, nq-factory y env FutbolWeb preservados cifrados y restauración verificada; revisión de secretos del staging limpia.
+CERRADO: (1) PAT clásico revocado vía GitHub credentials/revoke (202) y autenticación posterior 401; transcript único saneado atómicamente, JSONL válido, cero holders por patrón completo en scopes solicitados/procesos, remote prediccion2026 SSH operativo. (2) n8n: sonda externa 5/5 timeouts a 67.205.166.199:5678; HTTPS/TLS/auth 401, contenedor/datos y DOCKER-USER+cron intactos. (3) SaaS Factory V5 publicada en repo privado DFLghub/saas-factory-setup, main remoto 5e42124aa0a070701f0a400b714d2a133b361a86; upstream comunitario trazable y push bloqueado. (4) co-001, nq-factory, env FutbolWeb y MANIFEST copiados a VM3 /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; hashes/tamaños 4/4 coinciden y restore env desde off-host verificado; sin passphrases off-host.
 
-RESIDUALES JORGE/EXTERNOS: (1) revocar PAT clásico en GitHub y comprobar 401; el valor sigue en transcript CC viejo, que no debe sanearse ni borrarse sin autorización específica; (2) sonda off-host de n8n:5678, sin más cambios; (3) crear repo privado DFLghub/saas-factory-setup y autorizar publicación; (4) decidir colocación off-host de bundles; (5) autorizar por separado eliminación futura del ZIP viejo FutbolWeb, hoy intacto y owner-only en Drive.
+RESIDUAL REAL EXTERNO: ZIP antiguo FutbolWeb en Google Drive. Los tres gates técnicos cumplen, pero Codex no tiene conector Drive ni credencial API local; no se eliminó de Drive ni localmente y no se tocó otro archivo. Requiere sesión con Drive: borrar solo fileId 1eeYfC0o8hyP2z9QqfIYQVRFDcPJ8T29e y verificar ausencia en ubicación original y papelera accesible.
 
-RIESGOS ACTIVOS: PAT vigente hasta revocación; n8n sin verificación off-host; backups en el mismo disco; SaaS Factory V5 inédita; ZIP viejo con configuración sensible aún conservado.
-
-GIT FINAL: sin cambios tracked; permanecen untracked preexistentes MISION_A1.md, audits/health-v1/crontab-backup-1783708852.txt y audits/organismo-v1/. No se invalidaron ni archivaron observaciones anteriores.
+PROTECCIONES: no Ola 2, no diagnóstico nuevo, no cambios firewall adicionales, no publicación comunitaria, no push dfl-knowledge.
 
 ### Bloque ACLARAR completado (commit 42b9da6): A-1 PAT crítico, A-6 zip cifrado, A-4 metabolismo real, V-3 n8n auth+expuesto — 5 decisiones para Jorge
 **Type:** decision  
@@ -281,23 +279,21 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Primera Ola de Remediación Institucional DFL cerrada — commit local bbf76ba
+### Cierre de residuales críticos Ola 1 — PAT/n8n/SaaS/off-host cerrados; ZIP Drive pendiente
 **Type:** decision  
 **Project:** dfl  
 
-TOPIC: dfl/institutional-remediation/wave-1-close
+TOPIC: dfl/institutional-remediation/wave-1-critical-residuals-close
 TYPE: decision
 STATUS: active
 DATE: 2026-07-11
-SUMMARY: Primera Ola de Remediación Institucional DFL cerrada formalmente en /opt/dfl-knowledge mediante commit local bbf76ba58e4d5861133e41e877cec4373e616b09 (`chore(dfl): close institutional remediation wave 1`), 13 archivos y 442 inserciones. No se hizo push del repositorio.
+SUMMARY: Cierre acotado posterior a Ola 1 completado en commit local dfl-knowledge 0395a50 (`chore(dfl): close wave 1 critical residuals`), 9 archivos/132 inserciones, sin push de dfl-knowledge.
 
-HECHOS NUEVOS CERRADOS: expediente 08/09/10 y evidencia b1-b5 preservados; remote prediccion2026 saneado a SSH; DOCKER-USER IPv4/IPv6 bloquea ingreso externo a n8n:5678 y persiste por @reboot, con Caddy/auth intactos; SaaS Factory origin soberano preparado y upstream push bloqueado; co-001, nq-factory y env FutbolWeb preservados cifrados y restauración verificada; revisión de secretos del staging limpia.
+CERRADO: (1) PAT clásico revocado vía GitHub credentials/revoke (202) y autenticación posterior 401; transcript único saneado atómicamente, JSONL válido, cero holders por patrón completo en scopes solicitados/procesos, remote prediccion2026 SSH operativo. (2) n8n: sonda externa 5/5 timeouts a 67.205.166.199:5678; HTTPS/TLS/auth 401, contenedor/datos y DOCKER-USER+cron intactos. (3) SaaS Factory V5 publicada en repo privado DFLghub/saas-factory-setup, main remoto 5e42124aa0a070701f0a400b714d2a133b361a86; upstream comunitario trazable y push bloqueado. (4) co-001, nq-factory, env FutbolWeb y MANIFEST copiados a VM3 /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; hashes/tamaños 4/4 coinciden y restore env desde off-host verificado; sin passphrases off-host.
 
-RESIDUALES JORGE/EXTERNOS: (1) revocar PAT clásico en GitHub y comprobar 401; el valor sigue en transcript CC viejo, que no debe sanearse ni borrarse sin autorización específica; (2) sonda off-host de n8n:5678, sin más cambios; (3) crear repo privado DFLghub/saas-factory-setup y autorizar publicación; (4) decidir colocación off-host de bundles; (5) autorizar por separado eliminación futura del ZIP viejo FutbolWeb, hoy intacto y owner-only en Drive.
+RESIDUAL REAL EXTERNO: ZIP antiguo FutbolWeb en Google Drive. Los tres gates técnicos cumplen, pero Codex no tiene conector Drive ni credencial API local; no se eliminó de Drive ni localmente y no se tocó otro archivo. Requiere sesión con Drive: borrar solo fileId 1eeYfC0o8hyP2z9QqfIYQVRFDcPJ8T29e y verificar ausencia en ubicación original y papelera accesible.
 
-RIESGOS ACTIVOS: PAT vigente hasta revocación; n8n sin verificación off-host; backups en el mismo disco; SaaS Factory V5 inédita; ZIP viejo con configuración sensible aún conservado.
-
-GIT FINAL: sin cambios tracked; permanecen untracked preexistentes MISION_A1.md, audits/health-v1/crontab-backup-1783708852.txt y audits/organismo-v1/. No se invalidaron ni archivaron observaciones anteriores.
+PROTECCIONES: no Ola 2, no diagnóstico nuevo, no cambios firewall adicionales, no publicación comunitaria, no push dfl-knowledge.
 
 ### Bloque ACLARAR completado (commit 42b9da6): A-1 PAT crítico, A-6 zip cifrado, A-4 metabolismo real, V-3 n8n auth+expuesto — 5 decisiones para Jorge
 **Type:** decision  
@@ -408,4 +404,4 @@ PRÓXIMO: revisar con Jorge y decidir; NO remediar aún. Encadena [[cr-tico-h-01
 
 ---
 
-*Mirror auto-generated 2026-07-11T23:22:31Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-11T23:37:01Z | La Garra → DFLghub/amos-context*
