@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-11T03:05:01Z  
+**Generated:** 2026-07-11T03:05:38Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -249,17 +249,17 @@ Mínimos tokens, máximo resultado. Solo bloqueadores y estado final al usuario.
 
 ## RECENT ACTIVITY (cross-project)
 
-### amOS Event Model — veredicto auditoría 2026-06-23
-**Type:** decision  
-**Project:** dfl  
-
-Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (AgMaster_amOS_3, AI_amOS_Acta_Fundacional v1.1, Protocolo MS→amOS). Veredicto: B — Existe parcialmente pero disperso. Cobertura: Peso/costo metabólico→confidence+value en tabla events (Parcial, consolidar); Persistencia→status Origin Chain+estados Candidate Vault (Parcial, consolidar); Intención→scope+forbidden_uses agLego+Layer3 VALUE (Implícita, nombrar); Propagación→C-009+G-002 Protocol Taxonomy (Incompleta, GAP REAL); Relación con estado→Layer6+tabla asset_states (Existe, conservar). Conclusión: NO hace falta constructo nuevo tipo 'Light Signals'. Hace falta unificar y nombrar lo disperso. Gap real confirmado: G-002 Protocol Taxonomy (propagación, marcado como no cerrado en el Acta Fundacional). Próximo paso: cerrar G-002 dentro del Libro 1 amOS o como PRP independiente. Prerequisito: localizar RFC-DFL-001 (puede contener Event Model más completo).
-
-### amOS — ontología activa 13 capas (Acta Fundacional v1.1)
+### AgMaster_amOS_3 — vocabulario y reglas IAIM
 **Type:** fact  
 **Project:** dfl  
 
-13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
+AgMaster_amOS_3 es el documento maestro v3 del ecosistema (USAR ESTA, versiones 1 y 2 obsoletas). Vocabulario mínimo para IA invitada: amOS=sistema operativo conceptual/metodológico para absorber/metabolizar información manteniendo soberanía; IAIM=Invisible Augmented Intelligence Mesh, red invisible de IAs aliadas sin nodos fijos, orquestada por HI; HI=Jorge, decisión final soberana; ag10=ChatGPT como router/integrador/destilador/última yarda (no oráculo ni jefe); agPregunta=pregunta aumentada con propósito/dominio/límite/criterio; agLego=pieza conceptual candidata modular trazable; Candado Soberano=restricciones no negociables: no-exec, candidate_only, human-review-first. Prefijo 'ag'=augmented+governed+generative-but-contained. AG10-AUSTERITY-LOCK para fases de cierre/patch/gate. Origin Chain obligatorio para todo agLego. Frase núcleo v3: 'La red ilumina. La HI orquesta. ag10 destila. El candado audita. amOS asimila la cicatriz, no la herida.' Paralelo permitido: máximo 2 nodos, candidate_only, revisión HI.
+
+### agLego PATTERN-ASYNC_INSPECTION_SPLIT: patrón de inspección asíncrona
+**Type:** fact  
+**Project:** dfl  
+
+Origen: mined by Gemini/Soberana+Triunvirato v2.5.3.3, packaged by ChatGPT/ag10, audited PASS 2026-05-09. HI approval: PENDING. Estado: candidate_only/sealed en raíz de Candidate Vault. Qué extrae: bifurcación entre payload pesado y metadata ligera; asociación obligatoria por inspection_id/correlation_id; doble proyección (alerta inmediata + histórico operacional); confirmación de evidencia antes de liberar notificación o métrica. State-Gate: alerta no se libera solo porque llegó el formulario — metadata queda en pending_evidence hasta que payload pesado confirma status:committed con mismo correlation_id. Si evidencia no llega: orphaned_alert + corrección en campo. Riesgos preservados: estado fantasma, alerta sin evidencia, métrica sin respaldo, fatiga de notificaciones, dependencia de rol. Próxima pregunta segura: cómo valida amOS que evidencia+alerta+métrica comparten el mismo correlation_id antes de proyección. NO debe ejecutarse, ir a producción ni conectarse a sistemas reales hasta HI approval. Archivo: 04_Candidate_Vault/agLego-PATTERN-ASYNC_INSPECTION_SPLIT.md.
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -404,15 +404,15 @@ STATUS: active | F4 del audit COMPLETO (drift + comparator); quedan F5-F8
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 1.0741  
+**Graph entropy:** 1.1206  
 
-- **Community 11** (83 nodes): Monetización de Contexto Distribuido, Data Lake Artesanal, agLego-PATTERN-ASYNC_INSPECTION_SPLIT
-- **Community 0** (17 nodes): agLego-PTE-001, agLego, amOS
-- **Community 1** (4 nodes): Dependencias de FutbolWeb, Estado Operativo de Engram, Business OS
-- **Community 2** (4 nodes): Zapata3
-- **Community 3** (4 nodes): Minimum Circulation Engine, Fábrica CF, Fórmula de Tracción Operacional
-- **Community 4** (4 nodes): agTopólogo
+- **Community 11** (88 nodes): Engram, Activo en amOS, agLego-PATTERN-ASYNC_INSPECTION_SPLIT
+- **Community 0** (9 nodes): IAIM, agLego, Candado Soberano
+- **Community 1** (6 nodes): ROI_REALITY_SCORE, AG, Circuito de recepción de pronósticos
+- **Community 2** (5 nodes): KNL v1.0, Viabilidad Económica, Jerarquía Correcta
+- **Community 3** (4 nodes): Engram Cloud, Arquitectura Multi-Servicio, Business OS
+- **Community 4** (4 nodes): Materia Prima Metabólica, Convención de Escritura DFL, Incidente de Seguridad
 
 ---
 
-*Mirror auto-generated 2026-07-11T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-11T03:05:38Z | La Garra → DFLghub/amos-context*
