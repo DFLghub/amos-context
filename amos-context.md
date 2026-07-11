@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-11T22:37:22Z  
+**Generated:** 2026-07-11T23:21:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,30 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Bloque ACLARAR completado (commit 42b9da6): A-1 PAT crítico, A-6 zip cifrado, A-4 metabolismo real, V-3 n8n auth+expuesto — 5 decisiones para Jorge
+**Type:** decision  
+**Project:** futbolweb-app  
+
+Bloque ACLARAR del Diagnóstico Institucional DFL v1 completado y commiteado local: 42b9da6b38e7ce218601e5e60e233c613866a0b0 (2026-07-11 22:55 UTC, dfl-knowledge main ahead 2, SIN push). Solo verificación, cero remediación. Artefactos: 05-ACLARAR-VERIFICACIONES, 06-REGISTRO-VIVO-DE-ORGANOS-OPT, 07-DECISIONES-PENDIENTES + 6 evidencias.
+
+RESULTADOS:
+- A-1 PAT prediccion2026: VIGENTE Y CRÍTICO. Verificado vía api.github.com (token nunca impreso). Scope=repo (write total a TODOS los repos privados de la cuenta DFLghub: futbolweb-app, dfl-knowledge, dfl-context-proxy, 360eventos, amos-context, prediccion2026). Expira 2026-09-13. admin+push confirmado en prediccion2026. NO rotado (mandato).
+- A-6 futbolweb-env-backup.zip: CIFRADO ZipCrypto (mitigante), 1 archivo .env.local (300B, de Mac macgopro, 2026-05-25), duplicado en Drive, 0644 root. Nombres de clave/valores NO legibles sin password. NO_VERIFICABLE con indicio de secreto de prod. Original intacto.
+- A-4 metabolismo: dry-run es flag manual ($1) intencional; cron 0 3 * * 0 corre REAL; métrica SÍ persiste (1 OBS-METRIC SYSTEM_HEALTH_CHECK en Engram dfl). '100%'=liveness de 6 chequeos de infra memoria/navegabilidad, NO salud institucional. Cron dominical aún sin primera ocurrencia (script creado 2026-07-09, próx domingo 07-13).
+- V-3 n8n: auth FORZADA (401 en workflows/executions/credentials/login, local Y público; email auth, setup completo). PERO ufw abre 5678/tcp + 3000 + 3010 a Anywhere → n8n alcanzable directo por HTTP sin TLS; sin consumidor desde 2026-05-17.
+
+DECISIONES PARA JORGE (5): D-1 autorizar rotación PAT+limpieza remote; D-2 destino soberano V5 (DFLghub vs community — origin actual es org externa saas-factory-community, 5e42124 inédito local, push reflejo filtraría IP); D-3 futuro n8n (Nivel 2 con dueño+fecha o retirar); D-4 ratificar registro /opt y dar remote/backup a co-001+nq-factory y versionar ~2.4GB sin git (futbolweb-v2 807M, mercader-comisiones 790M, roof-issues-mini 595M, mercader); D-5 verificar/decidir env zip.
+
+RIESGOS ACTIVOS: R-1 PAT crítico, R-2 push V5 externo, R-3 2.4GB copia única, R-4 exposición directa 5678/3000/3010, R-5 env zip ZipCrypto en Drive, R-6 durabilidad Engram sin verificar (heredado), R-7 engram-mcp+ingest sin git.
+
+PRÓXIMO: revisar con Jorge y decidir; NO remediar aún. Encadena [[cr-tico-h-01-pat-github...]] y [[expediente-diagn-stico-v1-commiteado-local-e2265bf...]].
+
+### Expediente diagnóstico v1 commiteado local (e2265bf) tras revisión de secretos limpia — próximo: bloque ACLARAR
+**Type:** decision  
+**Project:** futbolweb-app  
+
+Commit local del expediente Diagnóstico Institucional DFL v1 en dfl-knowledge: e2265bf5857fa8865859b2df4cc7d23327d2839e (2026-07-11 22:41 UTC, main, ahead 1 de origin, SIN push por mandato). 23 archivos, 932 líneas: 5 artefactos + 19 evidencias (incl. 2 nuevas: git-remotes-redactado.txt, git-dirty-detalle.txt). Revisión de exposición de secretos PREVIA al commit: limpia — sin PATs completos, tokens, claves privadas, contraseñas ni URLs autenticadas; verificado por comparación booleana contra valores reales de /etc/dfl-secrets, DFL_TOKEN, token cloud.json y el PAT real de prediccion2026 (valores jamás impresos). Dos falsos positivos descartados: ENGRAM_CLOUD_SERVER=endpoint local 127.0.0.1:8090 y ENGRAM_DATA_DIR=/root/.engram son config no sensible dentro de dfl-secrets. Esto cierra C-2/H-13 SOLO para este expediente; MISION_A1.md, audits/health-v1/ y audits/organismo-v1/ siguen untracked deliberadamente (no mezclar). PRÓXIMO PASO acordado con Jorge: revisar el diagnóstico y decidir el bloque ACLARAR (A-1..A-6 de 04-DIAGNOSTICO-INSTITUCIONAL.md) — no corregir aún los 18 hallazgos.
+
 ### SaaS Factory V5 consolidada en commit local 5e42124
 **Type:** decision  
 **Project:** dfl  
@@ -153,24 +177,6 @@ STATUS: active | F4 del audit COMPLETO (drift + comparator); quedan F5-F8
 **Limitaciones para Rubén**: es demo funcional no comercial (Nivel 0B pendiente), cualquier envío real de /cotizar genera fila real en `solicitudes` de producción (no hay modo sandbox), no se validó /dashboard ni login con credenciales reales, no se hizo validación visual real en dispositivo móvil (solo estructural).
 
 **No se tocó**: DB (solo lecturas HTTP públicas), FutbolWeb, secrets, migraciones, seed. Cambios preexistentes ajenos en graphify-out/ag_topologo.py siguen intactos.
-
-### Commits: graphify-out state + 360eventos env/scripts
-**Type:** decision  
-**Project:** futbolweb-app  
-
-**What**: Dos commits pusheados a pedido explícito de Jorge, siguiendo hallazgos de la auditoría de backup (drift sin commitear detectado).
-1. `dfl-knowledge` repo, commit af61702: "chore(graphify): post-regen state v0.3 stable" — 4 archivos (.last_full_regen, .summary_graph_hash, GRAPH_SUMMARY.md, ag_topologo_alert.json). Quedaron OTROS archivos modificados sin commitear (graph.json, graph.json.prev deleted, graph_comparator.json, graph_context.json, graph_context_light.json, knl.json, scripts/ag_topologo.py) — no se tocaron porque no estaban en el pedido explícito.
-2. `360eventos` repo, commit b8a3553: "chore: environment config + seed scripts" — next-env.d.ts + scripts/create-admin.js + scripts/seed-servicios.js (nuevos). Verificado antes de commitear que ambos scripts leen credenciales de `.env.local` en runtime, sin secrets hardcodeados.
-
-**Why**: Jorge pidió explícitamente estos commits tras ver el reporte de auditoría que identificó working trees sucios como gap de protección.
-
-**Where**: /opt/dfl-knowledge, /opt/360eventos
-
-### CIERRE FutbolWeb P0 post-fix 2026-07-05 — knockout ESPN sync verificado hasta monitoreo 91 pre-kickoff
-**Type:** decision  
-**Project:** futbolweb-app  
-
-Cierre de sesión FutbolWeb P0. Incidente investigado y corregido: ESPN cambió IDs de eventos para knockout posterior y los fixtures locales 89+ usan placeholders sin team codes; el matcher anterior dependía de fifaId o fecha+teamCode fijo, por eso no importó 89/90, no creó match_results, no corrió scoring, ranking no sumó y bracket 97 seguía con W89/W90. Fix commit b1b6d60 en futbolweb-app: matcher ESPN aplica bracket assignments con match_results previos y resuelve nombres/equipos antes de fallback por fecha/equipos; sync route carga existingResults antes de leer ESPN. Datos prod actualizados: 89 Paraguay 0-1 Francia y 90 Canada 0-3 Marruecos; scoring knockout ejecutado; prediction_scores 89=2 rows, 90=1 row; ranking Edgar Alberto P80 = 137.5; /api/tournament-reality muestra 97 Francia vs Marruecos; propagation pending []. Verificación post-fix para partido 91: al momento del monitoreo era pre-kickoff (generatedAt 2026-07-05T05:35Z, kickoff 2026-07-05T20:00Z); ESPN aún no incluye 91; match_results/scores 91 vacíos correcto; accepted predictions 91 existen para Alejo y Edgar Alberto. Próximo punto de monitoreo: después de FT de Brasil vs Noruega, confirmar ESPN import -> match_results 91 -> 2 scores -> ranking -> W91 en partido 99.
 
 ---
 
@@ -292,40 +298,29 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Session summary: futbolweb-app
-**Type:** session_summary  
+### Bloque ACLARAR completado (commit 42b9da6): A-1 PAT crítico, A-6 zip cifrado, A-4 metabolismo real, V-3 n8n auth+expuesto — 5 decisiones para Jorge
+**Type:** decision  
 **Project:** futbolweb-app  
 
-## Goal
-Completar el Diagnóstico Institucional DFL v1 (misión retomada tras corte de conexión): auditoría solo-lectura de La Garra con separación evidencia/inventario/interpretación/diagnóstico y clasificación explícita de certeza. Cierre con estado de la casa y orden institucional, NO propuesta tecnológica.
+Bloque ACLARAR del Diagnóstico Institucional DFL v1 completado y commiteado local: 42b9da6b38e7ce218601e5e60e233c613866a0b0 (2026-07-11 22:55 UTC, dfl-knowledge main ahead 2, SIN push). Solo verificación, cero remediación. Artefactos: 05-ACLARAR-VERIFICACIONES, 06-REGISTRO-VIVO-DE-ORGANOS-OPT, 07-DECISIONES-PENDIENTES + 6 evidencias.
 
-## Accomplished
-- Verificado estado persistido tras el corte: 17 archivos de evidencia en EVIDENCE/ sobrevivieron; ningún artefacto de análisis existía; Engram sin registro de la misión (murió antes del Gate 4B).
-- Cerrados 2 huecos de evidencia (solo lectura): git-remotes-redactado.txt (PAT detectado por prefijo, valor jamás registrado) y git-dirty-detalle.txt.
-- Escritos los 5 artefactos en /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/: 00-README (método + taxonomía [V]/[I]/[NV]/[D]), 01-INVENTARIO-INFRAESTRUCTURA, 02-INTERPRETACION, 03-HALLAZGOS (18 hallazgos: 1 crítico, 6 altos, 5 medios, 6 bajos), 04-DIAGNOSTICO-INSTITUCIONAL (orden: ACLARAR → VERIFICAR → CONSOLIDAR → GOBERNAR → RETIRAR).
+RESULTADOS:
+- A-1 PAT prediccion2026: VIGENTE Y CRÍTICO. Verificado vía api.github.com (token nunca impreso). Scope=repo (write total a TODOS los repos privados de la cuenta DFLghub: futbolweb-app, dfl-knowledge, dfl-context-proxy, 360eventos, amos-context, prediccion2026). Expira 2026-09-13. admin+push confirmado en prediccion2026. NO rotado (mandato).
+- A-6 futbolweb-env-backup.zip: CIFRADO ZipCrypto (mitigante), 1 archivo .env.local (300B, de Mac macgopro, 2026-05-25), duplicado en Drive, 0644 root. Nombres de clave/valores NO legibles sin password. NO_VERIFICABLE con indicio de secreto de prod. Original intacto.
+- A-4 metabolismo: dry-run es flag manual ($1) intencional; cron 0 3 * * 0 corre REAL; métrica SÍ persiste (1 OBS-METRIC SYSTEM_HEALTH_CHECK en Engram dfl). '100%'=liveness de 6 chequeos de infra memoria/navegabilidad, NO salud institucional. Cron dominical aún sin primera ocurrencia (script creado 2026-07-09, próx domingo 07-13).
+- V-3 n8n: auth FORZADA (401 en workflows/executions/credentials/login, local Y público; email auth, setup completo). PERO ufw abre 5678/tcp + 3000 + 3010 a Anywhere → n8n alcanzable directo por HTTP sin TLS; sin consumidor desde 2026-05-17.
 
-## Discoveries (clave)
-- H-01 CRÍTICO: PAT GitHub en remote de prediccion2026 (obs #218) — registrado sin rotar por mandato.
-- H-02 ALTO: backups off-host de Engram NO verificables desde La Garra (ssh denegado + receptor rechaza inspección) — durabilidad es hipótesis, no hecho.
-- H-03 ALTO: engram-backup-offhost.sh y engram-sync-cron.sh corren desde working tree sin commit — crons ejecutan código que git no declara.
-- H-04 ALTO: producto público (360eventos demo a Rubén, futbolweb) servido por next dev servers NODE_ENV=development en puertos públicos; explica swap 1.4Gi/2.0Gi.
-- H-05 ALTO: saas-factory-setup V5 (5e42124) local con remote apuntando a org externa saas-factory-community — push reflejo filtraría IP de fábrica.
-- H-06/H-07: n8n público dormido desde 2026-05-17; futbolweb-env-backup.zip en Drive sin verificar.
-- Organismo intacto: cero correcciones, reinicios, limpiezas o actualizaciones.
+DECISIONES PARA JORGE (5): D-1 autorizar rotación PAT+limpieza remote; D-2 destino soberano V5 (DFLghub vs community — origin actual es org externa saas-factory-community, 5e42124 inédito local, push reflejo filtraría IP); D-3 futuro n8n (Nivel 2 con dueño+fecha o retirar); D-4 ratificar registro /opt y dar remote/backup a co-001+nq-factory y versionar ~2.4GB sin git (futbolweb-v2 807M, mercader-comisiones 790M, roof-issues-mini 595M, mercader); D-5 verificar/decidir env zip.
 
-## Next Steps
-- Bloques 1º-2º del diagnóstico antes de cualquier evolución: aclarar alcance del PAT, registro vivo/muerto de órganos /opt, rol n8n, dry-run metabolismo, destino V5; verificar backups desde VM3, auth n8n/8080, vigencia PAT.
-- Commitear el expediente de auditoría en dfl-knowledge (C-2) cuando Jorge autorice.
+RIESGOS ACTIVOS: R-1 PAT crítico, R-2 push V5 externo, R-3 2.4GB copia única, R-4 exposición directa 5678/3000/3010, R-5 env zip ZipCrypto en Drive, R-6 durabilidad Engram sin verificar (heredado), R-7 engram-mcp+ingest sin git.
 
-## Relevant Files
-- /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/{00-README,01-INVENTARIO-INFRAESTRUCTURA,02-INTERPRETACION,03-HALLAZGOS,04-DIAGNOSTICO-INSTITUCIONAL}.md
-- EVIDENCE/ (19 archivos, incl. git-remotes-redactado.txt y git-dirty-detalle.txt nuevos)
+PRÓXIMO: revisar con Jorge y decidir; NO remediar aún. Encadena [[cr-tico-h-01-pat-github...]] y [[expediente-diagn-stico-v1-commiteado-local-e2265bf...]].
 
-### [CRÍTICO] H-01: PAT GitHub embebido en remote de prediccion2026 — registrado sin rotar (mandato misión)
-**Type:** discovery  
+### Expediente diagnóstico v1 commiteado local (e2265bf) tras revisión de secretos limpia — próximo: bloque ACLARAR
+**Type:** decision  
 **Project:** futbolweb-app  
 
-HALLAZGO CRÍTICO H-01 (Diagnóstico Institucional DFL v1, 2026-07-11): PAT de GitHub embebido en texto plano en la URL del remote origin de /opt/prediccion2026 (.git/config). Confirmado por prefijo de token; el VALOR NO fue mostrado, copiado ni registrado en ningún artefacto. Repo muerto desde 2026-06-15 — secreto vivo sin vigilancia, legible por cualquier acceso al filesystem. Alcance de permisos del PAT: desconocido. ESTADO: registrado, NO rotado ni modificado, por mandato explícito de la misión. Acción futura requiere: (1) verificar vigencia y alcance del token en GitHub, (2) rotarlo, (3) limpiar la URL del remote. Evidencia redactada: /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/EVIDENCE/git-remotes-redactado.txt. Expediente completo: 03-HALLAZGOS.md (H-01) y 04-DIAGNOSTICO-INSTITUCIONAL.md (bloques A-1/V-4).
+Commit local del expediente Diagnóstico Institucional DFL v1 en dfl-knowledge: e2265bf5857fa8865859b2df4cc7d23327d2839e (2026-07-11 22:41 UTC, main, ahead 1 de origin, SIN push por mandato). 23 archivos, 932 líneas: 5 artefactos + 19 evidencias (incl. 2 nuevas: git-remotes-redactado.txt, git-dirty-detalle.txt). Revisión de exposición de secretos PREVIA al commit: limpia — sin PATs completos, tokens, claves privadas, contraseñas ni URLs autenticadas; verificado por comparación booleana contra valores reales de /etc/dfl-secrets, DFL_TOKEN, token cloud.json y el PAT real de prediccion2026 (valores jamás impresos). Dos falsos positivos descartados: ENGRAM_CLOUD_SERVER=endpoint local 127.0.0.1:8090 y ENGRAM_DATA_DIR=/root/.engram son config no sensible dentro de dfl-secrets. Esto cierra C-2/H-13 SOLO para este expediente; MISION_A1.md, audits/health-v1/ y audits/organismo-v1/ siguen untracked deliberadamente (no mezclar). PRÓXIMO PASO acordado con Jorge: revisar el diagnóstico y decidir el bloque ACLARAR (A-1..A-6 de 04-DIAGNOSTICO-INSTITUCIONAL.md) — no corregir aún los 18 hallazgos.
 
 ---
 
@@ -418,4 +413,4 @@ HALLAZGO CRÍTICO H-01 (Diagnóstico Institucional DFL v1, 2026-07-11): PAT de G
 
 ---
 
-*Mirror auto-generated 2026-07-11T22:37:22Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-11T23:21:01Z | La Garra → DFLghub/amos-context*
