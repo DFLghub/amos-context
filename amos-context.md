@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-12T20:26:32Z  
+**Generated:** 2026-07-12T20:28:24Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,16 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### [CIERRE] Paridad operacional Codex = CC — Drive única brecha OAuth
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/codex/paridad-operacional-cierre
+TYPE: decision
+STATUS: active
+DATE: 2026-07-12
+SUMMARY: configuración Codex 0.144.1 migrada a perfiles separados; trust context-proxy/engram/backups; prompts MCP retirados; reglas institucionales por familias; sesión nueva con 0 prompts; Engram manual multiproyecto PASS obs 245/246 archivadas; VM3 rsync forced-command PASS; evidencia en audits/consolidacion-institucional-dfl-v1/09-CIERRE-PARIDAD-CODEX.md y EVIDENCE/paridad-cierre-codex-2026-07-12.md; commit 9422ab3 pusheado origin/main; única brecha Drive pendiente OAuth interactivo de Jorge. NO_TOUCH preservado.
+
 ### HLC cierre paridad Codex: evaluada NO completable 100% por CC (gate OAuth Drive) — handoff a Codex commiteado (aefdd96)
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -127,22 +137,6 @@ SUMMARY: Se ejecutó el checkpoint parcial #225 y se intentó cerrar el único r
 EVIDENCIA: metadatos locales registrados (524 bytes, sha256 4c3dd829569cf799616f870431e77d35eef0cfc70539686038819c3e7f6b4192); Drive metadata previamente registrada owner-only, owner jtigre@gmail.com, created 2026-06-13. Nuevo env cifrado sha256 404f5a567bea73e941b53acf5e6833335e378761fee88908bf0f4881143a4120 y MANIFEST sha256 fc2e9c7d0f5c27b34a272713ea0eb3d053e39b454df7e1e0746f0ea4b2314a6e intactos; restore off-host repetido OK, sha_match=yes, 2 claves.
 
 COMMIT: 05234cf (`docs(dfl): record zip residual closure gate`), 5 archivos, sin push. Expediente actualizado con 13-CIERRE-ZIP-ANTIGUO.md y evidencia b11-b13. Residual real único: ejecutar en sesión con Google Drive borrar solo ese fileId, vaciar papelera, verificar ausencia y recién después borrar la copia local equivalente.
-
-### Cierre de residuales críticos Ola 1 — PAT/n8n/SaaS/off-host cerrados; ZIP Drive pendiente
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/institutional-remediation/wave-1-critical-residuals-close
-TYPE: decision
-STATUS: active
-DATE: 2026-07-11
-SUMMARY: Cierre acotado posterior a Ola 1 completado en commit local dfl-knowledge 0395a50 (`chore(dfl): close wave 1 critical residuals`), 9 archivos/132 inserciones, sin push de dfl-knowledge.
-
-CERRADO: (1) PAT clásico revocado vía GitHub credentials/revoke (202) y autenticación posterior 401; transcript único saneado atómicamente, JSONL válido, cero holders por patrón completo en scopes solicitados/procesos, remote prediccion2026 SSH operativo. (2) n8n: sonda externa 5/5 timeouts a 67.205.166.199:5678; HTTPS/TLS/auth 401, contenedor/datos y DOCKER-USER+cron intactos. (3) SaaS Factory V5 publicada en repo privado DFLghub/saas-factory-setup, main remoto 5e42124aa0a070701f0a400b714d2a133b361a86; upstream comunitario trazable y push bloqueado. (4) co-001, nq-factory, env FutbolWeb y MANIFEST copiados a VM3 /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; hashes/tamaños 4/4 coinciden y restore env desde off-host verificado; sin passphrases off-host.
-
-RESIDUAL REAL EXTERNO: ZIP antiguo FutbolWeb en Google Drive. Los tres gates técnicos cumplen, pero Codex no tiene conector Drive ni credencial API local; no se eliminó de Drive ni localmente y no se tocó otro archivo. Requiere sesión con Drive: borrar solo fileId 1eeYfC0o8hyP2z9QqfIYQVRFDcPJ8T29e y verificar ausencia en ubicación original y papelera accesible.
-
-PROTECCIONES: no Ola 2, no diagnóstico nuevo, no cambios firewall adicionales, no publicación comunitaria, no push dfl-knowledge.
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -276,6 +270,16 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### [CIERRE] Paridad operacional Codex = CC — Drive única brecha OAuth
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/codex/paridad-operacional-cierre
+TYPE: decision
+STATUS: active
+DATE: 2026-07-12
+SUMMARY: configuración Codex 0.144.1 migrada a perfiles separados; trust context-proxy/engram/backups; prompts MCP retirados; reglas institucionales por familias; sesión nueva con 0 prompts; Engram manual multiproyecto PASS obs 245/246 archivadas; VM3 rsync forced-command PASS; evidencia en audits/consolidacion-institucional-dfl-v1/09-CIERRE-PARIDAD-CODEX.md y EVIDENCE/paridad-cierre-codex-2026-07-12.md; commit 9422ab3 pusheado origin/main; única brecha Drive pendiente OAuth interactivo de Jorge. NO_TOUCH preservado.
+
 ### [SEGURIDAD] Drive 1Password.txt = passphrase VIGENTE de /etc/dfl-secrets en texto plano — rotar; D-5 ZIP no borrable por conector read-only (346d2df)
 **Type:** discovery  
 **Project:** futbolweb-app  
@@ -286,15 +290,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 **Why**: Cierre de residuales de Drive de la Consolidación v1.
 **Where**: commit 346d2df dfl-knowledge; EVIDENCE/d5-b8-drive-cierre.txt; 05-BRECHAS B-8.
 **Learned**: PRIORIDAD DE SEGURIDAD nueva (B-8): passphrase de /etc/dfl-secrets en texto plano en Drive desde 2026-07-06 → tratar como comprometida: rotar passphrase, re-cifrar backup, guardar la nueva SOLO en 1Password real, eliminar el .txt de Drive+papelera, y auditar dónde vive el backup cifrado de secrets (¿en Drive?). El conector Drive de CC NO puede borrar — cualquier borrado en Drive necesita rclone+OAuth (handoff paridad §4) o a Jorge en la UI.
-
-### HLC cierre paridad Codex: evaluada NO completable 100% por CC (gate OAuth Drive) — handoff a Codex commiteado (aefdd96)
-**Type:** decision  
-**Project:** futbolweb-app  
-
-**What**: Evaluación del HLC "Cerrar paridad operacional Codex=CC": NO completable al 100% por ningún agente solo — el Resultado #4 (conector Drive con OAuth institucional) exige consentimiento interactivo de Jorge en navegador (jtigre@gmail.com); no hay service account ni conector local (verificado). El propio HLC prohíbe declarar paridad con Drive bloqueado. Resultados 1/2/3/5/6 SÍ ejecutables por Codex solo. Handoff completo commiteado y pusheado: audits/consolidacion-institucional-dfl-v1/HANDOFF-PARIDAD-CIERRE.md (aefdd96).
-**Why**: Mandato de Jorge: evaluar si CC alcanza a terminar con el crédito restante; si no, handoff a Codex.
-**Where**: HANDOFF-PARIDAD-CIERRE.md — incluye estado verificado (falta trust /opt/dfl-context-proxy; MCP engram approval_mode=approve = fricción; default.rules ad-hoc 35 reglas), plan por resultado, parte exacta de Jorge (rclone config OAuth headless ~10 min), formato de CIERRE, reversibilidad.
-**Learned**: DATO CLAVE: /opt/engram-mcp/server.py corregido HOY 20:11:45 UTC y servicio reiniciado 20:12:00 — el "adaptador Engram antiguo" que reporta Codex se resuelve con sesión NUEVA (Resultado 5 trivial). SSH "general a VMs" no existe para nadie: VM3 es forced-command por diseño (Resultado 3 = documentar, no ampliar). Codex debe pedir ratificación de rclone como conector institucional UNA vez antes de instalar.
 
 ---
 
@@ -387,4 +382,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-12T20:26:32Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-12T20:28:24Z | La Garra → DFLghub/amos-context*
