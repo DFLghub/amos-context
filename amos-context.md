@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-12T20:11:47Z  
+**Generated:** 2026-07-12T20:17:12Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -174,20 +174,6 @@ PROTECCIONES: no Ola 2, no diagnóstico nuevo, no cambios firewall adicionales, 
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
 
-### CHECKPOINT — M100 resuelto y sync reconciliador desplegado; inicia cierre Mundial 2026
-**Type:** fact  
-**Project:** futbolweb-app  
-
-TOPIC: futbolweb/world-cup-2026/operational-close-checkpoint
-TYPE: checkpoint
-STATUS: active
-DATE: 2026-07-12
-CHECKPOINT solicitado por Jorge, sesión continúa abierta. Sin archivado Gate 4B y sin push_mirror.sh.
-
-ESTADO PRESERVADO: incidente M100 cerrado; Argentina importada por pipeline institucional (1-1 a 90, 3-1 AET), advancing_team=Argentina, W100->Argentina, M102 Inglaterra vs Argentina; scoring normal 3 filas. M99 intacto con Inglaterra. Commit e55d2c56112b241439902138339904985934e16e en main y Vercel deploy success 2026-07-12T19:48:59Z. Sync endurecido: reconciliación de fixtures vencidos, fechas ESPN ET explícitas, lookback 2 días, idempotencia, observabilidad y degraded si quedan pendientes. Tests 72/72, lint/build OK, worktree limpio.
-
-SIGUIENTE MISIÓN AUTORIZADA: cierre operativo de los cuatro partidos restantes M101-M104; sync cada 5 minutos solo en ventanas necesarias, reintentos por resultado/scoring/propagación, proclamación canónica idempotente del campeón tras final completed+advancing_team, pruebas/simulación/commit/deploy/evidencia. PROTEGIDO: no tocar puntajeTigreKnockout, reglas de scoring, secretos ni datos manualmente.
-
 ---
 
 ## PENDING
@@ -294,36 +280,26 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### [CIERRE] Reconciliación final Consolidación DFL v1 (7b77b78) — D-1/D-2/B-2 resueltas, hallazgo Drive nuevo
-**Type:** decision  
-**Project:** futbolweb-app  
-
-**What**: Reconciliación final de la Consolidación Institucional v1 (HLC 2026-07-12) COMPLETADA. Causa raíz de contradicciones: los artefactos de consolidación se construyeron sobre 06/09/obs#221, anteriores al cierre de residuales Ola 1 (docs 11/12/13, Codex 2026-07-11 noche). Hechos REVALIDADOS HOY contra realidad: (1) PAT: cero holders (0 archivos, 0 proc), remote prediccion2026 SSH sano — D-1 RESUELTA, sin fecha dura, retiro DESBLOQUEADO; (2) bundles off-host: pull rsync real desde /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1/, SHA-256 idénticos los 4 — B-2 de la consolidación ERA FALSA (ruta correcta va bajo prefijo engram/); (3) SaaS Factory: DFLghub/saas-factory-setup main=5e42124=HEAD local, upstream push DISABLED — D-2 RESUELTA; (4) Drive vía conector CC: ZIP antiguo presente (524B) + HALLAZGO NUEVO 12_FutbolWeb/backups/1Password.txt (204B, 2026-07-06, fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ) — NO LEÍDO, posible material de credenciales, requiere revisión Jorge; (5) paridad: Drive sigue única brecha material, perfil dfl-mission intacto. Artefactos corregidos: 00/01/02/04/05/06 + 08-RECONCILIACION-FINAL + HANDOFF-CODEX nuevos; registro-vivo.json actualizado. Verificador post-commit: solo 5 residuales reales (SIN-PUSH prediccion2026; SIN-RESPALDO engram-mcp/futbolweb-v2/mercader-comisiones/roof-issues-mini). Commit 7b77b78 pusheado. Nota: futbolweb recibió 2 commits de Codex producto (5595c24, e55d2c5) durante la sesión — no tocado.
-**Why**: Mandato HLC — eliminar pendientes obsoletos antes de cerrar la Consolidación v1.
-**Where**: /opt/dfl-knowledge/audits/consolidacion-institucional-dfl-v1/ (08-, HANDOFF-CODEX, EVIDENCE/reconciliacion-*), governance/registro-vivo/registro-vivo.json
-**Learned**: Regla de método: antes de declarar pendiente en el registro vivo, contrastar contra el ÚLTIMO doc de cierre del expediente Y contra realidad ejecutable. Pendientes de Jorge tras reconciliación: retiros B-5 (desbloqueados), D-4 copias únicas, D-5 ZIP (CC ejecuta a la orden), revisión 1Password.txt, B-3 repos manuales, B-1 Drive-Codex.
-
-### CHECKPOINT — cierre operativo Mundial 2026 desplegado y listo para M101-M104
+### Session summary — prueba real paridad Codex=CC y cierre 2026-07-12
 **Type:** fact  
-**Project:** futbolweb-app  
+**Project:** dfl  
 
-TOPIC: futbolweb/world-cup-2026/operational-close-checkpoint
-TYPE: checkpoint
-STATUS: active
+TOPIC: dfl/session/parity-close
+STATUS: closed
 DATE: 2026-07-12
-CHECKPOINT parcial solicitado por Jorge. La sesión permanece abierta. No se ejecutó archivado Gate 4B ni push_mirror.sh.
+MISIÓN: probar privilegios efectivos Codex en DFL sin inferencia.
+RESULTADO: núcleo operacional PASS: /go, Engram, root La Garra, GitHub reversible, dfl-knowledge, KNL, agTopologo, Graphify, logs, Docker, systemd, cron, tmux y Gate 4B/mirror simulado. PARTIAL: SSH remoto; claves generales rechazadas, clave backup limitada por forced-command. BLOCKED: Google Drive sin conector/CLI/OAuth.
+CORRECCIÓN: /opt/engram-mcp/server.py ahora usa session_id separado por proyecto; servicio reiniciado y escrituras dfl+futbolweb-app verificadas y archivadas.
+EVIDENCIA: GitHub rama temporal creada/pusheada/verificada/eliminada; observaciones de prueba 235,237,238,240,241 archivadas; resultado institucional #242. No se tocaron NO_TOUCH ni producción.
+CIERRE: @$fin modo CIERRE; ejecutar mirror y reportar salida real.
 
-ESTADO PRESERVADO:
-- Incidente M100 cerrado: Argentina propagada; M102 Inglaterra vs Argentina; M99 intacto.
-- Commit e55d2c56112b241439902138339904985934e16e desplegado: reconciliación por fixtures vencidos, fechas ESPN ET explícitas, lookback, idempotencia, observabilidad y estado degraded.
-- Commit 5595c24 desplegado: cierre operativo M101-M104 con ventanas de sync cada 5 minutos desde 15m antes del kickoff; preflight detiene el sync al confirmar finished_with_result + scored; reconciliación de respaldo cada 3h.
-- Endpoint revalida resultado, scoring, propagación y campeón; pendientes o fallos quedan degraded y generan fallo/alerta en GitHub Actions.
-- Campeón derivado idempotentemente solo desde M104 canónico, después del kickoff, con is_knockout y advancing_team confirmado. Presentación principal: '[PAÍS], CAMPEÓN DEL MUNDO 2026' + marcador.
-- Verificación: 75/75 tests, lint/build/YAML OK, simulación final aprobada, Vercel deploy success 2026-07-12T19:59:28Z.
-- Producción al checkpoint: champion=null correctamente; M101 Francia-España upcoming, M102 Inglaterra-Argentina upcoming, M103/M104 con placeholders canónicos.
-- Worktree limpio. No se tocó puntajeTigreKnockout, reglas de scoring, secretos ni datos manualmente.
+### Paridad operativa Codex probada 2026-07-12
+**Type:** fact  
+**Project:** dfl  
 
-PRÓXIMO: monitorear las ventanas automáticas M101-M104 y actuar solo si aparece degraded/alerta o discrepancia canónica.
+TOPIC: dfl/capability/codex-cc-parity
+STATUS: verified-partial
+Codex probó directamente: /go, Engram read-write-update-archive, root local, GitHub push reversible, dfl-knowledge write reversible, KNL, agTopologo check, Graphify query/diagnose, logs/Docker/systemd/cron, tmux y Gate4B+mirror simulado. Brechas reales: Google Drive sin conector/CLI/OAuth; SSH general a n8n/vault denegado, clave backup solo forced-command; sandbox Codex exige aprobaciones para loopback, /opt, systemd, Docker, tmux, SSH y red. Fix aplicado a /opt/engram-mcp/server.py: session_id separado por proyecto; servicio reiniciado y multiproyecto verificado con obs 240/241 archivadas. No se tocaron NO_TOUCH ni producción.
 
 ---
 
@@ -416,4 +392,4 @@ PRÓXIMO: monitorear las ventanas automáticas M101-M104 y actuar solo si aparec
 
 ---
 
-*Mirror auto-generated 2026-07-12T20:11:47Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-12T20:17:12Z | La Garra → DFLghub/amos-context*
