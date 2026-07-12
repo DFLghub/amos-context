@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-12T03:05:34Z  
+**Generated:** 2026-07-12T20:11:47Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,28 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### [CIERRE] Reconciliación final Consolidación DFL v1 (7b77b78) — D-1/D-2/B-2 resueltas, hallazgo Drive nuevo
+**Type:** decision  
+**Project:** futbolweb-app  
+
+**What**: Reconciliación final de la Consolidación Institucional v1 (HLC 2026-07-12) COMPLETADA. Causa raíz de contradicciones: los artefactos de consolidación se construyeron sobre 06/09/obs#221, anteriores al cierre de residuales Ola 1 (docs 11/12/13, Codex 2026-07-11 noche). Hechos REVALIDADOS HOY contra realidad: (1) PAT: cero holders (0 archivos, 0 proc), remote prediccion2026 SSH sano — D-1 RESUELTA, sin fecha dura, retiro DESBLOQUEADO; (2) bundles off-host: pull rsync real desde /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1/, SHA-256 idénticos los 4 — B-2 de la consolidación ERA FALSA (ruta correcta va bajo prefijo engram/); (3) SaaS Factory: DFLghub/saas-factory-setup main=5e42124=HEAD local, upstream push DISABLED — D-2 RESUELTA; (4) Drive vía conector CC: ZIP antiguo presente (524B) + HALLAZGO NUEVO 12_FutbolWeb/backups/1Password.txt (204B, 2026-07-06, fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ) — NO LEÍDO, posible material de credenciales, requiere revisión Jorge; (5) paridad: Drive sigue única brecha material, perfil dfl-mission intacto. Artefactos corregidos: 00/01/02/04/05/06 + 08-RECONCILIACION-FINAL + HANDOFF-CODEX nuevos; registro-vivo.json actualizado. Verificador post-commit: solo 5 residuales reales (SIN-PUSH prediccion2026; SIN-RESPALDO engram-mcp/futbolweb-v2/mercader-comisiones/roof-issues-mini). Commit 7b77b78 pusheado. Nota: futbolweb recibió 2 commits de Codex producto (5595c24, e55d2c5) durante la sesión — no tocado.
+**Why**: Mandato HLC — eliminar pendientes obsoletos antes de cerrar la Consolidación v1.
+**Where**: /opt/dfl-knowledge/audits/consolidacion-institucional-dfl-v1/ (08-, HANDOFF-CODEX, EVIDENCE/reconciliacion-*), governance/registro-vivo/registro-vivo.json
+**Learned**: Regla de método: antes de declarar pendiente en el registro vivo, contrastar contra el ÚLTIMO doc de cierre del expediente Y contra realidad ejecutable. Pendientes de Jorge tras reconciliación: retiros B-5 (desbloqueados), D-4 copias únicas, D-5 ZIP (CC ejecuta a la orden), revisión 1Password.txt, B-3 repos manuales, B-1 Drive-Codex.
+
+### [CIERRE] Consolidación DFL v1 (9847568) — [CORREGIDO por obs #236: B-2 era falsa, D-1/D-2 ya resueltas, sin fecha dura PAT]
+**Type:** decision  
+**Project:** futbolweb-app  
+
+**What**: Misión completada 2026-07-12 (CC EJECUTOR). Entregables:
+1. PARIDAD CODEX=CC: **funcional con brechas menores** — Run A 10/10, Run B 3/4 (única falla: bridge MCP no acepta type=manual; ciclo Gate 4B sí funcionó). 14/17 superficies paridad completa. ÚNICA BLOQUEADA: Google Drive (Codex sin vía — decisión Jorge). Perfil `dfl-mission` en ~/.codex/config.toml (backup .bak-paridad): `codex exec -p dfl-mission` = autonomía CC sin Jorge-courier, smoke test PASS.
+2. PERFIL CANÓNICO: 02-DFL-AGENT-ACCESS-PROFILE-v1.md — independiente del agente, con procedimiento de alta de agentes futuros (batería de paridad como plantilla).
+3. REGISTRO VIVO CANÓNICO: governance/registro-vivo/{registro-vivo.json (21 órganos, 9 servicios, tmux), check_registro_vivo.py} — SUPERSEDE 06/09 del diagnóstico v1 y DO-INVENTORY 2026-05-10. Detecta: órgano nuevo/ausente, dirty real, sin-push, sin-respaldo, revisión vencida, servicio caído, divergencias, registro stale. SIN cron (GOBERNAR no autorizado). El run2 detectó EN VIVO trabajo concurrente en futbolweb (codex de Jorge, tournament-reality, ~19:39 UTC) — mecanismo validado.
+4. CONSOLIDADO: H-03 CERRADO (dfl-context-proxy abde599 pusheado); dfl-knowledge 8 commits pusheados (e2265bf..9847568); digitalocean RESUELTO=infra-vendor; artefactos huérfanos versionados (health-v1, organismo-v1, MISION_A1 reubicado); todo pausado con dueño+fecha (n8n/ingest/painradar 2026-08-10, labs 2026-08-15, co-001 2027-01-15); nada retirado, producción intacta.
+**Why**: Mandato Jorge — paridad operacional + casa consolidada antes de GOBERNAR.
+**Where**: /opt/dfl-knowledge/audits/consolidacion-institucional-dfl-v1/ (00-07 + EVIDENCE 14 archivos), governance/registro-vivo/, ~/.codex/config.toml
+**Learned**: BLOQUEOS PARA JORGE: B-1 Drive-Codex, B-2 receiver VM3 solo acepta /data/dfl-backups/engram/* (off-host bundles imposible desde La Garra), B-3 crear repos DFLghub sin PAT sano (bloquea nq-factory/engram-mcp/fork engram/V5), D-4 ~2.2GB copias únicas, retiros sf-test+prediccion2026. FECHA DURA: PAT expira 2026-09-13. Codex activo trabajando futbolweb en paralelo — coordinar antes de tocar futbolweb.
+
 ### Cierre condicionado ZIP antiguo — Drive inaccesible; respaldo nuevo íntegro
 **Type:** decision  
 **Project:** dfl  
@@ -126,30 +148,6 @@ RESIDUAL REAL EXTERNO: ZIP antiguo FutbolWeb en Google Drive. Los tres gates té
 
 PROTECCIONES: no Ola 2, no diagnóstico nuevo, no cambios firewall adicionales, no publicación comunitaria, no push dfl-knowledge.
 
-### Bloque ACLARAR completado (commit 42b9da6): A-1 PAT crítico, A-6 zip cifrado, A-4 metabolismo real, V-3 n8n auth+expuesto — 5 decisiones para Jorge
-**Type:** decision  
-**Project:** futbolweb-app  
-
-Bloque ACLARAR del Diagnóstico Institucional DFL v1 completado y commiteado local: 42b9da6b38e7ce218601e5e60e233c613866a0b0 (2026-07-11 22:55 UTC, dfl-knowledge main ahead 2, SIN push). Solo verificación, cero remediación. Artefactos: 05-ACLARAR-VERIFICACIONES, 06-REGISTRO-VIVO-DE-ORGANOS-OPT, 07-DECISIONES-PENDIENTES + 6 evidencias.
-
-RESULTADOS:
-- A-1 PAT prediccion2026: VIGENTE Y CRÍTICO. Verificado vía api.github.com (token nunca impreso). Scope=repo (write total a TODOS los repos privados de la cuenta DFLghub: futbolweb-app, dfl-knowledge, dfl-context-proxy, 360eventos, amos-context, prediccion2026). Expira 2026-09-13. admin+push confirmado en prediccion2026. NO rotado (mandato).
-- A-6 futbolweb-env-backup.zip: CIFRADO ZipCrypto (mitigante), 1 archivo .env.local (300B, de Mac macgopro, 2026-05-25), duplicado en Drive, 0644 root. Nombres de clave/valores NO legibles sin password. NO_VERIFICABLE con indicio de secreto de prod. Original intacto.
-- A-4 metabolismo: dry-run es flag manual ($1) intencional; cron 0 3 * * 0 corre REAL; métrica SÍ persiste (1 OBS-METRIC SYSTEM_HEALTH_CHECK en Engram dfl). '100%'=liveness de 6 chequeos de infra memoria/navegabilidad, NO salud institucional. Cron dominical aún sin primera ocurrencia (script creado 2026-07-09, próx domingo 07-13).
-- V-3 n8n: auth FORZADA (401 en workflows/executions/credentials/login, local Y público; email auth, setup completo). PERO ufw abre 5678/tcp + 3000 + 3010 a Anywhere → n8n alcanzable directo por HTTP sin TLS; sin consumidor desde 2026-05-17.
-
-DECISIONES PARA JORGE (5): D-1 autorizar rotación PAT+limpieza remote; D-2 destino soberano V5 (DFLghub vs community — origin actual es org externa saas-factory-community, 5e42124 inédito local, push reflejo filtraría IP); D-3 futuro n8n (Nivel 2 con dueño+fecha o retirar); D-4 ratificar registro /opt y dar remote/backup a co-001+nq-factory y versionar ~2.4GB sin git (futbolweb-v2 807M, mercader-comisiones 790M, roof-issues-mini 595M, mercader); D-5 verificar/decidir env zip.
-
-RIESGOS ACTIVOS: R-1 PAT crítico, R-2 push V5 externo, R-3 2.4GB copia única, R-4 exposición directa 5678/3000/3010, R-5 env zip ZipCrypto en Drive, R-6 durabilidad Engram sin verificar (heredado), R-7 engram-mcp+ingest sin git.
-
-PRÓXIMO: revisar con Jorge y decidir; NO remediar aún. Encadena [[cr-tico-h-01-pat-github...]] y [[expediente-diagn-stico-v1-commiteado-local-e2265bf...]].
-
-### Expediente diagnóstico v1 commiteado local (e2265bf) tras revisión de secretos limpia — próximo: bloque ACLARAR
-**Type:** decision  
-**Project:** futbolweb-app  
-
-Commit local del expediente Diagnóstico Institucional DFL v1 en dfl-knowledge: e2265bf5857fa8865859b2df4cc7d23327d2839e (2026-07-11 22:41 UTC, main, ahead 1 de origin, SIN push por mandato). 23 archivos, 932 líneas: 5 artefactos + 19 evidencias (incl. 2 nuevas: git-remotes-redactado.txt, git-dirty-detalle.txt). Revisión de exposición de secretos PREVIA al commit: limpia — sin PATs completos, tokens, claves privadas, contraseñas ni URLs autenticadas; verificado por comparación booleana contra valores reales de /etc/dfl-secrets, DFL_TOKEN, token cloud.json y el PAT real de prediccion2026 (valores jamás impresos). Dos falsos positivos descartados: ENGRAM_CLOUD_SERVER=endpoint local 127.0.0.1:8090 y ENGRAM_DATA_DIR=/root/.engram son config no sensible dentro de dfl-secrets. Esto cierra C-2/H-13 SOLO para este expediente; MISION_A1.md, audits/health-v1/ y audits/organismo-v1/ siguen untracked deliberadamente (no mezclar). PRÓXIMO PASO acordado con Jorge: revisar el diagnóstico y decidir el bloque ACLARAR (A-1..A-6 de 04-DIAGNOSTICO-INSTITUCIONAL.md) — no corregir aún los 18 hallazgos.
-
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
 **Project:** 360eventos  
@@ -175,6 +173,20 @@ Commit local del expediente Diagnóstico Institucional DFL v1 en dfl-knowledge: 
 ---
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
+
+### CHECKPOINT — M100 resuelto y sync reconciliador desplegado; inicia cierre Mundial 2026
+**Type:** fact  
+**Project:** futbolweb-app  
+
+TOPIC: futbolweb/world-cup-2026/operational-close-checkpoint
+TYPE: checkpoint
+STATUS: active
+DATE: 2026-07-12
+CHECKPOINT solicitado por Jorge, sesión continúa abierta. Sin archivado Gate 4B y sin push_mirror.sh.
+
+ESTADO PRESERVADO: incidente M100 cerrado; Argentina importada por pipeline institucional (1-1 a 90, 3-1 AET), advancing_team=Argentina, W100->Argentina, M102 Inglaterra vs Argentina; scoring normal 3 filas. M99 intacto con Inglaterra. Commit e55d2c56112b241439902138339904985934e16e en main y Vercel deploy success 2026-07-12T19:48:59Z. Sync endurecido: reconciliación de fixtures vencidos, fechas ESPN ET explícitas, lookback 2 días, idempotencia, observabilidad y degraded si quedan pendientes. Tests 72/72, lint/build OK, worktree limpio.
+
+SIGUIENTE MISIÓN AUTORIZADA: cierre operativo de los cuatro partidos restantes M101-M104; sync cada 5 minutos solo en ventanas necesarias, reintentos por resultado/scoring/propagación, proclamación canónica idempotente del campeón tras final completed+advancing_team, pruebas/simulación/commit/deploy/evidencia. PROTEGIDO: no tocar puntajeTigreKnockout, reglas de scoring, secretos ni datos manualmente.
 
 ---
 
@@ -282,29 +294,36 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Cierre condicionado ZIP antiguo — Drive inaccesible; respaldo nuevo íntegro
+### [CIERRE] Reconciliación final Consolidación DFL v1 (7b77b78) — D-1/D-2/B-2 resueltas, hallazgo Drive nuevo
 **Type:** decision  
-**Project:** dfl  
+**Project:** futbolweb-app  
 
-TOPIC: dfl/institutional-remediation/zip-residual-close
-TYPE: decision
-STATUS: active
-DATE: 2026-07-11
-SUMMARY: Se ejecutó el checkpoint parcial #225 y se intentó cerrar el único residual. Codex no tiene conector Google Drive ni OAuth/API local autorizada; por ello no fue posible localizar/eliminar el fileId 1eeYfC0o8hyP2z9QqfIYQVRFDcPJ8T29e, vaciar papelera ni verificar búsqueda posterior. No se borró el ZIP Drive ni la copia local, evitando un estado asimétrico.
+**What**: Reconciliación final de la Consolidación Institucional v1 (HLC 2026-07-12) COMPLETADA. Causa raíz de contradicciones: los artefactos de consolidación se construyeron sobre 06/09/obs#221, anteriores al cierre de residuales Ola 1 (docs 11/12/13, Codex 2026-07-11 noche). Hechos REVALIDADOS HOY contra realidad: (1) PAT: cero holders (0 archivos, 0 proc), remote prediccion2026 SSH sano — D-1 RESUELTA, sin fecha dura, retiro DESBLOQUEADO; (2) bundles off-host: pull rsync real desde /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1/, SHA-256 idénticos los 4 — B-2 de la consolidación ERA FALSA (ruta correcta va bajo prefijo engram/); (3) SaaS Factory: DFLghub/saas-factory-setup main=5e42124=HEAD local, upstream push DISABLED — D-2 RESUELTA; (4) Drive vía conector CC: ZIP antiguo presente (524B) + HALLAZGO NUEVO 12_FutbolWeb/backups/1Password.txt (204B, 2026-07-06, fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ) — NO LEÍDO, posible material de credenciales, requiere revisión Jorge; (5) paridad: Drive sigue única brecha material, perfil dfl-mission intacto. Artefactos corregidos: 00/01/02/04/05/06 + 08-RECONCILIACION-FINAL + HANDOFF-CODEX nuevos; registro-vivo.json actualizado. Verificador post-commit: solo 5 residuales reales (SIN-PUSH prediccion2026; SIN-RESPALDO engram-mcp/futbolweb-v2/mercader-comisiones/roof-issues-mini). Commit 7b77b78 pusheado. Nota: futbolweb recibió 2 commits de Codex producto (5595c24, e55d2c5) durante la sesión — no tocado.
+**Why**: Mandato HLC — eliminar pendientes obsoletos antes de cerrar la Consolidación v1.
+**Where**: /opt/dfl-knowledge/audits/consolidacion-institucional-dfl-v1/ (08-, HANDOFF-CODEX, EVIDENCE/reconciliacion-*), governance/registro-vivo/registro-vivo.json
+**Learned**: Regla de método: antes de declarar pendiente en el registro vivo, contrastar contra el ÚLTIMO doc de cierre del expediente Y contra realidad ejecutable. Pendientes de Jorge tras reconciliación: retiros B-5 (desbloqueados), D-4 copias únicas, D-5 ZIP (CC ejecuta a la orden), revisión 1Password.txt, B-3 repos manuales, B-1 Drive-Codex.
 
-EVIDENCIA: metadatos locales registrados (524 bytes, sha256 4c3dd829569cf799616f870431e77d35eef0cfc70539686038819c3e7f6b4192); Drive metadata previamente registrada owner-only, owner jtigre@gmail.com, created 2026-06-13. Nuevo env cifrado sha256 404f5a567bea73e941b53acf5e6833335e378761fee88908bf0f4881143a4120 y MANIFEST sha256 fc2e9c7d0f5c27b34a272713ea0eb3d053e39b454df7e1e0746f0ea4b2314a6e intactos; restore off-host repetido OK, sha_match=yes, 2 claves.
-
-COMMIT: 05234cf (`docs(dfl): record zip residual closure gate`), 5 archivos, sin push. Expediente actualizado con 13-CIERRE-ZIP-ANTIGUO.md y evidencia b11-b13. Residual real único: ejecutar en sesión con Google Drive borrar solo ese fileId, vaciar papelera, verificar ausencia y recién después borrar la copia local equivalente.
-
-### CHECKPOINT parcial — residual ZIP Drive pendiente
+### CHECKPOINT — cierre operativo Mundial 2026 desplegado y listo para M101-M104
 **Type:** fact  
-**Project:** dfl  
+**Project:** futbolweb-app  
 
-TOPIC: dfl/institutional-remediation/zip-residual-checkpoint
+TOPIC: futbolweb/world-cup-2026/operational-close-checkpoint
 TYPE: checkpoint
 STATUS: active
-DATE: 2026-07-11
-Cierre parcial solicitado por Jorge, sin cerrar sesión, sin archivado y sin mirror. Estado preservado: commit local 0395a5045c113703f134bc9c5e15cfad47d4a9fb; PAT/n8n/SaaS/off-host cerrados; único residual pendiente = futbolweb-env-backup.zip en Google Drive y copia local equivalente. Condiciones técnicas ya verificadas: respaldo cifrado nuevo, copia VM3, hashes coincidentes y restore correcto. Próxima acción única autorizada: registrar metadatos, borrar ZIP Drive y papelera, verificar ausencia, borrar solo copia local obsoleta, revalidar respaldo nuevo, documentar y commit local sin push.
+DATE: 2026-07-12
+CHECKPOINT parcial solicitado por Jorge. La sesión permanece abierta. No se ejecutó archivado Gate 4B ni push_mirror.sh.
+
+ESTADO PRESERVADO:
+- Incidente M100 cerrado: Argentina propagada; M102 Inglaterra vs Argentina; M99 intacto.
+- Commit e55d2c56112b241439902138339904985934e16e desplegado: reconciliación por fixtures vencidos, fechas ESPN ET explícitas, lookback, idempotencia, observabilidad y estado degraded.
+- Commit 5595c24 desplegado: cierre operativo M101-M104 con ventanas de sync cada 5 minutos desde 15m antes del kickoff; preflight detiene el sync al confirmar finished_with_result + scored; reconciliación de respaldo cada 3h.
+- Endpoint revalida resultado, scoring, propagación y campeón; pendientes o fallos quedan degraded y generan fallo/alerta en GitHub Actions.
+- Campeón derivado idempotentemente solo desde M104 canónico, después del kickoff, con is_knockout y advancing_team confirmado. Presentación principal: '[PAÍS], CAMPEÓN DEL MUNDO 2026' + marcador.
+- Verificación: 75/75 tests, lint/build/YAML OK, simulación final aprobada, Vercel deploy success 2026-07-12T19:59:28Z.
+- Producción al checkpoint: champion=null correctamente; M101 Francia-España upcoming, M102 Inglaterra-Argentina upcoming, M103/M104 con placeholders canónicos.
+- Worktree limpio. No se tocó puntajeTigreKnockout, reglas de scoring, secretos ni datos manualmente.
+
+PRÓXIMO: monitorear las ventanas automáticas M101-M104 y actuar solo si aparece degraded/alerta o discrepancia canónica.
 
 ---
 
@@ -397,4 +416,4 @@ Cierre parcial solicitado por Jorge, sin cerrar sesión, sin archivado y sin mir
 
 ---
 
-*Mirror auto-generated 2026-07-12T03:05:34Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-12T20:11:47Z | La Garra → DFLghub/amos-context*
