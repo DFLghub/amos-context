@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-11T23:47:47Z  
+**Generated:** 2026-07-12T03:05:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -397,4 +397,4 @@ Cierre parcial solicitado por Jorge, sin cerrar sesión, sin archivado y sin mir
 
 ---
 
-*Mirror auto-generated 2026-07-11T23:47:47Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-12T03:05:01Z | La Garra → DFLghub/amos-context*
