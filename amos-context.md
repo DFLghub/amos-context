@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-12T20:42:40Z  
+**Generated:** 2026-07-12T20:44:18Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,16 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### [CIERRE DE SESIÓN] Paridad Codex y protección dfl-secrets completadas
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/session/2026-07-12-parity-secrets-close
+TYPE: session_summary
+STATUS: active
+DATE: 2026-07-12
+SUMMARY: Se cerró paridad operacional Codex=CC: perfiles Codex 0.144.1 migrados, trusts y reglas institucionales ajustados, sesión nueva con cero prompts, Engram manual multiproyecto PASS, VM3 rsync PASS; commit 9422ab3 pusheado y cierre previo Engram #248. Luego se tomó relevo CC: backup GPG de /etc/dfl-secrets verificado local+VM3, SHA cipher 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8, restore off-host idéntico SHA e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66, passphrase nueva solo keyfile root-0600, ZIP legacy retirado del HEAD/ignorado, historia preservada por secreto revocado; commit 3957967 pusheado, Engram #249. Residuales: ZIP Drive y 1Password.txt requieren OAuth/rclone; no tocados. Git limpio origin/main. NO_TOUCH preservado.
+
 ### [CIERRE] /etc/dfl-secrets protegido off-host y ZIP legacy retirado
 **Type:** decision  
 **Project:** dfl  
@@ -105,16 +115,6 @@ TYPE: decision
 STATUS: active
 DATE: 2026-07-12
 SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg confirmado en VM3 bajo /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; SHA-256 cipher local/remoto 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8; restore desde copia off-host coincide byte a byte con /etc/dfl-secrets, SHA-256 e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66; passphrase nueva únicamente en keyfile root-0600; ZIP 12_FutbolWeb/futbolweb-env-backup.zip retirado del HEAD y bloqueado en gitignore; historia no reescrita porque contiene solo Supabase key revocada; commit 3957967 pusheado origin/main. Drive ZIP y 1Password.txt NO tocados, pendientes OAuth/rclone. Evidencia audits/diagnostico-institucional-dfl-v1/13-CIERRE-ZIP-ANTIGUO.md y EVIDENCE/b14-relevo-dfl-secrets-y-zip.md. NO_TOUCH preservado.
-
-### [CIERRE] Paridad operacional Codex = CC — Drive única brecha OAuth
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/codex/paridad-operacional-cierre
-TYPE: decision
-STATUS: active
-DATE: 2026-07-12
-SUMMARY: configuración Codex 0.144.1 migrada a perfiles separados; trust context-proxy/engram/backups; prompts MCP retirados; reglas institucionales por familias; sesión nueva con 0 prompts; Engram manual multiproyecto PASS obs 245/246 archivadas; VM3 rsync forced-command PASS; evidencia en audits/consolidacion-institucional-dfl-v1/09-CIERRE-PARIDAD-CODEX.md y EVIDENCE/paridad-cierre-codex-2026-07-12.md; commit 9422ab3 pusheado origin/main; única brecha Drive pendiente OAuth interactivo de Jorge. NO_TOUCH preservado.
 
 ### HLC cierre paridad Codex: evaluada NO completable 100% por CC (gate OAuth Drive) — handoff a Codex commiteado (aefdd96)
 **Type:** decision  
@@ -266,6 +266,16 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### [CIERRE DE SESIÓN] Paridad Codex y protección dfl-secrets completadas
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/session/2026-07-12-parity-secrets-close
+TYPE: session_summary
+STATUS: active
+DATE: 2026-07-12
+SUMMARY: Se cerró paridad operacional Codex=CC: perfiles Codex 0.144.1 migrados, trusts y reglas institucionales ajustados, sesión nueva con cero prompts, Engram manual multiproyecto PASS, VM3 rsync PASS; commit 9422ab3 pusheado y cierre previo Engram #248. Luego se tomó relevo CC: backup GPG de /etc/dfl-secrets verificado local+VM3, SHA cipher 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8, restore off-host idéntico SHA e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66, passphrase nueva solo keyfile root-0600, ZIP legacy retirado del HEAD/ignorado, historia preservada por secreto revocado; commit 3957967 pusheado, Engram #249. Residuales: ZIP Drive y 1Password.txt requieren OAuth/rclone; no tocados. Git limpio origin/main. NO_TOUCH preservado.
+
 ### [CIERRE] /etc/dfl-secrets protegido off-host y ZIP legacy retirado
 **Type:** decision  
 **Project:** dfl  
@@ -275,16 +285,6 @@ TYPE: decision
 STATUS: active
 DATE: 2026-07-12
 SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg confirmado en VM3 bajo /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; SHA-256 cipher local/remoto 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8; restore desde copia off-host coincide byte a byte con /etc/dfl-secrets, SHA-256 e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66; passphrase nueva únicamente en keyfile root-0600; ZIP 12_FutbolWeb/futbolweb-env-backup.zip retirado del HEAD y bloqueado en gitignore; historia no reescrita porque contiene solo Supabase key revocada; commit 3957967 pusheado origin/main. Drive ZIP y 1Password.txt NO tocados, pendientes OAuth/rclone. Evidencia audits/diagnostico-institucional-dfl-v1/13-CIERRE-ZIP-ANTIGUO.md y EVIDENCE/b14-relevo-dfl-secrets-y-zip.md. NO_TOUCH preservado.
-
-### [CIERRE] Paridad operacional Codex = CC — Drive única brecha OAuth
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/codex/paridad-operacional-cierre
-TYPE: decision
-STATUS: active
-DATE: 2026-07-12
-SUMMARY: configuración Codex 0.144.1 migrada a perfiles separados; trust context-proxy/engram/backups; prompts MCP retirados; reglas institucionales por familias; sesión nueva con 0 prompts; Engram manual multiproyecto PASS obs 245/246 archivadas; VM3 rsync forced-command PASS; evidencia en audits/consolidacion-institucional-dfl-v1/09-CIERRE-PARIDAD-CODEX.md y EVIDENCE/paridad-cierre-codex-2026-07-12.md; commit 9422ab3 pusheado origin/main; única brecha Drive pendiente OAuth interactivo de Jorge. NO_TOUCH preservado.
 
 ---
 
@@ -377,4 +377,4 @@ SUMMARY: configuración Codex 0.144.1 migrada a perfiles separados; trust contex
 
 ---
 
-*Mirror auto-generated 2026-07-12T20:42:40Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-12T20:44:18Z | La Garra → DFLghub/amos-context*
