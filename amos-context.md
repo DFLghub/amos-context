@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-12T20:28:24Z  
+**Generated:** 2026-07-12T20:42:40Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,16 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### [CIERRE] /etc/dfl-secrets protegido off-host y ZIP legacy retirado
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/security/dfl-secrets-offhost-zip-close
+TYPE: decision
+STATUS: active
+DATE: 2026-07-12
+SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg confirmado en VM3 bajo /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; SHA-256 cipher local/remoto 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8; restore desde copia off-host coincide byte a byte con /etc/dfl-secrets, SHA-256 e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66; passphrase nueva únicamente en keyfile root-0600; ZIP 12_FutbolWeb/futbolweb-env-backup.zip retirado del HEAD y bloqueado en gitignore; historia no reescrita porque contiene solo Supabase key revocada; commit 3957967 pusheado origin/main. Drive ZIP y 1Password.txt NO tocados, pendientes OAuth/rclone. Evidencia audits/diagnostico-institucional-dfl-v1/13-CIERRE-ZIP-ANTIGUO.md y EVIDENCE/b14-relevo-dfl-secrets-y-zip.md. NO_TOUCH preservado.
+
 ### [CIERRE] Paridad operacional Codex = CC — Drive única brecha OAuth
 **Type:** decision  
 **Project:** dfl  
@@ -123,20 +133,6 @@ SUMMARY: configuración Codex 0.144.1 migrada a perfiles separados; trust contex
 **Why**: Mandato HLC — eliminar pendientes obsoletos antes de cerrar la Consolidación v1.
 **Where**: /opt/dfl-knowledge/audits/consolidacion-institucional-dfl-v1/ (08-, HANDOFF-CODEX, EVIDENCE/reconciliacion-*), governance/registro-vivo/registro-vivo.json
 **Learned**: Regla de método: antes de declarar pendiente en el registro vivo, contrastar contra el ÚLTIMO doc de cierre del expediente Y contra realidad ejecutable. Pendientes de Jorge tras reconciliación: retiros B-5 (desbloqueados), D-4 copias únicas, D-5 ZIP (CC ejecuta a la orden), revisión 1Password.txt, B-3 repos manuales, B-1 Drive-Codex.
-
-### Cierre condicionado ZIP antiguo — Drive inaccesible; respaldo nuevo íntegro
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/institutional-remediation/zip-residual-close
-TYPE: decision
-STATUS: active
-DATE: 2026-07-11
-SUMMARY: Se ejecutó el checkpoint parcial #225 y se intentó cerrar el único residual. Codex no tiene conector Google Drive ni OAuth/API local autorizada; por ello no fue posible localizar/eliminar el fileId 1eeYfC0o8hyP2z9QqfIYQVRFDcPJ8T29e, vaciar papelera ni verificar búsqueda posterior. No se borró el ZIP Drive ni la copia local, evitando un estado asimétrico.
-
-EVIDENCIA: metadatos locales registrados (524 bytes, sha256 4c3dd829569cf799616f870431e77d35eef0cfc70539686038819c3e7f6b4192); Drive metadata previamente registrada owner-only, owner jtigre@gmail.com, created 2026-06-13. Nuevo env cifrado sha256 404f5a567bea73e941b53acf5e6833335e378761fee88908bf0f4881143a4120 y MANIFEST sha256 fc2e9c7d0f5c27b34a272713ea0eb3d053e39b454df7e1e0746f0ea4b2314a6e intactos; restore off-host repetido OK, sha_match=yes, 2 claves.
-
-COMMIT: 05234cf (`docs(dfl): record zip residual closure gate`), 5 archivos, sin push. Expediente actualizado con 13-CIERRE-ZIP-ANTIGUO.md y evidencia b11-b13. Residual real único: ejecutar en sesión con Google Drive borrar solo ese fileId, vaciar papelera, verificar ausencia y recién después borrar la copia local equivalente.
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -270,6 +266,16 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### [CIERRE] /etc/dfl-secrets protegido off-host y ZIP legacy retirado
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/security/dfl-secrets-offhost-zip-close
+TYPE: decision
+STATUS: active
+DATE: 2026-07-12
+SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg confirmado en VM3 bajo /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; SHA-256 cipher local/remoto 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8; restore desde copia off-host coincide byte a byte con /etc/dfl-secrets, SHA-256 e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66; passphrase nueva únicamente en keyfile root-0600; ZIP 12_FutbolWeb/futbolweb-env-backup.zip retirado del HEAD y bloqueado en gitignore; historia no reescrita porque contiene solo Supabase key revocada; commit 3957967 pusheado origin/main. Drive ZIP y 1Password.txt NO tocados, pendientes OAuth/rclone. Evidencia audits/diagnostico-institucional-dfl-v1/13-CIERRE-ZIP-ANTIGUO.md y EVIDENCE/b14-relevo-dfl-secrets-y-zip.md. NO_TOUCH preservado.
+
 ### [CIERRE] Paridad operacional Codex = CC — Drive única brecha OAuth
 **Type:** decision  
 **Project:** dfl  
@@ -279,17 +285,6 @@ TYPE: decision
 STATUS: active
 DATE: 2026-07-12
 SUMMARY: configuración Codex 0.144.1 migrada a perfiles separados; trust context-proxy/engram/backups; prompts MCP retirados; reglas institucionales por familias; sesión nueva con 0 prompts; Engram manual multiproyecto PASS obs 245/246 archivadas; VM3 rsync forced-command PASS; evidencia en audits/consolidacion-institucional-dfl-v1/09-CIERRE-PARIDAD-CODEX.md y EVIDENCE/paridad-cierre-codex-2026-07-12.md; commit 9422ab3 pusheado origin/main; única brecha Drive pendiente OAuth interactivo de Jorge. NO_TOUCH preservado.
-
-### [SEGURIDAD] Drive 1Password.txt = passphrase VIGENTE de /etc/dfl-secrets en texto plano — rotar; D-5 ZIP no borrable por conector read-only (346d2df)
-**Type:** discovery  
-**Project:** futbolweb-app  
-
-**What**: Ejecutada orden de Jorge (borrar ZIP Drive + revisar 1Password.txt) el 2026-07-12.
-1. D-5 BORRADO ZIP: NO EJECUTABLE. El conector Google Drive de CC (claude.ai) expone solo search/get_metadata/get_permissions/read/download/copy/create — SIN delete/trash/update. rclone/OAuth no configurados. futbolweb-env-backup.zip (fileId 1eeYfC0o8hyP2z9QqfIYQVRFDcPJ8T29e) sigue presente, no tocado. Cierre requiere rclone+OAuth de Jorge (rclone delete + rclone cleanup) o borrado manual en UI. CORRIGE mi afirmación previa de que "CC podía borrarlo a la orden".
-2. B-8 REVISIÓN 1Password.txt (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B, 2026-07-06): es CREDENCIAL VIGENTE — passphrase (VALOR NO REGISTRADO en ningún sitio) para descifrar el backup de /etc/dfl-secrets. Alcance ALTO (/etc/dfl-secrets alimenta crons engram-sync/backups vía source). Permisos owner-only sin compartidos (mitigante). El backup cifrado que abre NO está junto a ella en 12_FutbolWeb/backups/ (solo CSVs). No borrada ni modificada (mandato: requiere autorización posterior de Jorge).
-**Why**: Cierre de residuales de Drive de la Consolidación v1.
-**Where**: commit 346d2df dfl-knowledge; EVIDENCE/d5-b8-drive-cierre.txt; 05-BRECHAS B-8.
-**Learned**: PRIORIDAD DE SEGURIDAD nueva (B-8): passphrase de /etc/dfl-secrets en texto plano en Drive desde 2026-07-06 → tratar como comprometida: rotar passphrase, re-cifrar backup, guardar la nueva SOLO en 1Password real, eliminar el .txt de Drive+papelera, y auditar dónde vive el backup cifrado de secrets (¿en Drive?). El conector Drive de CC NO puede borrar — cualquier borrado en Drive necesita rclone+OAuth (handoff paridad §4) o a Jorge en la UI.
 
 ---
 
@@ -382,4 +377,4 @@ SUMMARY: configuración Codex 0.144.1 migrada a perfiles separados; trust contex
 
 ---
 
-*Mirror auto-generated 2026-07-12T20:28:24Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-12T20:42:40Z | La Garra → DFLghub/amos-context*
