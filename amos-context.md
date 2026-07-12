@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-12T20:17:12Z  
+**Generated:** 2026-07-12T20:26:32Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,15 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### HLC cierre paridad Codex: evaluada NO completable 100% por CC (gate OAuth Drive) — handoff a Codex commiteado (aefdd96)
+**Type:** decision  
+**Project:** futbolweb-app  
+
+**What**: Evaluación del HLC "Cerrar paridad operacional Codex=CC": NO completable al 100% por ningún agente solo — el Resultado #4 (conector Drive con OAuth institucional) exige consentimiento interactivo de Jorge en navegador (jtigre@gmail.com); no hay service account ni conector local (verificado). El propio HLC prohíbe declarar paridad con Drive bloqueado. Resultados 1/2/3/5/6 SÍ ejecutables por Codex solo. Handoff completo commiteado y pusheado: audits/consolidacion-institucional-dfl-v1/HANDOFF-PARIDAD-CIERRE.md (aefdd96).
+**Why**: Mandato de Jorge: evaluar si CC alcanza a terminar con el crédito restante; si no, handoff a Codex.
+**Where**: HANDOFF-PARIDAD-CIERRE.md — incluye estado verificado (falta trust /opt/dfl-context-proxy; MCP engram approval_mode=approve = fricción; default.rules ad-hoc 35 reglas), plan por resultado, parte exacta de Jorge (rclone config OAuth headless ~10 min), formato de CIERRE, reversibilidad.
+**Learned**: DATO CLAVE: /opt/engram-mcp/server.py corregido HOY 20:11:45 UTC y servicio reiniciado 20:12:00 — el "adaptador Engram antiguo" que reporta Codex se resuelve con sesión NUEVA (Resultado 5 trivial). SSH "general a VMs" no existe para nadie: VM3 es forced-command por diseño (Resultado 3 = documentar, no ampliar). Codex debe pedir ratificación de rclone como conector institucional UNA vez antes de instalar.
+
 ### [CIERRE] Reconciliación final Consolidación DFL v1 (7b77b78) — D-1/D-2/B-2 resueltas, hallazgo Drive nuevo
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -104,19 +113,6 @@ Antes de operar, respondé:
 **Why**: Mandato HLC — eliminar pendientes obsoletos antes de cerrar la Consolidación v1.
 **Where**: /opt/dfl-knowledge/audits/consolidacion-institucional-dfl-v1/ (08-, HANDOFF-CODEX, EVIDENCE/reconciliacion-*), governance/registro-vivo/registro-vivo.json
 **Learned**: Regla de método: antes de declarar pendiente en el registro vivo, contrastar contra el ÚLTIMO doc de cierre del expediente Y contra realidad ejecutable. Pendientes de Jorge tras reconciliación: retiros B-5 (desbloqueados), D-4 copias únicas, D-5 ZIP (CC ejecuta a la orden), revisión 1Password.txt, B-3 repos manuales, B-1 Drive-Codex.
-
-### [CIERRE] Consolidación DFL v1 (9847568) — [CORREGIDO por obs #236: B-2 era falsa, D-1/D-2 ya resueltas, sin fecha dura PAT]
-**Type:** decision  
-**Project:** futbolweb-app  
-
-**What**: Misión completada 2026-07-12 (CC EJECUTOR). Entregables:
-1. PARIDAD CODEX=CC: **funcional con brechas menores** — Run A 10/10, Run B 3/4 (única falla: bridge MCP no acepta type=manual; ciclo Gate 4B sí funcionó). 14/17 superficies paridad completa. ÚNICA BLOQUEADA: Google Drive (Codex sin vía — decisión Jorge). Perfil `dfl-mission` en ~/.codex/config.toml (backup .bak-paridad): `codex exec -p dfl-mission` = autonomía CC sin Jorge-courier, smoke test PASS.
-2. PERFIL CANÓNICO: 02-DFL-AGENT-ACCESS-PROFILE-v1.md — independiente del agente, con procedimiento de alta de agentes futuros (batería de paridad como plantilla).
-3. REGISTRO VIVO CANÓNICO: governance/registro-vivo/{registro-vivo.json (21 órganos, 9 servicios, tmux), check_registro_vivo.py} — SUPERSEDE 06/09 del diagnóstico v1 y DO-INVENTORY 2026-05-10. Detecta: órgano nuevo/ausente, dirty real, sin-push, sin-respaldo, revisión vencida, servicio caído, divergencias, registro stale. SIN cron (GOBERNAR no autorizado). El run2 detectó EN VIVO trabajo concurrente en futbolweb (codex de Jorge, tournament-reality, ~19:39 UTC) — mecanismo validado.
-4. CONSOLIDADO: H-03 CERRADO (dfl-context-proxy abde599 pusheado); dfl-knowledge 8 commits pusheados (e2265bf..9847568); digitalocean RESUELTO=infra-vendor; artefactos huérfanos versionados (health-v1, organismo-v1, MISION_A1 reubicado); todo pausado con dueño+fecha (n8n/ingest/painradar 2026-08-10, labs 2026-08-15, co-001 2027-01-15); nada retirado, producción intacta.
-**Why**: Mandato Jorge — paridad operacional + casa consolidada antes de GOBERNAR.
-**Where**: /opt/dfl-knowledge/audits/consolidacion-institucional-dfl-v1/ (00-07 + EVIDENCE 14 archivos), governance/registro-vivo/, ~/.codex/config.toml
-**Learned**: BLOQUEOS PARA JORGE: B-1 Drive-Codex, B-2 receiver VM3 solo acepta /data/dfl-backups/engram/* (off-host bundles imposible desde La Garra), B-3 crear repos DFLghub sin PAT sano (bloquea nq-factory/engram-mcp/fork engram/V5), D-4 ~2.2GB copias únicas, retiros sf-test+prediccion2026. FECHA DURA: PAT expira 2026-09-13. Codex activo trabajando futbolweb en paralelo — coordinar antes de tocar futbolweb.
 
 ### Cierre condicionado ZIP antiguo — Drive inaccesible; respaldo nuevo íntegro
 **Type:** decision  
@@ -280,26 +276,25 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Session summary — prueba real paridad Codex=CC y cierre 2026-07-12
-**Type:** fact  
-**Project:** dfl  
+### [SEGURIDAD] Drive 1Password.txt = passphrase VIGENTE de /etc/dfl-secrets en texto plano — rotar; D-5 ZIP no borrable por conector read-only (346d2df)
+**Type:** discovery  
+**Project:** futbolweb-app  
 
-TOPIC: dfl/session/parity-close
-STATUS: closed
-DATE: 2026-07-12
-MISIÓN: probar privilegios efectivos Codex en DFL sin inferencia.
-RESULTADO: núcleo operacional PASS: /go, Engram, root La Garra, GitHub reversible, dfl-knowledge, KNL, agTopologo, Graphify, logs, Docker, systemd, cron, tmux y Gate 4B/mirror simulado. PARTIAL: SSH remoto; claves generales rechazadas, clave backup limitada por forced-command. BLOCKED: Google Drive sin conector/CLI/OAuth.
-CORRECCIÓN: /opt/engram-mcp/server.py ahora usa session_id separado por proyecto; servicio reiniciado y escrituras dfl+futbolweb-app verificadas y archivadas.
-EVIDENCIA: GitHub rama temporal creada/pusheada/verificada/eliminada; observaciones de prueba 235,237,238,240,241 archivadas; resultado institucional #242. No se tocaron NO_TOUCH ni producción.
-CIERRE: @$fin modo CIERRE; ejecutar mirror y reportar salida real.
+**What**: Ejecutada orden de Jorge (borrar ZIP Drive + revisar 1Password.txt) el 2026-07-12.
+1. D-5 BORRADO ZIP: NO EJECUTABLE. El conector Google Drive de CC (claude.ai) expone solo search/get_metadata/get_permissions/read/download/copy/create — SIN delete/trash/update. rclone/OAuth no configurados. futbolweb-env-backup.zip (fileId 1eeYfC0o8hyP2z9QqfIYQVRFDcPJ8T29e) sigue presente, no tocado. Cierre requiere rclone+OAuth de Jorge (rclone delete + rclone cleanup) o borrado manual en UI. CORRIGE mi afirmación previa de que "CC podía borrarlo a la orden".
+2. B-8 REVISIÓN 1Password.txt (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B, 2026-07-06): es CREDENCIAL VIGENTE — passphrase (VALOR NO REGISTRADO en ningún sitio) para descifrar el backup de /etc/dfl-secrets. Alcance ALTO (/etc/dfl-secrets alimenta crons engram-sync/backups vía source). Permisos owner-only sin compartidos (mitigante). El backup cifrado que abre NO está junto a ella en 12_FutbolWeb/backups/ (solo CSVs). No borrada ni modificada (mandato: requiere autorización posterior de Jorge).
+**Why**: Cierre de residuales de Drive de la Consolidación v1.
+**Where**: commit 346d2df dfl-knowledge; EVIDENCE/d5-b8-drive-cierre.txt; 05-BRECHAS B-8.
+**Learned**: PRIORIDAD DE SEGURIDAD nueva (B-8): passphrase de /etc/dfl-secrets en texto plano en Drive desde 2026-07-06 → tratar como comprometida: rotar passphrase, re-cifrar backup, guardar la nueva SOLO en 1Password real, eliminar el .txt de Drive+papelera, y auditar dónde vive el backup cifrado de secrets (¿en Drive?). El conector Drive de CC NO puede borrar — cualquier borrado en Drive necesita rclone+OAuth (handoff paridad §4) o a Jorge en la UI.
 
-### Paridad operativa Codex probada 2026-07-12
-**Type:** fact  
-**Project:** dfl  
+### HLC cierre paridad Codex: evaluada NO completable 100% por CC (gate OAuth Drive) — handoff a Codex commiteado (aefdd96)
+**Type:** decision  
+**Project:** futbolweb-app  
 
-TOPIC: dfl/capability/codex-cc-parity
-STATUS: verified-partial
-Codex probó directamente: /go, Engram read-write-update-archive, root local, GitHub push reversible, dfl-knowledge write reversible, KNL, agTopologo check, Graphify query/diagnose, logs/Docker/systemd/cron, tmux y Gate4B+mirror simulado. Brechas reales: Google Drive sin conector/CLI/OAuth; SSH general a n8n/vault denegado, clave backup solo forced-command; sandbox Codex exige aprobaciones para loopback, /opt, systemd, Docker, tmux, SSH y red. Fix aplicado a /opt/engram-mcp/server.py: session_id separado por proyecto; servicio reiniciado y multiproyecto verificado con obs 240/241 archivadas. No se tocaron NO_TOUCH ni producción.
+**What**: Evaluación del HLC "Cerrar paridad operacional Codex=CC": NO completable al 100% por ningún agente solo — el Resultado #4 (conector Drive con OAuth institucional) exige consentimiento interactivo de Jorge en navegador (jtigre@gmail.com); no hay service account ni conector local (verificado). El propio HLC prohíbe declarar paridad con Drive bloqueado. Resultados 1/2/3/5/6 SÍ ejecutables por Codex solo. Handoff completo commiteado y pusheado: audits/consolidacion-institucional-dfl-v1/HANDOFF-PARIDAD-CIERRE.md (aefdd96).
+**Why**: Mandato de Jorge: evaluar si CC alcanza a terminar con el crédito restante; si no, handoff a Codex.
+**Where**: HANDOFF-PARIDAD-CIERRE.md — incluye estado verificado (falta trust /opt/dfl-context-proxy; MCP engram approval_mode=approve = fricción; default.rules ad-hoc 35 reglas), plan por resultado, parte exacta de Jorge (rclone config OAuth headless ~10 min), formato de CIERRE, reversibilidad.
+**Learned**: DATO CLAVE: /opt/engram-mcp/server.py corregido HOY 20:11:45 UTC y servicio reiniciado 20:12:00 — el "adaptador Engram antiguo" que reporta Codex se resuelve con sesión NUEVA (Resultado 5 trivial). SSH "general a VMs" no existe para nadie: VM3 es forced-command por diseño (Resultado 3 = documentar, no ampliar). Codex debe pedir ratificación de rclone como conector institucional UNA vez antes de instalar.
 
 ---
 
@@ -392,4 +387,4 @@ Codex probó directamente: /go, Engram read-write-update-archive, root local, Gi
 
 ---
 
-*Mirror auto-generated 2026-07-12T20:17:12Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-12T20:26:32Z | La Garra → DFLghub/amos-context*
