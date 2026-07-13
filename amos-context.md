@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-13T03:05:01Z  
+**Generated:** 2026-07-13T03:06:29Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -222,17 +222,17 @@ Sin cambios de preferencia registrados en esta sesión.
 
 ## RECENT ACTIVITY (cross-project)
 
-### amOS Event Model — veredicto auditoría 2026-06-23
-**Type:** decision  
-**Project:** dfl  
-
-Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (AgMaster_amOS_3, AI_amOS_Acta_Fundacional v1.1, Protocolo MS→amOS). Veredicto: B — Existe parcialmente pero disperso. Cobertura: Peso/costo metabólico→confidence+value en tabla events (Parcial, consolidar); Persistencia→status Origin Chain+estados Candidate Vault (Parcial, consolidar); Intención→scope+forbidden_uses agLego+Layer3 VALUE (Implícita, nombrar); Propagación→C-009+G-002 Protocol Taxonomy (Incompleta, GAP REAL); Relación con estado→Layer6+tabla asset_states (Existe, conservar). Conclusión: NO hace falta constructo nuevo tipo 'Light Signals'. Hace falta unificar y nombrar lo disperso. Gap real confirmado: G-002 Protocol Taxonomy (propagación, marcado como no cerrado en el Acta Fundacional). Próximo paso: cerrar G-002 dentro del Libro 1 amOS o como PRP independiente. Prerequisito: localizar RFC-DFL-001 (puede contener Event Model más completo).
-
-### amOS — ontología activa 13 capas (Acta Fundacional v1.1)
+### AgMaster_amOS_3 — vocabulario y reglas IAIM
 **Type:** fact  
 **Project:** dfl  
 
-13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
+AgMaster_amOS_3 es el documento maestro v3 del ecosistema (USAR ESTA, versiones 1 y 2 obsoletas). Vocabulario mínimo para IA invitada: amOS=sistema operativo conceptual/metodológico para absorber/metabolizar información manteniendo soberanía; IAIM=Invisible Augmented Intelligence Mesh, red invisible de IAs aliadas sin nodos fijos, orquestada por HI; HI=Jorge, decisión final soberana; ag10=ChatGPT como router/integrador/destilador/última yarda (no oráculo ni jefe); agPregunta=pregunta aumentada con propósito/dominio/límite/criterio; agLego=pieza conceptual candidata modular trazable; Candado Soberano=restricciones no negociables: no-exec, candidate_only, human-review-first. Prefijo 'ag'=augmented+governed+generative-but-contained. AG10-AUSTERITY-LOCK para fases de cierre/patch/gate. Origin Chain obligatorio para todo agLego. Frase núcleo v3: 'La red ilumina. La HI orquesta. ag10 destila. El candado audita. amOS asimila la cicatriz, no la herida.' Paralelo permitido: máximo 2 nodos, candidate_only, revisión HI.
+
+### MERCADER — contexto operativo completo y restricciones duras
+**Type:** fact  
+**Project:** dfl  
+
+MERCADER BOS v0.1 (2026-05-20): motor económico digital. Jerarquía: amOS/IAIM→Apps Factory→MERCADER→MERCADER BOS. Objetivo inmediato: cerrar circuito económico mínimo (lead capture→Gmail→registro→seguimiento→venta→aprendizaje). Las 5 capas BOS: (1)Contexto — qué es, qué vende, a quién, límites éticos; (2)Datos — 11 campos: nombre/email/tel/ciudad/fuente/producto/urgencia/presupuesto/estado/próx.acción/resultado; (3)Inteligencia — síntesis diaria: leads calientes, objeciones, canales; (4)Automatización — permitida: capturar/notificar/registrar/recordar; PROHIBIDA: cobrar sin revisión, inventar precios/inventario, hacerse pasar por Jorge; (5)Build — landing+formulario+Gmail+Sheets/Postgres+dashboard leads. Restricciones duras: sin empleados; sin storage propio; sin capital inicial fuerte; bajo costo operativo; humano en el cierre sensible; NO mezclar MERCADER con Bazaar ni con videos bioarmónicos. Modelo comercial: broker/coordinador/conector liviano. Score de oportunidad: Dolor+Urgencia+Capacidad+Claridad+Fit (máx 50). Morning Briefing + Evening Reflection operativos. Primer agLego: agLego-MERCADER-LEAD-CAPTURE-v0.1.
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -366,15 +366,15 @@ SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 1.1833  
+**Graph entropy:** 1.3245  
 
-- **Community 11** (88 nodes): Matriz de Fisiología Contextual, Drift en gestión de versiones, Acumulación de patrones operacionales
-- **Community 0** (12 nodes): ag10, agLego, amOS
-- **Community 1** (4 nodes): Soberanía de SaaS Factory V5, Análisis de patrones externos
-- **Community 2** (4 nodes): Salud Institucional DFL, Arquitectura Multi-Servicio en VM2
-- **Community 3** (4 nodes): Durabilidad de Engram, Scripts sin commit, Producto en modo development
-- **Community 4** (4 nodes): Salud Cognitiva
+- **Community 11** (77 nodes): Estado real de la casa, Onboarding multi-agente, Engram Cloud en VM2
+- **Community 0** (12 nodes): amOS, agLego, HI
+- **Community 1** (8 nodes): Tránsitos programados, Salud Estratégica, Decisiones Pendientes
+- **Community 2** (8 nodes): Soberana - Gobernadora / Reductora, n8n, DO-INVENTORY
+- **Community 3** (7 nodes): Metabolismo, Marco de Medición del Impacto, Fisiología Operacional
+- **Community 4** (4 nodes): Soberanía de SaaS Factory V5, Clasificación de patrones externos
 
 ---
 
-*Mirror auto-generated 2026-07-13T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-13T03:06:29Z | La Garra → DFLghub/amos-context*
