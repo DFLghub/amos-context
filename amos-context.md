@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-14T20:32:41Z  
+**Generated:** 2026-07-14T21:08:29Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,21 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### [FINAL] Visualizer dev entrypoint fix closed
+**Type:** decision  
+**Project:** dfl  
+
+LIFECYCLE: final
+Date: 2026-07-14
+Repository: /opt/visualizer
+Branch verified: fix/visualizer-dev-entrypoint
+HEAD verified: e262088
+Commits verified: 42b18a5 — fix: restore canonical visualizer dev entrypoint; e262088 — test: validate coordinated dev lifecycle.
+Context: Visualizer v0.1 was already technically homologated and passed Jorge's human gate. A later operational defect was found: npm run dev pointed to missing scripts/dev.mjs.
+Correction: npm run dev now coordinates backend and frontend through scripts/dev.mjs.
+Validation: host/port propagation, SIGINT shutdown, port release, frontend bind failure handling, and absence of relevant orphan Visualizer processes were validated. Evidence: evidence/dev-entrypoint-fix/VALIDATION.md.
+Final state: tree clean; no product functionality or protected zones modified by Codex during closure. Claude Code completed the code/evidence but hit session limit before Engram; Codex completed institutional closure.
+
 ### [FINAL] Visualizer focused final reaudit GO
 **Type:** decision  
 **Project:** dfl  
@@ -161,16 +176,6 @@ DATE: 2026-07-14
 **What**: Sesión CC de limpieza con dos frentes, ambos CERRADOS. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existía entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — sin edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B): ELIMINADO manualmente por Jorge en la UI de Drive el 2026-07-14, tras blocker inicial (el conector MCP de Drive no expone delete). Borrado VERIFICADO por CC: get_file_metadata devuelve "Requested entity was not found". Residual D-5/1Password de la Reconciliación v1 cerrado.
 **Why**: Orden directa de Jorge 2026-07-14: eliminar 1Password.txt (noise backup antiguo, ya revisado por él) y cerrar Reminder 1a por fin de torneo.
 **Learned**: El conector claude.ai Google Drive es read-mostly (sin delete/trash) — limpiezas destructivas en Drive requieren UI manual o rclone tras OAuth institucional (B-1, aún pendiente). Paridad CC/Codex sigue pendiente de ratificación de Jorge.
-
-### [CIERRE DE SESIÓN] Paridad Codex y protección dfl-secrets completadas
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/session/2026-07-12-parity-secrets-close
-TYPE: session_summary
-STATUS: active
-DATE: 2026-07-12
-SUMMARY: Se cerró paridad operacional Codex=CC: perfiles Codex 0.144.1 migrados, trusts y reglas institucionales ajustados, sesión nueva con cero prompts, Engram manual multiproyecto PASS, VM3 rsync PASS; commit 9422ab3 pusheado y cierre previo Engram #248. Luego se tomó relevo CC: backup GPG de /etc/dfl-secrets verificado local+VM3, SHA cipher 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8, restore off-host idéntico SHA e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66, passphrase nueva solo keyfile root-0600, ZIP legacy retirado del HEAD/ignorado, historia preservada por secreto revocado; commit 3957967 pusheado, Engram #249. Residuales: ZIP Drive y 1Password.txt requieren OAuth/rclone; no tocados. Git limpio origin/main. NO_TOUCH preservado.
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -287,53 +292,38 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### [FINAL] Visualizer focused final reaudit GO
+### [FINAL] Visualizer dev entrypoint fix closed
 **Type:** decision  
 **Project:** dfl  
 
 LIFECYCLE: final
 Date: 2026-07-14
-Scope: Final focused adversarial reaudit of Visualizer remediation.
-Target commit audited: 26312584773ae4854f455856e0c6438ec3630e25
-Original audited base: b1b81e755c4a3120a05d0d0b4fb4a7de4e5e6cac
-Harness branch/worktree: audit/focused-reaudit at /opt/visualizer-codex-audit
-Verdict literal from /opt/visualizer-codex-audit/evidence/reaudit-codex-final/VERDICT.md: GO
-Contract results: Honest reversibility PASS; Institutional traceability PASS; Layout and complete export PASS; Corruption recovery PASS.
-Audit commits: 24dc0ab, b86a112, 635feeb, f5e993c, c8a5362, 57c1b7a, b841ff6.
-Residual risks: approval.by is declarative; one lint warning; stale README origin wording; export remains browser-driven.
-Next gate: Jorge human test from the iMac before institutional publication.
-Restrictions honored: did not modify product, did not merge, did not push Visualizer repository.
+Repository: /opt/visualizer
+Branch verified: fix/visualizer-dev-entrypoint
+HEAD verified: e262088
+Commits verified: 42b18a5 — fix: restore canonical visualizer dev entrypoint; e262088 — test: validate coordinated dev lifecycle.
+Context: Visualizer v0.1 was already technically homologated and passed Jorge's human gate. A later operational defect was found: npm run dev pointed to missing scripts/dev.mjs.
+Correction: npm run dev now coordinates backend and frontend through scripts/dev.mjs.
+Validation: host/port propagation, SIGINT shutdown, port release, frontend bind failure handling, and absence of relevant orphan Visualizer processes were validated. Evidence: evidence/dev-entrypoint-fix/VALIDATION.md.
+Final state: tree clean; no product functionality or protected zones modified by Codex during closure. Claude Code completed the code/evidence but hit session limit before Engram; Codex completed institutional closure.
 
-### Session summary: dfl-knowledge
-**Type:** session_summary  
-**Project:** dfl-knowledge  
+### Visualizer: npm run dev canónico restaurado (scripts/dev.mjs coordinador mínimo)
+**Type:** bugfix  
+**Project:** visualizer  
 
-## Goal
-Sesión @$go→@$fin 2026-07-14: MISIÓN remediación autónoma de Visualizer v0.1 — convertir el NO-GO controlado de la auditoría Codex (b1b81e7) en versión técnicamente homologable cerrando exactamente 4 bloqueantes.
+[FIX] Visualizer dev entrypoint restaurado (rama fix/visualizer-dev-entrypoint, commits 42b18a5 + e262088 sobre 2631258 homologado).
 
-## Accomplished
-- Rama `remediation/visualizer-v01` en /opt/visualizer (local, sin remoto/push). Checkpoints: 4186465 (contrato honesto de reversibilidad), 48aa422 (proveniencia Caso Cero), f9f1a84 (dependencias/circuitos/export completo), 83be519 (recuperación ante corrupción), 2631258 (cierre consolidado). Árbol limpio, historial preservado.
-- Bloqueante 1: VMD/JSON única representación reversible probada (deep-equal); Markdown degradado a proyección narrativa en README/UI/código/tests; compilación siempre nueva, nunca auto-aprobada.
-- Bloqueante 2: origin extracted|inferred|modeled + approval {by,at} obligatorio por integridad + evidencia derivada located|cited|unsupported verificada contra fuentes; fixture reclasificado (0 approved, 8 extracted con spans reales, 83 modeled con ausencia registrada); endpoint /traceability; anti-concentración de evidencia.
-- Bloqueante 3: viewInsight (connected/undeclared/isolated + fuera de alcance), roles de circuito (inicio/cierre/bifurcación), banda separada para no conectados, export PNG/SVG de grafo COMPLETO validado por IHDR exacto + pixel-sampling de nodos extremos (PASS 4/4 vistas).
-- Bloqueante 4: ModelCorruptError, cuarentena sin destruir evidencia, restauración atómica desde revisión válida más reciente, fallo seguro, 14 escenarios de test + E2E HTTP 422→recover→200.
-- Validación final: npm ci limpio, 83/83 tests (base 40), lint/typecheck/build 0, loopback verificado, npm audit runtime 0 vulnerabilidades (happy-dom critical resuelto con fix no-breaking; 5 findings toolchain vite/vitest documentados sin forzar majors).
+CAUSA RAÍZ: package.json invocaba node scripts/dev.mjs pero el archivo no existía; npm run dev fallaba y el arranque requería dev:server + dev:web por separado.
 
-## Discoveries
-- El fixture original fabricaba certeza institucional: 86 elementos approved/source respaldados por UNA frase de 203 caracteres con una sola quote genérica.
-- pkill -f con patrón que aparece en la propia línea de comando del shell se mata a sí mismo (exit 144) — matar servers por puerto (fuser -k).
-- html-to-image no resuelve variables CSS de React Flow en etiquetas de aristas (cajas negras en export) — fix: estilos SVG inline (labelStyle/labelBgStyle).
+SOLUCIÓN (flaco de acero, sin dependencias nuevas): scripts/dev.mjs coordina tsx watch (API :4310) + vite con child_process estándar; propaga --host/--port a vite (añade --strictPort con --port explícito); grupos de proceso propios + SIGTERM al árbol ante SIGINT/SIGTERM; exit no-cero si un hijo falla al arrancar.
 
-## Next Steps
-- Jorge: revisión visual 4 vistas en iMac/tablet (túnel SSH) con fixture ya honesto.
-- Aportar fuentes doctrinales reales como sources del Caso Cero → reclasificar modeled con spans y aprobar con registro.
-- Upgrade planificado vite@8+vitest@4 con suite 83 tests como red.
-- NO avanzar a Business Genoma sin nueva orden.
+VALIDADO: npm ci/typecheck/lint/test (85/85, incluye 2 tests nuevos de lifecycle en tests/dev-entrypoint.test.ts)/build OK; loopback-only verificado con ss (127.0.0.1:4318 web, 127.0.0.1:4310 API); HTTP 200; SIGINT limpio sin huérfanos ×2; fallo de bind → exit 1 sin backend huérfano; rearranque OK. Evidencia: evidence/dev-entrypoint-fix/VALIDATION.md.
 
-## Relevant Files
-- /opt/visualizer/evidence/remediation-cc/{WORKLOG,VALIDATION,REMAINING_RISKS,CASO_CERO_TRACEABILITY}.md
-- /opt/visualizer/src/core/vmd/traceability.ts, src/core/views/insight.ts, src/web/export/exportViewport.ts, src/server/store.ts (recoverModel)
-- /opt/visualizer/scripts/{reclassify-caso-cero,traceability-report,export-validate}.ts
+GOTCHA descubierto: al testear señales vía shell, SIGINT al wrapper sh -c de npm NO llega al coordinador node — hay que señalar el proceso node scripts/dev.mjs (Ctrl+C real sí funciona porque va al grupo de foreground). Además pgrep -f se auto-matchea con el bash -c del harness: falsos positivos de "huérfanos".
+
+OBSERVACIÓN preexistente fuera de alcance: PID 2413725 npm run dev huérfano ~15 días, cwd /opt/360eventos (otro proyecto, no tocado).
+
+PROXIMO_AGENTE_DEBE: si Jorge aprueba, merge de fix/visualizer-dev-entrypoint a remediation/visualizer-v01 (sin push desde esta sesión por contrato).
 
 ---
 
@@ -426,4 +416,4 @@ Sesión @$go→@$fin 2026-07-14: MISIÓN remediación autónoma de Visualizer v0
 
 ---
 
-*Mirror auto-generated 2026-07-14T20:32:41Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-14T21:08:29Z | La Garra → DFLghub/amos-context*
