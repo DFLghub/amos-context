@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-14T00:08:09Z  
+**Generated:** 2026-07-14T01:29:07Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,20 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt Drive NO eliminado (conector sin delete)
+**Type:** decision  
+**Project:** futbolweb-app  
+
+TOPIC: dfl/session/2026-07-14-limpieza-1p-reminder
+TYPE: decision
+STATUS: active
+DATE: 2026-07-14
+
+**What**: Sesión CC de limpieza con dos frentes. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existe entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — no hubo edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B, verificado existente vía metadata): eliminación BLOQUEADA — el conector MCP de Google Drive de esta sesión solo expone copy/create/read/download/metadata/permissions/search, NO tiene tool de delete/trash. Requiere: borrado manual de Jorge en la UI de Drive, o rclone tras el OAuth institucional pendiente (B-1).
+**Why**: Orden directa de Jorge 2026-07-14: eliminar 1Password.txt (noise backup antiguo, ya revisado por él) y cerrar Reminder 1a por fin de torneo.
+**Learned**: El conector claude.ai Google Drive es read-mostly (sin delete) — cualquier limpieza destructiva en Drive seguirá bloqueada hasta rclone OAuth. Paridad CC/Codex sigue pendiente de ratificación de Jorge.
+**PROXIMO_AGENTE_DEBE**: si llega con capacidad de borrado en Drive (rclone configurado), eliminar 1Password.txt y su obs de hallazgo; confirmar con mem_save.
+
 ### [CIERRE DE SESIÓN] Paridad Codex y protección dfl-secrets completadas
 **Type:** decision  
 **Project:** dfl  
@@ -124,15 +138,6 @@ SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg
 **Why**: Mandato de Jorge: evaluar si CC alcanza a terminar con el crédito restante; si no, handoff a Codex.
 **Where**: HANDOFF-PARIDAD-CIERRE.md — incluye estado verificado (falta trust /opt/dfl-context-proxy; MCP engram approval_mode=approve = fricción; default.rules ad-hoc 35 reglas), plan por resultado, parte exacta de Jorge (rclone config OAuth headless ~10 min), formato de CIERRE, reversibilidad.
 **Learned**: DATO CLAVE: /opt/engram-mcp/server.py corregido HOY 20:11:45 UTC y servicio reiniciado 20:12:00 — el "adaptador Engram antiguo" que reporta Codex se resuelve con sesión NUEVA (Resultado 5 trivial). SSH "general a VMs" no existe para nadie: VM3 es forced-command por diseño (Resultado 3 = documentar, no ampliar). Codex debe pedir ratificación de rclone como conector institucional UNA vez antes de instalar.
-
-### [CIERRE] Reconciliación final Consolidación DFL v1 (7b77b78) — D-1/D-2/B-2 resueltas, hallazgo Drive nuevo
-**Type:** decision  
-**Project:** futbolweb-app  
-
-**What**: Reconciliación final de la Consolidación Institucional v1 (HLC 2026-07-12) COMPLETADA. Causa raíz de contradicciones: los artefactos de consolidación se construyeron sobre 06/09/obs#221, anteriores al cierre de residuales Ola 1 (docs 11/12/13, Codex 2026-07-11 noche). Hechos REVALIDADOS HOY contra realidad: (1) PAT: cero holders (0 archivos, 0 proc), remote prediccion2026 SSH sano — D-1 RESUELTA, sin fecha dura, retiro DESBLOQUEADO; (2) bundles off-host: pull rsync real desde /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1/, SHA-256 idénticos los 4 — B-2 de la consolidación ERA FALSA (ruta correcta va bajo prefijo engram/); (3) SaaS Factory: DFLghub/saas-factory-setup main=5e42124=HEAD local, upstream push DISABLED — D-2 RESUELTA; (4) Drive vía conector CC: ZIP antiguo presente (524B) + HALLAZGO NUEVO 12_FutbolWeb/backups/1Password.txt (204B, 2026-07-06, fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ) — NO LEÍDO, posible material de credenciales, requiere revisión Jorge; (5) paridad: Drive sigue única brecha material, perfil dfl-mission intacto. Artefactos corregidos: 00/01/02/04/05/06 + 08-RECONCILIACION-FINAL + HANDOFF-CODEX nuevos; registro-vivo.json actualizado. Verificador post-commit: solo 5 residuales reales (SIN-PUSH prediccion2026; SIN-RESPALDO engram-mcp/futbolweb-v2/mercader-comisiones/roof-issues-mini). Commit 7b77b78 pusheado. Nota: futbolweb recibió 2 commits de Codex producto (5595c24, e55d2c5) durante la sesión — no tocado.
-**Why**: Mandato HLC — eliminar pendientes obsoletos antes de cerrar la Consolidación v1.
-**Where**: /opt/dfl-knowledge/audits/consolidacion-institucional-dfl-v1/ (08-, HANDOFF-CODEX, EVIDENCE/reconciliacion-*), governance/registro-vivo/registro-vivo.json
-**Learned**: Regla de método: antes de declarar pendiente en el registro vivo, contrastar contra el ÚLTIMO doc de cierre del expediente Y contra realidad ejecutable. Pendientes de Jorge tras reconciliación: retiros B-5 (desbloqueados), D-4 copias únicas, D-5 ZIP (CC ejecuta a la orden), revisión 1Password.txt, B-3 repos manuales, B-1 Drive-Codex.
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -174,17 +179,6 @@ Cierre @$fin ejecutado por Codex el 2026-07-14. Actividad de la sesion: el usuar
 **Project:** dfl  
 
 Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT, Gemini) arrancar con contexto completo DFL en un paso. Fuente A: amos-context.md en DFLghub/amos-context (commit edd5f51). Fuente B: GET https://context.deepfeelingslabs.com/go — devuelve JSON con identity, recent_decisions, active_constraints, pending, generated_at. Backend: dfl-context-proxy en 127.0.0.1:8091 consulta Engram local 127.0.0.1:7437 con queries: "decisiones activas estado", "restricciones prohibido no tocar", "pendientes criticos". Sin auth requerida en /go. @go v1.0 activo y verificado.
-
-### Reminder Layer Phase 1a — contacto manual Alejo iniciado
-**Project:** futbolweb-app  
-
-**What**: Jorge contactó manualmente a Alejo vía WhatsApp para corregir 5 pronósticos KO incompletos (1-1 sin advancing_team).
-**Why**: Phase 1a aprobada — ciclo manual documentado antes de activar automatización.
-**Where**: prediction_intake, grupo EGRESADOS FRANCISCANOS TULUÁ, phone +57316****311
-**Partidos pendientes**: mundial-2026-partido-074 (Alemania vs Paraguay), -075 (Países Bajos vs Marruecos), -079 (México vs Ecuador), -082 (Bélgica vs Senegal), -084 (España vs Austria)
-**Fecha contacto**: 2026-06-28
-**Estado**: esperando corrección de Alejo. Verificar con dry-run GET /api/admin/reminder-candidates — cuando caseBKoDrawIncomplete = 1 (solo KO Prod Probe), Phase 1a cerrada.
-**Condición para Phase 1b**: reminder_log en DB + template Meta aprobado + este ciclo documentado con corrección confirmada.
 
 ### [VERIFIED] /go pending filter — resolved/stale cleanup
 **Project:** dfl  
@@ -272,21 +266,25 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt Drive NO eliminado (conector sin delete)
+**Type:** decision  
+**Project:** futbolweb-app  
+
+TOPIC: dfl/session/2026-07-14-limpieza-1p-reminder
+TYPE: decision
+STATUS: active
+DATE: 2026-07-14
+
+**What**: Sesión CC de limpieza con dos frentes. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existe entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — no hubo edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B, verificado existente vía metadata): eliminación BLOQUEADA — el conector MCP de Google Drive de esta sesión solo expone copy/create/read/download/metadata/permissions/search, NO tiene tool de delete/trash. Requiere: borrado manual de Jorge en la UI de Drive, o rclone tras el OAuth institucional pendiente (B-1).
+**Why**: Orden directa de Jorge 2026-07-14: eliminar 1Password.txt (noise backup antiguo, ya revisado por él) y cerrar Reminder 1a por fin de torneo.
+**Learned**: El conector claude.ai Google Drive es read-mostly (sin delete) — cualquier limpieza destructiva en Drive seguirá bloqueada hasta rclone OAuth. Paridad CC/Codex sigue pendiente de ratificación de Jorge.
+**PROXIMO_AGENTE_DEBE**: si llega con capacidad de borrado en Drive (rclone configurado), eliminar 1Password.txt y su obs de hallazgo; confirmar con mem_save.
+
 ### @$fin cierre Codex - intento tmux bloqueado por sandbox
 **Type:** fact  
 **Project:** dfl  
 
 Cierre @$fin ejecutado por Codex el 2026-07-14. Actividad de la sesion: el usuario pidio `tmux new-session -A`; el intento fallo con `error connecting to /tmp/tmux-0/default (Operation not permitted)`, por restriccion de permisos del sandbox sobre el socket tmux. Se explico que seria necesario ejecutar el comando fuera del sandbox/con permisos elevados. No se hicieron cambios de archivos, commits ni modificaciones de repositorios.
-
-### [CIERRE DE SESIÓN] Paridad Codex y protección dfl-secrets completadas
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/session/2026-07-12-parity-secrets-close
-TYPE: session_summary
-STATUS: active
-DATE: 2026-07-12
-SUMMARY: Se cerró paridad operacional Codex=CC: perfiles Codex 0.144.1 migrados, trusts y reglas institucionales ajustados, sesión nueva con cero prompts, Engram manual multiproyecto PASS, VM3 rsync PASS; commit 9422ab3 pusheado y cierre previo Engram #248. Luego se tomó relevo CC: backup GPG de /etc/dfl-secrets verificado local+VM3, SHA cipher 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8, restore off-host idéntico SHA e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66, passphrase nueva solo keyfile root-0600, ZIP legacy retirado del HEAD/ignorado, historia preservada por secreto revocado; commit 3957967 pusheado, Engram #249. Residuales: ZIP Drive y 1Password.txt requieren OAuth/rclone; no tocados. Git limpio origin/main. NO_TOUCH preservado.
 
 ---
 
@@ -379,4 +377,4 @@ SUMMARY: Se cerró paridad operacional Codex=CC: perfiles Codex 0.144.1 migrados
 
 ---
 
-*Mirror auto-generated 2026-07-14T00:08:09Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-14T01:29:07Z | La Garra → DFLghub/amos-context*
