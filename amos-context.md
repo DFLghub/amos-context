@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-14T04:24:01Z  
+**Generated:** 2026-07-14T19:36:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,23 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Visualizer v0.1 remediado: 4 bloqueantes NO-GO cerrados (rama remediation/visualizer-v01, 83/83 tests)
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/visualizer/remediation-v01-complete
+TYPE: decision
+STATUS: active
+DATE: 2026-07-14
+
+**What**: Remediación autónoma CC de los 4 bloqueantes del NO-GO de Visualizer v0.1 (auditoría Codex b1b81e7) COMPLETADA. Rama local `remediation/visualizer-v01` en /opt/visualizer (sin remoto, sin push, por diseño). Commits: 4186465 (contrato honesto de reversibilidad: VMD/JSON única representación canónica reversible, Markdown proyección narrativa, compilación siempre nueva nunca auto-aprobada), 48aa422 (proveniencia Caso Cero: origin extracted|inferred|modeled, approval {by,at} obligatorio por integridad, evidencia derivada located|cited|unsupported verificada contra fuentes, fixture reclasificado 0 approved / 8 extracted con spans reales / 83 modeled con ausencia registrada, endpoint /traceability, anti-concentración de evidencia >3), f9f1a84 (dependencias/circuitos: viewInsight connected/undeclared/isolated + fuera de alcance, roles inicio/cierre/bifurcación, banda separada para no conectados, export PNG/SVG de grafo COMPLETO validado por IHDR + pixel-sampling de nodos extremos), 83be519 (recuperación: ModelCorruptError, cuarentena sin destruir evidencia, restauración atómica desde revisión válida más reciente, fallo seguro, 14 escenarios de test), 2631258 (cierre consolidado).
+
+**Why**: Codex emitió NO-GO controlado; Jorge ordenó remediación autónoma exclusiva de esos 4 bloqueantes para hacer Visualizer técnicamente homologable.
+
+**Evidence**: Suite 40→83 tests PASS; lint/typecheck/build 0; npm ci limpio; loopback 127.0.0.1:4310 verificado; npm audit runtime 0 vulnerabilidades (5 findings toolchain vite/vitest documentados, majors no forzados). Evidencia en /opt/visualizer/evidence/remediation-cc/ (WORKLOG.md, VALIDATION.md, REMAINING_RISKS.md, CASO_CERO_TRACEABILITY.md, exports validados 4 vistas).
+
+**Next**: (1) Jorge: revisión visual de las 4 vistas en iMac/tablet vía túnel SSH (README) con fixture ya reclasificado como proposed; (2) aportar fuentes doctrinales reales como sources del Caso Cero y aprobar elementos con registro; (3) upgrade planificado vite@8+vitest@4 con la suite como red; (4) NO avanzar a Business Genoma sin nueva orden.
+
 ### Paridad CC/Codex (shell+Engram) — provisioning EJECUTOR verificado + credencial SSH endurecida tras revisión Codex
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -157,18 +174,6 @@ SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg
 **Impacto en Price Authority**: esto NO es una confirmación de Nivel 0B (catálogo comercial oficialmente aprobado). Sigue pendiente. El catálogo de 8 servicios reales en Supabase sigue siendo Nivel 0A (real vivo, válido para demo), usado aquí explícitamente en modo demo/prueba para Rubén, consistente con la política definida en FOF_CASE_01_360EVENTOS_PRICE_AUTHORITY_AND_SERVICE_TIERS.md (ready_to_send demo, no comercial).
 
 **Why**: Jorge quiere que quede claro que el criterio de éxito ahora mismo es "MVP funcional demostrable", no "catálogo comercial validado". No se requiere ninguna acción adicional de mi parte — es una actualización de estado del Caso 01, no una nueva misión.
-
-### QA online demo 360eventos.vercel.app completado
-**Type:** decision  
-**Project:** 360eventos  
-
-**Qué**: QA online del agMVP 360Eventos completado. URL pública validada: `https://360eventos.vercel.app` (encontrada manualmente por Jorge, proyecto Vercel `360eventos`). Documento: `/opt/dfl-knowledge/projects/fof/cases/360eventos/FOF_CASE_01_360EVENTOS_ONLINE_DEMO_QA.md` (commit 1a0fe6a).
-
-**Resultado**: `/`, `/cotizar`, `/login` responden 200. `/cotizar` confirmado usando Nivel 0A (catálogo real Supabase, 8 servicios) — coincide exacto con la query directa hecha en la misión anterior: Producción general del evento, Decoración temática, Sonido profesional, Iluminación arquitectónica, Fotografía profesional, Video y transmisión en vivo, Transporte y montaje de equipos, Maestro de ceremonias. Formulario de cotización bien wireado a `submitCotizacion` (server action → insert en `solicitudes`), no se completó envío real para no escribir en DB de producción. Viewport responsive presente en las 3 páginas; home con 14 clases responsive Tailwind, cotizar con solo 2 (más simple pero funcional). Sin errores críticos visibles. No se aplicó ningún fix — no fue necesario.
-
-**Limitaciones para Rubén**: es demo funcional no comercial (Nivel 0B pendiente), cualquier envío real de /cotizar genera fila real en `solicitudes` de producción (no hay modo sandbox), no se validó /dashboard ni login con credenciales reales, no se hizo validación visual real en dispositivo móvil (solo estructural).
-
-**No se tocó**: DB (solo lecturas HTTP públicas), FutbolWeb, secrets, migraciones, seed. Cambios preexistentes ajenos en graphify-out/ag_topologo.py siguen intactos.
 
 ---
 
@@ -275,54 +280,53 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Visualizer v0.1 construido — Caso Cero DFL funcional, gates A-H, /opt/visualizer
-**Type:** project  
-**Project:** futbolweb-app  
-
-TOPIC: dfl/visualizer/v0.1-caso-cero
-TYPE: project
-STATUS: active
-DATE: 2026-07-14
-
-**What**: Visualizer v0.1 construido de spec a Caso Cero funcional, HLC 2026-07-14. Superficie gráfica soberana de diseño DFL: Markdown→VMD (modelo semántico)→4 vistas coordinadas→edición por comandos→regeneración Markdown. Repo git LOCAL en /opt/visualizer (rama main, 4 commits: 2c05dbd Gate A+core, 53448ea Gate B/C/D, 073d90b Gate E, c657070 Gate G+H). SIN push (prohibido por HLC).
-**Stack**: TypeScript + Vite + React + @xyflow/react + @dagrejs/dagre + Zod + Express (persistencia en archivos) + Vitest. Núcleo puro src/core/ sin React (corre Node+browser). Servidor loopback-only :4310 (prod) / Vite :5173 (dev).
-**Decisión clave §4**: no existía doc-spec separado ni archivo de entrada del Caso Cero — el HLC (24 secciones) ES la especificación; el Caso Cero se autoró desde contexto DFL absorbido (amos-context, casos FoF). Documentado en el VMD (decisions).
-**Gates A-H TODOS cerrados y verificados**: typecheck 0, lint 0, 36/36 vitest, build OK, supervivencia a reinicio (cold-start lee disco), Playwright conduce las 4 vistas con 0 errores de consola. Fixture Caso Cero: 45 nodos/46 edges/3 grupos (metamodelo, Business Genoma, circuitos, homeostasis, Factory Roadworthiness Gate, FoF, 360Eventos, Trading Factory, FutbolWeb).
-**§8 substitutability**: 2 proveedores tras la interfaz SemanticProvider — MockProvider (determinista, sin red, probado) y AnthropicProvider (Claude claude-opus-4-8, salida estructurada por tool call). Selección runtime por ANTHROPIC_API_KEY. Ruta real solo typechecked (sin API key en entorno).
-**NO_TOUCH preservado**: FutbolWeb/360Eventos/Supabase/Vercel/dfl-secrets/cron/Engram/Graphify/KNL intactos; todo dentro de /opt/visualizer.
-**Arranque**: cd /opt/visualizer && npm install && npm run seed && npm run build && npm start. Desde iMac: túnel SSH -L 4310:localhost:4310.
-**PROXIMO_INCREMENTO recomendado**: conectar AnthropicProvider real con API key y validar compile end-to-end; drag-to-connect para crear edges en canvas; búsqueda/filtro de nodos.
-
-### [CHECKPOINT] Sesión CC 2026-07-14 — limpieza 1P/Reminder + paridad Codex provisionada y endurecida, sesión abierta
+### Session summary: dfl-knowledge
 **Type:** session_summary  
-**Project:** futbolweb-app  
+**Project:** dfl-knowledge  
 
-TOPIC: dfl/session/2026-07-14-checkpoint-cc
-TYPE: session_summary
+## Goal
+Sesión @$go→@$fin 2026-07-14: MISIÓN remediación autónoma de Visualizer v0.1 — convertir el NO-GO controlado de la auditoría Codex (b1b81e7) en versión técnicamente homologable cerrando exactamente 4 bloqueantes.
+
+## Accomplished
+- Rama `remediation/visualizer-v01` en /opt/visualizer (local, sin remoto/push). Checkpoints: 4186465 (contrato honesto de reversibilidad), 48aa422 (proveniencia Caso Cero), f9f1a84 (dependencias/circuitos/export completo), 83be519 (recuperación ante corrupción), 2631258 (cierre consolidado). Árbol limpio, historial preservado.
+- Bloqueante 1: VMD/JSON única representación reversible probada (deep-equal); Markdown degradado a proyección narrativa en README/UI/código/tests; compilación siempre nueva, nunca auto-aprobada.
+- Bloqueante 2: origin extracted|inferred|modeled + approval {by,at} obligatorio por integridad + evidencia derivada located|cited|unsupported verificada contra fuentes; fixture reclasificado (0 approved, 8 extracted con spans reales, 83 modeled con ausencia registrada); endpoint /traceability; anti-concentración de evidencia.
+- Bloqueante 3: viewInsight (connected/undeclared/isolated + fuera de alcance), roles de circuito (inicio/cierre/bifurcación), banda separada para no conectados, export PNG/SVG de grafo COMPLETO validado por IHDR exacto + pixel-sampling de nodos extremos (PASS 4/4 vistas).
+- Bloqueante 4: ModelCorruptError, cuarentena sin destruir evidencia, restauración atómica desde revisión válida más reciente, fallo seguro, 14 escenarios de test + E2E HTTP 422→recover→200.
+- Validación final: npm ci limpio, 83/83 tests (base 40), lint/typecheck/build 0, loopback verificado, npm audit runtime 0 vulnerabilidades (happy-dom critical resuelto con fix no-breaking; 5 findings toolchain vite/vitest documentados sin forzar majors).
+
+## Discoveries
+- El fixture original fabricaba certeza institucional: 86 elementos approved/source respaldados por UNA frase de 203 caracteres con una sola quote genérica.
+- pkill -f con patrón que aparece en la propia línea de comando del shell se mata a sí mismo (exit 144) — matar servers por puerto (fuser -k).
+- html-to-image no resuelve variables CSS de React Flow en etiquetas de aristas (cajas negras en export) — fix: estilos SVG inline (labelStyle/labelBgStyle).
+
+## Next Steps
+- Jorge: revisión visual 4 vistas en iMac/tablet (túnel SSH) con fixture ya honesto.
+- Aportar fuentes doctrinales reales como sources del Caso Cero → reclasificar modeled con spans y aprobar con registro.
+- Upgrade planificado vite@8+vitest@4 con suite 83 tests como red.
+- NO avanzar a Business Genoma sin nueva orden.
+
+## Relevant Files
+- /opt/visualizer/evidence/remediation-cc/{WORKLOG,VALIDATION,REMAINING_RISKS,CASO_CERO_TRACEABILITY}.md
+- /opt/visualizer/src/core/vmd/traceability.ts, src/core/views/insight.ts, src/web/export/exportViewport.ts, src/server/store.ts (recoverModel)
+- /opt/visualizer/scripts/{reclassify-caso-cero,traceability-report,export-validate}.ts
+
+### Visualizer v0.1 remediado: 4 bloqueantes NO-GO cerrados (rama remediation/visualizer-v01, 83/83 tests)
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/visualizer/remediation-v01-complete
+TYPE: decision
 STATUS: active
 DATE: 2026-07-14
 
-CHECKPOINT parcial pedido por Jorge (2º checkpoint de la sesión) — la sesión CC sigue ABIERTA; no es el cierre final.
+**What**: Remediación autónoma CC de los 4 bloqueantes del NO-GO de Visualizer v0.1 (auditoría Codex b1b81e7) COMPLETADA. Rama local `remediation/visualizer-v01` en /opt/visualizer (sin remoto, sin push, por diseño). Commits: 4186465 (contrato honesto de reversibilidad: VMD/JSON única representación canónica reversible, Markdown proyección narrativa, compilación siempre nueva nunca auto-aprobada), 48aa422 (proveniencia Caso Cero: origin extracted|inferred|modeled, approval {by,at} obligatorio por integridad, evidencia derivada located|cited|unsupported verificada contra fuentes, fixture reclasificado 0 approved / 8 extracted con spans reales / 83 modeled con ausencia registrada, endpoint /traceability, anti-concentración de evidencia >3), f9f1a84 (dependencias/circuitos: viewInsight connected/undeclared/isolated + fuera de alcance, roles inicio/cierre/bifurcación, banda separada para no conectados, export PNG/SVG de grafo COMPLETO validado por IHDR + pixel-sampling de nodos extremos), 83be519 (recuperación: ModelCorruptError, cuarentena sin destruir evidencia, restauración atómica desde revisión válida más reciente, fallo seguro, 14 escenarios de test), 2631258 (cierre consolidado).
 
-**Goal**: Sesión CC EJECUTOR en La Garra (@$go PASS, mirror 2026-07-14T00:08:09Z): limpieza de residuales + provisioning y hardening de paridad Codex.
+**Why**: Codex emitió NO-GO controlado; Jorge ordenó remediación autónoma exclusiva de esos 4 bloqueantes para hacer Visualizer técnicamente homologable.
 
-**Accomplished hasta ahora**:
-1. Reminder Layer Phase 1a CERRADA — obs #110 [RESOLVED]+archived (Copa 2026 finalizada); sin entrada en registro-vivo.json (verificado: vivía solo en Engram), sin commit necesario.
-2. 1Password.txt ELIMINADO de Drive por Jorge (manual UI); verificado por CC vía get_file_metadata → not found. Residual D-5/1Password cerrado. Obs #252.
-3. Paridad práctica shell+Engram CC/Codex (Opción B ratificada por Jorge): SSH key ed25519 + config /opt/dfl-secrets + handoff doc. Smoke-test SSH-CODEX-OK PASS. Obs #253. Commit inicial 675abac.
-4. HARDENING de seguridad tras revisión de Codex (la clave inicial era root ABIERTA — regresión reconocida): authorized_keys de Codex ahora `from="127.0.0.1,::1",restrict,pty` — loopback + forwarding/X11/agent OFF (verificado: port-forward "administratively prohibited"), shell EJECUTOR local intacta (smoke-test re-PASS). Backup /root/.ssh/authorized_keys.bak.20260714. Wording "idéntico a CC" corregido a "paridad práctica shell+Engram, no controles de sesión". Commit 2b49f16. Passphrase NO añadida (headless, decisión abierta de Jorge).
-5. Mirrors publicados durante la sesión: c05a9a60 (limpieza) y 2fa652dd (paridad). El hardening (2b49f16) aún NO propagado al mirror (checkpoint) — pendiente para cierre real.
+**Evidence**: Suite 40→83 tests PASS; lint/typecheck/build 0; npm ci limpio; loopback 127.0.0.1:4310 verificado; npm audit runtime 0 vulnerabilidades (5 findings toolchain vite/vitest documentados, majors no forzados). Evidencia en /opt/visualizer/evidence/remediation-cc/ (WORKLOG.md, VALIDATION.md, REMAINING_RISKS.md, CASO_CERO_TRACEABILITY.md, exports validados 4 vistas).
 
-**Pendiente al momento del checkpoint**:
-- push_mirror.sh del estado post-hardening en el @$fin real (mirror actual = 2fa652dd, previo al hardening).
-- Codex debe sourcear codex-amOS-config.env, validar su @$go EJECUTOR, tratar la clave como secreto crítico.
-- Passphrase de la clave Codex: decisión abierta de Jorge (headless vs. ssh-agent).
-- rclone OAuth institucional (B-1) sigue siendo la única brecha Drive.
-- Retiros B-5 desbloqueados, a la orden de Jorge.
-
-**NO_TOUCH preservado**: puntajeTigreKnockout, Supabase, Vercel config, env vars, HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets — ninguno tocado.
-
-**Relevant files**: /opt/dfl-secrets/ssh-keys/codex-la-garra(.pub), /opt/dfl-secrets/codex-amOS-config.env, /opt/dfl-knowledge/agents/codex-paridad-handoff.md, /root/.ssh/authorized_keys(.bak.20260714).
+**Next**: (1) Jorge: revisión visual de las 4 vistas en iMac/tablet vía túnel SSH (README) con fixture ya reclasificado como proposed; (2) aportar fuentes doctrinales reales como sources del Caso Cero y aprobar elementos con registro; (3) upgrade planificado vite@8+vitest@4 con la suite como red; (4) NO avanzar a Business Genoma sin nueva orden.
 
 ---
 
@@ -415,4 +419,4 @@ CHECKPOINT parcial pedido por Jorge (2º checkpoint de la sesión) — la sesió
 
 ---
 
-*Mirror auto-generated 2026-07-14T04:24:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-14T19:36:01Z | La Garra → DFLghub/amos-context*
