@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-14T01:29:07Z  
+**Generated:** 2026-07-14T01:37:57Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,7 +96,22 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt Drive NO eliminado (conector sin delete)
+### Paridad CC/Codex COMPLETADA — Opción B ratificada por Jorge, provisioning EJECUTOR verificado
+**Type:** decision  
+**Project:** futbolweb-app  
+
+TOPIC: dfl/session/2026-07-14-codex-provisioning-complete
+TYPE: decision
+STATUS: active
+DATE: 2026-07-14
+
+**What**: Paridad CC/Codex completada por orden ratificada de Jorge (Opción B, 2026-07-14). Provisioning: (1) SSH key ed25519 sin passphrase en /opt/dfl-secrets/ssh-keys/codex-la-garra (root 0600, fingerprint SHA256:1944e3aTx8rmcrcCzLVUMBEqs0CV18taermfsVt7N7U); (2) pubkey agregada a /root/.ssh/authorized_keys; (3) smoke-test PASS: ssh -i <key> root@127.0.0.1 responde SSH-CODEX-OK; (4) config centralizado /opt/dfl-secrets/codex-amOS-config.env (root 0600); (5) handoff doc /opt/dfl-knowledge/agents/codex-paridad-handoff.md.
+**Desviaciones del script original, verificadas contra realidad**: (a) `engram auth-token create` NO existe en engram vdev — no hay subsistema de tokens por agente; el acceso Codex a Engram sigue siendo `engram mcp` stdio (paridad 9422ab3), sin token; /opt/engram/.env (ENGRAM_CLOUD_TOKEN global) NO tocado por ser env vars protegidas. Carpeta /opt/dfl-secrets/engram-tokens NO creada. (b) `git add` de archivos bajo /opt/dfl-secrets imposible (fuera de todo worktree) y contrario a la higiene recién cerrada (ZIP legacy 3957967) — regla registrada: NADA bajo /opt/dfl-secrets entra a git; solo el handoff doc se commitea en dfl-knowledge.
+**Why**: Eliminar el punto único de falla en handoff — CC ↔ Codex intercambiables con acceso EJECUTOR idéntico y mismas superficies NO_TOUCH.
+**Learned**: /opt/dfl-secrets (nuevo, root 0700) es distinto del protegido /etc/dfl-secrets (intacto). La clave SSH da a Codex escape del sandbox local (el blocker tmux 2026-07-14 se resuelve vía ssh root@127.0.0.1).
+**PROXIMO_AGENTE_DEBE**: Codex debe sourcear /opt/dfl-secrets/codex-amOS-config.env en onboarding y validar su propio @$go como EJECUTOR.
+
+### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt eliminado de Drive por Jorge (verificado)
 **Type:** decision  
 **Project:** futbolweb-app  
 
@@ -105,10 +120,9 @@ TYPE: decision
 STATUS: active
 DATE: 2026-07-14
 
-**What**: Sesión CC de limpieza con dos frentes. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existe entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — no hubo edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B, verificado existente vía metadata): eliminación BLOQUEADA — el conector MCP de Google Drive de esta sesión solo expone copy/create/read/download/metadata/permissions/search, NO tiene tool de delete/trash. Requiere: borrado manual de Jorge en la UI de Drive, o rclone tras el OAuth institucional pendiente (B-1).
+**What**: Sesión CC de limpieza con dos frentes, ambos CERRADOS. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existía entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — sin edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B): ELIMINADO manualmente por Jorge en la UI de Drive el 2026-07-14, tras blocker inicial (el conector MCP de Drive no expone delete). Borrado VERIFICADO por CC: get_file_metadata devuelve "Requested entity was not found". Residual D-5/1Password de la Reconciliación v1 cerrado.
 **Why**: Orden directa de Jorge 2026-07-14: eliminar 1Password.txt (noise backup antiguo, ya revisado por él) y cerrar Reminder 1a por fin de torneo.
-**Learned**: El conector claude.ai Google Drive es read-mostly (sin delete) — cualquier limpieza destructiva en Drive seguirá bloqueada hasta rclone OAuth. Paridad CC/Codex sigue pendiente de ratificación de Jorge.
-**PROXIMO_AGENTE_DEBE**: si llega con capacidad de borrado en Drive (rclone configurado), eliminar 1Password.txt y su obs de hallazgo; confirmar con mem_save.
+**Learned**: El conector claude.ai Google Drive es read-mostly (sin delete/trash) — limpiezas destructivas en Drive requieren UI manual o rclone tras OAuth institucional (B-1, aún pendiente). Paridad CC/Codex sigue pendiente de ratificación de Jorge.
 
 ### [CIERRE DE SESIÓN] Paridad Codex y protección dfl-secrets completadas
 **Type:** decision  
@@ -129,15 +143,6 @@ TYPE: decision
 STATUS: active
 DATE: 2026-07-12
 SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg confirmado en VM3 bajo /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; SHA-256 cipher local/remoto 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8; restore desde copia off-host coincide byte a byte con /etc/dfl-secrets, SHA-256 e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66; passphrase nueva únicamente en keyfile root-0600; ZIP 12_FutbolWeb/futbolweb-env-backup.zip retirado del HEAD y bloqueado en gitignore; historia no reescrita porque contiene solo Supabase key revocada; commit 3957967 pusheado origin/main. Drive ZIP y 1Password.txt NO tocados, pendientes OAuth/rclone. Evidencia audits/diagnostico-institucional-dfl-v1/13-CIERRE-ZIP-ANTIGUO.md y EVIDENCE/b14-relevo-dfl-secrets-y-zip.md. NO_TOUCH preservado.
-
-### HLC cierre paridad Codex: evaluada NO completable 100% por CC (gate OAuth Drive) — handoff a Codex commiteado (aefdd96)
-**Type:** decision  
-**Project:** futbolweb-app  
-
-**What**: Evaluación del HLC "Cerrar paridad operacional Codex=CC": NO completable al 100% por ningún agente solo — el Resultado #4 (conector Drive con OAuth institucional) exige consentimiento interactivo de Jorge en navegador (jtigre@gmail.com); no hay service account ni conector local (verificado). El propio HLC prohíbe declarar paridad con Drive bloqueado. Resultados 1/2/3/5/6 SÍ ejecutables por Codex solo. Handoff completo commiteado y pusheado: audits/consolidacion-institucional-dfl-v1/HANDOFF-PARIDAD-CIERRE.md (aefdd96).
-**Why**: Mandato de Jorge: evaluar si CC alcanza a terminar con el crédito restante; si no, handoff a Codex.
-**Where**: HANDOFF-PARIDAD-CIERRE.md — incluye estado verificado (falta trust /opt/dfl-context-proxy; MCP engram approval_mode=approve = fricción; default.rules ad-hoc 35 reglas), plan por resultado, parte exacta de Jorge (rclone config OAuth headless ~10 min), formato de CIERRE, reversibilidad.
-**Learned**: DATO CLAVE: /opt/engram-mcp/server.py corregido HOY 20:11:45 UTC y servicio reiniciado 20:12:00 — el "adaptador Engram antiguo" que reporta Codex se resuelve con sesión NUEVA (Resultado 5 trivial). SSH "general a VMs" no existe para nadie: VM3 es forced-command por diseño (Resultado 3 = documentar, no ampliar). Codex debe pedir ratificación de rclone como conector institucional UNA vez antes de instalar.
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -266,7 +271,22 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt Drive NO eliminado (conector sin delete)
+### Paridad CC/Codex COMPLETADA — Opción B ratificada por Jorge, provisioning EJECUTOR verificado
+**Type:** decision  
+**Project:** futbolweb-app  
+
+TOPIC: dfl/session/2026-07-14-codex-provisioning-complete
+TYPE: decision
+STATUS: active
+DATE: 2026-07-14
+
+**What**: Paridad CC/Codex completada por orden ratificada de Jorge (Opción B, 2026-07-14). Provisioning: (1) SSH key ed25519 sin passphrase en /opt/dfl-secrets/ssh-keys/codex-la-garra (root 0600, fingerprint SHA256:1944e3aTx8rmcrcCzLVUMBEqs0CV18taermfsVt7N7U); (2) pubkey agregada a /root/.ssh/authorized_keys; (3) smoke-test PASS: ssh -i <key> root@127.0.0.1 responde SSH-CODEX-OK; (4) config centralizado /opt/dfl-secrets/codex-amOS-config.env (root 0600); (5) handoff doc /opt/dfl-knowledge/agents/codex-paridad-handoff.md.
+**Desviaciones del script original, verificadas contra realidad**: (a) `engram auth-token create` NO existe en engram vdev — no hay subsistema de tokens por agente; el acceso Codex a Engram sigue siendo `engram mcp` stdio (paridad 9422ab3), sin token; /opt/engram/.env (ENGRAM_CLOUD_TOKEN global) NO tocado por ser env vars protegidas. Carpeta /opt/dfl-secrets/engram-tokens NO creada. (b) `git add` de archivos bajo /opt/dfl-secrets imposible (fuera de todo worktree) y contrario a la higiene recién cerrada (ZIP legacy 3957967) — regla registrada: NADA bajo /opt/dfl-secrets entra a git; solo el handoff doc se commitea en dfl-knowledge.
+**Why**: Eliminar el punto único de falla en handoff — CC ↔ Codex intercambiables con acceso EJECUTOR idéntico y mismas superficies NO_TOUCH.
+**Learned**: /opt/dfl-secrets (nuevo, root 0700) es distinto del protegido /etc/dfl-secrets (intacto). La clave SSH da a Codex escape del sandbox local (el blocker tmux 2026-07-14 se resuelve vía ssh root@127.0.0.1).
+**PROXIMO_AGENTE_DEBE**: Codex debe sourcear /opt/dfl-secrets/codex-amOS-config.env en onboarding y validar su propio @$go como EJECUTOR.
+
+### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt eliminado de Drive por Jorge (verificado)
 **Type:** decision  
 **Project:** futbolweb-app  
 
@@ -275,16 +295,9 @@ TYPE: decision
 STATUS: active
 DATE: 2026-07-14
 
-**What**: Sesión CC de limpieza con dos frentes. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existe entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — no hubo edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B, verificado existente vía metadata): eliminación BLOQUEADA — el conector MCP de Google Drive de esta sesión solo expone copy/create/read/download/metadata/permissions/search, NO tiene tool de delete/trash. Requiere: borrado manual de Jorge en la UI de Drive, o rclone tras el OAuth institucional pendiente (B-1).
+**What**: Sesión CC de limpieza con dos frentes, ambos CERRADOS. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existía entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — sin edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B): ELIMINADO manualmente por Jorge en la UI de Drive el 2026-07-14, tras blocker inicial (el conector MCP de Drive no expone delete). Borrado VERIFICADO por CC: get_file_metadata devuelve "Requested entity was not found". Residual D-5/1Password de la Reconciliación v1 cerrado.
 **Why**: Orden directa de Jorge 2026-07-14: eliminar 1Password.txt (noise backup antiguo, ya revisado por él) y cerrar Reminder 1a por fin de torneo.
-**Learned**: El conector claude.ai Google Drive es read-mostly (sin delete) — cualquier limpieza destructiva en Drive seguirá bloqueada hasta rclone OAuth. Paridad CC/Codex sigue pendiente de ratificación de Jorge.
-**PROXIMO_AGENTE_DEBE**: si llega con capacidad de borrado en Drive (rclone configurado), eliminar 1Password.txt y su obs de hallazgo; confirmar con mem_save.
-
-### @$fin cierre Codex - intento tmux bloqueado por sandbox
-**Type:** fact  
-**Project:** dfl  
-
-Cierre @$fin ejecutado por Codex el 2026-07-14. Actividad de la sesion: el usuario pidio `tmux new-session -A`; el intento fallo con `error connecting to /tmp/tmux-0/default (Operation not permitted)`, por restriccion de permisos del sandbox sobre el socket tmux. Se explico que seria necesario ejecutar el comando fuera del sandbox/con permisos elevados. No se hicieron cambios de archivos, commits ni modificaciones de repositorios.
+**Learned**: El conector claude.ai Google Drive es read-mostly (sin delete/trash) — limpiezas destructivas en Drive requieren UI manual o rclone tras OAuth institucional (B-1, aún pendiente). Paridad CC/Codex sigue pendiente de ratificación de Jorge.
 
 ---
 
@@ -377,4 +390,4 @@ Cierre @$fin ejecutado por Codex el 2026-07-14. Actividad de la sesion: el usuar
 
 ---
 
-*Mirror auto-generated 2026-07-14T01:29:07Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-14T01:37:57Z | La Garra → DFLghub/amos-context*
