@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-14T01:37:57Z  
+**Generated:** 2026-07-14T02:33:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,7 +96,7 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### Paridad CC/Codex COMPLETADA — Opción B ratificada por Jorge, provisioning EJECUTOR verificado
+### Paridad CC/Codex (shell+Engram) — provisioning EJECUTOR verificado + credencial SSH endurecida tras revisión Codex
 **Type:** decision  
 **Project:** futbolweb-app  
 
@@ -105,11 +105,15 @@ TYPE: decision
 STATUS: active
 DATE: 2026-07-14
 
-**What**: Paridad CC/Codex completada por orden ratificada de Jorge (Opción B, 2026-07-14). Provisioning: (1) SSH key ed25519 sin passphrase en /opt/dfl-secrets/ssh-keys/codex-la-garra (root 0600, fingerprint SHA256:1944e3aTx8rmcrcCzLVUMBEqs0CV18taermfsVt7N7U); (2) pubkey agregada a /root/.ssh/authorized_keys; (3) smoke-test PASS: ssh -i <key> root@127.0.0.1 responde SSH-CODEX-OK; (4) config centralizado /opt/dfl-secrets/codex-amOS-config.env (root 0600); (5) handoff doc /opt/dfl-knowledge/agents/codex-paridad-handoff.md.
-**Desviaciones del script original, verificadas contra realidad**: (a) `engram auth-token create` NO existe en engram vdev — no hay subsistema de tokens por agente; el acceso Codex a Engram sigue siendo `engram mcp` stdio (paridad 9422ab3), sin token; /opt/engram/.env (ENGRAM_CLOUD_TOKEN global) NO tocado por ser env vars protegidas. Carpeta /opt/dfl-secrets/engram-tokens NO creada. (b) `git add` de archivos bajo /opt/dfl-secrets imposible (fuera de todo worktree) y contrario a la higiene recién cerrada (ZIP legacy 3957967) — regla registrada: NADA bajo /opt/dfl-secrets entra a git; solo el handoff doc se commitea en dfl-knowledge.
-**Why**: Eliminar el punto único de falla en handoff — CC ↔ Codex intercambiables con acceso EJECUTOR idéntico y mismas superficies NO_TOUCH.
-**Learned**: /opt/dfl-secrets (nuevo, root 0700) es distinto del protegido /etc/dfl-secrets (intacto). La clave SSH da a Codex escape del sandbox local (el blocker tmux 2026-07-14 se resuelve vía ssh root@127.0.0.1).
-**PROXIMO_AGENTE_DEBE**: Codex debe sourcear /opt/dfl-secrets/codex-amOS-config.env en onboarding y validar su propio @$go como EJECUTOR.
+**What**: Paridad práctica de SHELL y ENGRAM entre CC y Codex por orden ratificada de Jorge (Opción B, 2026-07-14). NO es "acceso idéntico a CC" en sentido estricto — no hay paridad garantizada de políticas de sesión, tooling ni controles de aprobación; el handoff operativo es simétrico, los controles de sesión no necesariamente. Provisioning: (1) SSH key ed25519 sin passphrase /opt/dfl-secrets/ssh-keys/codex-la-garra (root 0600, fingerprint SHA256:1944e3aTx8rmcrcCzLVUMBEqs0CV18taermfsVt7N7U); (2) pubkey en /root/.ssh/authorized_keys; (3) smoke-test PASS SSH-CODEX-OK; (4) config /opt/dfl-secrets/codex-amOS-config.env (root 0600); (5) handoff /opt/dfl-knowledge/agents/codex-paridad-handoff.md.
+
+**Hardening aplicado 2026-07-14 tras revisión de seguridad de Codex** (la implementación inicial era una clave root ABIERTA — regresión reconocida): línea authorized_keys ahora `from="127.0.0.1,::1",restrict,pty` — atada a loopback, forwarding/agent/X11 desactivados (verificado: port-forward devuelve "administratively prohibited"), solo TTY. Shell EJECUTOR local intacta (smoke-test re-PASS). Backup /root/.ssh/authorized_keys.bak.20260714. Passphrase NO añadida (uso headless, decisión de Jorge). Riesgo residual asumido y documentado: SSH loopback permite a Codex eludir las aprobaciones de su propio sandbox; alcance root local si hay error/prompt-injection — clave tratada como secreto de máxima criticidad.
+
+**Desviaciones del script original, verificadas**: (a) `engram auth-token create` NO existe en engram vdev; acceso Codex a Engram = `engram mcp` stdio (paridad 9422ab3), sin token; /opt/engram/.env NO tocado. Carpeta engram-tokens NO creada. (b) Nada bajo /opt/dfl-secrets entra a git (higiene, cf. 3957967); solo el handoff doc se commitea en dfl-knowledge.
+
+**Why**: Reducir el punto único de falla en handoff, con superficie de credencial mínima.
+**Learned**: /opt/dfl-secrets (nuevo, root 0700) distinto del protegido /etc/dfl-secrets (intacto). Lección de método: una clave SSH "de conveniencia" para atravesar sandbox debe nacer restringida (from/restrict), no abierta — el hardening posterior lo corrige pero el patrón correcto es capar desde el minuto cero.
+**PROXIMO_AGENTE_DEBE**: Codex sourcea /opt/dfl-secrets/codex-amOS-config.env, valida su @$go EJECUTOR, y trata la clave como crítica.
 
 ### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt eliminado de Drive por Jorge (verificado)
 **Type:** decision  
@@ -271,33 +275,54 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Paridad CC/Codex COMPLETADA — Opción B ratificada por Jorge, provisioning EJECUTOR verificado
-**Type:** decision  
+### Visualizer v0.1 construido — Caso Cero DFL funcional, gates A-H, /opt/visualizer
+**Type:** project  
 **Project:** futbolweb-app  
 
-TOPIC: dfl/session/2026-07-14-codex-provisioning-complete
-TYPE: decision
+TOPIC: dfl/visualizer/v0.1-caso-cero
+TYPE: project
 STATUS: active
 DATE: 2026-07-14
 
-**What**: Paridad CC/Codex completada por orden ratificada de Jorge (Opción B, 2026-07-14). Provisioning: (1) SSH key ed25519 sin passphrase en /opt/dfl-secrets/ssh-keys/codex-la-garra (root 0600, fingerprint SHA256:1944e3aTx8rmcrcCzLVUMBEqs0CV18taermfsVt7N7U); (2) pubkey agregada a /root/.ssh/authorized_keys; (3) smoke-test PASS: ssh -i <key> root@127.0.0.1 responde SSH-CODEX-OK; (4) config centralizado /opt/dfl-secrets/codex-amOS-config.env (root 0600); (5) handoff doc /opt/dfl-knowledge/agents/codex-paridad-handoff.md.
-**Desviaciones del script original, verificadas contra realidad**: (a) `engram auth-token create` NO existe en engram vdev — no hay subsistema de tokens por agente; el acceso Codex a Engram sigue siendo `engram mcp` stdio (paridad 9422ab3), sin token; /opt/engram/.env (ENGRAM_CLOUD_TOKEN global) NO tocado por ser env vars protegidas. Carpeta /opt/dfl-secrets/engram-tokens NO creada. (b) `git add` de archivos bajo /opt/dfl-secrets imposible (fuera de todo worktree) y contrario a la higiene recién cerrada (ZIP legacy 3957967) — regla registrada: NADA bajo /opt/dfl-secrets entra a git; solo el handoff doc se commitea en dfl-knowledge.
-**Why**: Eliminar el punto único de falla en handoff — CC ↔ Codex intercambiables con acceso EJECUTOR idéntico y mismas superficies NO_TOUCH.
-**Learned**: /opt/dfl-secrets (nuevo, root 0700) es distinto del protegido /etc/dfl-secrets (intacto). La clave SSH da a Codex escape del sandbox local (el blocker tmux 2026-07-14 se resuelve vía ssh root@127.0.0.1).
-**PROXIMO_AGENTE_DEBE**: Codex debe sourcear /opt/dfl-secrets/codex-amOS-config.env en onboarding y validar su propio @$go como EJECUTOR.
+**What**: Visualizer v0.1 construido de spec a Caso Cero funcional, HLC 2026-07-14. Superficie gráfica soberana de diseño DFL: Markdown→VMD (modelo semántico)→4 vistas coordinadas→edición por comandos→regeneración Markdown. Repo git LOCAL en /opt/visualizer (rama main, 4 commits: 2c05dbd Gate A+core, 53448ea Gate B/C/D, 073d90b Gate E, c657070 Gate G+H). SIN push (prohibido por HLC).
+**Stack**: TypeScript + Vite + React + @xyflow/react + @dagrejs/dagre + Zod + Express (persistencia en archivos) + Vitest. Núcleo puro src/core/ sin React (corre Node+browser). Servidor loopback-only :4310 (prod) / Vite :5173 (dev).
+**Decisión clave §4**: no existía doc-spec separado ni archivo de entrada del Caso Cero — el HLC (24 secciones) ES la especificación; el Caso Cero se autoró desde contexto DFL absorbido (amos-context, casos FoF). Documentado en el VMD (decisions).
+**Gates A-H TODOS cerrados y verificados**: typecheck 0, lint 0, 36/36 vitest, build OK, supervivencia a reinicio (cold-start lee disco), Playwright conduce las 4 vistas con 0 errores de consola. Fixture Caso Cero: 45 nodos/46 edges/3 grupos (metamodelo, Business Genoma, circuitos, homeostasis, Factory Roadworthiness Gate, FoF, 360Eventos, Trading Factory, FutbolWeb).
+**§8 substitutability**: 2 proveedores tras la interfaz SemanticProvider — MockProvider (determinista, sin red, probado) y AnthropicProvider (Claude claude-opus-4-8, salida estructurada por tool call). Selección runtime por ANTHROPIC_API_KEY. Ruta real solo typechecked (sin API key en entorno).
+**NO_TOUCH preservado**: FutbolWeb/360Eventos/Supabase/Vercel/dfl-secrets/cron/Engram/Graphify/KNL intactos; todo dentro de /opt/visualizer.
+**Arranque**: cd /opt/visualizer && npm install && npm run seed && npm run build && npm start. Desde iMac: túnel SSH -L 4310:localhost:4310.
+**PROXIMO_INCREMENTO recomendado**: conectar AnthropicProvider real con API key y validar compile end-to-end; drag-to-connect para crear edges en canvas; búsqueda/filtro de nodos.
 
-### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt eliminado de Drive por Jorge (verificado)
-**Type:** decision  
+### [CHECKPOINT] Sesión CC 2026-07-14 — limpieza 1P/Reminder + paridad Codex provisionada y endurecida, sesión abierta
+**Type:** session_summary  
 **Project:** futbolweb-app  
 
-TOPIC: dfl/session/2026-07-14-limpieza-1p-reminder
-TYPE: decision
+TOPIC: dfl/session/2026-07-14-checkpoint-cc
+TYPE: session_summary
 STATUS: active
 DATE: 2026-07-14
 
-**What**: Sesión CC de limpieza con dos frentes, ambos CERRADOS. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existía entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — sin edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B): ELIMINADO manualmente por Jorge en la UI de Drive el 2026-07-14, tras blocker inicial (el conector MCP de Drive no expone delete). Borrado VERIFICADO por CC: get_file_metadata devuelve "Requested entity was not found". Residual D-5/1Password de la Reconciliación v1 cerrado.
-**Why**: Orden directa de Jorge 2026-07-14: eliminar 1Password.txt (noise backup antiguo, ya revisado por él) y cerrar Reminder 1a por fin de torneo.
-**Learned**: El conector claude.ai Google Drive es read-mostly (sin delete/trash) — limpiezas destructivas en Drive requieren UI manual o rclone tras OAuth institucional (B-1, aún pendiente). Paridad CC/Codex sigue pendiente de ratificación de Jorge.
+CHECKPOINT parcial pedido por Jorge (2º checkpoint de la sesión) — la sesión CC sigue ABIERTA; no es el cierre final.
+
+**Goal**: Sesión CC EJECUTOR en La Garra (@$go PASS, mirror 2026-07-14T00:08:09Z): limpieza de residuales + provisioning y hardening de paridad Codex.
+
+**Accomplished hasta ahora**:
+1. Reminder Layer Phase 1a CERRADA — obs #110 [RESOLVED]+archived (Copa 2026 finalizada); sin entrada en registro-vivo.json (verificado: vivía solo en Engram), sin commit necesario.
+2. 1Password.txt ELIMINADO de Drive por Jorge (manual UI); verificado por CC vía get_file_metadata → not found. Residual D-5/1Password cerrado. Obs #252.
+3. Paridad práctica shell+Engram CC/Codex (Opción B ratificada por Jorge): SSH key ed25519 + config /opt/dfl-secrets + handoff doc. Smoke-test SSH-CODEX-OK PASS. Obs #253. Commit inicial 675abac.
+4. HARDENING de seguridad tras revisión de Codex (la clave inicial era root ABIERTA — regresión reconocida): authorized_keys de Codex ahora `from="127.0.0.1,::1",restrict,pty` — loopback + forwarding/X11/agent OFF (verificado: port-forward "administratively prohibited"), shell EJECUTOR local intacta (smoke-test re-PASS). Backup /root/.ssh/authorized_keys.bak.20260714. Wording "idéntico a CC" corregido a "paridad práctica shell+Engram, no controles de sesión". Commit 2b49f16. Passphrase NO añadida (headless, decisión abierta de Jorge).
+5. Mirrors publicados durante la sesión: c05a9a60 (limpieza) y 2fa652dd (paridad). El hardening (2b49f16) aún NO propagado al mirror (checkpoint) — pendiente para cierre real.
+
+**Pendiente al momento del checkpoint**:
+- push_mirror.sh del estado post-hardening en el @$fin real (mirror actual = 2fa652dd, previo al hardening).
+- Codex debe sourcear codex-amOS-config.env, validar su @$go EJECUTOR, tratar la clave como secreto crítico.
+- Passphrase de la clave Codex: decisión abierta de Jorge (headless vs. ssh-agent).
+- rclone OAuth institucional (B-1) sigue siendo la única brecha Drive.
+- Retiros B-5 desbloqueados, a la orden de Jorge.
+
+**NO_TOUCH preservado**: puntajeTigreKnockout, Supabase, Vercel config, env vars, HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets — ninguno tocado.
+
+**Relevant files**: /opt/dfl-secrets/ssh-keys/codex-la-garra(.pub), /opt/dfl-secrets/codex-amOS-config.env, /opt/dfl-knowledge/agents/codex-paridad-handoff.md, /root/.ssh/authorized_keys(.bak.20260714).
 
 ---
 
@@ -390,4 +415,4 @@ DATE: 2026-07-14
 
 ---
 
-*Mirror auto-generated 2026-07-14T01:37:57Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-14T02:33:01Z | La Garra → DFLghub/amos-context*
