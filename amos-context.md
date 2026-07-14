@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-14T19:36:01Z  
+**Generated:** 2026-07-14T20:32:41Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,23 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### [FINAL] Visualizer focused final reaudit GO
+**Type:** decision  
+**Project:** dfl  
+
+LIFECYCLE: final
+Date: 2026-07-14
+Scope: Final focused adversarial reaudit of Visualizer remediation.
+Target commit audited: 26312584773ae4854f455856e0c6438ec3630e25
+Original audited base: b1b81e755c4a3120a05d0d0b4fb4a7de4e5e6cac
+Harness branch/worktree: audit/focused-reaudit at /opt/visualizer-codex-audit
+Verdict literal from /opt/visualizer-codex-audit/evidence/reaudit-codex-final/VERDICT.md: GO
+Contract results: Honest reversibility PASS; Institutional traceability PASS; Layout and complete export PASS; Corruption recovery PASS.
+Audit commits: 24dc0ab, b86a112, 635feeb, f5e993c, c8a5362, 57c1b7a, b841ff6.
+Residual risks: approval.by is declarative; one lint warning; stale README origin wording; export remains browser-driven.
+Next gate: Jorge human test from the iMac before institutional publication.
+Restrictions honored: did not modify product, did not merge, did not push Visualizer repository.
+
 ### Visualizer v0.1 remediado: 4 bloqueantes NO-GO cerrados (rama remediation/visualizer-v01, 83/83 tests)
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -154,16 +171,6 @@ TYPE: session_summary
 STATUS: active
 DATE: 2026-07-12
 SUMMARY: Se cerró paridad operacional Codex=CC: perfiles Codex 0.144.1 migrados, trusts y reglas institucionales ajustados, sesión nueva con cero prompts, Engram manual multiproyecto PASS, VM3 rsync PASS; commit 9422ab3 pusheado y cierre previo Engram #248. Luego se tomó relevo CC: backup GPG de /etc/dfl-secrets verificado local+VM3, SHA cipher 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8, restore off-host idéntico SHA e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66, passphrase nueva solo keyfile root-0600, ZIP legacy retirado del HEAD/ignorado, historia preservada por secreto revocado; commit 3957967 pusheado, Engram #249. Residuales: ZIP Drive y 1Password.txt requieren OAuth/rclone; no tocados. Git limpio origin/main. NO_TOUCH preservado.
-
-### [CIERRE] /etc/dfl-secrets protegido off-host y ZIP legacy retirado
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/security/dfl-secrets-offhost-zip-close
-TYPE: decision
-STATUS: active
-DATE: 2026-07-12
-SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg confirmado en VM3 bajo /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; SHA-256 cipher local/remoto 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8; restore desde copia off-host coincide byte a byte con /etc/dfl-secrets, SHA-256 e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66; passphrase nueva únicamente en keyfile root-0600; ZIP 12_FutbolWeb/futbolweb-env-backup.zip retirado del HEAD y bloqueado en gitignore; historia no reescrita porque contiene solo Supabase key revocada; commit 3957967 pusheado origin/main. Drive ZIP y 1Password.txt NO tocados, pendientes OAuth/rclone. Evidencia audits/diagnostico-institucional-dfl-v1/13-CIERRE-ZIP-ANTIGUO.md y EVIDENCE/b14-relevo-dfl-secrets-y-zip.md. NO_TOUCH preservado.
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -280,6 +287,23 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### [FINAL] Visualizer focused final reaudit GO
+**Type:** decision  
+**Project:** dfl  
+
+LIFECYCLE: final
+Date: 2026-07-14
+Scope: Final focused adversarial reaudit of Visualizer remediation.
+Target commit audited: 26312584773ae4854f455856e0c6438ec3630e25
+Original audited base: b1b81e755c4a3120a05d0d0b4fb4a7de4e5e6cac
+Harness branch/worktree: audit/focused-reaudit at /opt/visualizer-codex-audit
+Verdict literal from /opt/visualizer-codex-audit/evidence/reaudit-codex-final/VERDICT.md: GO
+Contract results: Honest reversibility PASS; Institutional traceability PASS; Layout and complete export PASS; Corruption recovery PASS.
+Audit commits: 24dc0ab, b86a112, 635feeb, f5e993c, c8a5362, 57c1b7a, b841ff6.
+Residual risks: approval.by is declarative; one lint warning; stale README origin wording; export remains browser-driven.
+Next gate: Jorge human test from the iMac before institutional publication.
+Restrictions honored: did not modify product, did not merge, did not push Visualizer repository.
+
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
 **Project:** dfl-knowledge  
@@ -310,23 +334,6 @@ Sesión @$go→@$fin 2026-07-14: MISIÓN remediación autónoma de Visualizer v0
 - /opt/visualizer/evidence/remediation-cc/{WORKLOG,VALIDATION,REMAINING_RISKS,CASO_CERO_TRACEABILITY}.md
 - /opt/visualizer/src/core/vmd/traceability.ts, src/core/views/insight.ts, src/web/export/exportViewport.ts, src/server/store.ts (recoverModel)
 - /opt/visualizer/scripts/{reclassify-caso-cero,traceability-report,export-validate}.ts
-
-### Visualizer v0.1 remediado: 4 bloqueantes NO-GO cerrados (rama remediation/visualizer-v01, 83/83 tests)
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/visualizer/remediation-v01-complete
-TYPE: decision
-STATUS: active
-DATE: 2026-07-14
-
-**What**: Remediación autónoma CC de los 4 bloqueantes del NO-GO de Visualizer v0.1 (auditoría Codex b1b81e7) COMPLETADA. Rama local `remediation/visualizer-v01` en /opt/visualizer (sin remoto, sin push, por diseño). Commits: 4186465 (contrato honesto de reversibilidad: VMD/JSON única representación canónica reversible, Markdown proyección narrativa, compilación siempre nueva nunca auto-aprobada), 48aa422 (proveniencia Caso Cero: origin extracted|inferred|modeled, approval {by,at} obligatorio por integridad, evidencia derivada located|cited|unsupported verificada contra fuentes, fixture reclasificado 0 approved / 8 extracted con spans reales / 83 modeled con ausencia registrada, endpoint /traceability, anti-concentración de evidencia >3), f9f1a84 (dependencias/circuitos: viewInsight connected/undeclared/isolated + fuera de alcance, roles inicio/cierre/bifurcación, banda separada para no conectados, export PNG/SVG de grafo COMPLETO validado por IHDR + pixel-sampling de nodos extremos), 83be519 (recuperación: ModelCorruptError, cuarentena sin destruir evidencia, restauración atómica desde revisión válida más reciente, fallo seguro, 14 escenarios de test), 2631258 (cierre consolidado).
-
-**Why**: Codex emitió NO-GO controlado; Jorge ordenó remediación autónoma exclusiva de esos 4 bloqueantes para hacer Visualizer técnicamente homologable.
-
-**Evidence**: Suite 40→83 tests PASS; lint/typecheck/build 0; npm ci limpio; loopback 127.0.0.1:4310 verificado; npm audit runtime 0 vulnerabilidades (5 findings toolchain vite/vitest documentados, majors no forzados). Evidencia en /opt/visualizer/evidence/remediation-cc/ (WORKLOG.md, VALIDATION.md, REMAINING_RISKS.md, CASO_CERO_TRACEABILITY.md, exports validados 4 vistas).
-
-**Next**: (1) Jorge: revisión visual de las 4 vistas en iMac/tablet vía túnel SSH (README) con fixture ya reclasificado como proposed; (2) aportar fuentes doctrinales reales como sources del Caso Cero y aprobar elementos con registro; (3) upgrade planificado vite@8+vitest@4 con la suite como red; (4) NO avanzar a Business Genoma sin nueva orden.
 
 ---
 
@@ -419,4 +426,4 @@ DATE: 2026-07-14
 
 ---
 
-*Mirror auto-generated 2026-07-14T19:36:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-14T20:32:41Z | La Garra → DFLghub/amos-context*
