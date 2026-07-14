@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-13T03:06:29Z  
+**Generated:** 2026-07-14T00:08:09Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -160,6 +160,12 @@ SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
 
+### @$fin cierre Codex - intento tmux bloqueado por sandbox
+**Type:** fact  
+**Project:** dfl  
+
+Cierre @$fin ejecutado por Codex el 2026-07-14. Actividad de la sesion: el usuario pidio `tmux new-session -A`; el intento fallo con `error connecting to /tmp/tmux-0/default (Operation not permitted)`, por restriccion de permisos del sandbox sobre el socket tmux. Se explico que seria necesario ejecutar el comando fuera del sandbox/con permisos elevados. No se hicieron cambios de archivos, commits ni modificaciones de repositorios.
+
 ---
 
 ## PENDING
@@ -266,6 +272,12 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### @$fin cierre Codex - intento tmux bloqueado por sandbox
+**Type:** fact  
+**Project:** dfl  
+
+Cierre @$fin ejecutado por Codex el 2026-07-14. Actividad de la sesion: el usuario pidio `tmux new-session -A`; el intento fallo con `error connecting to /tmp/tmux-0/default (Operation not permitted)`, por restriccion de permisos del sandbox sobre el socket tmux. Se explico que seria necesario ejecutar el comando fuera del sandbox/con permisos elevados. No se hicieron cambios de archivos, commits ni modificaciones de repositorios.
+
 ### [CIERRE DE SESIÓN] Paridad Codex y protección dfl-secrets completadas
 **Type:** decision  
 **Project:** dfl  
@@ -275,16 +287,6 @@ TYPE: session_summary
 STATUS: active
 DATE: 2026-07-12
 SUMMARY: Se cerró paridad operacional Codex=CC: perfiles Codex 0.144.1 migrados, trusts y reglas institucionales ajustados, sesión nueva con cero prompts, Engram manual multiproyecto PASS, VM3 rsync PASS; commit 9422ab3 pusheado y cierre previo Engram #248. Luego se tomó relevo CC: backup GPG de /etc/dfl-secrets verificado local+VM3, SHA cipher 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8, restore off-host idéntico SHA e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66, passphrase nueva solo keyfile root-0600, ZIP legacy retirado del HEAD/ignorado, historia preservada por secreto revocado; commit 3957967 pusheado, Engram #249. Residuales: ZIP Drive y 1Password.txt requieren OAuth/rclone; no tocados. Git limpio origin/main. NO_TOUCH preservado.
-
-### [CIERRE] /etc/dfl-secrets protegido off-host y ZIP legacy retirado
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/security/dfl-secrets-offhost-zip-close
-TYPE: decision
-STATUS: active
-DATE: 2026-07-12
-SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg confirmado en VM3 bajo /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; SHA-256 cipher local/remoto 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8; restore desde copia off-host coincide byte a byte con /etc/dfl-secrets, SHA-256 e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66; passphrase nueva únicamente en keyfile root-0600; ZIP 12_FutbolWeb/futbolweb-env-backup.zip retirado del HEAD y bloqueado en gitignore; historia no reescrita porque contiene solo Supabase key revocada; commit 3957967 pusheado origin/main. Drive ZIP y 1Password.txt NO tocados, pendientes OAuth/rclone. Evidencia audits/diagnostico-institucional-dfl-v1/13-CIERRE-ZIP-ANTIGUO.md y EVIDENCE/b14-relevo-dfl-secrets-y-zip.md. NO_TOUCH preservado.
 
 ---
 
@@ -377,4 +379,4 @@ SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg
 
 ---
 
-*Mirror auto-generated 2026-07-13T03:06:29Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-14T00:08:09Z | La Garra → DFLghub/amos-context*
