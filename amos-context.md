@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-14T21:08:29Z  
+**Generated:** 2026-07-15T03:05:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -416,4 +416,4 @@ PROXIMO_AGENTE_DEBE: si Jorge aprueba, merge de fix/visualizer-dev-entrypoint a 
 
 ---
 
-*Mirror auto-generated 2026-07-14T21:08:29Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-15T03:05:01Z | La Garra → DFLghub/amos-context*
