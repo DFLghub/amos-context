@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-15T06:12:01Z  
+**Generated:** 2026-07-15T06:22:47Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -301,46 +301,43 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-**Type:** decision  
+### Session summary: futbolweb-app
+**Type:** session_summary  
 **Project:** futbolweb-app  
 
-TOPIC: futbolweb/knockout-placeholders/deploy-verificado
-TYPE: decision
+## Goal
+Cerrar defecto P1 de producción: cruces KO resueltos mostrando placeholders ("Ganador Partido 95 vs 96") en /mis-pronosticos y otras superficies. Diagnóstico MCP-first, fix compartido, deploy verificado.
+
+## Instructions
+- Jorge exige codebase-memory-mcp PRIMERO para exploración de código, Read/Grep solo para verificar (funcionó: ~60-70% ahorro tokens en exploración, inventario completo de superficies vía trace_path inbound).
+- Vocabulario Jorge: "onboarding" = @$go, "outboarding" = @$fin (obs #264).
+- No crear pipelines paralelos: extraer la mínima función pura desde la autoridad existente.
+
+## Accomplished
+- Diagnóstico (obs #261, [RESOLVED]): 3 superficies consumían fixture estático sin applyKnockoutBracketAssignments: MyPredictionsClient, GrupoPage, reminder-candidates. Superficies correctas: upcoming/predict/today/oracle/ticker/api-tournament-reality.
+- Fix (obs #262): commit 2a12586 pusheado a main. `resolveWorldCupMatches` (lib/knockout-reality, pura, client-safe) + `getCompletedMatchResultsSafe` (lib/tournament-reality, degrada a []). 84/84 tests (9 nuevos), lint/build limpios. /mis-pronosticos ahora dinámica. NO tocado: puntajeTigreKnockout, scoring, Supabase, contratos.
+- Deploy verificado (obs #263): Vercel Production success 05:55:26Z, evidencia en www.futbolweb.app — partido 89 "Paraguay vs Francia", 93 "Portugal vs España", final 104 "España vs Ganador Partido 102" (SF 102 pendiente conserva placeholder).
+- Índice codebase-memory reindexado y sincronizado con HEAD 2a12586 (906 nodos/2359 edges). Nota: index_repository crasheó 2× (contenido) pero indexó bien — verificar siempre con index_status, no confiar en exit code.
+- Evaluación del "outboard estructural" propuesto por Jorge: dirección validada con ajustes (baseline arquitectónico en @$go, clasificación LOCAL/STRUCTURAL/INSTITUTIONAL como juicio asistido con señales objetivas, reindex no bloqueante, paso 9: verificación estructural de invariantes NO TOCAR vía trace_path). PENDIENTE de confirmación de Jorge para convertirlo en skill/contrato.
+
+## Next Steps
+- PROXIMO_AGENTE_DEBE: si Jorge confirma el outboard estructural, redactar skill "structural-outboard" con el diseño evaluado (baseline en @$go + delta en @$fin + verificación de invariantes protegidas).
+- Vigilar SF 102 (hoy) y final 104 (19-jul): la resolución de placeholders es ahora automática en todas las superficies, pero el cierre del torneo usa la automatización de obs #232.
+
+## Relevant Files
+- lib/knockout-reality.ts (resolveWorldCupMatches), lib/tournament-reality.ts (getCompletedMatchResultsSafe)
+- components/MyPredictionsClient.tsx, app/mis-pronosticos/page.tsx, app/match/[slug]/grupo/page.tsx, lib/reminder-candidates.ts
+- Tests: lib/knockout-reality.test.ts, lib/reminder-candidates.test.ts, components/MyPredictionsClient.test.ts
+
+**Type:** convention  
+**Project:** futbolweb-app  
+
+TOPIC: dfl/vocabulario/onboarding-outboarding
+TYPE: convention
 STATUS: active
 DATE: 2026-07-15
 
-[RESUELVE pendiente de obs #262] Deploy de producción del commit 2a12586 VERIFICADO en Vercel: deployment id 5452404203, environment Production, state success, 2026-07-15T05:55:26Z (via GitHub Deployments API pública; sin CLI de Vercel en esta VM).
-
-Evidencia en https://www.futbolweb.app (host canónico; apex futbolweb.app hace 307 → www):
-- /match/mundial-2026-partido-089/grupo → "Paraguay vs Francia" (feeders resueltos, antes placeholders)
-- /match/mundial-2026-partido-093/grupo → "Portugal vs España"
-- /match/mundial-2026-partido-104/grupo → "España vs Ganador Partido 102" (SF 102 pendiente conserva placeholder)
-- /mis-pronosticos → 200, RSC payload contiene completedResults con 101 filas y advancing_team reales (España×4 = finalista) — getCompletedMatchResultsSafe funcionando (no cayó al fallback [])
-- /api/my-predictions contrato intacto {"ok":true}; /api/admin/reminder-candidates → 401 sin token (handler vivo, no se disparó); predict 104 → 200
-
-Limitación: logs de función de Vercel no accesibles desde esta VM (sin token; /etc/dfl-secrets protegido) — evidencia indirecta: 200s, sin marcadores de error en HTML, resolución canónica operando.
-
-**Type:** decision  
-**Project:** futbolweb-app  
-
-TOPIC: futbolweb/knockout-placeholders/fix-desplegado
-TYPE: decision
-STATUS: active
-DATE: 2026-07-15
-
-**Fix ejecutado y pusheado**: commit 2a12586 en main (origin) — "fix(knockout): resolve KO bracket names on mis-pronosticos, grupo page and reminder candidates". Resuelve la obs #261 (diagnóstico).
-
-**Diseño (aprobado por Jorge, sin pipeline paralelo)**:
-- `resolveWorldCupMatches(completedResults, locale)` en lib/knockout-reality.ts — función pura que compone localizeWorldCupMatches + applyKnockoutBracketAssignments (autoridad existente). Client-safe.
-- `getCompletedMatchResultsSafe(now)` en lib/tournament-reality.ts — fetch canónico con degradación a [] ante fallo (placeholders, nunca crash).
-- /mis-pronosticos: page.tsx (server) pasa completedResults como prop; MyPredictionsClient resuelve client-side manteniendo relocalización por locale.
-- grupo page y reminder-candidates usan el mismo par de funciones (reminder con locale "es"; getOpenKoMatches ahora acepta matches como parámetro con default estático).
-
-**Validación**: 84/84 tests (9 nuevos: KO resuelto/pendiente/sin resultados, mensaje reminder con nombres reales, render smoke MyPredictionsClient), lint limpio, build limpio (/mis-pronosticos ahora dinámica). Evidencia E2E local (next start + Supabase prod, solo lectura): partido 89 "Paraguay vs Francia", 93 "Portugal vs España", final 104 "España vs Ganador Partido 102" (SF 102 pendiente conserva placeholder — regla cumplida).
-
-**No tocado**: puntajeTigreKnockout, scoring, Supabase schema/data, contratos de predicción, superficies ya correctas (upcoming/predict/today/oracle).
-
-**Pendiente**: verificar deploy Vercel del commit 2a12586 en producción.
+Vocabulario de Jorge: "onboarding" = arranque de sesión @$go (bootstrap DFL); "outboarding" = cierre final @$fin (modo CIERRE: Gate 4B final + push_mirror.sh + línea MIRROR). Cuando Jorge pida "el outboarding" ejecutar el protocolo @$fin completo.
 
 ---
 
@@ -433,4 +430,4 @@ DATE: 2026-07-15
 
 ---
 
-*Mirror auto-generated 2026-07-15T06:12:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-15T06:22:47Z | La Garra → DFLghub/amos-context*
