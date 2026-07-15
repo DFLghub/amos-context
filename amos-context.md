@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-15T03:05:01Z  
+**Generated:** 2026-07-15T06:12:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -96,6 +96,47 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+**Type:** decision  
+**Project:** futbolweb-app  
+
+TOPIC: futbolweb/knockout-placeholders/deploy-verificado
+TYPE: decision
+STATUS: active
+DATE: 2026-07-15
+
+[RESUELVE pendiente de obs #262] Deploy de producción del commit 2a12586 VERIFICADO en Vercel: deployment id 5452404203, environment Production, state success, 2026-07-15T05:55:26Z (via GitHub Deployments API pública; sin CLI de Vercel en esta VM).
+
+Evidencia en https://www.futbolweb.app (host canónico; apex futbolweb.app hace 307 → www):
+- /match/mundial-2026-partido-089/grupo → "Paraguay vs Francia" (feeders resueltos, antes placeholders)
+- /match/mundial-2026-partido-093/grupo → "Portugal vs España"
+- /match/mundial-2026-partido-104/grupo → "España vs Ganador Partido 102" (SF 102 pendiente conserva placeholder)
+- /mis-pronosticos → 200, RSC payload contiene completedResults con 101 filas y advancing_team reales (España×4 = finalista) — getCompletedMatchResultsSafe funcionando (no cayó al fallback [])
+- /api/my-predictions contrato intacto {"ok":true}; /api/admin/reminder-candidates → 401 sin token (handler vivo, no se disparó); predict 104 → 200
+
+Limitación: logs de función de Vercel no accesibles desde esta VM (sin token; /etc/dfl-secrets protegido) — evidencia indirecta: 200s, sin marcadores de error en HTML, resolución canónica operando.
+
+**Type:** decision  
+**Project:** futbolweb-app  
+
+TOPIC: futbolweb/knockout-placeholders/fix-desplegado
+TYPE: decision
+STATUS: active
+DATE: 2026-07-15
+
+**Fix ejecutado y pusheado**: commit 2a12586 en main (origin) — "fix(knockout): resolve KO bracket names on mis-pronosticos, grupo page and reminder candidates". Resuelve la obs #261 (diagnóstico).
+
+**Diseño (aprobado por Jorge, sin pipeline paralelo)**:
+- `resolveWorldCupMatches(completedResults, locale)` en lib/knockout-reality.ts — función pura que compone localizeWorldCupMatches + applyKnockoutBracketAssignments (autoridad existente). Client-safe.
+- `getCompletedMatchResultsSafe(now)` en lib/tournament-reality.ts — fetch canónico con degradación a [] ante fallo (placeholders, nunca crash).
+- /mis-pronosticos: page.tsx (server) pasa completedResults como prop; MyPredictionsClient resuelve client-side manteniendo relocalización por locale.
+- grupo page y reminder-candidates usan el mismo par de funciones (reminder con locale "es"; getOpenKoMatches ahora acepta matches como parámetro con default estático).
+
+**Validación**: 84/84 tests (9 nuevos: KO resuelto/pendiente/sin resultados, mensaje reminder con nombres reales, render smoke MyPredictionsClient), lint limpio, build limpio (/mis-pronosticos ahora dinámica). Evidencia E2E local (next start + Supabase prod, solo lectura): partido 89 "Paraguay vs Francia", 93 "Portugal vs España", final 104 "España vs Ganador Partido 102" (SF 102 pendiente conserva placeholder — regla cumplida).
+
+**No tocado**: puntajeTigreKnockout, scoring, Supabase schema/data, contratos de predicción, superficies ya correctas (upcoming/predict/today/oracle).
+
+**Pendiente**: verificar deploy Vercel del commit 2a12586 en producción.
+
 ### [FINAL] Visualizer dev entrypoint fix closed
 **Type:** decision  
 **Project:** dfl  
@@ -144,38 +185,6 @@ DATE: 2026-07-14
 **Evidence**: Suite 40→83 tests PASS; lint/typecheck/build 0; npm ci limpio; loopback 127.0.0.1:4310 verificado; npm audit runtime 0 vulnerabilidades (5 findings toolchain vite/vitest documentados, majors no forzados). Evidencia en /opt/visualizer/evidence/remediation-cc/ (WORKLOG.md, VALIDATION.md, REMAINING_RISKS.md, CASO_CERO_TRACEABILITY.md, exports validados 4 vistas).
 
 **Next**: (1) Jorge: revisión visual de las 4 vistas en iMac/tablet vía túnel SSH (README) con fixture ya reclasificado como proposed; (2) aportar fuentes doctrinales reales como sources del Caso Cero y aprobar elementos con registro; (3) upgrade planificado vite@8+vitest@4 con la suite como red; (4) NO avanzar a Business Genoma sin nueva orden.
-
-### Paridad CC/Codex (shell+Engram) — provisioning EJECUTOR verificado + credencial SSH endurecida tras revisión Codex
-**Type:** decision  
-**Project:** futbolweb-app  
-
-TOPIC: dfl/session/2026-07-14-codex-provisioning-complete
-TYPE: decision
-STATUS: active
-DATE: 2026-07-14
-
-**What**: Paridad práctica de SHELL y ENGRAM entre CC y Codex por orden ratificada de Jorge (Opción B, 2026-07-14). NO es "acceso idéntico a CC" en sentido estricto — no hay paridad garantizada de políticas de sesión, tooling ni controles de aprobación; el handoff operativo es simétrico, los controles de sesión no necesariamente. Provisioning: (1) SSH key ed25519 sin passphrase /opt/dfl-secrets/ssh-keys/codex-la-garra (root 0600, fingerprint SHA256:1944e3aTx8rmcrcCzLVUMBEqs0CV18taermfsVt7N7U); (2) pubkey en /root/.ssh/authorized_keys; (3) smoke-test PASS SSH-CODEX-OK; (4) config /opt/dfl-secrets/codex-amOS-config.env (root 0600); (5) handoff /opt/dfl-knowledge/agents/codex-paridad-handoff.md.
-
-**Hardening aplicado 2026-07-14 tras revisión de seguridad de Codex** (la implementación inicial era una clave root ABIERTA — regresión reconocida): línea authorized_keys ahora `from="127.0.0.1,::1",restrict,pty` — atada a loopback, forwarding/agent/X11 desactivados (verificado: port-forward devuelve "administratively prohibited"), solo TTY. Shell EJECUTOR local intacta (smoke-test re-PASS). Backup /root/.ssh/authorized_keys.bak.20260714. Passphrase NO añadida (uso headless, decisión de Jorge). Riesgo residual asumido y documentado: SSH loopback permite a Codex eludir las aprobaciones de su propio sandbox; alcance root local si hay error/prompt-injection — clave tratada como secreto de máxima criticidad.
-
-**Desviaciones del script original, verificadas**: (a) `engram auth-token create` NO existe en engram vdev; acceso Codex a Engram = `engram mcp` stdio (paridad 9422ab3), sin token; /opt/engram/.env NO tocado. Carpeta engram-tokens NO creada. (b) Nada bajo /opt/dfl-secrets entra a git (higiene, cf. 3957967); solo el handoff doc se commitea en dfl-knowledge.
-
-**Why**: Reducir el punto único de falla en handoff, con superficie de credencial mínima.
-**Learned**: /opt/dfl-secrets (nuevo, root 0700) distinto del protegido /etc/dfl-secrets (intacto). Lección de método: una clave SSH "de conveniencia" para atravesar sandbox debe nacer restringida (from/restrict), no abierta — el hardening posterior lo corrige pero el patrón correcto es capar desde el minuto cero.
-**PROXIMO_AGENTE_DEBE**: Codex sourcea /opt/dfl-secrets/codex-amOS-config.env, valida su @$go EJECUTOR, y trata la clave como crítica.
-
-### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt eliminado de Drive por Jorge (verificado)
-**Type:** decision  
-**Project:** futbolweb-app  
-
-TOPIC: dfl/session/2026-07-14-limpieza-1p-reminder
-TYPE: decision
-STATUS: active
-DATE: 2026-07-14
-
-**What**: Sesión CC de limpieza con dos frentes, ambos CERRADOS. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existía entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — sin edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B): ELIMINADO manualmente por Jorge en la UI de Drive el 2026-07-14, tras blocker inicial (el conector MCP de Drive no expone delete). Borrado VERIFICADO por CC: get_file_metadata devuelve "Requested entity was not found". Residual D-5/1Password de la Reconciliación v1 cerrado.
-**Why**: Orden directa de Jorge 2026-07-14: eliminar 1Password.txt (noise backup antiguo, ya revisado por él) y cerrar Reminder 1a por fin de torneo.
-**Learned**: El conector claude.ai Google Drive es read-mostly (sin delete/trash) — limpiezas destructivas en Drive requieren UI manual o rclone tras OAuth institucional (B-1, aún pendiente). Paridad CC/Codex sigue pendiente de ratificación de Jorge.
 
 ### Link demo enviado a Rubén — modo prueba, no oferta comercial
 **Type:** decision  
@@ -292,38 +301,46 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### [FINAL] Visualizer dev entrypoint fix closed
 **Type:** decision  
-**Project:** dfl  
+**Project:** futbolweb-app  
 
-LIFECYCLE: final
-Date: 2026-07-14
-Repository: /opt/visualizer
-Branch verified: fix/visualizer-dev-entrypoint
-HEAD verified: e262088
-Commits verified: 42b18a5 — fix: restore canonical visualizer dev entrypoint; e262088 — test: validate coordinated dev lifecycle.
-Context: Visualizer v0.1 was already technically homologated and passed Jorge's human gate. A later operational defect was found: npm run dev pointed to missing scripts/dev.mjs.
-Correction: npm run dev now coordinates backend and frontend through scripts/dev.mjs.
-Validation: host/port propagation, SIGINT shutdown, port release, frontend bind failure handling, and absence of relevant orphan Visualizer processes were validated. Evidence: evidence/dev-entrypoint-fix/VALIDATION.md.
-Final state: tree clean; no product functionality or protected zones modified by Codex during closure. Claude Code completed the code/evidence but hit session limit before Engram; Codex completed institutional closure.
+TOPIC: futbolweb/knockout-placeholders/deploy-verificado
+TYPE: decision
+STATUS: active
+DATE: 2026-07-15
 
-### Visualizer: npm run dev canónico restaurado (scripts/dev.mjs coordinador mínimo)
-**Type:** bugfix  
-**Project:** visualizer  
+[RESUELVE pendiente de obs #262] Deploy de producción del commit 2a12586 VERIFICADO en Vercel: deployment id 5452404203, environment Production, state success, 2026-07-15T05:55:26Z (via GitHub Deployments API pública; sin CLI de Vercel en esta VM).
 
-[FIX] Visualizer dev entrypoint restaurado (rama fix/visualizer-dev-entrypoint, commits 42b18a5 + e262088 sobre 2631258 homologado).
+Evidencia en https://www.futbolweb.app (host canónico; apex futbolweb.app hace 307 → www):
+- /match/mundial-2026-partido-089/grupo → "Paraguay vs Francia" (feeders resueltos, antes placeholders)
+- /match/mundial-2026-partido-093/grupo → "Portugal vs España"
+- /match/mundial-2026-partido-104/grupo → "España vs Ganador Partido 102" (SF 102 pendiente conserva placeholder)
+- /mis-pronosticos → 200, RSC payload contiene completedResults con 101 filas y advancing_team reales (España×4 = finalista) — getCompletedMatchResultsSafe funcionando (no cayó al fallback [])
+- /api/my-predictions contrato intacto {"ok":true}; /api/admin/reminder-candidates → 401 sin token (handler vivo, no se disparó); predict 104 → 200
 
-CAUSA RAÍZ: package.json invocaba node scripts/dev.mjs pero el archivo no existía; npm run dev fallaba y el arranque requería dev:server + dev:web por separado.
+Limitación: logs de función de Vercel no accesibles desde esta VM (sin token; /etc/dfl-secrets protegido) — evidencia indirecta: 200s, sin marcadores de error en HTML, resolución canónica operando.
 
-SOLUCIÓN (flaco de acero, sin dependencias nuevas): scripts/dev.mjs coordina tsx watch (API :4310) + vite con child_process estándar; propaga --host/--port a vite (añade --strictPort con --port explícito); grupos de proceso propios + SIGTERM al árbol ante SIGINT/SIGTERM; exit no-cero si un hijo falla al arrancar.
+**Type:** decision  
+**Project:** futbolweb-app  
 
-VALIDADO: npm ci/typecheck/lint/test (85/85, incluye 2 tests nuevos de lifecycle en tests/dev-entrypoint.test.ts)/build OK; loopback-only verificado con ss (127.0.0.1:4318 web, 127.0.0.1:4310 API); HTTP 200; SIGINT limpio sin huérfanos ×2; fallo de bind → exit 1 sin backend huérfano; rearranque OK. Evidencia: evidence/dev-entrypoint-fix/VALIDATION.md.
+TOPIC: futbolweb/knockout-placeholders/fix-desplegado
+TYPE: decision
+STATUS: active
+DATE: 2026-07-15
 
-GOTCHA descubierto: al testear señales vía shell, SIGINT al wrapper sh -c de npm NO llega al coordinador node — hay que señalar el proceso node scripts/dev.mjs (Ctrl+C real sí funciona porque va al grupo de foreground). Además pgrep -f se auto-matchea con el bash -c del harness: falsos positivos de "huérfanos".
+**Fix ejecutado y pusheado**: commit 2a12586 en main (origin) — "fix(knockout): resolve KO bracket names on mis-pronosticos, grupo page and reminder candidates". Resuelve la obs #261 (diagnóstico).
 
-OBSERVACIÓN preexistente fuera de alcance: PID 2413725 npm run dev huérfano ~15 días, cwd /opt/360eventos (otro proyecto, no tocado).
+**Diseño (aprobado por Jorge, sin pipeline paralelo)**:
+- `resolveWorldCupMatches(completedResults, locale)` en lib/knockout-reality.ts — función pura que compone localizeWorldCupMatches + applyKnockoutBracketAssignments (autoridad existente). Client-safe.
+- `getCompletedMatchResultsSafe(now)` en lib/tournament-reality.ts — fetch canónico con degradación a [] ante fallo (placeholders, nunca crash).
+- /mis-pronosticos: page.tsx (server) pasa completedResults como prop; MyPredictionsClient resuelve client-side manteniendo relocalización por locale.
+- grupo page y reminder-candidates usan el mismo par de funciones (reminder con locale "es"; getOpenKoMatches ahora acepta matches como parámetro con default estático).
 
-PROXIMO_AGENTE_DEBE: si Jorge aprueba, merge de fix/visualizer-dev-entrypoint a remediation/visualizer-v01 (sin push desde esta sesión por contrato).
+**Validación**: 84/84 tests (9 nuevos: KO resuelto/pendiente/sin resultados, mensaje reminder con nombres reales, render smoke MyPredictionsClient), lint limpio, build limpio (/mis-pronosticos ahora dinámica). Evidencia E2E local (next start + Supabase prod, solo lectura): partido 89 "Paraguay vs Francia", 93 "Portugal vs España", final 104 "España vs Ganador Partido 102" (SF 102 pendiente conserva placeholder — regla cumplida).
+
+**No tocado**: puntajeTigreKnockout, scoring, Supabase schema/data, contratos de predicción, superficies ya correctas (upcoming/predict/today/oracle).
+
+**Pendiente**: verificar deploy Vercel del commit 2a12586 en producción.
 
 ---
 
@@ -416,4 +433,4 @@ PROXIMO_AGENTE_DEBE: si Jorge aprueba, merge de fix/visualizer-dev-entrypoint a 
 
 ---
 
-*Mirror auto-generated 2026-07-15T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-15T06:12:01Z | La Garra → DFLghub/amos-context*
