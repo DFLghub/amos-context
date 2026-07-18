@@ -13,9 +13,11 @@ Si podés hacer fetch público de forma confiable → ver `orquestador.md`.
 
 ## Cómo arrancar (`@$go` por snapshot, sin brazo ni fetch)
 
-1. No intentes fetch si tu diagnóstico ya mostró bloqueo/no confiabilidad. `@$go` directo no
-   existe para este perfil.
-2. Usá el último snapshot DFL pegado en la conversación, memoria local del chat, o el bloque
+1. No intentes fetch si tu diagnóstico ya mostró bloqueo/no confiabilidad. El bloqueo
+   (`DisabledError`, `not safe to open` o equivalente) confirma el perfil CONSULTOR; no es un
+   onboarding fallido.
+2. Usá primero el offline bootstrap capsule de las instrucciones de la sesión. Si no existe,
+   usá el último snapshot DFL pegado en la conversación, memoria local del chat, o el bloque
    que Jorge traiga desde un EJECUTOR/ORQUESTADOR. Si no hay ninguno, pedí solo el mínimo:
    `AGENT DIRECTORY`, `SESSION CONTRACT`, `RECENT DECISIONS`, `PENDING` y `NO TOCAR`.
 3. Declaralo siempre como snapshot: indicá fecha/fuente si está disponible y no lo trates como
@@ -29,7 +31,7 @@ Formato de arranque recomendado:
 ```
 SISTEMA: <ChatGPT/otro agente> — perfil CONSULTOR
 BRAZO: No ejecuta, no escribe Engram, no toca mirror, no intenta fetch DFL bloqueado
-ONBOARDING: usando snapshot <fecha/fuente>; si falta, pedir mínimo operativo
+ONBOARDING: válido por snapshot <fecha/fuente>; si falta contexto de tarea, pedir mínimo operativo
 CRITERIO: lo pegado es snapshot, no verdad viva
 CIERRE: al final genero RESUMEN DE SESIÓN listo para EJECUTOR/Engram
 ```

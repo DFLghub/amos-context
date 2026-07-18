@@ -28,15 +28,20 @@ funciona". Eso es exactamente lo que cuesta tokens sin necesidad.
     `curl https://raw.githubusercontent.com/DFLghub/amos-context/main/amos-context.md`
   - NO → Pregunta 2
 
-**Pregunta 2:** ¿Ves `web_fetch` O `web_search` en tu lista de funciones disponibles?
+**Pregunta 2:** ¿Ves `web_fetch`, `web_search` o cloud browser en tu lista de funciones disponibles?
   - SÍ → Intentá **UNA vez** `curl`/fetch a `https://raw.githubusercontent.com/DFLghub/amos-context/main/amos-context.md`.
     - Si te devuelve el contenido real → Sos **ORQUESTADOR**. Leé `agents/orquestador.md`.
-      Reportá a Jorge exactamente: *"ORQUESTADOR: no puedo hacer @$go solo. Necesito que me
-      pases el contexto manualmente o que CC ejecute curl."*
-    - Si te devuelve un bloqueo de política/allowlist (`DisabledError`, "not safe to open", o
-      equivalente) → **la tool existe pero no alcanza nada útil en esta sesión.** No pruebes
-      otro dominio "a ver si ese sí" — ver la lista de canales ya descartados más abajo. Sos
-      **CONSULTOR** a pesar de tener la tool. Andá directo al reporte de la Pregunta 3.
+      Completá el VALIDATION GATE con la fuente y timestamp recuperados; no necesitás que un
+      EJECUTOR vuelva a traerte el mismo contexto. Tu límite aparece recién al escribir estado
+      o ejecutar `@$fin`, que requieren relay.
+    - En **ChatGPT Work**, si el fetch técnico falla pero existe cloud browser, hacé un único
+      intento sobre la página HTML pública del repositorio:
+      `https://github.com/DFLghub/amos-context/blob/main/amos-context.md`. Es otro adaptador,
+      no otro mirror. Si devuelve contenido real → sos **ORQUESTADOR**.
+    - Si devuelve un bloqueo de política/allowlist (`DisabledError`, "not safe to open", o
+      equivalente) y no hay otro adaptador real → sos **CONSULTOR**. El bloqueo es una
+      clasificación válida, **no un onboarding fallido**. Usá el offline bootstrap capsule
+      presente en las instrucciones de la sesión; no pruebes otro hosting.
   - NO → Pregunta 3
 
 **Pregunta 3:** ¿Ves alguna otra función que permita acceder a URLs externas (`tool_search`,
@@ -45,7 +50,8 @@ bloqueado por política cuenta como NO, no como SÍ.
   - SÍ (y un intento real tuvo éxito) → Sos **ORQUESTADOR** (forma alternativa). Mismo reporte
     que en la Pregunta 2: reportá y esperá.
   - NO (o la tool existe pero todo intento real es bloqueado por política) → Sos **CONSULTOR**.
-    Reportá esto EXACTAMENTE, sin parafrasear:
+    Si las instrucciones contienen el offline bootstrap capsule, completá el VALIDATION GATE
+    con ese snapshot y seguí en modo CONSULTOR. Si no lo contienen, reportá:
 
 ```
 CONSULTOR: No tengo capacidades de red disponibles.
@@ -53,8 +59,8 @@ CONSULTOR: No tengo capacidades de red disponibles.
 ¿Qué significa?: No puedo hacer @$go (requiere acceso HTTP). No puedo ejecutar comandos. No
 puedo modificar estado. Solo puedo leer contexto que Jorge me proporcione manualmente.
 
-Siguiente paso: Jorge debe pasar el contenido de amos-context.md a mano, o usar EJECUTOR (CC)
-para traerlo.
+Siguiente paso: Jorge debe pasar el offline bootstrap capsule o un snapshot mínimo, o usar un
+EJECUTOR para traerlo.
 
 Mientras tanto: Estoy listo para recibir el contexto pegado, pero no lo solicito activamente.
 ```
@@ -84,7 +90,7 @@ fallo = degradar a CONSULTOR o pedir EJECUTOR.
 
 ---
 
-## CANALES YA PROBADOS Y DESCARTADOS (no reintentar)
+## CANALES YA PROBADOS Y DESCARTADOS (no reintentar como mirrors)
 
 Investigado en vivo el 2026-07-08 contra una sesión real de ChatGPT (`web.run`, sin Code
 Interpreter ni Custom GPT Action registrada). Los cuatro intentos fallaron con el mismo patrón
@@ -102,6 +108,11 @@ particular:
 hosting público nuevo va a funcionar** — dominio propio, GitHub raw, un CDN de máxima
 reputación (jsDelivr) y una app en un dominio genérico (`vercel.app`) fallaron igual. No
 propongas un quinto espejo "a ver si ese sí". El bloqueo es de sesión/allowlist, no de sitio.
+
+**Actualización ChatGPT Work — 2026-07-18:** Work puede exponer cloud browser, una capacidad
+distinta del antiguo `web.run`. Se permite un intento sobre la página HTML de GitHub indicada
+arriba. Si también falla, el offline bootstrap capsule hace que `@$go` degrade a CONSULTOR sin
+quedar bloqueado. `DisabledError` nunca se reporta como "VALIDATION GATE — FALLIDO".
 
 ---
 
