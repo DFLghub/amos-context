@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-18T19:11:57Z  
+**Generated:** 2026-07-18T19:12:54Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -306,6 +306,28 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### ChatGPT Work @$go onboarding resiliente — DisabledError ya no bloquea
+**Type:** bugfix  
+**Project:** dfl  
+
+TOPIC: dfl/go/chatgpt-work-offline-bootstrap
+TYPE: bugfix
+STATUS: active
+DATE: 2026-07-18
+
+Problema reproducido desde reporte de ChatGPT Work: raw GitHub devolvía DisabledError, búsqueda alternativa no encontraba fuentes, y el agente declaraba `@$go VALIDATION GATE — FALLIDO` y detenía toda tarea DFL.
+
+Causa raíz doble: (1) la matriz clasificaba correctamente el bloqueo como CONSULTOR, pero no proveía una fuente mínima autosuficiente para pasar el gate; (2) contenía una contradicción donde un ORQUESTADOR que sí había recuperado el mirror igualmente decía que no podía completar @$go. Además, ChatGPT Work 2026 ofrece cloud browser, capacidad distinta del web.run evaluado el 2026-07-08, y el navegador puede servir copias cacheadas.
+
+Corrección:
+- /root/AGENTS.md incorpora offline bootstrap capsule fechado 2026-07-18T19:06:42Z con ACCESS, FIN y NO_TOUCH completos. DisabledError/not safe to open ahora degrada a CONSULTOR operativo, nunca a onboarding fallido.
+- amos-context AGENT_CAPABILITY_MATRIX.md y agents/consultor.md: adaptador ChatGPT Work con un intento cloud-browser sobre GitHub HTML; fallback al capsule; ORQUESTADOR con fetch exitoso completa el gate sin pedir un EJECUTOR redundante.
+- dfl-context-proxy main.py y publish-amos-context.sh exponen la nueva semántica; test de regresión tests/test_onboarding_fallback.py.
+
+Commits publicados: dfl-context-proxy 205fe3c; amos-context d305ca0; mirror generado 58ac045836eda416f7689c365f17fc3aef85843f. Servicio reiniciado y activo. Validación: regression contract PASS, bash syntax PASS, Python compile PASS, KNL contract PASS, /go live contiene la regla nueva.
+
+Superficies protegidas no tocadas. Se preservó el archivo ajeno no trackeado /opt/dfl-context-proxy/engram-sync-cron.sh.phase3.bak.
+
 ### Session summary: futbolweb-app
 **Type:** session_summary  
 **Project:** futbolweb-app  
@@ -333,16 +355,6 @@ Cerrar defecto P1 de producción: cruces KO resueltos mostrando placeholders ("G
 - lib/knockout-reality.ts (resolveWorldCupMatches), lib/tournament-reality.ts (getCompletedMatchResultsSafe)
 - components/MyPredictionsClient.tsx, app/mis-pronosticos/page.tsx, app/match/[slug]/grupo/page.tsx, lib/reminder-candidates.ts
 - Tests: lib/knockout-reality.test.ts, lib/reminder-candidates.test.ts, components/MyPredictionsClient.test.ts
-
-**Type:** convention  
-**Project:** futbolweb-app  
-
-TOPIC: dfl/vocabulario/onboarding-outboarding
-TYPE: convention
-STATUS: active
-DATE: 2026-07-15
-
-Vocabulario de Jorge: "onboarding" = arranque de sesión @$go (bootstrap DFL); "outboarding" = cierre final @$fin (modo CIERRE: Gate 4B final + push_mirror.sh + línea MIRROR). Cuando Jorge pida "el outboarding" ejecutar el protocolo @$fin completo.
 
 ---
 
@@ -435,4 +447,4 @@ Vocabulario de Jorge: "onboarding" = arranque de sesión @$go (bootstrap DFL); "
 
 ---
 
-*Mirror auto-generated 2026-07-18T19:11:57Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-18T19:12:54Z | La Garra → DFLghub/amos-context*
