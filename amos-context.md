@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-18T19:12:54Z  
+**Generated:** 2026-07-18T19:17:46Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -306,27 +306,24 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### ChatGPT Work @$go onboarding resiliente — DisabledError ya no bloquea
+### ChatGPT Work @$go — corrección remota insuficiente; bootstrap local obligatorio
 **Type:** bugfix  
 **Project:** dfl  
 
-TOPIC: dfl/go/chatgpt-work-offline-bootstrap
+TOPIC: dfl/go/chatgpt-work-local-bootstrap
 TYPE: bugfix
 STATUS: active
 DATE: 2026-07-18
 
-Problema reproducido desde reporte de ChatGPT Work: raw GitHub devolvía DisabledError, búsqueda alternativa no encontraba fuentes, y el agente declaraba `@$go VALIDATION GATE — FALLIDO` y detenía toda tarea DFL.
+CORRECCIÓN DE LA OBSERVACIÓN: el arreglo remoto en GitHub/context-proxy no resuelve por sí solo ChatGPT Work cuando esa sesión devuelve DisabledError para todas las fuentes. La sesión no puede leer la matriz que contiene el fallback: bootstrap circular.
 
-Causa raíz doble: (1) la matriz clasificaba correctamente el bloqueo como CONSULTOR, pero no proveía una fuente mínima autosuficiente para pasar el gate; (2) contenía una contradicción donde un ORQUESTADOR que sí había recuperado el mirror igualmente decía que no podía completar @$go. Además, ChatGPT Work 2026 ofrece cloud browser, capacidad distinta del web.run evaluado el 2026-07-08, y el navegador puede servir copias cacheadas.
+Causa raíz definitiva: la instrucción mínima de clasificación y gate debe existir dentro del contexto privado/local de ChatGPT Work antes de recibir @$go. Ningún cambio en `/go`, GitHub, mirrors o cloud browser puede garantizarlo si toda red está bloqueada.
 
-Corrección:
-- /root/AGENTS.md incorpora offline bootstrap capsule fechado 2026-07-18T19:06:42Z con ACCESS, FIN y NO_TOUCH completos. DisabledError/not safe to open ahora degrada a CONSULTOR operativo, nunca a onboarding fallido.
-- amos-context AGENT_CAPABILITY_MATRIX.md y agents/consultor.md: adaptador ChatGPT Work con un intento cloud-browser sobre GitHub HTML; fallback al capsule; ORQUESTADOR con fetch exitoso completa el gate sin pedir un EJECUTOR redundante.
-- dfl-context-proxy main.py y publish-amos-context.sh exponen la nueva semántica; test de regresión tests/test_onboarding_fallback.py.
+Solución portátil creada en `/root/CHATGPT_WORK_ATGO_INSTRUCTION.md`, versión 2026-07-18.2. Es autosuficiente y establece: bloqueo HTTP => CONSULTOR; nunca NO DETERMINABLE ni VALIDATION GATE FALLIDO; fuente del gate = capsule local versionado; contrato ACCESS/FIN/NO_TOUCH completo; `/go` queda explícitamente como endpoint y no comando de onboarding. `/root/AGENTS.md` ahora declara que el capsule debe copiarse a las instrucciones locales de Work.
 
-Commits publicados: dfl-context-proxy 205fe3c; amos-context d305ca0; mirror generado 58ac045836eda416f7689c365f17fc3aef85843f. Servicio reiniciado y activo. Validación: regression contract PASS, bash syntax PASS, Python compile PASS, KNL contract PASS, /go live contiene la regla nueva.
+Requisito externo inevitable: Jorge o un administrador de ChatGPT Work debe colocar el contenido del capsule en las instrucciones locales del proyecto/conversación de Work. La VM no tiene autoridad ni canal para mutar esas instrucciones privadas. Hasta hacerlo, repetir @$go en la misma configuración seguirá usando la regla vieja.
 
-Superficies protegidas no tocadas. Se preservó el archivo ajeno no trackeado /opt/dfl-context-proxy/engram-sync-cron.sh.phase3.bak.
+Los commits remotos previos 205fe3c/d305ca0 siguen siendo mejoras válidas para agentes que sí alcanzan las fuentes, pero no constituyen la solución del bootstrap offline.
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -447,4 +444,4 @@ Cerrar defecto P1 de producción: cruces KO resueltos mostrando placeholders ("G
 
 ---
 
-*Mirror auto-generated 2026-07-18T19:12:54Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-18T19:17:46Z | La Garra → DFLghub/amos-context*
