@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-18T19:17:46Z  
+**Generated:** 2026-07-18T19:23:50Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -306,24 +306,28 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### ChatGPT Work @$go — corrección remota insuficiente; bootstrap local obligatorio
+### [RESOLVED] ChatGPT Work @$go — bootstrap local verificado
 **Type:** bugfix  
 **Project:** dfl  
 
 TOPIC: dfl/go/chatgpt-work-local-bootstrap
 TYPE: bugfix
-STATUS: active
+STATUS: resolved
+LIFECYCLE: final
 DATE: 2026-07-18
 
-CORRECCIÓN DE LA OBSERVACIÓN: el arreglo remoto en GitHub/context-proxy no resuelve por sí solo ChatGPT Work cuando esa sesión devuelve DisabledError para todas las fuentes. La sesión no puede leer la matriz que contiene el fallback: bootstrap circular.
+Incidente resuelto y verificado por Jorge en una conversación nueva de ChatGPT Work tras reemplazar las instrucciones personalizadas por el capsule local autosuficiente versión 2026-07-18.2.
 
-Causa raíz definitiva: la instrucción mínima de clasificación y gate debe existir dentro del contexto privado/local de ChatGPT Work antes de recibir @$go. Ningún cambio en `/go`, GitHub, mirrors o cloud browser puede garantizarlo si toda red está bloqueada.
+Salida verificada:
+- SOURCE: instrucción local @$go — versión 2026-07-18.2
+- PROFILE: CONSULTOR porque no hay acceso HTTP verificable a las fuentes DFL
+- ACCESS: contrato uniforme; transporte por adaptador
+- FIN: relay/checkpoint; no puede escribir Engram, ejecutar comandos ni correr push_mirror.sh
+- NO_TOUCH: lista completa, incluyendo CRON 3:05am UTC y /etc/dfl-secrets
 
-Solución portátil creada en `/root/CHATGPT_WORK_ATGO_INSTRUCTION.md`, versión 2026-07-18.2. Es autosuficiente y establece: bloqueo HTTP => CONSULTOR; nunca NO DETERMINABLE ni VALIDATION GATE FALLIDO; fuente del gate = capsule local versionado; contrato ACCESS/FIN/NO_TOUCH completo; `/go` queda explícitamente como endpoint y no comando de onboarding. `/root/AGENTS.md` ahora declara que el capsule debe copiarse a las instrucciones locales de Work.
+Resultado: PASS. DisabledError ya degrada correctamente a CONSULTOR y no produce VALIDATION GATE FALLIDO, NO DETERMINABLE, sin onboarding ni reintento requerido. El salto visual de línea antes de `3:05am UTC` es wrapping de presentación y no una omisión semántica.
 
-Requisito externo inevitable: Jorge o un administrador de ChatGPT Work debe colocar el contenido del capsule en las instrucciones locales del proyecto/conversación de Work. La VM no tiene autoridad ni canal para mutar esas instrucciones privadas. Hasta hacerlo, repetir @$go en la misma configuración seguirá usando la regla vieja.
-
-Los commits remotos previos 205fe3c/d305ca0 siguen siendo mejoras válidas para agentes que sí alcanzan las fuentes, pero no constituyen la solución del bootstrap offline.
+Artefacto local de referencia: /root/CHATGPT_WORK_ATGO_INSTRUCTION.md. Los cambios remotos previos permanecen como compatibilidad para agentes con acceso web.
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -444,4 +448,4 @@ Cerrar defecto P1 de producción: cruces KO resueltos mostrando placeholders ("G
 
 ---
 
-*Mirror auto-generated 2026-07-18T19:17:46Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-18T19:23:50Z | La Garra → DFLghub/amos-context*
