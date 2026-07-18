@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-18T03:05:02Z  
+**Generated:** 2026-07-18T19:11:57Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -18,6 +18,11 @@
 **Paso 0 — autodiagnóstico obligatorio antes de intentar `@$go`:** leé [`AGENT_CAPABILITY_MATRIX.md`](https://raw.githubusercontent.com/DFLghub/amos-context/main/AGENT_CAPABILITY_MATRIX.md) primero. Es la barrera de entrada, no una referencia posterior — si tu diagnóstico dice que no tenés una capacidad, no la intentes, seguí el fallback de esa fila.
 
 Landing here for the first time? Find your profile, read your annex, obey its contract.
+
+> **ChatGPT Work / offline fallback:** `DisabledError` o `not safe to open` no significa 
+> onboarding fallido: clasifica la sesión como CONSULTOR. Usá el offline bootstrap capsule 
+> de las instrucciones de la sesión y completá el gate; si Work ofrece cloud browser, se 
+> permite antes un único intento sobre la página HTML pública del repositorio GitHub.
 
 | Perfil | ¿Sos vos? | `@$go` | `@$fin` | Anexo |
 |---|---|---|---|---|
@@ -53,7 +58,7 @@ Contrato universal para cualquier agente en el ecosistema DFL/amOS, sea cual sea
 |---|---|---|---|
 | **EJECUTOR** | curl/fetch a /go + leer anexo + search_memory('contexto DFL') | save_memory/mem_save + archivado Gate 4B + push_mirror.sh | direct |
 | **ORQUESTADOR** | fetch público del mirror/payload si la red lo permite | bitácora de relay para que un EJECUTOR cierre Gate 4B | relay |
-| **CONSULTOR** | snapshot pegado o memoria local de sesión; no intenta fetch bloqueado | RESUMEN DE SESIÓN listo para EJECUTOR/Engram | relay |
+| **CONSULTOR** | offline bootstrap capsule, snapshot pegado o memoria local; un fetch bloqueado clasifica CONSULTOR y no falla el onboarding | RESUMEN DE SESIÓN listo para EJECUTOR/Engram | relay |
 
 ---
 
@@ -77,7 +82,7 @@ Antes de operar, respondé:
 - ORQUESTADOR/CONSULTOR no reclaman escribir Engram ni correr push_mirror.sh.
 - Lista completa de superficies protegidas.
 
-**Failure rule:** Una corrección permitida. Segundo fallo: degradar a CONSULTOR o pedir EJECUTOR; no operar sobre producto ni estado DFL.
+**Failure rule:** Una corrección permitida. Segundo fallo: degradar a CONSULTOR o pedir EJECUTOR; no operar sobre producto ni estado DFL. Un bloqueo HTTP (DisabledError/not safe to open) clasifica como CONSULTOR y no constituye un onboarding fallido.
 
 ---
 
@@ -430,4 +435,4 @@ Vocabulario de Jorge: "onboarding" = arranque de sesión @$go (bootstrap DFL); "
 
 ---
 
-*Mirror auto-generated 2026-07-18T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-18T19:11:57Z | La Garra → DFLghub/amos-context*
