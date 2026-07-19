@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-18T19:23:50Z  
+**Generated:** 2026-07-19T03:05:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -306,56 +306,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### [RESOLVED] ChatGPT Work @$go — bootstrap local verificado
-**Type:** bugfix  
+### 360Eventos normalized under DDMS v0.1 canonical domain layer
+**Type:** fact  
 **Project:** dfl  
 
-TOPIC: dfl/go/chatgpt-work-local-bootstrap
-TYPE: bugfix
-STATUS: resolved
-LIFECYCLE: final
-DATE: 2026-07-18
+On 2026-07-18, /opt/360eventos was normalized under DDMS v0.1 by adding a canonical domain/ layer without modifying historical docs/discovery files, BUSINESS_LOGIC, PRPs, functional code, Supabase, Vercel, env vars, or graphify-out. Created canonical artifacts under domain/00_sources, 01_facts, 02_knowledge, 03_ontology, and 04_runtime plus RUBEN_BLOCKING_QUESTIONS_PACKET.md. Normalized counts: 52 facts, 7 inferences, 4 contradiction/review rows, 17 concepts, 14 relationships, 9 invariants, 20 events, 13 transitions, 10 policies, 17 questions (15 BLOCKING, 2 NON_BLOCKING). Validator baseline before normalization: PASS 32 / WARN 1 / FAIL 36. After normalization: FAIL, BUSINESS_LOGIC_GATE BLOCKED, PASS 58 / WARN 75 / FAIL 18. Remaining FAILs are real business blockers: 15 blocking questions, 2 blocking open contradictions, and gate blocked. Structural missing/header/source/support/runtime trace failures were eliminated.
 
-Incidente resuelto y verificado por Jorge en una conversación nueva de ChatGPT Work tras reemplazar las instrucciones personalizadas por el capsule local autosuficiente versión 2026-07-18.2.
+### DDMS v0.1 documentation installed for SFV5 and mapped to 360Eventos
+**Type:** fact  
+**Project:** dfl  
 
-Salida verificada:
-- SOURCE: instrucción local @$go — versión 2026-07-18.2
-- PROFILE: CONSULTOR porque no hay acceso HTTP verificable a las fuentes DFL
-- ACCESS: contrato uniforme; transporte por adaptador
-- FIN: relay/checkpoint; no puede escribir Engram, ejecutar comandos ni correr push_mirror.sh
-- NO_TOUCH: lista completa, incluyendo CRON 3:05am UTC y /etc/dfl-secrets
-
-Resultado: PASS. DisabledError ya degrada correctamente a CONSULTOR y no produce VALIDATION GATE FALLIDO, NO DETERMINABLE, sin onboarding ni reintento requerido. El salto visual de línea antes de `3:05am UTC` es wrapping de presentación y no una omisión semántica.
-
-Artefacto local de referencia: /root/CHATGPT_WORK_ATGO_INSTRUCTION.md. Los cambios remotos previos permanecen como compatibilidad para agentes con acceso web.
-
-### Session summary: futbolweb-app
-**Type:** session_summary  
-**Project:** futbolweb-app  
-
-## Goal
-Cerrar defecto P1 de producción: cruces KO resueltos mostrando placeholders ("Ganador Partido 95 vs 96") en /mis-pronosticos y otras superficies. Diagnóstico MCP-first, fix compartido, deploy verificado.
-
-## Instructions
-- Jorge exige codebase-memory-mcp PRIMERO para exploración de código, Read/Grep solo para verificar (funcionó: ~60-70% ahorro tokens en exploración, inventario completo de superficies vía trace_path inbound).
-- Vocabulario Jorge: "onboarding" = @$go, "outboarding" = @$fin (obs #264).
-- No crear pipelines paralelos: extraer la mínima función pura desde la autoridad existente.
-
-## Accomplished
-- Diagnóstico (obs #261, [RESOLVED]): 3 superficies consumían fixture estático sin applyKnockoutBracketAssignments: MyPredictionsClient, GrupoPage, reminder-candidates. Superficies correctas: upcoming/predict/today/oracle/ticker/api-tournament-reality.
-- Fix (obs #262): commit 2a12586 pusheado a main. `resolveWorldCupMatches` (lib/knockout-reality, pura, client-safe) + `getCompletedMatchResultsSafe` (lib/tournament-reality, degrada a []). 84/84 tests (9 nuevos), lint/build limpios. /mis-pronosticos ahora dinámica. NO tocado: puntajeTigreKnockout, scoring, Supabase, contratos.
-- Deploy verificado (obs #263): Vercel Production success 05:55:26Z, evidencia en www.futbolweb.app — partido 89 "Paraguay vs Francia", 93 "Portugal vs España", final 104 "España vs Ganador Partido 102" (SF 102 pendiente conserva placeholder).
-- Índice codebase-memory reindexado y sincronizado con HEAD 2a12586 (906 nodos/2359 edges). Nota: index_repository crasheó 2× (contenido) pero indexó bien — verificar siempre con index_status, no confiar en exit code.
-- Evaluación del "outboard estructural" propuesto por Jorge: dirección validada con ajustes (baseline arquitectónico en @$go, clasificación LOCAL/STRUCTURAL/INSTITUTIONAL como juicio asistido con señales objetivas, reindex no bloqueante, paso 9: verificación estructural de invariantes NO TOCAR vía trace_path). PENDIENTE de confirmación de Jorge para convertirlo en skill/contrato.
-
-## Next Steps
-- PROXIMO_AGENTE_DEBE: si Jorge confirma el outboard estructural, redactar skill "structural-outboard" con el diseño evaluado (baseline en @$go + delta en @$fin + verificación de invariantes protegidas).
-- Vigilar SF 102 (hoy) y final 104 (19-jul): la resolución de placeholders es ahora automática en todas las superficies, pero el cierre del torneo usa la automatización de obs #232.
-
-## Relevant Files
-- lib/knockout-reality.ts (resolveWorldCupMatches), lib/tournament-reality.ts (getCompletedMatchResultsSafe)
-- components/MyPredictionsClient.tsx, app/mis-pronosticos/page.tsx, app/match/[slug]/grupo/page.tsx, lib/reminder-candidates.ts
-- Tests: lib/knockout-reality.test.ts, lib/reminder-candidates.test.ts, components/MyPredictionsClient.test.ts
+On 2026-07-18, DDMS v0.1 documentation installation was completed without commits. In /opt/saas-factory-setup/saas-factory, templates/domain/ was added with README.md and CSV templates: FACTS, INFERENCES, OPEN_QUESTIONS, DOMAIN_CONCEPTS, DOMAIN_RELATIONSHIPS, DOMAIN_INVARIANTS, DOMAIN_EVENTS, STATE_TRANSITIONS, DOMAIN_POLICIES. Existing uploaded standard remains at docs/standards/domain-modeling/DFL_DOMAIN_MODELING_STANDARD_V0.1.md. In /opt/360eventos, docs/discovery/compatibility/DDMS_ROUTE_COMPATIBILITY_MAP.md was added mapping existing docs/discovery routes to DDMS phases. BUSINESS_LOGIC, PRPs, code, Supabase, Vercel, and graphify-out were not modified. Verdict at install time: REVISAR before adopting DDMS as mandatory pre-BUSINESS_LOGIC gate, because validators and CSV-normalized 360Eventos runtime/ontology artifacts are still gaps.
 
 ---
 
@@ -448,4 +409,4 @@ Cerrar defecto P1 de producción: cruces KO resueltos mostrando placeholders ("G
 
 ---
 
-*Mirror auto-generated 2026-07-18T19:23:50Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-19T03:05:02Z | La Garra → DFLghub/amos-context*
