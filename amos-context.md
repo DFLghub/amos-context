@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-19T22:51:00Z  
+**Generated:** 2026-07-19T22:56:09Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,12 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### 360Eventos Case Zero autonomous resolution baseline
+**Type:** decision  
+**Project:** dfl  
+
+On 2026-07-19, 360Eventos Case Zero produced an autonomous resolution baseline in /opt/360eventos/docs/case-zero/autonomous-resolution-baseline-2026-07-19 and committed it as 501bf5f docs(360eventos): add autonomous resolution baseline. The packet operationally corrected the Decision Packet model for Jorge as solo-preneur: human decision sessions are not blocking FS-01 continuation; non-strategic reversible decisions are resolved by domain logic, simplicity, reversibility, product coherence, and credible synthetic data. Canonical semantics are SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, and COTIZACION; PRECOTIZACION is recorded as an incorrect agent inference, not a business object. Deliverables include autonomous resolutions, synthetic test data plan, implementation readiness, Jorge-only decisions (max 3), and a technical reconciliation plan for DRG-001, FS-01, and migration-10. No functional code, migrations, live data, infrastructure, secrets, or NO_TOUCH zones were modified.
+
 ### DRG-001 emitido: cierre normativo FS-01 360Eventos (mapeo legacy, sunset dual-write, AuthZ oficial, atomicidad, impacto FS-02/03)
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -171,23 +177,6 @@ Context: Visualizer v0.1 was already technically homologated and passed Jorge's 
 Correction: npm run dev now coordinates backend and frontend through scripts/dev.mjs.
 Validation: host/port propagation, SIGINT shutdown, port release, frontend bind failure handling, and absence of relevant orphan Visualizer processes were validated. Evidence: evidence/dev-entrypoint-fix/VALIDATION.md.
 Final state: tree clean; no product functionality or protected zones modified by Codex during closure. Claude Code completed the code/evidence but hit session limit before Engram; Codex completed institutional closure.
-
-### [FINAL] Visualizer focused final reaudit GO
-**Type:** decision  
-**Project:** dfl  
-
-LIFECYCLE: final
-Date: 2026-07-14
-Scope: Final focused adversarial reaudit of Visualizer remediation.
-Target commit audited: 26312584773ae4854f455856e0c6438ec3630e25
-Original audited base: b1b81e755c4a3120a05d0d0b4fb4a7de4e5e6cac
-Harness branch/worktree: audit/focused-reaudit at /opt/visualizer-codex-audit
-Verdict literal from /opt/visualizer-codex-audit/evidence/reaudit-codex-final/VERDICT.md: GO
-Contract results: Honest reversibility PASS; Institutional traceability PASS; Layout and complete export PASS; Corruption recovery PASS.
-Audit commits: 24dc0ab, b86a112, 635feeb, f5e993c, c8a5362, 57c1b7a, b841ff6.
-Residual risks: approval.by is declarative; one lint warning; stale README origin wording; export remains browser-driven.
-Next gate: Jorge human test from the iMac before institutional publication.
-Restrictions honored: did not modify product, did not merge, did not push Visualizer repository.
 
 ### Visualizer v0.1 remediado: 4 bloqueantes NO-GO cerrados (rama remediation/visualizer-v01, 83/83 tests)
 **Type:** decision  
@@ -311,17 +300,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### 360Eventos Case Zero autonomous resolution baseline
+**Type:** decision  
+**Project:** dfl  
+
+On 2026-07-19, 360Eventos Case Zero produced an autonomous resolution baseline in /opt/360eventos/docs/case-zero/autonomous-resolution-baseline-2026-07-19 and committed it as 501bf5f docs(360eventos): add autonomous resolution baseline. The packet operationally corrected the Decision Packet model for Jorge as solo-preneur: human decision sessions are not blocking FS-01 continuation; non-strategic reversible decisions are resolved by domain logic, simplicity, reversibility, product coherence, and credible synthetic data. Canonical semantics are SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, and COTIZACION; PRECOTIZACION is recorded as an incorrect agent inference, not a business object. Deliverables include autonomous resolutions, synthetic test data plan, implementation readiness, Jorge-only decisions (max 3), and a technical reconciliation plan for DRG-001, FS-01, and migration-10. No functional code, migrations, live data, infrastructure, secrets, or NO_TOUCH zones were modified.
+
 ### 360Eventos Case Zero decision packet created
 **Type:** fact  
 **Project:** dfl  
 
 On 2026-07-19, the 360Eventos Case Zero Decision Packet was created under /opt/360eventos/docs/case-zero/decision-packet-2026-07-19 and committed as 27cfc46 (docs(360eventos): add Case Zero human decision packet). It consolidates 38 triangulation questions into 10 principal decisions, separates 17 factual inputs, 6 technical validations, 2 external requirements and 4 deferred implementation items, and marks readiness as READY_FOR_DECISION_SESSIONS. Mandatory domain correction applied: PRECOTIZACION was removed as an incorrect agent inference; canonical cycle is SOLICITUD_DE_COTIZACION -> COTIZACION, with missing information handled as REQUIERE_INFORMACION on the request, not as an intermediate object.
-
-### 360Eventos Case Zero triangulation dossier created
-**Type:** fact  
-**Project:** dfl  
-
-On 2026-07-19, a Case Zero 360Eventos primary-inspection triangulation dossier was created under /opt/360eventos/docs/case-zero/triangulation-2026-07-19 and committed as dfbb54e (docs(360eventos): add Case Zero triangulation dossier). Verdict: PARTIALLY_READY. The dossier contains 28 properties, 12 contradictions, 11 authority-map rows, 45 source-register rows, and open questions grouped by authority. Key findings: DRG-001 supersedes migration-10; live Supabase rows were not accessible via read-only audit; request/quote semantic separation is central; current FS-01 worktree remains uncommitted/preexisting and was not included in the dossier commit.
 
 ---
 
@@ -414,4 +403,4 @@ On 2026-07-19, a Case Zero 360Eventos primary-inspection triangulation dossier w
 
 ---
 
-*Mirror auto-generated 2026-07-19T22:51:00Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-19T22:56:09Z | La Garra → DFLghub/amos-context*
