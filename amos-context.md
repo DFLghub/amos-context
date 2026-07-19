@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-19T03:05:02Z  
+**Generated:** 2026-07-19T03:05:11Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -398,15 +398,15 @@ On 2026-07-18, DDMS v0.1 documentation installation was completed without commit
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 1.3245  
+**Graph entropy:** 1.2297  
 
-- **Community 11** (77 nodes): Estado real de la casa, Onboarding multi-agente, Engram Cloud en VM2
-- **Community 0** (12 nodes): amOS, agLego, HI
-- **Community 1** (8 nodes): Tránsitos programados, Salud Estratégica, Decisiones Pendientes
-- **Community 2** (8 nodes): Soberana - Gobernadora / Reductora, n8n, DO-INVENTORY
-- **Community 3** (7 nodes): Metabolismo, Marco de Medición del Impacto, Fisiología Operacional
-- **Community 4** (4 nodes): Soberanía de SaaS Factory V5, Clasificación de patrones externos
+- **Community 11** (83 nodes): SaaS Factory V5, NBLM2, Estado real de la casa
+- **Community 0** (11 nodes): amOS, agLego, HI
+- **Community 1** (7 nodes): Clasificación de patrones externos, Tránsitos programados, Salud Estratégica
+- **Community 2** (6 nodes): Engram, Sync Cloud, Google Cloud
+- **Community 3** (5 nodes): Capacidades Insuficientemente Verificadas
+- **Community 4** (4 nodes): Matriz de Contención Operacional
 
 ---
 
-*Mirror auto-generated 2026-07-19T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-19T03:05:11Z | La Garra → DFLghub/amos-context*
