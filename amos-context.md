@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-19T22:56:09Z  
+**Generated:** 2026-07-19T23:04:38Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,12 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### 360Eventos MVP V2 greenfield strategy on SaaS Factory
+**Type:** decision  
+**Project:** dfl  
+
+On 2026-07-19, 360Eventos was reoriented from patching the legacy MVP to building a new MVP V2 using the SaaS Factory checkout at /opt/saas-factory-setup/saas-factory as a greenfield base. Documentation was created under /opt/360eventos/docs/mvp-v2/2026-07-19-greenfield-strategy and committed as b766e37 docs(360eventos): define MVP V2 greenfield strategy. Decision: use SFV5 candidate as READY_AS_GREENFIELD_BASE_WITH_GUARDRAILS, treat /opt/360eventos legacy as read-only reference, do not continue FS-01 patching, do not apply migration-10, and transfer only domain semantics, rules, synthetic scenarios and selected lessons. Canonical semantics: SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, COTIZACION; PRECOTIZACION does not exist and must not appear except as a forbidden legacy term. No functional code, data, Supabase, Vercel, infrastructure, migrations, secrets or NO_TOUCH zones were modified.
+
 ### 360Eventos Case Zero autonomous resolution baseline
 **Type:** decision  
 **Project:** dfl  
@@ -162,21 +168,6 @@ DATE: 2026-07-15
 **No tocado**: puntajeTigreKnockout, scoring, Supabase schema/data, contratos de predicción, superficies ya correctas (upcoming/predict/today/oracle).
 
 **Pendiente**: verificar deploy Vercel del commit 2a12586 en producción.
-
-### [FINAL] Visualizer dev entrypoint fix closed
-**Type:** decision  
-**Project:** dfl  
-
-LIFECYCLE: final
-Date: 2026-07-14
-Repository: /opt/visualizer
-Branch verified: fix/visualizer-dev-entrypoint
-HEAD verified: e262088
-Commits verified: 42b18a5 — fix: restore canonical visualizer dev entrypoint; e262088 — test: validate coordinated dev lifecycle.
-Context: Visualizer v0.1 was already technically homologated and passed Jorge's human gate. A later operational defect was found: npm run dev pointed to missing scripts/dev.mjs.
-Correction: npm run dev now coordinates backend and frontend through scripts/dev.mjs.
-Validation: host/port propagation, SIGINT shutdown, port release, frontend bind failure handling, and absence of relevant orphan Visualizer processes were validated. Evidence: evidence/dev-entrypoint-fix/VALIDATION.md.
-Final state: tree clean; no product functionality or protected zones modified by Codex during closure. Claude Code completed the code/evidence but hit session limit before Engram; Codex completed institutional closure.
 
 ### Visualizer v0.1 remediado: 4 bloqueantes NO-GO cerrados (rama remediation/visualizer-v01, 83/83 tests)
 **Type:** decision  
@@ -300,17 +291,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### 360Eventos MVP V2 greenfield strategy on SaaS Factory
+**Type:** decision  
+**Project:** dfl  
+
+On 2026-07-19, 360Eventos was reoriented from patching the legacy MVP to building a new MVP V2 using the SaaS Factory checkout at /opt/saas-factory-setup/saas-factory as a greenfield base. Documentation was created under /opt/360eventos/docs/mvp-v2/2026-07-19-greenfield-strategy and committed as b766e37 docs(360eventos): define MVP V2 greenfield strategy. Decision: use SFV5 candidate as READY_AS_GREENFIELD_BASE_WITH_GUARDRAILS, treat /opt/360eventos legacy as read-only reference, do not continue FS-01 patching, do not apply migration-10, and transfer only domain semantics, rules, synthetic scenarios and selected lessons. Canonical semantics: SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, COTIZACION; PRECOTIZACION does not exist and must not appear except as a forbidden legacy term. No functional code, data, Supabase, Vercel, infrastructure, migrations, secrets or NO_TOUCH zones were modified.
+
 ### 360Eventos Case Zero autonomous resolution baseline
 **Type:** decision  
 **Project:** dfl  
 
 On 2026-07-19, 360Eventos Case Zero produced an autonomous resolution baseline in /opt/360eventos/docs/case-zero/autonomous-resolution-baseline-2026-07-19 and committed it as 501bf5f docs(360eventos): add autonomous resolution baseline. The packet operationally corrected the Decision Packet model for Jorge as solo-preneur: human decision sessions are not blocking FS-01 continuation; non-strategic reversible decisions are resolved by domain logic, simplicity, reversibility, product coherence, and credible synthetic data. Canonical semantics are SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, and COTIZACION; PRECOTIZACION is recorded as an incorrect agent inference, not a business object. Deliverables include autonomous resolutions, synthetic test data plan, implementation readiness, Jorge-only decisions (max 3), and a technical reconciliation plan for DRG-001, FS-01, and migration-10. No functional code, migrations, live data, infrastructure, secrets, or NO_TOUCH zones were modified.
-
-### 360Eventos Case Zero decision packet created
-**Type:** fact  
-**Project:** dfl  
-
-On 2026-07-19, the 360Eventos Case Zero Decision Packet was created under /opt/360eventos/docs/case-zero/decision-packet-2026-07-19 and committed as 27cfc46 (docs(360eventos): add Case Zero human decision packet). It consolidates 38 triangulation questions into 10 principal decisions, separates 17 factual inputs, 6 technical validations, 2 external requirements and 4 deferred implementation items, and marks readiness as READY_FOR_DECISION_SESSIONS. Mandatory domain correction applied: PRECOTIZACION was removed as an incorrect agent inference; canonical cycle is SOLICITUD_DE_COTIZACION -> COTIZACION, with missing information handled as REQUIERE_INFORMACION on the request, not as an intermediate object.
 
 ---
 
@@ -403,4 +394,4 @@ On 2026-07-19, the 360Eventos Case Zero Decision Packet was created under /opt/3
 
 ---
 
-*Mirror auto-generated 2026-07-19T22:56:09Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-19T23:04:38Z | La Garra → DFLghub/amos-context*
