@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-19T03:05:11Z  
+**Generated:** 2026-07-19T15:15:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -306,17 +306,24 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### 360Eventos FS-01: riesgos arquitectónicos detectados en revisión read-only (cerrada→RECIBIDA, migración vs PRP, roles DDMS irrepresentables)
+**Type:** discovery  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/360eventos/fs01-arch-review
+TYPE: discovery
+STATUS: active
+DATE: 2026-07-19
+
+**What**: Revisión arquitectónica read-only de 360Eventos (FS-01 in-flight, migración-10 pendiente) mientras Codex audita. Hallazgos críticos: (1) migration-10 deja `cerrada` sin mapear pero `mapHistoricEstado()` hace fallback a RECIBIDA → solicitudes históricas cerradas resucitarían en la bandeja; (2) migration-10 mapea en_revision/cancelada automáticamente contradiciendo la tabla de compatibilidad del PRP-003 ("según datos"/"requiere revisión") y crea filas PENDIENTE_INFORMACION sin nota y RECHAZADA sin motivo (violan las validaciones de la propia slice); (3) dual-write CALIFICADA→'cotizada' contamina semántica legacy; (4) profiles.role CHECK ('admin','cliente') hace irrepresentables ADMINISTRADOR/COMERCIAL que isInternalProfile ya acepta; RLS es letra muerta porque todo usa service role; (5) docs/ y domain/ (capa DDMS canónica completa) están UNTRACKED en git; domain/05-07 vacíos con artefactos en rutas legacy; (6) cotizaciones histórica (migration-05) sin versionado y con 'aprobada' que confunde aceptación con confirmación → no sirve para FS-03; (7) update de estado + insert de historial no atómicos.
+
+**Next**: Informe ejecutivo entregado a Jorge (fortalezas/riesgos/decisiones/recomendaciones FS-02). Espero instrucciones; nada modificado, sin commits.
+
 ### 360Eventos normalized under DDMS v0.1 canonical domain layer
 **Type:** fact  
 **Project:** dfl  
 
 On 2026-07-18, /opt/360eventos was normalized under DDMS v0.1 by adding a canonical domain/ layer without modifying historical docs/discovery files, BUSINESS_LOGIC, PRPs, functional code, Supabase, Vercel, env vars, or graphify-out. Created canonical artifacts under domain/00_sources, 01_facts, 02_knowledge, 03_ontology, and 04_runtime plus RUBEN_BLOCKING_QUESTIONS_PACKET.md. Normalized counts: 52 facts, 7 inferences, 4 contradiction/review rows, 17 concepts, 14 relationships, 9 invariants, 20 events, 13 transitions, 10 policies, 17 questions (15 BLOCKING, 2 NON_BLOCKING). Validator baseline before normalization: PASS 32 / WARN 1 / FAIL 36. After normalization: FAIL, BUSINESS_LOGIC_GATE BLOCKED, PASS 58 / WARN 75 / FAIL 18. Remaining FAILs are real business blockers: 15 blocking questions, 2 blocking open contradictions, and gate blocked. Structural missing/header/source/support/runtime trace failures were eliminated.
-
-### DDMS v0.1 documentation installed for SFV5 and mapped to 360Eventos
-**Type:** fact  
-**Project:** dfl  
-
-On 2026-07-18, DDMS v0.1 documentation installation was completed without commits. In /opt/saas-factory-setup/saas-factory, templates/domain/ was added with README.md and CSV templates: FACTS, INFERENCES, OPEN_QUESTIONS, DOMAIN_CONCEPTS, DOMAIN_RELATIONSHIPS, DOMAIN_INVARIANTS, DOMAIN_EVENTS, STATE_TRANSITIONS, DOMAIN_POLICIES. Existing uploaded standard remains at docs/standards/domain-modeling/DFL_DOMAIN_MODELING_STANDARD_V0.1.md. In /opt/360eventos, docs/discovery/compatibility/DDMS_ROUTE_COMPATIBILITY_MAP.md was added mapping existing docs/discovery routes to DDMS phases. BUSINESS_LOGIC, PRPs, code, Supabase, Vercel, and graphify-out were not modified. Verdict at install time: REVISAR before adopting DDMS as mandatory pre-BUSINESS_LOGIC gate, because validators and CSV-normalized 360Eventos runtime/ontology artifacts are still gaps.
 
 ---
 
@@ -409,4 +416,4 @@ On 2026-07-18, DDMS v0.1 documentation installation was completed without commit
 
 ---
 
-*Mirror auto-generated 2026-07-19T03:05:11Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-19T15:15:02Z | La Garra → DFLghub/amos-context*
