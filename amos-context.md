@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-19T22:23:13Z  
+**Generated:** 2026-07-19T22:51:00Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -311,26 +311,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### 360Eventos Case Zero decision packet created
+**Type:** fact  
+**Project:** dfl  
+
+On 2026-07-19, the 360Eventos Case Zero Decision Packet was created under /opt/360eventos/docs/case-zero/decision-packet-2026-07-19 and committed as 27cfc46 (docs(360eventos): add Case Zero human decision packet). It consolidates 38 triangulation questions into 10 principal decisions, separates 17 factual inputs, 6 technical validations, 2 external requirements and 4 deferred implementation items, and marks readiness as READY_FOR_DECISION_SESSIONS. Mandatory domain correction applied: PRECOTIZACION was removed as an incorrect agent inference; canonical cycle is SOLICITUD_DE_COTIZACION -> COTIZACION, with missing information handled as REQUIERE_INFORMACION on the request, not as an intermediate object.
+
 ### 360Eventos Case Zero triangulation dossier created
 **Type:** fact  
 **Project:** dfl  
 
 On 2026-07-19, a Case Zero 360Eventos primary-inspection triangulation dossier was created under /opt/360eventos/docs/case-zero/triangulation-2026-07-19 and committed as dfbb54e (docs(360eventos): add Case Zero triangulation dossier). Verdict: PARTIALLY_READY. The dossier contains 28 properties, 12 contradictions, 11 authority-map rows, 45 source-register rows, and open questions grouped by authority. Key findings: DRG-001 supersedes migration-10; live Supabase rows were not accessible via read-only audit; request/quote semantic separation is central; current FS-01 worktree remains uncommitted/preexisting and was not included in the dossier commit.
-
-### DRG-001 emitido: cierre normativo FS-01 360Eventos (mapeo legacy, sunset dual-write, AuthZ oficial, atomicidad, impacto FS-02/03)
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/360eventos/drg-001-fs01-closure
-TYPE: decision
-STATUS: active
-DATE: 2026-07-19
-
-**What**: DRG-001 emitido — documento normativo de cierre de FS-01 en /opt/360eventos/docs/architecture/DRG-001-FS01-CLOSURE.md (sin commit; misión "no escribas código" cumplida: solo documento). Decisiones vinculantes: D1 mapeo legacy definitivo (nueva→RECIBIDA, en_revision→RECIBIDA porque PENDIENTE_INFORMACION exigiría nota inexistente, cotizada→CALIFICADA, cerrada→ARCHIVADA_LEGACY [valor terminal nuevo fuera de la máquina de estados], cancelada→RECHAZADA con motivo literal de migración; fallback silencioso a RECIBIDA PROHIBIDO). D2 filas irregulares → estado_ddms NULL + "requiere revisión de datos"; con datos reales de cliente toda migración de estados exige revisión humana nominal. D3 sunset: estado_ddms única verdad; estado legacy congelado read-only en migration-11, drop físico al cierre de FS-03; CALIFICADA→'cotizada' abolido. D4 dual-write prohibido como patrón; servicios congelada; cotizaciones (migration-05) declarada muerta para FS-03. D5 AuthZ de aplicación primaria + RLS honesta (correcta o eliminada); roles DDMS migran YA en profiles CHECK (admin→ADMINISTRADOR); INSERT anónimo muerto se elimina. D6 atomicidad: cambio de estado + historial en una transacción vía RPC Postgres; aplica a toda entidad con estado del proyecto; calificar NO re-valida fecha_evento pasada. D7 FS-02 tablas nuevas + snapshot service como gate de salida + enums en src/domain/ único; FS-03 versionado nativo + secuencias. Condiciones de cierre FS-01 bloquean FS-02, incluida la obligación de versionar docs/ y domain/ en git. migration-10 SUPERSEDIDA.
-
-**Why**: Jorge ordenó misión DRG-001 (Architecture Review Board, decisiones no opciones) tras el informe de riesgos de la revisión read-only (obs #269). Evidencia habilitante de mapeos incondicionales: CLIENT_PRODUCTION_GATE BLOCKED + datos solo demo.
-
-**Next**: migration-11 debe redactarse conforme a DRG-001 y aplicarse solo con autorización explícita de Jorge; Codex auditando migración en paralelo debe recibir DRG-001 como norma superior a migration-10.
 
 ---
 
@@ -423,4 +414,4 @@ DATE: 2026-07-19
 
 ---
 
-*Mirror auto-generated 2026-07-19T22:23:13Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-19T22:51:00Z | La Garra → DFLghub/amos-context*
