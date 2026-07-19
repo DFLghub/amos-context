@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-19T15:30:02Z  
+**Generated:** 2026-07-19T22:23:13Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -311,6 +311,12 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### 360Eventos Case Zero triangulation dossier created
+**Type:** fact  
+**Project:** dfl  
+
+On 2026-07-19, a Case Zero 360Eventos primary-inspection triangulation dossier was created under /opt/360eventos/docs/case-zero/triangulation-2026-07-19 and committed as dfbb54e (docs(360eventos): add Case Zero triangulation dossier). Verdict: PARTIALLY_READY. The dossier contains 28 properties, 12 contradictions, 11 authority-map rows, 45 source-register rows, and open questions grouped by authority. Key findings: DRG-001 supersedes migration-10; live Supabase rows were not accessible via read-only audit; request/quote semantic separation is central; current FS-01 worktree remains uncommitted/preexisting and was not included in the dossier commit.
+
 ### DRG-001 emitido: cierre normativo FS-01 360Eventos (mapeo legacy, sunset dual-write, AuthZ oficial, atomicidad, impacto FS-02/03)
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -325,19 +331,6 @@ DATE: 2026-07-19
 **Why**: Jorge ordenó misión DRG-001 (Architecture Review Board, decisiones no opciones) tras el informe de riesgos de la revisión read-only (obs #269). Evidencia habilitante de mapeos incondicionales: CLIENT_PRODUCTION_GATE BLOCKED + datos solo demo.
 
 **Next**: migration-11 debe redactarse conforme a DRG-001 y aplicarse solo con autorización explícita de Jorge; Codex auditando migración en paralelo debe recibir DRG-001 como norma superior a migration-10.
-
-### 360Eventos FS-01: riesgos arquitectónicos detectados en revisión read-only (cerrada→RECIBIDA, migración vs PRP, roles DDMS irrepresentables)
-**Type:** discovery  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/360eventos/fs01-arch-review
-TYPE: discovery
-STATUS: active
-DATE: 2026-07-19
-
-**What**: Revisión arquitectónica read-only de 360Eventos (FS-01 in-flight, migración-10 pendiente) mientras Codex audita. Hallazgos críticos: (1) migration-10 deja `cerrada` sin mapear pero `mapHistoricEstado()` hace fallback a RECIBIDA → solicitudes históricas cerradas resucitarían en la bandeja; (2) migration-10 mapea en_revision/cancelada automáticamente contradiciendo la tabla de compatibilidad del PRP-003 ("según datos"/"requiere revisión") y crea filas PENDIENTE_INFORMACION sin nota y RECHAZADA sin motivo (violan las validaciones de la propia slice); (3) dual-write CALIFICADA→'cotizada' contamina semántica legacy; (4) profiles.role CHECK ('admin','cliente') hace irrepresentables ADMINISTRADOR/COMERCIAL que isInternalProfile ya acepta; RLS es letra muerta porque todo usa service role; (5) docs/ y domain/ (capa DDMS canónica completa) están UNTRACKED en git; domain/05-07 vacíos con artefactos en rutas legacy; (6) cotizaciones histórica (migration-05) sin versionado y con 'aprobada' que confunde aceptación con confirmación → no sirve para FS-03; (7) update de estado + insert de historial no atómicos.
-
-**Next**: Informe ejecutivo entregado a Jorge (fortalezas/riesgos/decisiones/recomendaciones FS-02). Espero instrucciones; nada modificado, sin commits.
 
 ---
 
@@ -430,4 +423,4 @@ DATE: 2026-07-19
 
 ---
 
-*Mirror auto-generated 2026-07-19T15:30:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-19T22:23:13Z | La Garra → DFLghub/amos-context*
