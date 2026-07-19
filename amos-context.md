@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-19T15:15:02Z  
+**Generated:** 2026-07-19T15:30:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,21 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### DRG-001 emitido: cierre normativo FS-01 360Eventos (mapeo legacy, sunset dual-write, AuthZ oficial, atomicidad, impacto FS-02/03)
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/360eventos/drg-001-fs01-closure
+TYPE: decision
+STATUS: active
+DATE: 2026-07-19
+
+**What**: DRG-001 emitido — documento normativo de cierre de FS-01 en /opt/360eventos/docs/architecture/DRG-001-FS01-CLOSURE.md (sin commit; misión "no escribas código" cumplida: solo documento). Decisiones vinculantes: D1 mapeo legacy definitivo (nueva→RECIBIDA, en_revision→RECIBIDA porque PENDIENTE_INFORMACION exigiría nota inexistente, cotizada→CALIFICADA, cerrada→ARCHIVADA_LEGACY [valor terminal nuevo fuera de la máquina de estados], cancelada→RECHAZADA con motivo literal de migración; fallback silencioso a RECIBIDA PROHIBIDO). D2 filas irregulares → estado_ddms NULL + "requiere revisión de datos"; con datos reales de cliente toda migración de estados exige revisión humana nominal. D3 sunset: estado_ddms única verdad; estado legacy congelado read-only en migration-11, drop físico al cierre de FS-03; CALIFICADA→'cotizada' abolido. D4 dual-write prohibido como patrón; servicios congelada; cotizaciones (migration-05) declarada muerta para FS-03. D5 AuthZ de aplicación primaria + RLS honesta (correcta o eliminada); roles DDMS migran YA en profiles CHECK (admin→ADMINISTRADOR); INSERT anónimo muerto se elimina. D6 atomicidad: cambio de estado + historial en una transacción vía RPC Postgres; aplica a toda entidad con estado del proyecto; calificar NO re-valida fecha_evento pasada. D7 FS-02 tablas nuevas + snapshot service como gate de salida + enums en src/domain/ único; FS-03 versionado nativo + secuencias. Condiciones de cierre FS-01 bloquean FS-02, incluida la obligación de versionar docs/ y domain/ en git. migration-10 SUPERSEDIDA.
+
+**Why**: Jorge ordenó misión DRG-001 (Architecture Review Board, decisiones no opciones) tras el informe de riesgos de la revisión read-only (obs #269). Evidencia habilitante de mapeos incondicionales: CLIENT_PRODUCTION_GATE BLOCKED + datos solo demo.
+
+**Next**: migration-11 debe redactarse conforme a DRG-001 y aplicarse solo con autorización explícita de Jorge; Codex auditando migración en paralelo debe recibir DRG-001 como norma superior a migration-10.
+
 **Type:** decision  
 **Project:** futbolweb-app  
 
@@ -190,16 +205,6 @@ DATE: 2026-07-14
 **Evidence**: Suite 40→83 tests PASS; lint/typecheck/build 0; npm ci limpio; loopback 127.0.0.1:4310 verificado; npm audit runtime 0 vulnerabilidades (5 findings toolchain vite/vitest documentados, majors no forzados). Evidencia en /opt/visualizer/evidence/remediation-cc/ (WORKLOG.md, VALIDATION.md, REMAINING_RISKS.md, CASO_CERO_TRACEABILITY.md, exports validados 4 vistas).
 
 **Next**: (1) Jorge: revisión visual de las 4 vistas en iMac/tablet vía túnel SSH (README) con fixture ya reclasificado como proposed; (2) aportar fuentes doctrinales reales como sources del Caso Cero y aprobar elementos con registro; (3) upgrade planificado vite@8+vitest@4 con la suite como red; (4) NO avanzar a Business Genoma sin nueva orden.
-
-### Link demo enviado a Rubén — modo prueba, no oferta comercial
-**Type:** decision  
-**Project:** 360eventos  
-
-**Qué**: Jorge confirmó que ya envió el link de https://360eventos.vercel.app a Rubén, explícitamente para que "abra y mire el demo funcional (agMVP) — un producto mínimo viable PERO FUNCIONAL". Lo enmarca como "Prueba" (test), no como oferta comercial.
-
-**Impacto en Price Authority**: esto NO es una confirmación de Nivel 0B (catálogo comercial oficialmente aprobado). Sigue pendiente. El catálogo de 8 servicios reales en Supabase sigue siendo Nivel 0A (real vivo, válido para demo), usado aquí explícitamente en modo demo/prueba para Rubén, consistente con la política definida en FOF_CASE_01_360EVENTOS_PRICE_AUTHORITY_AND_SERVICE_TIERS.md (ready_to_send demo, no comercial).
-
-**Why**: Jorge quiere que quede claro que el criterio de éxito ahora mismo es "MVP funcional demostrable", no "catálogo comercial validado". No se requiere ninguna acción adicional de mi parte — es una actualización de estado del Caso 01, no una nueva misión.
 
 ---
 
@@ -306,6 +311,21 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### DRG-001 emitido: cierre normativo FS-01 360Eventos (mapeo legacy, sunset dual-write, AuthZ oficial, atomicidad, impacto FS-02/03)
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/360eventos/drg-001-fs01-closure
+TYPE: decision
+STATUS: active
+DATE: 2026-07-19
+
+**What**: DRG-001 emitido — documento normativo de cierre de FS-01 en /opt/360eventos/docs/architecture/DRG-001-FS01-CLOSURE.md (sin commit; misión "no escribas código" cumplida: solo documento). Decisiones vinculantes: D1 mapeo legacy definitivo (nueva→RECIBIDA, en_revision→RECIBIDA porque PENDIENTE_INFORMACION exigiría nota inexistente, cotizada→CALIFICADA, cerrada→ARCHIVADA_LEGACY [valor terminal nuevo fuera de la máquina de estados], cancelada→RECHAZADA con motivo literal de migración; fallback silencioso a RECIBIDA PROHIBIDO). D2 filas irregulares → estado_ddms NULL + "requiere revisión de datos"; con datos reales de cliente toda migración de estados exige revisión humana nominal. D3 sunset: estado_ddms única verdad; estado legacy congelado read-only en migration-11, drop físico al cierre de FS-03; CALIFICADA→'cotizada' abolido. D4 dual-write prohibido como patrón; servicios congelada; cotizaciones (migration-05) declarada muerta para FS-03. D5 AuthZ de aplicación primaria + RLS honesta (correcta o eliminada); roles DDMS migran YA en profiles CHECK (admin→ADMINISTRADOR); INSERT anónimo muerto se elimina. D6 atomicidad: cambio de estado + historial en una transacción vía RPC Postgres; aplica a toda entidad con estado del proyecto; calificar NO re-valida fecha_evento pasada. D7 FS-02 tablas nuevas + snapshot service como gate de salida + enums en src/domain/ único; FS-03 versionado nativo + secuencias. Condiciones de cierre FS-01 bloquean FS-02, incluida la obligación de versionar docs/ y domain/ en git. migration-10 SUPERSEDIDA.
+
+**Why**: Jorge ordenó misión DRG-001 (Architecture Review Board, decisiones no opciones) tras el informe de riesgos de la revisión read-only (obs #269). Evidencia habilitante de mapeos incondicionales: CLIENT_PRODUCTION_GATE BLOCKED + datos solo demo.
+
+**Next**: migration-11 debe redactarse conforme a DRG-001 y aplicarse solo con autorización explícita de Jorge; Codex auditando migración en paralelo debe recibir DRG-001 como norma superior a migration-10.
+
 ### 360Eventos FS-01: riesgos arquitectónicos detectados en revisión read-only (cerrada→RECIBIDA, migración vs PRP, roles DDMS irrepresentables)
 **Type:** discovery  
 **Project:** dfl-knowledge  
@@ -318,12 +338,6 @@ DATE: 2026-07-19
 **What**: Revisión arquitectónica read-only de 360Eventos (FS-01 in-flight, migración-10 pendiente) mientras Codex audita. Hallazgos críticos: (1) migration-10 deja `cerrada` sin mapear pero `mapHistoricEstado()` hace fallback a RECIBIDA → solicitudes históricas cerradas resucitarían en la bandeja; (2) migration-10 mapea en_revision/cancelada automáticamente contradiciendo la tabla de compatibilidad del PRP-003 ("según datos"/"requiere revisión") y crea filas PENDIENTE_INFORMACION sin nota y RECHAZADA sin motivo (violan las validaciones de la propia slice); (3) dual-write CALIFICADA→'cotizada' contamina semántica legacy; (4) profiles.role CHECK ('admin','cliente') hace irrepresentables ADMINISTRADOR/COMERCIAL que isInternalProfile ya acepta; RLS es letra muerta porque todo usa service role; (5) docs/ y domain/ (capa DDMS canónica completa) están UNTRACKED en git; domain/05-07 vacíos con artefactos en rutas legacy; (6) cotizaciones histórica (migration-05) sin versionado y con 'aprobada' que confunde aceptación con confirmación → no sirve para FS-03; (7) update de estado + insert de historial no atómicos.
 
 **Next**: Informe ejecutivo entregado a Jorge (fortalezas/riesgos/decisiones/recomendaciones FS-02). Espero instrucciones; nada modificado, sin commits.
-
-### 360Eventos normalized under DDMS v0.1 canonical domain layer
-**Type:** fact  
-**Project:** dfl  
-
-On 2026-07-18, /opt/360eventos was normalized under DDMS v0.1 by adding a canonical domain/ layer without modifying historical docs/discovery files, BUSINESS_LOGIC, PRPs, functional code, Supabase, Vercel, env vars, or graphify-out. Created canonical artifacts under domain/00_sources, 01_facts, 02_knowledge, 03_ontology, and 04_runtime plus RUBEN_BLOCKING_QUESTIONS_PACKET.md. Normalized counts: 52 facts, 7 inferences, 4 contradiction/review rows, 17 concepts, 14 relationships, 9 invariants, 20 events, 13 transitions, 10 policies, 17 questions (15 BLOCKING, 2 NON_BLOCKING). Validator baseline before normalization: PASS 32 / WARN 1 / FAIL 36. After normalization: FAIL, BUSINESS_LOGIC_GATE BLOCKED, PASS 58 / WARN 75 / FAIL 18. Remaining FAILs are real business blockers: 15 blocking questions, 2 blocking open contradictions, and gate blocked. Structural missing/header/source/support/runtime trace failures were eliminated.
 
 ---
 
@@ -416,4 +430,4 @@ On 2026-07-18, /opt/360eventos was normalized under DDMS v0.1 by adding a canoni
 
 ---
 
-*Mirror auto-generated 2026-07-19T15:15:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-19T15:30:02Z | La Garra → DFLghub/amos-context*
