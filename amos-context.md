@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-21T01:06:01Z  
+**Generated:** 2026-07-21T02:04:08Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,17 +101,39 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Checkpoint @$fin — SFV5→V6 Business OS + JPI MVP rebuild (sesión abierta, no cerrada)
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Sesión Claude Code (EJECUTOR) sobre /opt/futbolweb, trabajando cross-proyecto por pedido de Jorge. Cadena de misiones ejecutada en este orden:
+1. `@$go` bootstrap — perfil EJECUTOR confirmado vía /go local (127.0.0.1:8091) + anexo agents/ejecutor.md.
+2. Auditoría de factibilidad SFV5→V6 (fork) → `/opt/experiments/SFV5_TO_V6_FEASIBILITY.md`. Veredicto: GO parcial (mecanismo base viable; conectores Telegram/WhatsApp/Gmail NO-GO por falta de código base).
+3. Misión 02 (fork) — piloto aislado del Business OS en `/opt/experiments/sfv5-business-os-pilot/`. PASS, 17/17 tests. Sin commits (no pedidos). Reporte: `/opt/experiments/SFV5_BUSINESS_OS_PILOT_REPORT.md`.
+4. Misión 03 (fork) — build soberano del Business OS sobre `/opt/360eventos` (autorización explícita de Jorge para modificar 360eventos completo, revocando restricción previa; ver **Learned**). PASS, 7/7 tests. Commit local `78cfdf0`. Reporte: `/opt/experiments/SFV5_BUSINESS_OS_360EVENTOS_REPORT.md`.
+5. Misión 04 (fork) — reconstrucción del MVP Transporte/Eventos JPI usando fuentes reales (catálogo digital de Rubén + docs DDMS), reemplazando oferta inventada anterior, integrando Business OS de (4). **Jorge pidió detener el fork a mitad de ejecución** (`Detén el fork. Guarda lo ya hecho...`). Fase de discovery quedó completa y commiteada (`d9d7bf2`). Fase de implementación quedó parcial, comiteada como WIP por mí tras el stop (`7d66327`) para no perder trabajo.
+
+**Why**: Jorge evalúa si el patrón "Business OS" anunciado para SaaS Factory V6 es reproducible sobre SFV5 instalado, y quiere usarlo como capa operativa real para relanzar 360eventos (que ya tenía una estrategia de pivot a MVP V2 greenfield decidida el 2026-07-19, commit b766e37) usando el catálogo real de Rubén en vez de datos inventados.
+
+**Where**:
+- `/opt/experiments/SFV5_TO_V6_FEASIBILITY.md`, `SFV5_BUSINESS_OS_PILOT_REPORT.md`, `SFV5_BUSINESS_OS_360EVENTOS_REPORT.md`
+- `/opt/experiments/sfv5-business-os-pilot/` (piloto aislado, worktree propio, no tocar desde 360eventos)
+- `/opt/360eventos/business-os/` (Business OS soberano, Node/Express + SQLite local, puerto 4500 preferido con fallback automático) — commit `78cfdf0`
+- `/opt/360eventos/docs/discovery/`, `domain/` (fuentes reales: catálogo Rubén en `docs/discovery/sources/catalogo-ruben/`, ontología DDMS, facts, business rules) — commit `d9d7bf2`
+- `/opt/360eventos/src/features/jpi/` (db/migrations x6, domain/missing-information.mjs, domain/states.mjs, repository/catalogo.repository.mjs) — commit WIP `7d66327`, **incompleto**: sin migraciones ejecutadas, sin tests, sin capa API/UI, sin integración real con business-os/
+
+**Learned**:
+- `/opt/360eventos/.env.local` apunta a Supabase REAL activo (`uvdunupmjrbndistyrwn.supabase.co`), no placeholder — confirmado por mí antes de autorizar cualquier escritura. Jorge eligió explícitamente mantener todo storage nuevo (Business OS y JPI) aislado en SQLite local, sin tocar ese Supabase ni leer sus credenciales. Esta restricción sigue vigente para cualquier continuación futura, pese a que Jorge autorizó "modificar esquema y datos" de 360eventos en términos generales — esa autorización se interpretó y confirmó como NO aplicable al Supabase vivo.
+- Semántica canónica obligatoria para JPI: `SOLICITUD_DE_COTIZACION` → `REQUIERE_INFORMACION` → `COTIZACION`. `PRECOTIZACION` es término legacy prohibido (decisión DFL 2026-07-19).
+- No hardcodear lógica fiscal — perfil tributario es config, no código.
+- No bloquear con interrogatorios — detección de info faltante debe ser no-bloqueante.
+- Este es un **checkpoint** (@$fin modo CHECKPOINT pedido explícitamente por Jorge), no cierre real: sin barrido de archivado, sin `push_mirror.sh`. La sesión sigue abierta y puede continuar la Misión 04 desde el commit WIP `7d66327` (implementar API/UI, correr migraciones, escribir e integrar tests, conectar con business-os/) cuando Jorge lo pida.
+- En todo el hilo: sin push, sin mirror, sin escritura previa a Engram — este es el primer mem_save de la sesión.
+
 ### 360Eventos MVP V2 greenfield strategy on SaaS Factory
 **Type:** decision  
 **Project:** dfl  
 
 On 2026-07-19, 360Eventos was reoriented from patching the legacy MVP to building a new MVP V2 using the SaaS Factory checkout at /opt/saas-factory-setup/saas-factory as a greenfield base. Documentation was created under /opt/360eventos/docs/mvp-v2/2026-07-19-greenfield-strategy and committed as b766e37 docs(360eventos): define MVP V2 greenfield strategy. Decision: use SFV5 candidate as READY_AS_GREENFIELD_BASE_WITH_GUARDRAILS, treat /opt/360eventos legacy as read-only reference, do not continue FS-01 patching, do not apply migration-10, and transfer only domain semantics, rules, synthetic scenarios and selected lessons. Canonical semantics: SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, COTIZACION; PRECOTIZACION does not exist and must not appear except as a forbidden legacy term. No functional code, data, Supabase, Vercel, infrastructure, migrations, secrets or NO_TOUCH zones were modified.
-
-### 360Eventos Case Zero autonomous resolution baseline
-**Type:** decision  
-**Project:** dfl  
-
-On 2026-07-19, 360Eventos Case Zero produced an autonomous resolution baseline in /opt/360eventos/docs/case-zero/autonomous-resolution-baseline-2026-07-19 and committed it as 501bf5f docs(360eventos): add autonomous resolution baseline. The packet operationally corrected the Decision Packet model for Jorge as solo-preneur: human decision sessions are not blocking FS-01 continuation; non-strategic reversible decisions are resolved by domain logic, simplicity, reversibility, product coherence, and credible synthetic data. Canonical semantics are SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, and COTIZACION; PRECOTIZACION is recorded as an incorrect agent inference, not a business object. Deliverables include autonomous resolutions, synthetic test data plan, implementation readiness, Jorge-only decisions (max 3), and a technical reconciliation plan for DRG-001, FS-01, and migration-10. No functional code, migrations, live data, infrastructure, secrets, or NO_TOUCH zones were modified.
 
 ### DRG-001 emitido: cierre normativo FS-01 360Eventos (mapeo legacy, sunset dual-write, AuthZ oficial, atomicidad, impacto FS-02/03)
 **Type:** decision  
@@ -291,17 +313,39 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Checkpoint @$fin — SFV5→V6 Business OS + JPI MVP rebuild (sesión abierta, no cerrada)
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Sesión Claude Code (EJECUTOR) sobre /opt/futbolweb, trabajando cross-proyecto por pedido de Jorge. Cadena de misiones ejecutada en este orden:
+1. `@$go` bootstrap — perfil EJECUTOR confirmado vía /go local (127.0.0.1:8091) + anexo agents/ejecutor.md.
+2. Auditoría de factibilidad SFV5→V6 (fork) → `/opt/experiments/SFV5_TO_V6_FEASIBILITY.md`. Veredicto: GO parcial (mecanismo base viable; conectores Telegram/WhatsApp/Gmail NO-GO por falta de código base).
+3. Misión 02 (fork) — piloto aislado del Business OS en `/opt/experiments/sfv5-business-os-pilot/`. PASS, 17/17 tests. Sin commits (no pedidos). Reporte: `/opt/experiments/SFV5_BUSINESS_OS_PILOT_REPORT.md`.
+4. Misión 03 (fork) — build soberano del Business OS sobre `/opt/360eventos` (autorización explícita de Jorge para modificar 360eventos completo, revocando restricción previa; ver **Learned**). PASS, 7/7 tests. Commit local `78cfdf0`. Reporte: `/opt/experiments/SFV5_BUSINESS_OS_360EVENTOS_REPORT.md`.
+5. Misión 04 (fork) — reconstrucción del MVP Transporte/Eventos JPI usando fuentes reales (catálogo digital de Rubén + docs DDMS), reemplazando oferta inventada anterior, integrando Business OS de (4). **Jorge pidió detener el fork a mitad de ejecución** (`Detén el fork. Guarda lo ya hecho...`). Fase de discovery quedó completa y commiteada (`d9d7bf2`). Fase de implementación quedó parcial, comiteada como WIP por mí tras el stop (`7d66327`) para no perder trabajo.
+
+**Why**: Jorge evalúa si el patrón "Business OS" anunciado para SaaS Factory V6 es reproducible sobre SFV5 instalado, y quiere usarlo como capa operativa real para relanzar 360eventos (que ya tenía una estrategia de pivot a MVP V2 greenfield decidida el 2026-07-19, commit b766e37) usando el catálogo real de Rubén en vez de datos inventados.
+
+**Where**:
+- `/opt/experiments/SFV5_TO_V6_FEASIBILITY.md`, `SFV5_BUSINESS_OS_PILOT_REPORT.md`, `SFV5_BUSINESS_OS_360EVENTOS_REPORT.md`
+- `/opt/experiments/sfv5-business-os-pilot/` (piloto aislado, worktree propio, no tocar desde 360eventos)
+- `/opt/360eventos/business-os/` (Business OS soberano, Node/Express + SQLite local, puerto 4500 preferido con fallback automático) — commit `78cfdf0`
+- `/opt/360eventos/docs/discovery/`, `domain/` (fuentes reales: catálogo Rubén en `docs/discovery/sources/catalogo-ruben/`, ontología DDMS, facts, business rules) — commit `d9d7bf2`
+- `/opt/360eventos/src/features/jpi/` (db/migrations x6, domain/missing-information.mjs, domain/states.mjs, repository/catalogo.repository.mjs) — commit WIP `7d66327`, **incompleto**: sin migraciones ejecutadas, sin tests, sin capa API/UI, sin integración real con business-os/
+
+**Learned**:
+- `/opt/360eventos/.env.local` apunta a Supabase REAL activo (`uvdunupmjrbndistyrwn.supabase.co`), no placeholder — confirmado por mí antes de autorizar cualquier escritura. Jorge eligió explícitamente mantener todo storage nuevo (Business OS y JPI) aislado en SQLite local, sin tocar ese Supabase ni leer sus credenciales. Esta restricción sigue vigente para cualquier continuación futura, pese a que Jorge autorizó "modificar esquema y datos" de 360eventos en términos generales — esa autorización se interpretó y confirmó como NO aplicable al Supabase vivo.
+- Semántica canónica obligatoria para JPI: `SOLICITUD_DE_COTIZACION` → `REQUIERE_INFORMACION` → `COTIZACION`. `PRECOTIZACION` es término legacy prohibido (decisión DFL 2026-07-19).
+- No hardcodear lógica fiscal — perfil tributario es config, no código.
+- No bloquear con interrogatorios — detección de info faltante debe ser no-bloqueante.
+- Este es un **checkpoint** (@$fin modo CHECKPOINT pedido explícitamente por Jorge), no cierre real: sin barrido de archivado, sin `push_mirror.sh`. La sesión sigue abierta y puede continuar la Misión 04 desde el commit WIP `7d66327` (implementar API/UI, correr migraciones, escribir e integrar tests, conectar con business-os/) cuando Jorge lo pida.
+- En todo el hilo: sin push, sin mirror, sin escritura previa a Engram — este es el primer mem_save de la sesión.
+
 ### 360Eventos MVP V2 greenfield strategy on SaaS Factory
 **Type:** decision  
 **Project:** dfl  
 
 On 2026-07-19, 360Eventos was reoriented from patching the legacy MVP to building a new MVP V2 using the SaaS Factory checkout at /opt/saas-factory-setup/saas-factory as a greenfield base. Documentation was created under /opt/360eventos/docs/mvp-v2/2026-07-19-greenfield-strategy and committed as b766e37 docs(360eventos): define MVP V2 greenfield strategy. Decision: use SFV5 candidate as READY_AS_GREENFIELD_BASE_WITH_GUARDRAILS, treat /opt/360eventos legacy as read-only reference, do not continue FS-01 patching, do not apply migration-10, and transfer only domain semantics, rules, synthetic scenarios and selected lessons. Canonical semantics: SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, COTIZACION; PRECOTIZACION does not exist and must not appear except as a forbidden legacy term. No functional code, data, Supabase, Vercel, infrastructure, migrations, secrets or NO_TOUCH zones were modified.
-
-### 360Eventos Case Zero autonomous resolution baseline
-**Type:** decision  
-**Project:** dfl  
-
-On 2026-07-19, 360Eventos Case Zero produced an autonomous resolution baseline in /opt/360eventos/docs/case-zero/autonomous-resolution-baseline-2026-07-19 and committed it as 501bf5f docs(360eventos): add autonomous resolution baseline. The packet operationally corrected the Decision Packet model for Jorge as solo-preneur: human decision sessions are not blocking FS-01 continuation; non-strategic reversible decisions are resolved by domain logic, simplicity, reversibility, product coherence, and credible synthetic data. Canonical semantics are SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, and COTIZACION; PRECOTIZACION is recorded as an incorrect agent inference, not a business object. Deliverables include autonomous resolutions, synthetic test data plan, implementation readiness, Jorge-only decisions (max 3), and a technical reconciliation plan for DRG-001, FS-01, and migration-10. No functional code, migrations, live data, infrastructure, secrets, or NO_TOUCH zones were modified.
 
 ---
 
@@ -394,4 +438,4 @@ On 2026-07-19, 360Eventos Case Zero produced an autonomous resolution baseline i
 
 ---
 
-*Mirror auto-generated 2026-07-21T01:06:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-21T02:04:08Z | La Garra → DFLghub/amos-context*
