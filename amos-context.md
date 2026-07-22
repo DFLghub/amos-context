@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-22T03:05:02Z  
+**Generated:** 2026-07-22T03:05:24Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -269,49 +269,72 @@ Sin cambios de preferencia registrados en esta sesión.
 
 ## RECENT ACTIVITY (cross-project)
 
-### AgMaster_amOS_3 — vocabulario y reglas IAIM
-**Type:** fact  
-**Project:** dfl  
-
-AgMaster_amOS_3 es el documento maestro v3 del ecosistema (USAR ESTA, versiones 1 y 2 obsoletas). Vocabulario mínimo para IA invitada: amOS=sistema operativo conceptual/metodológico para absorber/metabolizar información manteniendo soberanía; IAIM=Invisible Augmented Intelligence Mesh, red invisible de IAs aliadas sin nodos fijos, orquestada por HI; HI=Jorge, decisión final soberana; ag10=ChatGPT como router/integrador/destilador/última yarda (no oráculo ni jefe); agPregunta=pregunta aumentada con propósito/dominio/límite/criterio; agLego=pieza conceptual candidata modular trazable; Candado Soberano=restricciones no negociables: no-exec, candidate_only, human-review-first. Prefijo 'ag'=augmented+governed+generative-but-contained. AG10-AUSTERITY-LOCK para fases de cierre/patch/gate. Origin Chain obligatorio para todo agLego. Frase núcleo v3: 'La red ilumina. La HI orquesta. ag10 destila. El candado audita. amOS asimila la cicatriz, no la herida.' Paralelo permitido: máximo 2 nodos, candidate_only, revisión HI.
-
-### MERCADER — contexto operativo completo y restricciones duras
-**Type:** fact  
-**Project:** dfl  
-
-MERCADER BOS v0.1 (2026-05-20): motor económico digital. Jerarquía: amOS/IAIM→Apps Factory→MERCADER→MERCADER BOS. Objetivo inmediato: cerrar circuito económico mínimo (lead capture→Gmail→registro→seguimiento→venta→aprendizaje). Las 5 capas BOS: (1)Contexto — qué es, qué vende, a quién, límites éticos; (2)Datos — 11 campos: nombre/email/tel/ciudad/fuente/producto/urgencia/presupuesto/estado/próx.acción/resultado; (3)Inteligencia — síntesis diaria: leads calientes, objeciones, canales; (4)Automatización — permitida: capturar/notificar/registrar/recordar; PROHIBIDA: cobrar sin revisión, inventar precios/inventario, hacerse pasar por Jorge; (5)Build — landing+formulario+Gmail+Sheets/Postgres+dashboard leads. Restricciones duras: sin empleados; sin storage propio; sin capital inicial fuerte; bajo costo operativo; humano en el cierre sensible; NO mezclar MERCADER con Bazaar ni con videos bioarmónicos. Modelo comercial: broker/coordinador/conector liviano. Score de oportunidad: Dolor+Urgencia+Capacidad+Claridad+Fit (máx 50). Morning Briefing + Evening Reflection operativos. Primer agLego: agLego-MERCADER-LEAD-CAPTURE-v0.1.
-
-### Session summary: futbolweb-app
-**Type:** session_summary  
+**Type:** manual  
 **Project:** futbolweb-app  
 
-## Cierre DFL/KNL/FutbolWeb — 2026-06-27
+CIERRE Nivel A — Auditoría Codebase Memory VM2, 2026-07-21. Aplicado y validado como PASS con caveats (decisión y condiciones explícitas de Jorge).
 
-### Goal
-Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar FutbolWeb limpio de dirty files y factory artifacts.
+CAMBIOS REALES:
+- /root/.claude/settings.json: permissions.allow pasó de ["Bash"] a ["Bash"] + 14 tools mcp__codebase-memory-mcp__* (todas, incluidas delete_project y manage_adr — Jorge pidió explícitamente las 14 sin excepción, no la exclusión de destructivas que yo había propuesto). Backup: /root/.claude/settings.json.bak-cbm-nivelA-20260721-230809
+- /root/.codex/config.toml: agregados 7 bloques [mcp_servers.codebase-memory-mcp.tools.<tool>] approval_mode="approve" (index_status, list_projects, delete_project, detect_changes, query_graph, manage_adr, ingest_traces) — total 14/14. Backup: /root/.codex/config.toml.bak-cbm-nivelA-20260721-230809
+- No se tocó /opt/futbolweb/.claude/settings.local.json ni ninguna otra superficie (confirmado con git diff).
+- Índices duplicados (saas-factory-sfv5/opt-saas-factory-v5, opt-360eventos/360eventos-legacy) siguen intactos — NO se borraron, instrucción explícita.
 
-### Accomplished
-- Engram #101: payload /go slim — graph_context eliminado, knl canónico único en payload
-- cc-atgo-hook.sh: header @go → @$go corregido
-- dfl-nav fmt_brief: mensaje no-match → "sin god_node — intenta la raíz del concepto"
-- FutbolWeb repo limpio: Blueprint audit movido a /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Auditorias/, graphify-out/ eliminado, .gitignore actualizado, commit 3fd5801
-- Engram #102: higiene FutbolWeb documentada
-- Bitácora creada: /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+VALIDACIÓN:
+- Claude Code: 4 tools nunca antes autorizadas (get_graph_schema, query_graph, manage_adr modo get, ingest_traces vacío) ejecutadas sin ningún prompt. query_graph devolvió 906 nodos para opt-futbolweb, consistente con list_projects.
+- Codex: `codex doctor` confirma config.toml parse ok, 2 MCP servers, 0 disabled. `codex exec` invocó query_graph sin bloquear, PERO corre con approval:never por diseño headless — NO prueba el comportamiento real de aprobación en sesión interactiva. Queda pendiente esa verificación específica para una sesión futura con Codex interactivo real.
 
-### Discoveries
-- graph_context era alias redundante del payload /go — eliminado sin romper consumidores
-- agProtocol_ATP-D_ROJA_v0.1-1: 3 archivos con MD5 idéntico en corpus (duplicados de indexación)
-- "estado" como nombre de god_node produce colisión léxica en español con el grafo
-- Blueprint_v0.6 audit era inconclusa (Blueprint no disponible en VM2) — conservada en Auditorias/
+HALLAZGO ABIERTO (registrado, NO investigar sin pedido explícito): en el run de `codex exec`, la misma query Cypher que devolvió 906 en Claude Code devolvió "10" vía Codex. Verificado inmediatamente después con list_projects directo que el store NO está corrupto ni duplicado — los 8 proyectos reales mantienen sus conteos esperados. Causa no determinada (posible reformulación de query por el agente Codex, alcance de proyecto distinto, o artefacto de respuesta del modelo).
 
-### Next Steps
-1. FutbolWeb producto — runtime estable, knockout scoring deployado (91a4531)
-2. KNL próximo ciclo — nota stale graph_context en knl_builder.py, health test local, evaluar renombrar estado → context-proxy
-3. MERCADER — agregar a KNL si se activa como área de trabajo
-4. Corpus — eliminar agProtocol duplicados (-1 variants)
+Entregables actualizados con este cierre: /opt/dfl-knowledge/audits/codebase-memory-v1/{00-README.md, CODEBASE_MEMORY_AUDIT.md (addendum), ROOT_CAUSE_MATRIX.md (filas 1-3 marcadas APLICADO), IMPLEMENTATION_OPTIONS.md (Nivel A con estado), TEST_PLAN.md (sección de verificación con resultados PASS/PARCIAL)}.
 
-### Relevant Files
-/opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+Pendiente para el futuro: puntos 3-4 de Nivel A (indexar los ~11 repos de /opt nunca indexados, limpiar duplicados confirmados), validación interactiva real de Codex, investigación de la anomalía "10 vs 906" si se decide abrirla, y Nivel C (DFL Knowledge Adapter) como arquitectura recomendada de destino — ver DFL_KNOWLEDGE_ADAPTER_PROPOSAL.md.
+
+**Type:** manual  
+**Project:** futbolweb-app  
+
+AUDITORÍA Codebase Memory (codebase-memory-mcp v0.9.0) en VM2/La Garra — completada 2026-07-21. Entregables en /opt/dfl-knowledge/audits/codebase-memory-v1/ (00-README, CODEBASE_MEMORY_AUDIT, ROOT_CAUSE_MATRIX, DFL_KNOWLEDGE_ADAPTER_PROPOSAL, IMPLEMENTATION_OPTIONS, TEST_PLAN).
+
+HALLAZGOS CLAVE:
+1. Causa raíz de "autorizaciones repetidas": dos sistemas de permisos de cliente desincronizados — Claude Code usa allowlist por-proyecto en .claude/settings.local.json (solo /opt/futbolweb tiene entradas, 9/14 tools; falta query_graph, get_graph_schema, delete_project, manage_adr, ingest_traces) vs Codex usa approval_mode por tool en ~/.codex/config.toml (7/14 tools). Ningún otro proyecto activo de /opt (~11 repos: dfl-knowledge, 360eventos, mercader-comisiones, engram, etc.) tiene autorización. El propio SKILL.md del producto recomienda query_graph/get_graph_schema, que nunca están autorizadas — garantiza interrupción en el primer uso documentado.
+2. El motor NO tiene timeout configurable ni es lento: reindexar futbolweb (906 nodos) tomó 0.11s vía CLI directo. No se pudo reproducir >300s con ningún repo real de la VM. Causa más probable de los reportes de "timeout": bug confirmado y reproducible que crashea el worker de indexación con inputs problemáticos (mensaje "Indexing worker crashed on a file... contained") — registrado también en logs reales del 2026-07-15. El timeout percibido es del cliente MCP, no del motor.
+3. Sin locks explícitos (solo SQLite WAL) — probado limpio en régimen rápido (3 rondas de doble-index concurrente + 10 reads durante write, sin errores) pero régimen lento/minutos queda no probado.
+4. Duplicación real confirmada por falta de idempotencia (repo+commit): saas-factory-sfv5/opt-saas-factory-v5 y opt-360eventos/360eventos-legacy son el MISMO repo+commit indexado dos veces bajo nombres distintos, grafos divergentes. No hay project_key canónico.
+5. Servidor es child process por sesión (no daemon systemd/docker), persiste independientemente del timeout de un tool-call individual.
+
+DECISIÓN RECOMENDADA: Nivel A (config global inmediata, 1-2h, bajo riesgo) ya + Nivel C (DFL Knowledge Adapter — servicio persistente delante del motor con jobs async/job_id, project_key canónico, locks explícitos, allowlist propio de rutas, health check, contrato uniforme CC/Codex) como destino estructural, 1-2 semanas. Nivel D (fork del núcleo) explícitamente NO justificado por evidencia — el motor es confiable en el régimen probado.
+
+PENDIENTE [D] desconocido: compatibilidad con Visualizer/KNL/agTopólogo no investigada — requiere sesión de descubrimiento de contrato antes de diseñar el export de grafo del Adaptador. También pendiente: test de indexación real en régimen lento (repo grande, minutos) — no reproducible en esta VM por falta de repos suficientemente grandes.
+
+Limpieza propia: se borraron 2 proyectos de prueba huérfanos (tmp-cbm-test-large, tmp-cbm-test-small) dejados por los forks de reproducción, confirmados por nombre/ruta antes de borrar. No se tocó ningún proyecto real ni configuración de ningún agente — la auditoría fue de solo lectura salvo esa limpieza y los índices desechables de prueba en /tmp.
+
+Método: 4 subagentes fork en paralelo (auth/config, storage/logs/forensics, reproducción controlada, test de concurrencia dedicado) + verificación directa del orquestador.
+
+### [CERTIFIED] Roadmap DFL @$go/KNL/hooks — orquestación 2026-06-27
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Orquestación ejecutiva del stack DFL post-certificación: incidente FW, slim /go, fallback local, handoff bidireccional, modelo de confianza.
+
+**Decisiones:**
+- Incidente FW 2026-06-19: STALE. Engram #14 lo cierra (fix aplicado 2026-06-24). El `pending` en /go es ruido — debe limpiarse. Los archivos dirty en /opt/futbolweb (espn-world-cup.ts +175l, scoring-propagation.ts +30l) son trabajo en progreso nuevo, no el incidente.
+- Slim /go: servir solo restrictions + god_nodes + pending + recent_decisions(max 4) por defecto. Identity → 2 líneas. graph_summary → ?full=1. -40% payload estimado.
+- Fallback local: cc-atgo-hook.sh debe leer /opt/dfl-knowledge/graphify-out/knl.json si /go falla. Banner MODO FALLBACK para agente. Elimina único punto de fallo silencioso.
+- Handoff bidireccional: agent-lock.json en /opt/dfl-context-proxy/. Read en SessionStart, write al iniciar trabajo, cleanup en session_end. Sin infraestructura distribuida.
+- Modelo confianza: convención [VERIFIED]/[CERTIFIED]/[CLAIMED]/[STALE] en títulos Engram. Cero código. Si restricción es CLAIMED, preguntar a Jorge antes de actuar.
+
+**Orden de ejecución recomendado:**
+1. Limpiar pending Engram #14 (5 min)
+2. Fallback local cc-atgo-hook.sh (30 min)
+3. Slim /go payload main.py (1h)
+4. Convención evidence_level en Engram (inmediato, convención)
+5. Agent lock file — solo cuando haya colisiones reales documentadas
+
+**Why**: Reducir ruido en bootstrap inter-agente y eliminar puntos de fallo sin tocar producción.
+
+**Where**: cc-atgo-hook.sh, main.py (/go endpoint), Engram project dfl.
+
+**Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
 **Type:** manual  
 **Project:** futbolweb-app  
@@ -431,15 +454,15 @@ PRÓXIMO PASO NATURAL (fuera de esta misión, documentado en JPI_HANDOFF.md): co
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 1.2297  
+**Graph entropy:** 1.0406  
 
-- **Community 11** (83 nodes): SaaS Factory V5, NBLM2, Estado real de la casa
-- **Community 0** (11 nodes): amOS, agLego, HI
-- **Community 1** (7 nodes): Clasificación de patrones externos, Tránsitos programados, Salud Estratégica
-- **Community 2** (6 nodes): Engram, Sync Cloud, Google Cloud
-- **Community 3** (5 nodes): Capacidades Insuficientemente Verificadas
-- **Community 4** (4 nodes): Matriz de Contención Operacional
+- **Community 11** (86 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
+- **Community 0** (12 nodes): Tree-sitter Grammars, Matriz de Contención Operacional, Evaluación de Repositorios
+- **Community 1** (6 nodes): NBLM2, Working Memory, Active Library
+- **Community 2** (4 nodes): Estructura de datos en Rust
+- **Community 3** (4 nodes): Blade en Laravel, Beancount, MCP (Model Context Protocol)
+- **Community 4** (4 nodes): Documentación JSDoc, Estado de la casa DFL, Onboarding multi-agente
 
 ---
 
-*Mirror auto-generated 2026-07-22T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-22T03:05:24Z | La Garra → DFLghub/amos-context*
