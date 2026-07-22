@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-21T22:33:05Z  
+**Generated:** 2026-07-22T00:03:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -313,39 +313,33 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Checkpoint @$fin — SFV5→V6 Business OS + JPI MVP rebuild (sesión abierta, no cerrada)
-**Type:** decision  
-**Project:** dfl  
+**Type:** manual  
+**Project:** futbolweb-app  
 
-**What**: Sesión Claude Code (EJECUTOR) sobre /opt/futbolweb, trabajando cross-proyecto por pedido de Jorge. Cadena de misiones ejecutada en este orden:
-1. `@$go` bootstrap — perfil EJECUTOR confirmado vía /go local (127.0.0.1:8091) + anexo agents/ejecutor.md.
-2. Auditoría de factibilidad SFV5→V6 (fork) → `/opt/experiments/SFV5_TO_V6_FEASIBILITY.md`. Veredicto: GO parcial (mecanismo base viable; conectores Telegram/WhatsApp/Gmail NO-GO por falta de código base).
-3. Misión 02 (fork) — piloto aislado del Business OS en `/opt/experiments/sfv5-business-os-pilot/`. PASS, 17/17 tests. Sin commits (no pedidos). Reporte: `/opt/experiments/SFV5_BUSINESS_OS_PILOT_REPORT.md`.
-4. Misión 03 (fork) — build soberano del Business OS sobre `/opt/360eventos` (autorización explícita de Jorge para modificar 360eventos completo, revocando restricción previa; ver **Learned**). PASS, 7/7 tests. Commit local `78cfdf0`. Reporte: `/opt/experiments/SFV5_BUSINESS_OS_360EVENTOS_REPORT.md`.
-5. Misión 04 (fork) — reconstrucción del MVP Transporte/Eventos JPI usando fuentes reales (catálogo digital de Rubén + docs DDMS), reemplazando oferta inventada anterior, integrando Business OS de (4). **Jorge pidió detener el fork a mitad de ejecución** (`Detén el fork. Guarda lo ya hecho...`). Fase de discovery quedó completa y commiteada (`d9d7bf2`). Fase de implementación quedó parcial, comiteada como WIP por mí tras el stop (`7d66327`) para no perder trabajo.
+MISIÓN COMPLETADA (no fue necesario checkpoint parcial — terminó en la misma sesión): "Primera Fábrica DFL Operable v0.1" — diseño puro del Gerente de Fábrica para BOS, sin escribir código. 12 entregables completos en /opt/dfl-knowledge/architecture/first-operable-factory-v01/: EVIDENCE_BASE.md, CURRENT_VS_TARGET.md, FACTORY_MANAGER_CONTRACT_V0.1.md, MANAGEMENT_DAEMON_SPEC_V0.1.md, FACTORY_BLUEPRINT_V0.1.md, ENTITY_EVENT_MODEL.md, MINIMUM_MEMORY_AND_GATES.md, BOS_AMOS_CONTRACT.md, FACTORY_BUILD_MISSION_PACKET.md, JPI_MINUTES_PILOT.md, TDL_MERCADER_READINESS.md, EXECUTIVE_DECISION_PACKET.md.
 
-**Why**: Jorge evalúa si el patrón "Business OS" anunciado para SaaS Factory V6 es reproducible sobre SFV5 instalado, y quiere usarlo como capa operativa real para relanzar 360eventos (que ya tenía una estrategia de pivot a MVP V2 greenfield decidida el 2026-07-19, commit b766e37) usando el catálogo real de Rubén en vez de datos inventados.
+NÚCLEO DEL DISEÑO: órgano cognitivo nuevo especificado = "factory-manager-daemon" (FMD), que extiende (no reemplaza) el contrato AGENT-SERVER.md ya real de BOS v2. Entidades nuevas: goals/plans/evidence_packets + reutiliza tasks/agents/task_relations/ops_events ya existentes. Política de escalamiento graduada (Nivel 0-3) que extiende SILENT_CRON_JOBS ya real. 7 gates (G0-G7) como criterio de aceptación obligatorio. Contrato amOS↔BOS diseñado por analogía directa con el contrato BOS↔daemon ya validado, con 4 condiciones de entrada explícitas antes de que una fábrica pueda declararse "Gerente de Fábrica operativo".
 
-**Where**:
-- `/opt/experiments/SFV5_TO_V6_FEASIBILITY.md`, `SFV5_BUSINESS_OS_PILOT_REPORT.md`, `SFV5_BUSINESS_OS_360EVENTOS_REPORT.md`
-- `/opt/experiments/sfv5-business-os-pilot/` (piloto aislado, worktree propio, no tocar desde 360eventos)
-- `/opt/360eventos/business-os/` (Business OS soberano, Node/Express + SQLite local, puerto 4500 preferido con fallback automático) — commit `78cfdf0`
-- `/opt/360eventos/docs/discovery/`, `domain/` (fuentes reales: catálogo Rubén en `docs/discovery/sources/catalogo-ruben/`, ontología DDMS, facts, business rules) — commit `d9d7bf2`
-- `/opt/360eventos/src/features/jpi/` (db/migrations x6, domain/missing-information.mjs, domain/states.mjs, repository/catalogo.repository.mjs) — commit WIP `7d66327`, **incompleto**: sin migraciones ejecutadas, sin tests, sin capa API/UI, sin integración real con business-os/
+GROUNDING REAL usado (no genérico): el piloto JPI (Fase 5) se apoya en código EJECUTABLE real de 360eventos — states.mjs (máquina de estados Solicitud/Cotización) y missing-information.mjs (motor de reglas BLOCKING/ADVISORY) — con una sola pieza del piloto admitida explícitamente como simulada (desvío de proveedor, sin código de catálogo auditado). También se descubrió un "Business OS V6" DISTINTO del BOS v2 auditado (Express+SQLite, instalado aditivamente en /opt/360eventos/business-os/, con tests reales) y que SFV5 (33 skills reales) tiene invocación 100% interactiva/conversacional, sin endpoint programático — brecha real documentada, no asumida resuelta.
 
-**Learned**:
-- `/opt/360eventos/.env.local` apunta a Supabase REAL activo (`uvdunupmjrbndistyrwn.supabase.co`), no placeholder — confirmado por mí antes de autorizar cualquier escritura. Jorge eligió explícitamente mantener todo storage nuevo (Business OS y JPI) aislado en SQLite local, sin tocar ese Supabase ni leer sus credenciales. Esta restricción sigue vigente para cualquier continuación futura, pese a que Jorge autorizó "modificar esquema y datos" de 360eventos en términos generales — esa autorización se interpretó y confirmó como NO aplicable al Supabase vivo.
-- Semántica canónica obligatoria para JPI: `SOLICITUD_DE_COTIZACION` → `REQUIERE_INFORMACION` → `COTIZACION`. `PRECOTIZACION` es término legacy prohibido (decisión DFL 2026-07-19).
-- No hardcodear lógica fiscal — perfil tributario es config, no código.
-- No bloquear con interrogatorios — detección de info faltante debe ser no-bloqueante.
-- Este es un **checkpoint** (@$fin modo CHECKPOINT pedido explícitamente por Jorge), no cierre real: sin barrido de archivado, sin `push_mirror.sh`. La sesión sigue abierta y puede continuar la Misión 04 desde el commit WIP `7d66327` (implementar API/UI, correr migraciones, escribir e integrar tests, conectar con business-os/) cuando Jorge lo pida.
-- En todo el hilo: sin push, sin mirror, sin escritura previa a Engram — este es el primer mem_save de la sesión.
+TDL: sin repo/documento identificado en este host — declarado explícitamente AUSENTE/DESCONOCIDO, no se fabricó contenido. MERCADER: contexto de memoria previa citado como INFERENCIA CON FUNDAMENTO EXPLÍCITO, no releído en profundidad esta sesión — brecha declarada.
 
-### 360Eventos MVP V2 greenfield strategy on SaaS Factory
-**Type:** decision  
-**Project:** dfl  
+Restricción respetada: cero código escrito o modificado de BOS/SFV5/JPI/daemon/adapters. Cero cambios a índices, configuración o infraestructura. Todo el trabajo es especificación/diseño con disciplina de evidencia (taxonomía EXISTE-VERIFICADO / EXISTE-NO-PROBADO / DOCUMENTADO-ASPIRACIONAL / PROPUESTA-NUEVA / AUSENTE / INFERENCIA-CON-FUNDAMENTO aplicada consistentemente).
 
-On 2026-07-19, 360Eventos was reoriented from patching the legacy MVP to building a new MVP V2 using the SaaS Factory checkout at /opt/saas-factory-setup/saas-factory as a greenfield base. Documentation was created under /opt/360eventos/docs/mvp-v2/2026-07-19-greenfield-strategy and committed as b766e37 docs(360eventos): define MVP V2 greenfield strategy. Decision: use SFV5 candidate as READY_AS_GREENFIELD_BASE_WITH_GUARDRAILS, treat /opt/360eventos legacy as read-only reference, do not continue FS-01 patching, do not apply migration-10, and transfer only domain semantics, rules, synthetic scenarios and selected lessons. Canonical semantics: SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, COTIZACION; PRECOTIZACION does not exist and must not appear except as a forbidden legacy term. No functional code, data, Supabase, Vercel, infrastructure, migrations, secrets or NO_TOUCH zones were modified.
+**Type:** manual  
+**Project:** futbolweb-app  
+
+EN PROGRESO (checkpoint parcial, no es @$fin final): Misión "Primera Fábrica DFL Operable" — diseño puro, sin código, en /opt/dfl-knowledge/architecture/first-operable-factory-v01/. Completados hasta ahora: EVIDENCE_BASE.md (35 filas de evidencia clasificada, secciones A-E: BOS v2 técnico, daemon ausente en VM2, BOS V6 piloto en JPI, dominio JPI real con máquina de estados y motor de información faltante ejecutables, SFV5 capacidades), CURRENT_VS_TARGET.md, FACTORY_MANAGER_CONTRACT_V0.1.md (Fase 1 completa), MANAGEMENT_DAEMON_SPEC_V0.1.md (Fase 2 completa, nombre de trabajo "factory-manager-daemon"/FMD).
+
+HALLAZGOS CLAVE DE GROUNDING nuevos en esta sesión (no estaban en la auditoría previa de BOS):
+- JPI (360eventos) tiene un motor de "información faltante" REAL Y EJECUTABLE (src/features/jpi/domain/missing-information.mjs): 4 reglas BLOCKING + 2 ADVISORY, función assessMissingInformation(). Es el gancho perfecto para el piloto de Fase 5 (omitir fecha_evento o contacto dispara la regla determinísticamente).
+- JPI tiene máquina de estados real (states.mjs) para Solicitud y Cotización, subconjunto reducido del modelo DDMS completo (34 eventos, 28 transiciones documentadas en CSV pero no todas implementadas).
+- Existe un "Business OS V6" DISTINTO del BOS v2 auditado: piloto Express+SQLite instalado aditivamente en /opt/360eventos/business-os/, con tests reales que pasan, asistente basado en reglas sin LLM — reutilizable como patrón de instalación aislada, no como el órgano cognitivo.
+- SFV5 (/opt/saas-factory-setup/saas-factory) tiene 33 skills reales pero SU INVOCACIÓN ES 100% INTERACTIVA/CONVERSACIONAL vía Claude Code — no hay endpoint HTTP programático (el único CLI, cognitive-core, está hardcodeado a un solo proyecto y es de solo lectura). Esto es una brecha real para que el órgano gerencial pueda "pedirle a SFV5 que construya algo" sin sesión humana — se documentó como adaptador a construir, no asumido resuelto.
+
+PENDIENTE (orden planeado): FACTORY_BLUEPRINT_V0.1.md (Fase 3), ENTITY_EVENT_MODEL.md, MINIMUM_MEMORY_AND_GATES.md, BOS_AMOS_CONTRACT.md, FACTORY_BUILD_MISSION_PACKET.md (Fase 4), JPI_MINUTES_PILOT.md (Fase 5, ya bien fundamentado con el motor de información faltante real), TDL_MERCADER_READINESS.md (Fase 6), EXECUTIVE_DECISION_PACKET.md (cierre con las 9 preguntas obligatorias).
+
+Restricción activa: NO escribir código, NO tocar BOS/SFV5/JPI/daemon/adapters, solo especificar. Si esta sesión se corta antes de completar los 12 entregables, este mem_save + los archivos ya escritos en disco son el checkpoint para que Codex continúe — el orden pendiente arriba es la ruta crítica a seguir.
 
 ---
 
@@ -438,4 +432,4 @@ On 2026-07-19, 360Eventos was reoriented from patching the legacy MVP to buildin
 
 ---
 
-*Mirror auto-generated 2026-07-21T22:33:05Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-22T00:03:02Z | La Garra → DFLghub/amos-context*
