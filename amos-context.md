@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-22T00:03:02Z  
+**Generated:** 2026-07-22T00:45:41Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -316,30 +316,40 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 **Type:** manual  
 **Project:** futbolweb-app  
 
-MISIÓN COMPLETADA (no fue necesario checkpoint parcial — terminó en la misma sesión): "Primera Fábrica DFL Operable v0.1" — diseño puro del Gerente de Fábrica para BOS, sin escribir código. 12 entregables completos en /opt/dfl-knowledge/architecture/first-operable-factory-v01/: EVIDENCE_BASE.md, CURRENT_VS_TARGET.md, FACTORY_MANAGER_CONTRACT_V0.1.md, MANAGEMENT_DAEMON_SPEC_V0.1.md, FACTORY_BLUEPRINT_V0.1.md, ENTITY_EVENT_MODEL.md, MINIMUM_MEMORY_AND_GATES.md, BOS_AMOS_CONTRACT.md, FACTORY_BUILD_MISSION_PACKET.md, JPI_MINUTES_PILOT.md, TDL_MERCADER_READINESS.md, EXECUTIVE_DECISION_PACKET.md.
+CHECKPOINT PROVISIONAL (@$fin modo Checkpoint — sesión activa continúa, NO es cierre final) — 2026-07-22. Handoff rápido para Codex u otra sesión si esta se corta.
 
-NÚCLEO DEL DISEÑO: órgano cognitivo nuevo especificado = "factory-manager-daemon" (FMD), que extiende (no reemplaza) el contrato AGENT-SERVER.md ya real de BOS v2. Entidades nuevas: goals/plans/evidence_packets + reutiliza tasks/agents/task_relations/ops_events ya existentes. Política de escalamiento graduada (Nivel 0-3) que extiende SILENT_CRON_JOBS ya real. 7 gates (G0-G7) como criterio de aceptación obligatorio. Contrato amOS↔BOS diseñado por analogía directa con el contrato BOS↔daemon ya validado, con 4 condiciones de entrada explícitas antes de que una fábrica pueda declararse "Gerente de Fábrica operativo".
+ESTADO GENERAL: Las 4 misiones de esta sesión están COMPLETAS y cerradas correctamente, ninguna en curso ahora mismo. No hay trabajo pendiente sin resolver — el sistema está en punto de espera de nueva instrucción de Jorge.
 
-GROUNDING REAL usado (no genérico): el piloto JPI (Fase 5) se apoya en código EJECUTABLE real de 360eventos — states.mjs (máquina de estados Solicitud/Cotización) y missing-information.mjs (motor de reglas BLOCKING/ADVISORY) — con una sola pieza del piloto admitida explícitamente como simulada (desvío de proveedor, sin código de catálogo auditado). También se descubrió un "Business OS V6" DISTINTO del BOS v2 auditado (Express+SQLite, instalado aditivamente en /opt/360eventos/business-os/, con tests reales) y que SFV5 (33 skills reales) tiene invocación 100% interactiva/conversacional, sin endpoint programático — brecha real documentada, no asumida resuelta.
+RESUMEN DE LAS 4 MISIONES (en orden cronológico, cada una con su expediente completo en disco):
 
-TDL: sin repo/documento identificado en este host — declarado explícitamente AUSENTE/DESCONOCIDO, no se fabricó contenido. MERCADER: contexto de memoria previa citado como INFERENCIA CON FUNDAMENTO EXPLÍCITO, no releído en profundidad esta sesión — brecha declarada.
+1. AUDITORÍA CODEBASE MEMORY (VM2) — /opt/dfl-knowledge/audits/codebase-memory-v1/ (6 docs + README). Nivel A aplicado y cerrado PASS con caveats. Backups en /root/.claude/settings.json.bak-cbm-nivelA-20260721-230809 y /root/.codex/config.toml.bak-cbm-nivelA-20260721-230809. Pendiente NO resuelto (dejado abierto a propósito): anomalía "10 vs 906" en codex exec, validación interactiva de Codex real.
 
-Restricción respetada: cero código escrito o modificado de BOS/SFV5/JPI/daemon/adapters. Cero cambios a índices, configuración o infraestructura. Todo el trabajo es especificación/diseño con disciplina de evidencia (taxonomía EXISTE-VERIFICADO / EXISTE-NO-PROBADO / DOCUMENTADO-ASPIRACIONAL / PROPUESTA-NUEVA / AUSENTE / INFERENCIA-CON-FUNDAMENTO aplicada consistentemente).
+2. REVISIÓN INDEPENDIENTE BOS v2 vs CODEX — /opt/dfl-knowledge/audits/business-os-peer-review-cc/ (6 docs). Veredicto: CONCUERDO CON CORRECCIONES IMPORTANTES. Hallazgo: BOS es infraestructura periférica real, sin cognición gerencial; daemon externo ausente en VM2.
+
+3. DISEÑO "PRIMERA FÁBRICA DFL OPERABLE v0.1" — /opt/dfl-knowledge/architecture/first-operable-factory-v01/ (12 docs). Especifica el factory-manager-daemon (FMD), contrato amOS↔BOS, gates G0-G7, piloto JPI (JPI_MINUTES_PILOT.md), brechas TDL (ausente)/MERCADER. Solo diseño, cero código.
+
+4. BOOTSTRAP FMD-G1 (ejecución real) — /opt/dfl-knowledge/evidence/first-operable-factory-bootstrap-g1/ (9 docs). Gate G1: PASS. Construido por 3 agentes workforce (implementador→tester→validador independiente, 0 reasignaciones) en /opt/360eventos/business-os/ (JPI, laboratorio con permiso total). Commits locales sin push: c7ff2ab (impl), 3c184d4 (tests). Detenido correctamente al cerrar G1, tal como se pidió. PRÓXIMO PASO NATURAL (no iniciado): conectar el esqueleto FMD-G1 con el dominio real de JPI (src/features/jpi/domain/states.mjs y missing-information.mjs) para poder correr JPI_MINUTES_PILOT.md completo.
+
+RESTRICCIONES ACTIVAS QUE SIGUEN VIGENTES: no tocar Supabase real/credenciales/despliegues de BOS v2 ni SFV5 (JPI SÍ es laboratorio libre, declarado explícitamente por Jorge). No reabrir ni modificar Nivel A de Codebase Memory sin pedido explícito. No avanzar sobre FMD completo/aprendizaje/Plasticidad/Metabolismo/SFV5/TDL/MERCADER/piloto JPI completo sin nueva misión explícita de Jorge — la misión de bootstrap dijo "detente al cerrar Gate G1" y así se hizo.
+
+Si esta sesión se corta acá: los 4 expedientes completos en disco + este mem_save son suficientes para que Codex retome sin preguntas — no hay estado intermedio roto, todo está en un punto de cierre limpio esperando la siguiente misión.
 
 **Type:** manual  
 **Project:** futbolweb-app  
 
-EN PROGRESO (checkpoint parcial, no es @$fin final): Misión "Primera Fábrica DFL Operable" — diseño puro, sin código, en /opt/dfl-knowledge/architecture/first-operable-factory-v01/. Completados hasta ahora: EVIDENCE_BASE.md (35 filas de evidencia clasificada, secciones A-E: BOS v2 técnico, daemon ausente en VM2, BOS V6 piloto en JPI, dominio JPI real con máquina de estados y motor de información faltante ejecutables, SFV5 capacidades), CURRENT_VS_TARGET.md, FACTORY_MANAGER_CONTRACT_V0.1.md (Fase 1 completa), MANAGEMENT_DAEMON_SPEC_V0.1.md (Fase 2 completa, nombre de trabajo "factory-manager-daemon"/FMD).
+MISIÓN BOOTSTRAP FMD-G1 COMPLETADA — Gate G1: PASS. Cierra el checkpoint provisional anterior (obs-ea46c04ae2e71f20) — esta es la conclusión real, no otro checkpoint.
 
-HALLAZGOS CLAVE DE GROUNDING nuevos en esta sesión (no estaban en la auditoría previa de BOS):
-- JPI (360eventos) tiene un motor de "información faltante" REAL Y EJECUTABLE (src/features/jpi/domain/missing-information.mjs): 4 reglas BLOCKING + 2 ADVISORY, función assessMissingInformation(). Es el gancho perfecto para el piloto de Fase 5 (omitir fecha_evento o contacto dispara la regla determinísticamente).
-- JPI tiene máquina de estados real (states.mjs) para Solicitud y Cotización, subconjunto reducido del modelo DDMS completo (34 eventos, 28 transiciones documentadas en CSV pero no todas implementadas).
-- Existe un "Business OS V6" DISTINTO del BOS v2 auditado: piloto Express+SQLite instalado aditivamente en /opt/360eventos/business-os/, con tests reales que pasan, asistente basado en reglas sin LLM — reutilizable como patrón de instalación aislada, no como el órgano cognitivo.
-- SFV5 (/opt/saas-factory-setup/saas-factory) tiene 33 skills reales pero SU INVOCACIÓN ES 100% INTERACTIVA/CONVERSACIONAL vía Claude Code — no hay endpoint HTTP programático (el único CLI, cognitive-core, está hardcodeado a un solo proyecto y es de solo lectura). Esto es una brecha real para que el órgano gerencial pueda "pedirle a SFV5 que construya algo" sin sesión humana — se documentó como adaptador a construir, no asumido resuelto.
+Entregables en /opt/dfl-knowledge/evidence/first-operable-factory-bootstrap-g1/ (9 archivos): MISSION_ACTIVATION, WORKFORCE_ASSIGNMENTS, EXECUTION_LOG, G1_EVIDENCE_INDEX, INDEPENDENT_VALIDATION, AUTONOMY_METRICS, ROLLBACK, JPI_HANDOFF, FINAL_VERDICT.
 
-PENDIENTE (orden planeado): FACTORY_BLUEPRINT_V0.1.md (Fase 3), ENTITY_EVENT_MODEL.md, MINIMUM_MEMORY_AND_GATES.md, BOS_AMOS_CONTRACT.md, FACTORY_BUILD_MISSION_PACKET.md (Fase 4), JPI_MINUTES_PILOT.md (Fase 5, ya bien fundamentado con el motor de información faltante real), TDL_MERCADER_READINESS.md (Fase 6), EXECUTIVE_DECISION_PACKET.md (cierre con las 9 preguntas obligatorias).
+QUÉ SE CONSTRUYÓ (por 3 agentes workforce, no por Claude Code): en /opt/360eventos/business-os/ (piloto Express+SQLite ya existente en JPI, laboratorio con permiso total) — migración 006_fmd_goals.js (tablas goals/plans/agents), módulo fmd/goals.js (Gate G0 validación, generador de plan determinístico 2 pasos, Gate G1 evaluación real contra DB de agentes), rutas POST/GET /business-os/api/goals*, 14 tests automatizados nuevos. Commits: c7ff2ab (implementación), 3c184d4 (tests) — locales, sin push.
 
-Restricción activa: NO escribir código, NO tocar BOS/SFV5/JPI/daemon/adapters, solo especificar. Si esta sesión se corta antes de completar los 12 entregables, este mem_save + los archivos ya escritos en disco son el checkpoint para que Codex continúe — el orden pendiente arriba es la ruta crítica a seguir.
+WORKFORCE: Agente A (Implementador) → Agente B (Tester) → Agente C (Validador independiente), secuencial por dependencia real. LOS 3 CERRARON EN EL PRIMER INTENTO — cero reasignaciones, cero fallos, cero retrabajo. Validación independiente dio PASS con evidencia propia (no citó autorreportes): 21/21 tests, 3 casos adversariales incluyendo carrera real de 10 requests concurrentes con mismo idempotency_key → 1 sola fila sin duplicar, scope verificado limpio en todo /opt/360eventos y confirmado que /opt/experiments/business-os-new-audit y /opt/saas-factory-setup quedaron intocados. 1 caveat no bloqueante documentado (falta try/catch SQLITE_CONSTRAINT para futuro driver async).
+
+AUTONOMÍA: cero intervenciones técnicas de Jorge durante la ejecución (sus 3 mensajes fueron administrativos: checkpoint de protocolo, pedido de reporte, autorización de continuar — no coordinación técnica). Claude Code actuó solo como supervisor: cero líneas de código de business-os/ escritas por el supervisor.
+
+DECISIÓN DE ARQUITECTURA clave tomada por el supervisor (justificada en MISSION_ACTIVATION.md): construir en ruta aislada dentro de business-os/ (JPI) en vez de tocar BOS v2 auditado o SFV5, para evitar riesgo de credenciales/Supabase real sin necesidad — reutiliza patrón ya probado (migraciones idempotentes, tests reales) del propio JPI.
+
+PRÓXIMO PASO NATURAL (fuera de esta misión, documentado en JPI_HANDOFF.md): conectar este esqueleto con el dominio real de JPI (states.mjs, missing-information.mjs) para poder correr JPI_MINUTES_PILOT.md completo — el FMD mínimo todavía NO está listo para dirigir el piloto completo, uso datos sintéticos propios del incremento, no el dominio real. Detenido en el cierre de G1 tal como la misión pidió explícitamente.
 
 ---
 
@@ -432,4 +442,4 @@ Restricción activa: NO escribir código, NO tocar BOS/SFV5/JPI/daemon/adapters,
 
 ---
 
-*Mirror auto-generated 2026-07-22T00:03:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-22T00:45:41Z | La Garra → DFLghub/amos-context*
