@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-22T21:36:03Z  
+**Generated:** 2026-07-22T22:36:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,40 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### DRG-002 amOS Lobby: rediseño onboarding (conserjería ejecutada + paridad por state_version + libro de registro) — diseño, pendiente build
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/onboarding/amos-lobby-redesign
+TYPE: decision
+STATUS: active
+DATE: 2026-07-22
+
+**What**: DRG-002 emitido — rediseño del onboarding/outboarding DFL como "amOS Lobby". Doc en /opt/dfl-knowledge/architecture/AMOS-LOBBY-REDESIGN.md (solo diseño, sin implementar, sin commit). Responde el pedido de Jorge (metáfora Directorio de hotel/condominio + conserjería que registra entradas/salidas y enruta por fallout). Tres garantías: G1 acceso único = Conserjería que EJECUTA detección→ruta→log (CLI `dfl onboard/outboard/capsule/register` + `GET /onboard`), no self-serve desde prosa (que es la causa raíz de todos los fallos vistos). G2 PARIDAD llegado↔incumbente = exponer un `state_version` único; primitiva YA existe: push_mirror.sh hashea el payload /go sin generated_at en .last-mirror-hash — solo falta exponerlo; incumbentes comparan vía GET /board/version y re-sincronizan; divergencia se vuelve detectable+resoluble. G3 libro de registro = onboarding_register.jsonl append-only (ts, runtime, profile, transport, state_version, gate_result, errors[], outcome) escrito por la conserjería en cada check-in/out — da a Jorge quién onboardeó/resultado/errores consultable, telemetría (ej. atgo_not_triggered).
+
+Recomendación decidida: SÍ construir la conserjería, como capa fina de orquestación que REUSA /go (Board) + hash de push_mirror (versión) + lógica de la matriz (routing) — integración, no obra nueva. Frontera física: CONSULTOR (ChatGPT sin red) no lo alcanza ninguna app; se le genera el capsule vigente para pegar. Consolidación: colapsar los 5 artefactos divergentes (DFL_Agent_Onboarding_Config.md, /root/AGENTS.md, /root/.codex/AGENTS.md, CHATGPT_WORK_ATGO_INSTRUCTION.md, mi ONBOARDING_CAPSULE.md redundante→descartar) a una fuente única + proyecciones versionadas. Plan 3 fases: F1 Fundación (exponer state_version + register + hook Codex check-in), F2 Conserjería (CLI+HTTP), F3 Consolidación.
+
+**Next**: Jorge decide: (1) construir F2 completa o F1 primero; (2) register JSONL vs SQLite; (3) F1 toca main.py (reload proxy) + hook Codex = lote de estado a aprobar.
+
+### CORRECCIÓN diagnóstico onboarding: fix Codex va en /root/.codex/AGENTS.md global (aplicado), ChatGPT = pegar capsule existente (paso humano)
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/onboarding/codex-chatgpt-fix
+TYPE: decision
+STATUS: active
+DATE: 2026-07-22
+
+**CORRIGE obs #284 (mismo topic) con evidencia real de logs.** El diagnóstico de "falta AGENTS.md por-repo" era capa equivocada. Evidencia (logs Codex v0.145.0 gpt-5.4 + ChatGPT varios días):
+
+CODEX: al recibir `@$go` respondió DOS veces "only contains @$go... not enough task detail" y solo lo ejecutó cuando Jorge lo forzó. Causa raíz REAL: `/root/.codex/AGENTS.md` (único archivo que Codex carga en cada sesión — de ahí salió el bloque codebase-memory de su SessionStart) contenía SOLO las instrucciones de codebase-memory-mcp, cero líneas de @$go. No hay hook SessionStart en Codex (config.toml sin notify/hook). El protocolo existía en /opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md pero NO se auto-carga; Codex lo encontró grepeando tras la orden. FIX APLICADO: appended sección "DFL @$go/@$fin protocolo OBLIGATORIO" a /root/.codex/AGENTS.md FUERA de los marcadores codebase-memory-mcp (dfl-atgo-protocol:start/end), con regla dura de disparo ("si el mensaje es exactamente @$go, ESE es el trabajo; no pidas tarea concreta"), traducción tools search_memory/save_memory/update_memory, gotcha DNS-sandbox (curl falla dentro del sandbox, reintentar fuera), y gate de 6 líneas. Efectivo en la PRÓXIMA sesión de Codex, sin restart/commit. Paridad real con CC (que lo tiene en /root/.claude/CLAUDE.md global). Riesgo residual: si codebase-memory-mcp reescribe el archivo completo podría clobbering; mitigación: repo docs como belt-and-suspenders.
+
+CHATGPT: flip-flop ORQUESTADOR/CONSULTOR día a día = correcto (fetch intermitente real). El único bug fue un día citar fuente ALUCINADA (github.com/sergiocoding96/hermes-multi-agent, repo ajeno) en vez de caer al capsule. El capsule bueno YA EXISTE: /root/CHATGPT_WORK_ATGO_INSTRUCTION.md v2026-07-18.2 (con regla "no descubras el significado por web" + lista de respuestas prohibidas). No se aplicó porque NO está pegado en las Custom Instructions de ChatGPT — ningún archivo de la VM alcanza la sesión privada de ChatGPT. FIX = Jorge pega ese capsule UNA vez en Custom Instructions (paso humano irreducible).
+
+DIVERGENCIA a consolidar: mi ONBOARDING_CAPSULE.md (creado hoy en amos-context-mirror) duplica /root/CHATGPT_WORK_ATGO_INSTRUCTION.md. El canónico para ChatGPT es el de /root. Recomendación: no pushear el duplicado; consolidar a uno.
+
+**Next**: (1) Codex fix ya activo, validar en próxima sesión Codex real. (2) Jorge pega el capsule en ChatGPT. (3) decidir consolidación de capsules + si el lote commit/push amos-context sigue en pie o se recorta.
+
 ### Checkpoint @$fin — SFV5→V6 Business OS + JPI MVP rebuild (sesión abierta, no cerrada)
 **Type:** decision  
 **Project:** dfl  
@@ -134,21 +168,6 @@ Antes de operar, respondé:
 **Project:** dfl  
 
 On 2026-07-19, 360Eventos was reoriented from patching the legacy MVP to building a new MVP V2 using the SaaS Factory checkout at /opt/saas-factory-setup/saas-factory as a greenfield base. Documentation was created under /opt/360eventos/docs/mvp-v2/2026-07-19-greenfield-strategy and committed as b766e37 docs(360eventos): define MVP V2 greenfield strategy. Decision: use SFV5 candidate as READY_AS_GREENFIELD_BASE_WITH_GUARDRAILS, treat /opt/360eventos legacy as read-only reference, do not continue FS-01 patching, do not apply migration-10, and transfer only domain semantics, rules, synthetic scenarios and selected lessons. Canonical semantics: SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, COTIZACION; PRECOTIZACION does not exist and must not appear except as a forbidden legacy term. No functional code, data, Supabase, Vercel, infrastructure, migrations, secrets or NO_TOUCH zones were modified.
-
-### DRG-001 emitido: cierre normativo FS-01 360Eventos (mapeo legacy, sunset dual-write, AuthZ oficial, atomicidad, impacto FS-02/03)
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/360eventos/drg-001-fs01-closure
-TYPE: decision
-STATUS: active
-DATE: 2026-07-19
-
-**What**: DRG-001 emitido — documento normativo de cierre de FS-01 en /opt/360eventos/docs/architecture/DRG-001-FS01-CLOSURE.md (sin commit; misión "no escribas código" cumplida: solo documento). Decisiones vinculantes: D1 mapeo legacy definitivo (nueva→RECIBIDA, en_revision→RECIBIDA porque PENDIENTE_INFORMACION exigiría nota inexistente, cotizada→CALIFICADA, cerrada→ARCHIVADA_LEGACY [valor terminal nuevo fuera de la máquina de estados], cancelada→RECHAZADA con motivo literal de migración; fallback silencioso a RECIBIDA PROHIBIDO). D2 filas irregulares → estado_ddms NULL + "requiere revisión de datos"; con datos reales de cliente toda migración de estados exige revisión humana nominal. D3 sunset: estado_ddms única verdad; estado legacy congelado read-only en migration-11, drop físico al cierre de FS-03; CALIFICADA→'cotizada' abolido. D4 dual-write prohibido como patrón; servicios congelada; cotizaciones (migration-05) declarada muerta para FS-03. D5 AuthZ de aplicación primaria + RLS honesta (correcta o eliminada); roles DDMS migran YA en profiles CHECK (admin→ADMINISTRADOR); INSERT anónimo muerto se elimina. D6 atomicidad: cambio de estado + historial en una transacción vía RPC Postgres; aplica a toda entidad con estado del proyecto; calificar NO re-valida fecha_evento pasada. D7 FS-02 tablas nuevas + snapshot service como gate de salida + enums en src/domain/ único; FS-03 versionado nativo + secuencias. Condiciones de cierre FS-01 bloquean FS-02, incluida la obligación de versionar docs/ y domain/ en git. migration-10 SUPERSEDIDA.
-
-**Why**: Jorge ordenó misión DRG-001 (Architecture Review Board, decisiones no opciones) tras el informe de riesgos de la revisión read-only (obs #269). Evidencia habilitante de mapeos incondicionales: CLIENT_PRODUCTION_GATE BLOCKED + datos solo demo.
-
-**Next**: migration-11 debe redactarse conforme a DRG-001 y aplicarse solo con autorización explícita de Jorge; Codex auditando migración en paralelo debe recibir DRG-001 como norma superior a migration-10.
 
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -190,23 +209,6 @@ DATE: 2026-07-15
 **No tocado**: puntajeTigreKnockout, scoring, Supabase schema/data, contratos de predicción, superficies ya correctas (upcoming/predict/today/oracle).
 
 **Pendiente**: verificar deploy Vercel del commit 2a12586 en producción.
-
-### Visualizer v0.1 remediado: 4 bloqueantes NO-GO cerrados (rama remediation/visualizer-v01, 83/83 tests)
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/visualizer/remediation-v01-complete
-TYPE: decision
-STATUS: active
-DATE: 2026-07-14
-
-**What**: Remediación autónoma CC de los 4 bloqueantes del NO-GO de Visualizer v0.1 (auditoría Codex b1b81e7) COMPLETADA. Rama local `remediation/visualizer-v01` en /opt/visualizer (sin remoto, sin push, por diseño). Commits: 4186465 (contrato honesto de reversibilidad: VMD/JSON única representación canónica reversible, Markdown proyección narrativa, compilación siempre nueva nunca auto-aprobada), 48aa422 (proveniencia Caso Cero: origin extracted|inferred|modeled, approval {by,at} obligatorio por integridad, evidencia derivada located|cited|unsupported verificada contra fuentes, fixture reclasificado 0 approved / 8 extracted con spans reales / 83 modeled con ausencia registrada, endpoint /traceability, anti-concentración de evidencia >3), f9f1a84 (dependencias/circuitos: viewInsight connected/undeclared/isolated + fuera de alcance, roles inicio/cierre/bifurcación, banda separada para no conectados, export PNG/SVG de grafo COMPLETO validado por IHDR + pixel-sampling de nodos extremos), 83be519 (recuperación: ModelCorruptError, cuarentena sin destruir evidencia, restauración atómica desde revisión válida más reciente, fallo seguro, 14 escenarios de test), 2631258 (cierre consolidado).
-
-**Why**: Codex emitió NO-GO controlado; Jorge ordenó remediación autónoma exclusiva de esos 4 bloqueantes para hacer Visualizer técnicamente homologable.
-
-**Evidence**: Suite 40→83 tests PASS; lint/typecheck/build 0; npm ci limpio; loopback 127.0.0.1:4310 verificado; npm audit runtime 0 vulnerabilidades (5 findings toolchain vite/vitest documentados, majors no forzados). Evidencia en /opt/visualizer/evidence/remediation-cc/ (WORKLOG.md, VALIDATION.md, REMAINING_RISKS.md, CASO_CERO_TRACEABILITY.md, exports validados 4 vistas).
-
-**Next**: (1) Jorge: revisión visual de las 4 vistas en iMac/tablet vía túnel SSH (README) con fixture ya reclasificado como proposed; (2) aportar fuentes doctrinales reales como sources del Caso Cero y aprobar elementos con registro; (3) upgrade planificado vite@8+vitest@4 con la suite como red; (4) NO avanzar a Business Genoma sin nueva orden.
 
 ---
 
@@ -290,6 +292,25 @@ Entregables actualizados con este cierre: /opt/dfl-knowledge/audits/codebase-mem
 
 Pendiente para el futuro: puntos 3-4 de Nivel A (indexar los ~11 repos de /opt nunca indexados, limpiar duplicados confirmados), validación interactiva real de Codex, investigación de la anomalía "10 vs 906" si se decide abrirla, y Nivel C (DFL Knowledge Adapter) como arquitectura recomendada de destino — ver DFL_KNOWLEDGE_ADAPTER_PROPOSAL.md.
 
+### CORRECCIÓN diagnóstico onboarding: fix Codex va en /root/.codex/AGENTS.md global (aplicado), ChatGPT = pegar capsule existente (paso humano)
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/onboarding/codex-chatgpt-fix
+TYPE: decision
+STATUS: active
+DATE: 2026-07-22
+
+**CORRIGE obs #284 (mismo topic) con evidencia real de logs.** El diagnóstico de "falta AGENTS.md por-repo" era capa equivocada. Evidencia (logs Codex v0.145.0 gpt-5.4 + ChatGPT varios días):
+
+CODEX: al recibir `@$go` respondió DOS veces "only contains @$go... not enough task detail" y solo lo ejecutó cuando Jorge lo forzó. Causa raíz REAL: `/root/.codex/AGENTS.md` (único archivo que Codex carga en cada sesión — de ahí salió el bloque codebase-memory de su SessionStart) contenía SOLO las instrucciones de codebase-memory-mcp, cero líneas de @$go. No hay hook SessionStart en Codex (config.toml sin notify/hook). El protocolo existía en /opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md pero NO se auto-carga; Codex lo encontró grepeando tras la orden. FIX APLICADO: appended sección "DFL @$go/@$fin protocolo OBLIGATORIO" a /root/.codex/AGENTS.md FUERA de los marcadores codebase-memory-mcp (dfl-atgo-protocol:start/end), con regla dura de disparo ("si el mensaje es exactamente @$go, ESE es el trabajo; no pidas tarea concreta"), traducción tools search_memory/save_memory/update_memory, gotcha DNS-sandbox (curl falla dentro del sandbox, reintentar fuera), y gate de 6 líneas. Efectivo en la PRÓXIMA sesión de Codex, sin restart/commit. Paridad real con CC (que lo tiene en /root/.claude/CLAUDE.md global). Riesgo residual: si codebase-memory-mcp reescribe el archivo completo podría clobbering; mitigación: repo docs como belt-and-suspenders.
+
+CHATGPT: flip-flop ORQUESTADOR/CONSULTOR día a día = correcto (fetch intermitente real). El único bug fue un día citar fuente ALUCINADA (github.com/sergiocoding96/hermes-multi-agent, repo ajeno) en vez de caer al capsule. El capsule bueno YA EXISTE: /root/CHATGPT_WORK_ATGO_INSTRUCTION.md v2026-07-18.2 (con regla "no descubras el significado por web" + lista de respuestas prohibidas). No se aplicó porque NO está pegado en las Custom Instructions de ChatGPT — ningún archivo de la VM alcanza la sesión privada de ChatGPT. FIX = Jorge pega ese capsule UNA vez en Custom Instructions (paso humano irreducible).
+
+DIVERGENCIA a consolidar: mi ONBOARDING_CAPSULE.md (creado hoy en amos-context-mirror) duplica /root/CHATGPT_WORK_ATGO_INSTRUCTION.md. El canónico para ChatGPT es el de /root. Recomendación: no pushear el duplicado; consolidar a uno.
+
+**Next**: (1) Codex fix ya activo, validar en próxima sesión Codex real. (2) Jorge pega el capsule en ChatGPT. (3) decidir consolidación de capsules + si el lote commit/push amos-context sigue en pie o se recorta.
+
 **Type:** manual  
 **Project:** futbolweb-app  
 
@@ -310,69 +331,35 @@ Limpieza propia: se borraron 2 proyectos de prueba huérfanos (tmp-cbm-test-larg
 
 Método: 4 subagentes fork en paralelo (auth/config, storage/logs/forensics, reproducción controlada, test de concurrencia dedicado) + verificación directa del orquestador.
 
-### [CERTIFIED] Roadmap DFL @$go/KNL/hooks — orquestación 2026-06-27
+### DRG-002 amOS Lobby: rediseño onboarding (conserjería ejecutada + paridad por state_version + libro de registro) — diseño, pendiente build
 **Type:** decision  
-**Project:** dfl  
+**Project:** dfl-knowledge  
 
-**What**: Orquestación ejecutiva del stack DFL post-certificación: incidente FW, slim /go, fallback local, handoff bidireccional, modelo de confianza.
+TOPIC: dfl/onboarding/amos-lobby-redesign
+TYPE: decision
+STATUS: active
+DATE: 2026-07-22
 
-**Decisiones:**
-- Incidente FW 2026-06-19: STALE. Engram #14 lo cierra (fix aplicado 2026-06-24). El `pending` en /go es ruido — debe limpiarse. Los archivos dirty en /opt/futbolweb (espn-world-cup.ts +175l, scoring-propagation.ts +30l) son trabajo en progreso nuevo, no el incidente.
-- Slim /go: servir solo restrictions + god_nodes + pending + recent_decisions(max 4) por defecto. Identity → 2 líneas. graph_summary → ?full=1. -40% payload estimado.
-- Fallback local: cc-atgo-hook.sh debe leer /opt/dfl-knowledge/graphify-out/knl.json si /go falla. Banner MODO FALLBACK para agente. Elimina único punto de fallo silencioso.
-- Handoff bidireccional: agent-lock.json en /opt/dfl-context-proxy/. Read en SessionStart, write al iniciar trabajo, cleanup en session_end. Sin infraestructura distribuida.
-- Modelo confianza: convención [VERIFIED]/[CERTIFIED]/[CLAIMED]/[STALE] en títulos Engram. Cero código. Si restricción es CLAIMED, preguntar a Jorge antes de actuar.
+**What**: DRG-002 emitido — rediseño del onboarding/outboarding DFL como "amOS Lobby". Doc en /opt/dfl-knowledge/architecture/AMOS-LOBBY-REDESIGN.md (solo diseño, sin implementar, sin commit). Responde el pedido de Jorge (metáfora Directorio de hotel/condominio + conserjería que registra entradas/salidas y enruta por fallout). Tres garantías: G1 acceso único = Conserjería que EJECUTA detección→ruta→log (CLI `dfl onboard/outboard/capsule/register` + `GET /onboard`), no self-serve desde prosa (que es la causa raíz de todos los fallos vistos). G2 PARIDAD llegado↔incumbente = exponer un `state_version` único; primitiva YA existe: push_mirror.sh hashea el payload /go sin generated_at en .last-mirror-hash — solo falta exponerlo; incumbentes comparan vía GET /board/version y re-sincronizan; divergencia se vuelve detectable+resoluble. G3 libro de registro = onboarding_register.jsonl append-only (ts, runtime, profile, transport, state_version, gate_result, errors[], outcome) escrito por la conserjería en cada check-in/out — da a Jorge quién onboardeó/resultado/errores consultable, telemetría (ej. atgo_not_triggered).
 
-**Orden de ejecución recomendado:**
-1. Limpiar pending Engram #14 (5 min)
-2. Fallback local cc-atgo-hook.sh (30 min)
-3. Slim /go payload main.py (1h)
-4. Convención evidence_level en Engram (inmediato, convención)
-5. Agent lock file — solo cuando haya colisiones reales documentadas
+Recomendación decidida: SÍ construir la conserjería, como capa fina de orquestación que REUSA /go (Board) + hash de push_mirror (versión) + lógica de la matriz (routing) — integración, no obra nueva. Frontera física: CONSULTOR (ChatGPT sin red) no lo alcanza ninguna app; se le genera el capsule vigente para pegar. Consolidación: colapsar los 5 artefactos divergentes (DFL_Agent_Onboarding_Config.md, /root/AGENTS.md, /root/.codex/AGENTS.md, CHATGPT_WORK_ATGO_INSTRUCTION.md, mi ONBOARDING_CAPSULE.md redundante→descartar) a una fuente única + proyecciones versionadas. Plan 3 fases: F1 Fundación (exponer state_version + register + hook Codex check-in), F2 Conserjería (CLI+HTTP), F3 Consolidación.
 
-**Why**: Reducir ruido en bootstrap inter-agente y eliminar puntos de fallo sin tocar producción.
+**Next**: Jorge decide: (1) construir F2 completa o F1 primero; (2) register JSONL vs SQLite; (3) F1 toca main.py (reload proxy) + hook Codex = lote de estado a aprobar.
 
-**Where**: cc-atgo-hook.sh, main.py (/go endpoint), Engram project dfl.
+### Onboarding @$go corregido: causas raíz de fallo Codex (falta AGENTS.md) y ChatGPT (capsule inexistente) + fix implementado local
+**Type:** decision  
+**Project:** dfl-knowledge  
 
-**Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
+TOPIC: dfl/onboarding/codex-chatgpt-fix
+TYPE: decision
+STATUS: active
+DATE: 2026-07-22
 
-**Type:** manual  
-**Project:** futbolweb-app  
+**What**: Diagnóstico y corrección del onboarding @$go que Codex y ChatGPT no ejecutaban bien. Dos causas raíz VERIFICADAS (no supuestas): (1) CODEX — ningún AGENTS.md en /opt menciona @$go ni bootstrap (los 4 existentes: engram/360eventos/co-001/futbolweb dan @$go:0), y NO existía AGENTS.md en /opt/dfl-knowledge; CC arranca con CLAUDE.md→BOOTSTRAP OBLIGATORIO pero Codex, que lee AGENTS.md, no tenía el gemelo → nunca se le instruía el protocolo. Además el payload solo trae cc_bootstrap con nombres CC (mem_search) sin traducción a los de Codex (search_memory/save_memory/update_memory via engram-mcp). (2) CHATGPT — el "offline bootstrap capsule" se referencia en 6 sitios como salvavidas del CONSULTOR pero NO existía como artefacto (solo menciones "usá el capsule de las instrucciones de la sesión", ninguna definición); ChatGPT choca con fetch bloqueado, se le manda a un capsule inexistente, y reporta GATE FALLIDO o fabrica.
 
-CHECKPOINT PROVISIONAL (@$fin modo Checkpoint — sesión activa continúa, NO es cierre final) — 2026-07-22. Handoff rápido para Codex u otra sesión si esta se corta.
+**Fix implementado (local, sin commit/push aún):** (a) NEW /opt/dfl-knowledge/AGENTS.md — entry-point Codex, gemelo de CLAUDE.md, con tabla de traducción de tools Engram + gotcha tmux/egress + validation gate. (b) NEW /opt/amos-context-mirror/ONBOARDING_CAPSULE.md — capsule real: Parte A estable (pasa el gate sin fetch) + Parte B snapshot que Jorge refresca. (c) Edit agents/consultor.md + AGENT_CAPABILITY_MATRIX.md apuntando al capsule canónico (test_onboarding_fallback.py sigue PASS). (d) pointer @$go en /opt/360eventos/AGENTS.md. Efecto local inmediato; commit/push a DFLghub/amos-context + los 3 repos = punto de decisión pendiente de Jorge. GOTCHA a respetar: push_mirror.sh hace git reset --hard sobre amos-context-mirror → commitear+pushear los anexos ANTES de correr push_mirror.sh.
 
-ESTADO GENERAL: Las 4 misiones de esta sesión están COMPLETAS y cerradas correctamente, ninguna en curso ahora mismo. No hay trabajo pendiente sin resolver — el sistema está en punto de espera de nueva instrucción de Jorge.
-
-RESUMEN DE LAS 4 MISIONES (en orden cronológico, cada una con su expediente completo en disco):
-
-1. AUDITORÍA CODEBASE MEMORY (VM2) — /opt/dfl-knowledge/audits/codebase-memory-v1/ (6 docs + README). Nivel A aplicado y cerrado PASS con caveats. Backups en /root/.claude/settings.json.bak-cbm-nivelA-20260721-230809 y /root/.codex/config.toml.bak-cbm-nivelA-20260721-230809. Pendiente NO resuelto (dejado abierto a propósito): anomalía "10 vs 906" en codex exec, validación interactiva de Codex real.
-
-2. REVISIÓN INDEPENDIENTE BOS v2 vs CODEX — /opt/dfl-knowledge/audits/business-os-peer-review-cc/ (6 docs). Veredicto: CONCUERDO CON CORRECCIONES IMPORTANTES. Hallazgo: BOS es infraestructura periférica real, sin cognición gerencial; daemon externo ausente en VM2.
-
-3. DISEÑO "PRIMERA FÁBRICA DFL OPERABLE v0.1" — /opt/dfl-knowledge/architecture/first-operable-factory-v01/ (12 docs). Especifica el factory-manager-daemon (FMD), contrato amOS↔BOS, gates G0-G7, piloto JPI (JPI_MINUTES_PILOT.md), brechas TDL (ausente)/MERCADER. Solo diseño, cero código.
-
-4. BOOTSTRAP FMD-G1 (ejecución real) — /opt/dfl-knowledge/evidence/first-operable-factory-bootstrap-g1/ (9 docs). Gate G1: PASS. Construido por 3 agentes workforce (implementador→tester→validador independiente, 0 reasignaciones) en /opt/360eventos/business-os/ (JPI, laboratorio con permiso total). Commits locales sin push: c7ff2ab (impl), 3c184d4 (tests). Detenido correctamente al cerrar G1, tal como se pidió. PRÓXIMO PASO NATURAL (no iniciado): conectar el esqueleto FMD-G1 con el dominio real de JPI (src/features/jpi/domain/states.mjs y missing-information.mjs) para poder correr JPI_MINUTES_PILOT.md completo.
-
-RESTRICCIONES ACTIVAS QUE SIGUEN VIGENTES: no tocar Supabase real/credenciales/despliegues de BOS v2 ni SFV5 (JPI SÍ es laboratorio libre, declarado explícitamente por Jorge). No reabrir ni modificar Nivel A de Codebase Memory sin pedido explícito. No avanzar sobre FMD completo/aprendizaje/Plasticidad/Metabolismo/SFV5/TDL/MERCADER/piloto JPI completo sin nueva misión explícita de Jorge — la misión de bootstrap dijo "detente al cerrar Gate G1" y así se hizo.
-
-Si esta sesión se corta acá: los 4 expedientes completos en disco + este mem_save son suficientes para que Codex retome sin preguntas — no hay estado intermedio roto, todo está en un punto de cierre limpio esperando la siguiente misión.
-
-**Type:** manual  
-**Project:** futbolweb-app  
-
-MISIÓN BOOTSTRAP FMD-G1 COMPLETADA — Gate G1: PASS. Cierra el checkpoint provisional anterior (obs-ea46c04ae2e71f20) — esta es la conclusión real, no otro checkpoint.
-
-Entregables en /opt/dfl-knowledge/evidence/first-operable-factory-bootstrap-g1/ (9 archivos): MISSION_ACTIVATION, WORKFORCE_ASSIGNMENTS, EXECUTION_LOG, G1_EVIDENCE_INDEX, INDEPENDENT_VALIDATION, AUTONOMY_METRICS, ROLLBACK, JPI_HANDOFF, FINAL_VERDICT.
-
-QUÉ SE CONSTRUYÓ (por 3 agentes workforce, no por Claude Code): en /opt/360eventos/business-os/ (piloto Express+SQLite ya existente en JPI, laboratorio con permiso total) — migración 006_fmd_goals.js (tablas goals/plans/agents), módulo fmd/goals.js (Gate G0 validación, generador de plan determinístico 2 pasos, Gate G1 evaluación real contra DB de agentes), rutas POST/GET /business-os/api/goals*, 14 tests automatizados nuevos. Commits: c7ff2ab (implementación), 3c184d4 (tests) — locales, sin push.
-
-WORKFORCE: Agente A (Implementador) → Agente B (Tester) → Agente C (Validador independiente), secuencial por dependencia real. LOS 3 CERRARON EN EL PRIMER INTENTO — cero reasignaciones, cero fallos, cero retrabajo. Validación independiente dio PASS con evidencia propia (no citó autorreportes): 21/21 tests, 3 casos adversariales incluyendo carrera real de 10 requests concurrentes con mismo idempotency_key → 1 sola fila sin duplicar, scope verificado limpio en todo /opt/360eventos y confirmado que /opt/experiments/business-os-new-audit y /opt/saas-factory-setup quedaron intocados. 1 caveat no bloqueante documentado (falta try/catch SQLITE_CONSTRAINT para futuro driver async).
-
-AUTONOMÍA: cero intervenciones técnicas de Jorge durante la ejecución (sus 3 mensajes fueron administrativos: checkpoint de protocolo, pedido de reporte, autorización de continuar — no coordinación técnica). Claude Code actuó solo como supervisor: cero líneas de código de business-os/ escritas por el supervisor.
-
-DECISIÓN DE ARQUITECTURA clave tomada por el supervisor (justificada en MISSION_ACTIVATION.md): construir en ruta aislada dentro de business-os/ (JPI) en vez de tocar BOS v2 auditado o SFV5, para evitar riesgo de credenciales/Supabase real sin necesidad — reutiliza patrón ya probado (migraciones idempotentes, tests reales) del propio JPI.
-
-PRÓXIMO PASO NATURAL (fuera de esta misión, documentado en JPI_HANDOFF.md): conectar este esqueleto con el dominio real de JPI (states.mjs, missing-information.mjs) para poder correr JPI_MINUTES_PILOT.md completo — el FMD mínimo todavía NO está listo para dirigir el piloto completo, uso datos sintéticos propios del incremento, no el dominio real. Detenido en el cierre de G1 tal como la misión pidió explícitamente.
+**Next**: Jorge autoriza el lote de commit/push. Propuesto follow-up (no hecho): propagar la referencia al capsule a los generadores (publish-amos-context.sh → amos-context.md, main.py → payload CONSULTOR/codex_bootstrap) para que el mirror generado y el payload también apunten al artefacto.
 
 ---
 
@@ -465,4 +452,4 @@ PRÓXIMO PASO NATURAL (fuera de esta misión, documentado en JPI_HANDOFF.md): co
 
 ---
 
-*Mirror auto-generated 2026-07-22T21:36:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-22T22:36:01Z | La Garra → DFLghub/amos-context*
