@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-22T22:36:01Z  
+**Generated:** 2026-07-22T23:21:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,40 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### CP-02 cerrado — DRG-002-R1 Access Point thesis + audit appendix normalizados en feat/dfl-concierge
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/concierge/cp-02-closure
+TYPE: decision
+STATUS: active
+DATE: 2026-07-22
+
+What: CP-02 quedó cerrado en /opt/dfl-knowledge sobre la rama feat/dfl-concierge con el commit f6fd7f9 (docs(concierge): close CP-02 normative checkpoint). Se recuperó el trabajo documental dejado sin commit por Claude Code y se verificó contra el checklist pedido: doble propósito DFL Concierge + Access Point Core; separación ACCESS_POINT_CORE / DFL_PROFILE / FUTURE_VERTICALS; AuditEvent con RESOURCE_QUERY, CONTEXT_DELIVERED, ACTION_ATTEMPT, ACTION_RESULT y ACCESS_DENIED; policy_ref; principio de contenido mínimo (registrar hecho + resource_ref + policy_ref + content_digest, nunca contenido sensible); Apéndice A con veredicto GO / GO_WITH_REQUIRED_CHANGES / NO_GO; auditoría destructiva de identidad, autorización, paridad, integridad, sesiones, receipts y handoffs; ATTESTED != AUTHORIZED; prohibición de implementar durante la auditoría.
+
+Corrección mínima aplicada: se normalizó la inconsistencia final del Apéndice A que todavía decía GO-CON-AJUSTES; ahora el criterio usa NO_GO / GO_WITH_REQUIRED_CHANGES, consistente con el resto de la norma.
+
+Artifacts: architecture/DRG-002-R1-dfl-concierge.md ; architecture/receipts/CP-02.md
+
+Git: commit exclusivo CP-02 ya creado en feat/dfl-concierge. El árbol tracked de CP-02 quedó limpio tras commitear; el repo mantiene untracked preexistentes ajenos (AGENTS.md, architecture/AMOS-LOBBY-REDESIGN.md, architecture/first-operable-factory-v01/, audits/codebase-memory-upstream-ddms-v1/, evidence/first-operable-factory-bootstrap-g1/, readiness/) que no se tocaron para no mezclar trabajo ajeno.
+
+PROXIMO_AGENTE_DEBE: auditar constructibilidad/coherencia de DFL Concierge F1 sobre feat/dfl-concierge HEAD=f6fd7f9 usando el Apéndice A ampliado de DRG-002-R1; emitir GO / GO_WITH_REQUIRED_CHANGES / NO_GO; NO implementar F1; no tocar zonas protegidas; guardar el veredicto en Engram y devolver solo ajustes constitutivos o bloqueantes reales.
+
+### CP-01 completado: DRG-002-R1 DFL Concierge diseño normativo commiteado (rama feat/dfl-concierge, sin código, pendiente auditoría Codex)
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/onboarding/drg-002-r1-cp01
+TYPE: decision
+STATUS: active
+DATE: 2026-07-22
+
+**CP-01 COMPLETADO** — DRG-002-R1 (DFL Concierge / ACS) diseño normativo redactado y commiteado. Rama `feat/dfl-concierge`: commit 7cbf471 (doc `architecture/DRG-002-R1-dfl-concierge.md`) + e8edaef (receipt `architecture/receipts/CP-01.md`). Sin código, sin push (offhost_durable=false: recuperable en La Garra + Engram, NO durable off-host — decisión abierta).
+
+Diseño = síntesis onboarding ACS (propuesta GPT) + mis 5 disciplinas + los 4 ajustes obligatorios de Jorge: [A1] drift prevenible+detectable con artefactos generados inmutables (version+source_commit+hashes), NO "imposible"; [A2] paridad sobre Canonical Onboarding Packet normalizado con hashes por sección + coverage manifest por adaptador + degradaciones DECLARADAS (READY_WITH_LIMITATIONS, no fingir igualdad); [A3] identidad separada agent/runtime/session + capability + authorization, niveles de confianza ATTESTED/CORROBORATED/ASSERTED/UNKNOWN, tope de authz por trust (columna de seguridad — ASSERTED nunca escribe estado); [A4] checkpoint receipt versionado + durabilidad off-host honesta. participant_type admite AI_AGENT/SYSTEM_AGENT/AUTOMATION/HUMAN/SERVICE desde ya; build F1 solo AI_AGENT (3 tiers). Corte mínimo F1: fuente canónica estructurada + compilador determinista + validador (staleness/reproducibilidad/cobertura/paridad) + register JSONL/receipts + identidad ATTESTED/ASSERTED + CLI local-first, SIN daemon/HTTP/UI. Supersede borrador R0 AMOS-LOBBY-REDESIGN.md.
+
+**Next / PROXIMO_AGENTE_DEBE**: Jorge decide (1) las 4 decisiones abiertas inevitables §11 (durabilidad off-host, mecanismo de atestación, tabla scope→min_trust, hogar de la fuente canónica) y (2) si despacha el Mission Packet (DRG-002-R1 Apéndice A) a Codex para auditoría de constructibilidad. NO construir hasta veredicto GO de Codex. Relevo: reanudar desde rama feat/dfl-concierge (e8edaef) + este obs.
+
 ### DRG-002 amOS Lobby: rediseño onboarding (conserjería ejecutada + paridad por state_version + libro de registro) — diseño, pendiente build
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -115,25 +149,6 @@ DATE: 2026-07-22
 Recomendación decidida: SÍ construir la conserjería, como capa fina de orquestación que REUSA /go (Board) + hash de push_mirror (versión) + lógica de la matriz (routing) — integración, no obra nueva. Frontera física: CONSULTOR (ChatGPT sin red) no lo alcanza ninguna app; se le genera el capsule vigente para pegar. Consolidación: colapsar los 5 artefactos divergentes (DFL_Agent_Onboarding_Config.md, /root/AGENTS.md, /root/.codex/AGENTS.md, CHATGPT_WORK_ATGO_INSTRUCTION.md, mi ONBOARDING_CAPSULE.md redundante→descartar) a una fuente única + proyecciones versionadas. Plan 3 fases: F1 Fundación (exponer state_version + register + hook Codex check-in), F2 Conserjería (CLI+HTTP), F3 Consolidación.
 
 **Next**: Jorge decide: (1) construir F2 completa o F1 primero; (2) register JSONL vs SQLite; (3) F1 toca main.py (reload proxy) + hook Codex = lote de estado a aprobar.
-
-### CORRECCIÓN diagnóstico onboarding: fix Codex va en /root/.codex/AGENTS.md global (aplicado), ChatGPT = pegar capsule existente (paso humano)
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/onboarding/codex-chatgpt-fix
-TYPE: decision
-STATUS: active
-DATE: 2026-07-22
-
-**CORRIGE obs #284 (mismo topic) con evidencia real de logs.** El diagnóstico de "falta AGENTS.md por-repo" era capa equivocada. Evidencia (logs Codex v0.145.0 gpt-5.4 + ChatGPT varios días):
-
-CODEX: al recibir `@$go` respondió DOS veces "only contains @$go... not enough task detail" y solo lo ejecutó cuando Jorge lo forzó. Causa raíz REAL: `/root/.codex/AGENTS.md` (único archivo que Codex carga en cada sesión — de ahí salió el bloque codebase-memory de su SessionStart) contenía SOLO las instrucciones de codebase-memory-mcp, cero líneas de @$go. No hay hook SessionStart en Codex (config.toml sin notify/hook). El protocolo existía en /opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md pero NO se auto-carga; Codex lo encontró grepeando tras la orden. FIX APLICADO: appended sección "DFL @$go/@$fin protocolo OBLIGATORIO" a /root/.codex/AGENTS.md FUERA de los marcadores codebase-memory-mcp (dfl-atgo-protocol:start/end), con regla dura de disparo ("si el mensaje es exactamente @$go, ESE es el trabajo; no pidas tarea concreta"), traducción tools search_memory/save_memory/update_memory, gotcha DNS-sandbox (curl falla dentro del sandbox, reintentar fuera), y gate de 6 líneas. Efectivo en la PRÓXIMA sesión de Codex, sin restart/commit. Paridad real con CC (que lo tiene en /root/.claude/CLAUDE.md global). Riesgo residual: si codebase-memory-mcp reescribe el archivo completo podría clobbering; mitigación: repo docs como belt-and-suspenders.
-
-CHATGPT: flip-flop ORQUESTADOR/CONSULTOR día a día = correcto (fetch intermitente real). El único bug fue un día citar fuente ALUCINADA (github.com/sergiocoding96/hermes-multi-agent, repo ajeno) en vez de caer al capsule. El capsule bueno YA EXISTE: /root/CHATGPT_WORK_ATGO_INSTRUCTION.md v2026-07-18.2 (con regla "no descubras el significado por web" + lista de respuestas prohibidas). No se aplicó porque NO está pegado en las Custom Instructions de ChatGPT — ningún archivo de la VM alcanza la sesión privada de ChatGPT. FIX = Jorge pega ese capsule UNA vez en Custom Instructions (paso humano irreducible).
-
-DIVERGENCIA a consolidar: mi ONBOARDING_CAPSULE.md (creado hoy en amos-context-mirror) duplica /root/CHATGPT_WORK_ATGO_INSTRUCTION.md. El canónico para ChatGPT es el de /root. Recomendación: no pushear el duplicado; consolidar a uno.
-
-**Next**: (1) Codex fix ya activo, validar en próxima sesión Codex real. (2) Jorge pega el capsule en ChatGPT. (3) decidir consolidación de capsules + si el lote commit/push amos-context sigue en pie o se recorta.
 
 ### Checkpoint @$fin — SFV5→V6 Business OS + JPI MVP rebuild (sesión abierta, no cerrada)
 **Type:** decision  
@@ -162,12 +177,6 @@ DIVERGENCIA a consolidar: mi ONBOARDING_CAPSULE.md (creado hoy en amos-context-m
 - No bloquear con interrogatorios — detección de info faltante debe ser no-bloqueante.
 - Este es un **checkpoint** (@$fin modo CHECKPOINT pedido explícitamente por Jorge), no cierre real: sin barrido de archivado, sin `push_mirror.sh`. La sesión sigue abierta y puede continuar la Misión 04 desde el commit WIP `7d66327` (implementar API/UI, correr migraciones, escribir e integrar tests, conectar con business-os/) cuando Jorge lo pida.
 - En todo el hilo: sin push, sin mirror, sin escritura previa a Engram — este es el primer mem_save de la sesión.
-
-### 360Eventos MVP V2 greenfield strategy on SaaS Factory
-**Type:** decision  
-**Project:** dfl  
-
-On 2026-07-19, 360Eventos was reoriented from patching the legacy MVP to building a new MVP V2 using the SaaS Factory checkout at /opt/saas-factory-setup/saas-factory as a greenfield base. Documentation was created under /opt/360eventos/docs/mvp-v2/2026-07-19-greenfield-strategy and committed as b766e37 docs(360eventos): define MVP V2 greenfield strategy. Decision: use SFV5 candidate as READY_AS_GREENFIELD_BASE_WITH_GUARDRAILS, treat /opt/360eventos legacy as read-only reference, do not continue FS-01 patching, do not apply migration-10, and transfer only domain semantics, rules, synthetic scenarios and selected lessons. Canonical semantics: SOLICITUD_DE_COTIZACION, REQUIERE_INFORMACION, COTIZACION; PRECOTIZACION does not exist and must not appear except as a forbidden legacy term. No functional code, data, Supabase, Vercel, infrastructure, migrations, secrets or NO_TOUCH zones were modified.
 
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -331,35 +340,46 @@ Limpieza propia: se borraron 2 proyectos de prueba huérfanos (tmp-cbm-test-larg
 
 Método: 4 subagentes fork en paralelo (auth/config, storage/logs/forensics, reproducción controlada, test de concurrencia dedicado) + verificación directa del orquestador.
 
-### DRG-002 amOS Lobby: rediseño onboarding (conserjería ejecutada + paridad por state_version + libro de registro) — diseño, pendiente build
+### CP-02 cerrado — DRG-002-R1 Access Point thesis + audit appendix normalizados en feat/dfl-concierge
 **Type:** decision  
-**Project:** dfl-knowledge  
+**Project:** dfl  
 
-TOPIC: dfl/onboarding/amos-lobby-redesign
+TOPIC: dfl/concierge/cp-02-closure
 TYPE: decision
 STATUS: active
 DATE: 2026-07-22
 
-**What**: DRG-002 emitido — rediseño del onboarding/outboarding DFL como "amOS Lobby". Doc en /opt/dfl-knowledge/architecture/AMOS-LOBBY-REDESIGN.md (solo diseño, sin implementar, sin commit). Responde el pedido de Jorge (metáfora Directorio de hotel/condominio + conserjería que registra entradas/salidas y enruta por fallout). Tres garantías: G1 acceso único = Conserjería que EJECUTA detección→ruta→log (CLI `dfl onboard/outboard/capsule/register` + `GET /onboard`), no self-serve desde prosa (que es la causa raíz de todos los fallos vistos). G2 PARIDAD llegado↔incumbente = exponer un `state_version` único; primitiva YA existe: push_mirror.sh hashea el payload /go sin generated_at en .last-mirror-hash — solo falta exponerlo; incumbentes comparan vía GET /board/version y re-sincronizan; divergencia se vuelve detectable+resoluble. G3 libro de registro = onboarding_register.jsonl append-only (ts, runtime, profile, transport, state_version, gate_result, errors[], outcome) escrito por la conserjería en cada check-in/out — da a Jorge quién onboardeó/resultado/errores consultable, telemetría (ej. atgo_not_triggered).
+What: CP-02 quedó cerrado en /opt/dfl-knowledge sobre la rama feat/dfl-concierge con el commit f6fd7f9 (docs(concierge): close CP-02 normative checkpoint). Se recuperó el trabajo documental dejado sin commit por Claude Code y se verificó contra el checklist pedido: doble propósito DFL Concierge + Access Point Core; separación ACCESS_POINT_CORE / DFL_PROFILE / FUTURE_VERTICALS; AuditEvent con RESOURCE_QUERY, CONTEXT_DELIVERED, ACTION_ATTEMPT, ACTION_RESULT y ACCESS_DENIED; policy_ref; principio de contenido mínimo (registrar hecho + resource_ref + policy_ref + content_digest, nunca contenido sensible); Apéndice A con veredicto GO / GO_WITH_REQUIRED_CHANGES / NO_GO; auditoría destructiva de identidad, autorización, paridad, integridad, sesiones, receipts y handoffs; ATTESTED != AUTHORIZED; prohibición de implementar durante la auditoría.
 
-Recomendación decidida: SÍ construir la conserjería, como capa fina de orquestación que REUSA /go (Board) + hash de push_mirror (versión) + lógica de la matriz (routing) — integración, no obra nueva. Frontera física: CONSULTOR (ChatGPT sin red) no lo alcanza ninguna app; se le genera el capsule vigente para pegar. Consolidación: colapsar los 5 artefactos divergentes (DFL_Agent_Onboarding_Config.md, /root/AGENTS.md, /root/.codex/AGENTS.md, CHATGPT_WORK_ATGO_INSTRUCTION.md, mi ONBOARDING_CAPSULE.md redundante→descartar) a una fuente única + proyecciones versionadas. Plan 3 fases: F1 Fundación (exponer state_version + register + hook Codex check-in), F2 Conserjería (CLI+HTTP), F3 Consolidación.
+Corrección mínima aplicada: se normalizó la inconsistencia final del Apéndice A que todavía decía GO-CON-AJUSTES; ahora el criterio usa NO_GO / GO_WITH_REQUIRED_CHANGES, consistente con el resto de la norma.
 
-**Next**: Jorge decide: (1) construir F2 completa o F1 primero; (2) register JSONL vs SQLite; (3) F1 toca main.py (reload proxy) + hook Codex = lote de estado a aprobar.
+Artifacts: architecture/DRG-002-R1-dfl-concierge.md ; architecture/receipts/CP-02.md
 
-### Onboarding @$go corregido: causas raíz de fallo Codex (falta AGENTS.md) y ChatGPT (capsule inexistente) + fix implementado local
-**Type:** decision  
+Git: commit exclusivo CP-02 ya creado en feat/dfl-concierge. El árbol tracked de CP-02 quedó limpio tras commitear; el repo mantiene untracked preexistentes ajenos (AGENTS.md, architecture/AMOS-LOBBY-REDESIGN.md, architecture/first-operable-factory-v01/, audits/codebase-memory-upstream-ddms-v1/, evidence/first-operable-factory-bootstrap-g1/, readiness/) que no se tocaron para no mezclar trabajo ajeno.
+
+PROXIMO_AGENTE_DEBE: auditar constructibilidad/coherencia de DFL Concierge F1 sobre feat/dfl-concierge HEAD=f6fd7f9 usando el Apéndice A ampliado de DRG-002-R1; emitir GO / GO_WITH_REQUIRED_CHANGES / NO_GO; NO implementar F1; no tocar zonas protegidas; guardar el veredicto en Engram y devolver solo ajustes constitutivos o bloqueantes reales.
+
+### DESPACHO a Codex: auditar constructibilidad DFL Concierge F1 (DRG-002-R1 Apéndice A, rama feat/dfl-concierge f3d3283) → GO/GO_WITH_REQUIRED_CHANGES/NO_GO
+**Type:** task  
 **Project:** dfl-knowledge  
 
-TOPIC: dfl/onboarding/codex-chatgpt-fix
-TYPE: decision
+TOPIC: dfl/onboarding/dispatch-codex-constructibility
+TYPE: task
 STATUS: active
 DATE: 2026-07-22
 
-**What**: Diagnóstico y corrección del onboarding @$go que Codex y ChatGPT no ejecutaban bien. Dos causas raíz VERIFICADAS (no supuestas): (1) CODEX — ningún AGENTS.md en /opt menciona @$go ni bootstrap (los 4 existentes: engram/360eventos/co-001/futbolweb dan @$go:0), y NO existía AGENTS.md en /opt/dfl-knowledge; CC arranca con CLAUDE.md→BOOTSTRAP OBLIGATORIO pero Codex, que lee AGENTS.md, no tenía el gemelo → nunca se le instruía el protocolo. Además el payload solo trae cc_bootstrap con nombres CC (mem_search) sin traducción a los de Codex (search_memory/save_memory/update_memory via engram-mcp). (2) CHATGPT — el "offline bootstrap capsule" se referencia en 6 sitios como salvavidas del CONSULTOR pero NO existía como artefacto (solo menciones "usá el capsule de las instrucciones de la sesión", ninguna definición); ChatGPT choca con fetch bloqueado, se le manda a un capsule inexistente, y reporta GATE FALLIDO o fabrica.
+**DESPACHO A CODEX (EJECUTOR) — auditoría de constructibilidad, NO construir.** Handoff de CC→Codex de la cadena de continuidad (dogfood del ACS).
 
-**Fix implementado (local, sin commit/push aún):** (a) NEW /opt/dfl-knowledge/AGENTS.md — entry-point Codex, gemelo de CLAUDE.md, con tabla de traducción de tools Engram + gotcha tmux/egress + validation gate. (b) NEW /opt/amos-context-mirror/ONBOARDING_CAPSULE.md — capsule real: Parte A estable (pasa el gate sin fetch) + Parte B snapshot que Jorge refresca. (c) Edit agents/consultor.md + AGENT_CAPABILITY_MATRIX.md apuntando al capsule canónico (test_onboarding_fallback.py sigue PASS). (d) pointer @$go en /opt/360eventos/AGENTS.md. Efecto local inmediato; commit/push a DFLghub/amos-context + los 3 repos = punto de decisión pendiente de Jorge. GOTCHA a respetar: push_mirror.sh hace git reset --hard sobre amos-context-mirror → commitear+pushear los anexos ANTES de correr push_mirror.sh.
+**Tarea**: auditar si el corte mínimo F1 de DFL Concierge (ACS) es CONSTRUIBLE como se especifica, según el Mission Packet en **DRG-002-R1 Apéndice A**.
 
-**Next**: Jorge autoriza el lote de commit/push. Propuesto follow-up (no hecho): propagar la referencia al capsule a los generadores (publish-amos-context.sh → amos-context.md, main.py → payload CONSULTOR/codex_bootstrap) para que el mirror generado y el payload también apunten al artefacto.
+**Fuente**: rama `feat/dfl-concierge` (pusheada a origin, DURABLE_OFFHOST). Commit vigente `f3d3283` (ratificado con las 5 resoluciones institucionales). Archivo: `/opt/dfl-knowledge/architecture/DRG-002-R1-dfl-concierge.md` — leer completo, foco en §3 (identidad/trust/authz), §4 (Canonical Onboarding Packet + paridad), §5 (drift/validador), §7 (register/receipts), §10 (corte mínimo) y Apéndice A. Si Codex está en otra rama: `git fetch origin && git checkout feat/dfl-concierge` (o `git log origin/feat/dfl-concierge`).
+
+**Entregar**: veredicto literal **GO / GO_WITH_REQUIRED_CHANGES / NO_GO** con: (1) puntos subespecificados que impidan construir sin adivinar; (2) dependencias ocultas (tools/permisos/formatos) no listadas; (3) cualquier parte que no pueda hacerse determinista/reproducible (crítico §5); (4) riesgo de que el validador NO detecte un drift inyectado (probar el detector conceptualmente); (5) si el tope de authz por trust (§3) es enforceable con la identidad realmente disponible en La Garra.
+
+**Restricciones duras**: NO construir código en esta auditoría; NO migraciones/Supabase/Vercel/secrets/cron; NO push sin aprobación; local-first (onboard de EJECUTOR no puede depender de daemon/HTTP); reproducibilidad = requisito de aceptación. Tools Engram de Codex: search_memory/save_memory/update_memory.
+
+**PROXIMO_AGENTE_DEBE (Codex)**: leer DRG-002-R1 Apéndice A en feat/dfl-concierge, auditar constructibilidad de F1, emitir GO/GO_WITH_REQUIRED_CHANGES/NO_GO con los 5 puntos, guardar el veredicto en Engram (save_memory, topic dfl/onboarding/codex-constructibility-verdict) y reportarlo a Jorge. NO implementar F1.
+**PROXIMO_AGENTE_DEBE (CC/relevo)**: esperar el veredicto de Codex antes de definir el reparto de piezas de F1.
 
 ---
 
@@ -452,4 +472,4 @@ DATE: 2026-07-22
 
 ---
 
-*Mirror auto-generated 2026-07-22T22:36:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-22T23:21:02Z | La Garra → DFLghub/amos-context*
