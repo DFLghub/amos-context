@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-23T03:05:11Z  
+**Generated:** 2026-07-23T22:45:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,36 +101,17 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### DeepSeek SFAT failed — independent reviewer not enabled
+### CP-F1-05/06 durable on Codex branch awaiting cross-review
 **Type:** decision  
 **Project:** dfl  
 
-TOPIC: dfl/concierge/deepseek-sfat-01
-TYPE: review_enablement
-STATUS: active
-DATE: 2026-07-23
-BRANCH: feat/dfl-concierge
-COMMIT: 1ff9d0b
-RESULT: DEEPSEEK_SFAT_FAIL
-WHAT: Configured a read-only DeepSeek review runner and prepared a closed-scope SFAT packet, but OpenRouter chat/completions for deepseek/deepseek-v4-flash returned 401 Missing Authentication header using the host credential reference. GET /models returned 200, but that did not establish a usable reviewer session. FASE B was not executed.
-COST: 0 billable review tokens accepted; no valid DeepSeek review session established.
-PROXIMO_AGENTE_DEBE: expose a bearer that OpenRouter accepts on POST /chat/completions, rerun FASE A, and only if SFAT passes, dispatch FASE B for the five CP-F1 remediation findings. Do not open CP_F1_03_GATE in the meantime.
+CP-F1-05/06 are durable on feat/dfl-concierge-codex-register-cli at remote commit edbe36ff51a9549ce87e3e8fdb85827d7758ad6d. CP-F1-05 register commit d5e698a, receipt 460173e; CP-F1-06 CLI commit 5318565, receipt e5415ed; final receipt reconciliation edbe36f. Tests: Concierge 43/43, DeepSeek adapter 6/6, diff check clean. E2E covers onboarding, context delivery, query, action attempt/result, access denied, outboarding receipt, tail recovery, handoff acceptance, and state reconstruction. Institutional feat/dfl-concierge remains at 34ff4dd. Status for both: IMPLEMENTED_AWAITING_CROSS_REVIEW. PROXIMO_AGENTE_DEBE: perform independent 4R cross-review of CP-F1-05 and CP-F1-06; inspect atomicity, recovery, idempotency, handoffs, receipts, CLI fail-closed behavior, E2E evidence, and scope. Do not self-approve or merge to main.
 
-### CP-F1-01/02 remediation implemented — awaiting independent review
+### CP-F1-06 lifecycle CLI implemented
 **Type:** decision  
 **Project:** dfl  
 
-TOPIC: dfl/concierge/cp-f1-remediation-01
-TYPE: implementation
-STATUS: active
-DATE: 2026-07-23
-BRANCH: feat/dfl-concierge
-IMPLEMENTATION_COMMIT: bc5e6d3
-RECEIPT_COMMIT: fda6006
-STATE: REMEDIATED_AWAITING_INDEPENDENT_REVIEW
-WHAT: Remediated the five findings from the independent review of CP-F1-01 and CP-F1-02. Full SHA-256 is now preserved in digest_sha256 with digest_display separated as a non-constitutive alias; provenance validation now checks source_commit existence, payload staleness, branch mismatch and dirty canonical input; ownership is constrained to exactly one CONCIERGE_MAINTAINER; CP-F1-01 and CP-F1-02 receipts were reconciled to real push and Engram state; tests now verify full-digest semantics independently from the display alias.
-TESTS: python3 -m unittest concierge.tests.test_cp_f1_01_layout concierge.tests.test_cp_f1_02_validator => PASS
-PROXIMO_AGENTE_DEBE: CC or another independent reviewer must repeat the 4R review only for the original five findings: digest truncation, source/branch drift, exclusive ownership, receipt truthfulness, and test confidence. Do not authorize CP-F1-03 unless that review is no longer REJECTED.
+On branch feat/dfl-concierge-codex-register-cli, CP-F1-06 implementation commit 5318565 adds python -m concierge CLI commands compile, validate, onboard, outboard, status, reconcile, delegating compile/validate to existing compiler and using register API for lifecycle. E2E tests cover onboarding, context, resource query, action attempt/result, access denied, outboarding receipt, tail recovery, handoff, successor acceptance, and reconstruction. Tests: 3/3 CLI tests; full Concierge suite 43/43; adapter 6/6. Status: IMPLEMENTED_AWAITING_CROSS_REVIEW. PROXIMO_AGENTE_DEBE: review CP-F1-06 independently for fail-closed drift, receipt correctness, lifecycle/event ordering, no silent sensitive path, CLI scope, and E2E reconstruction; do not accept Codex work without cross-review.
 
 ### CP-01 completado: DRG-002-R1 DFL Concierge diseño normativo commiteado (rama feat/dfl-concierge, sin código, pendiente auditoría Codex)
 **Type:** decision  
@@ -260,6 +241,29 @@ Sin cambios de preferencia registrados en esta sesión.
 - Supabase proyecto 360Eventos: uvdunupmjrbndistyrwn (key rotada)
 - Vercel env vars 360Eventos: actualizadas con secret_key_2
 
+### Session summary: dfl-knowledge
+**Project:** dfl-knowledge  
+
+## Goal
+Segunda fase de la sesión 2026-07-10 (post @$fin anterior): completar pendientes B3 de Codex con herramientas de La Garra + renombrado contractual A1.
+
+## Accomplished
+- 360eventos verificado con acceso directo: npm install limpio, lint/typecheck/test pasan con cero errores (confirma commit 6a86b5b de Codex). Nota: test es alias de typecheck, no hay suite real.
+- graphify-out/ a .gitignore con des-trackeo completo (126 archivos, git rm -r --cached): commit 4745376 pusheado. Cierra mitad "drift" de F4. Disco intacto, KNL/proxy leen filesystem.
+- tdf-01 remote POSPUESTO por Jorge: repos candidatos no existen bajo DFLghub, sin gh CLI ni token GitHub en secrets. /opt/nq-factory sigue local (HEAD 011bab1).
+- Renombrado contractual A1: AUDIT_HEALTH_V1.md→INVENTARIO-A1.md, EVIDENCE.md→EVIDENCIAS-A1.md, cross-refs actualizadas, commit c464578 pusheado (primera vez versionados). Para downstream B1.
+- OBS: #208 (CODEX_B3_COMPLETADA), #209 (renombrado).
+
+## Next Steps
+- B1 consolidación consume INVENTARIO-A1.md + EVIDENCIAS-A1.md.
+- tdf-01: cuando Jorge cree el repo o dé URL → remote add + push (OBS #208).
+- Abiertos del audit: F5-F8 + mitad comparator de F4.
+- Domingo 2026-07-12 3am UTC: primera corrida dominical del metabolismo sin CRON 2 — revisar logs.
+- Untracked restantes: MISION_A1.md, crontab-backup-1783708852.txt.
+
+## Relevant Files
+/opt/dfl-knowledge/audits/health-v1/INVENTARIO-A1.md, EVIDENCIAS-A1.md, /opt/dfl-knowledge/.gitignore, /opt/360eventos/package.json, /opt/nq-factory
+
 ---
 
 ## RECENT ACTIVITY (cross-project)
@@ -340,17 +344,59 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Final FASE B accepted; CP-F1-03 gate open
-**Type:** fact  
-**Project:** dfl  
+**Type:** manual  
+**Project:** dfl-knowledge  
 
-Final FASE B executed from baseline b8c25bb03519f4f9b3aa1ce2add039cb73c4a44b using the deterministic evidence catalog and response_contract deepseek-review-v1. DeepSeek returned ACCEPTED with five findings F1-F5 CLOSED, all coverage booleans true, no BLOCKER/HIGH, and adapter schema validation valid. Codex final mechanical validation returned INDEPENDENT_REVIEW_VALID: 18 evidence objects checked, hashes/ranges/exact_text valid, no failures. CP_F1_03_GATE: OPEN. CP-A F4 was reconciled by proving historical push commit ancestry and replacing the HEAD placeholder; CP-B adapter passed 6 synthetic tests and 28 total tests. PROXIMO_AGENTE_DEBE: implement CP-F1-03 only by checkpoints; preserve independent 4R review and do not alter protected contracts. Final reviewer session provider AtlasCloud via OpenRouter; no secrets recorded.
+TOPIC: dfl/concierge/cp-f1-05-06-4r-review
+TYPE: review
+STATUS: active
+DATE: 2026-07-23
+REVIEWER: CC, branch feat/dfl-concierge-cc-render-validator @ 6fc5f70 (DURABLE_OFFHOST)
+EVIDENCE: architecture/reviews/CP-F1-05-06-4R-REVIEW.md
+VERDICT: FAIL for integration (do not merge yet)
 
-### CP-B deterministic DeepSeek adapter implemented
-**Type:** fact  
-**Project:** dfl  
+**BRANCH TOPOLOGY DISCOVERED**: Institutional feat/dfl-concierge advanced 33f0a0d->34ff4dd (local+remote) during session — Codex merged ITS OWN CP-F1-03 compiler (concierge/compiler.py module, 15f9bec) into institutional line. Codex branch feat/dfl-concierge-codex-register-cli @ edbe36f adds CP-F1-05 register (d5e698a) + CP-F1-06 CLI (5318565). Codex suite = 43 tests PASS. My branch @ 6fc5f70 still descends from verified 33f0a0d. => TWO CP-F1-03 compilers now exist (mine = concierge/compiler/ package; Codex = concierge/compiler.py module — collide at same import path).
 
-CP-B implemented without changing F1 remediation: tools/deepseek_review_adapter.py plus strict JSON Schema and six synthetic tests. The adapter preserves raw_response, performs only logged safe normalization (unambiguous outer JSON fence, leading whitespace, exact singleton findings object), rejects ambiguous/truncated JSON, unknown evidence IDs, incoherent verdict/coverage, and evidence references in reason, and emits normalized_response, normalization_log, and schema_validation_result. CP-B plus existing tests pass 28/28. No native response_format support is claimed. Status IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW. PROXIMO_AGENTE_DEBE: push this checkpoint, prepare final evidence packet with response_contract deepseek-review-v1 and allowed evidence IDs, run one final FASE B, and open no CP-F1-03 unless DeepSeek ACCEPTED, all five CLOSED, coverage true, and Codex validation valid.
+**4R FINDINGS (no silent fixes, findings-first per mission)**:
+- F-05-1 HIGH (CONFIRMED empirically): initiate_handoff calls validate_handoff with engram_exists=None default => any handoff with non-empty engram_refs raises ERR_HANDOFF_ORPHAN_REF. Canonical §7.1 payload (engram_refs:["obs:289"]) is UN-INITIABLE. Defeats continuity/relay use case. Repro: valid register_tail_ref + engram_refs:["obs:289"] -> ERR_HANDOFF_ORPHAN_REF: unverified engram_ref.
+- F-05-2 DROPPED after empirical check (status() correctly returns DEGRADED_REGISTER for non-tail corruption; §6.12.3 satisfied).
+- F-05-3 MEDIUM: content_digest §3.4 7-field binding not enforced (no resource_version requirement).
+- F-05-4 LOW: lock timeout no retry-once->BLOCKED_REGISTER_BUSY (§6.11).
+- F-05-5 LOW: event taxonomy renamed check_in/check_out -> SESSION_STARTED/SESSION_CLOSED.
+- F-06-2 MEDIUM: CLI content_digest = raw sha256(file) not §3.2 DIGEST_INPUT(resource_ref+resource_version+canonical bytes).
+- F-06-3 MEDIUM: NO §4 authz evaluator anywhere (no ACCESS_DENIED w/ policy_ref) — blocks vertical slice.
+
+**CRITICAL CROSS-CUTTING**: Institutional CP-F1-03 compiler (Codex) DEMONSTRABLY violates frozen CP-03 §2: §2.2 output build/concierge/f1 not concierge/out/; §2.5 coverage enum {INCLUDED,DEGRADED,SNAPSHOT,NOT_AVAILABLE,NOT_APPLICABLE} not {FULL,DEGRADED,OMITTED}; §2.9 FREE-TEXT degradation reasons (explicitly INVALID per contract) not coded reason_codes; §2.3/§2.4 envelope+coverage-manifest shapes differ. POSITIVE: Codex honors full-SHA-256 (no truncation regression). My compiler conforms to CP-03 §2 exactly; my CP-F1-04 validator would correctly FAIL Codex's artifacts on those checks.
+
+**WHY FAIL**: (1) F-05-1 blocks canonical handoff; (2) institutional compiler violates frozen CP-03 §2 + import-path conflict with CP-03-compliant CC compiler; (3) no §4 authz => slice can't be demonstrated. Did NOT integrate, did NOT edit Codex code, did NOT reopen/amend CP-03 unilaterally.
+
+**RECOMMENDATION (ARB/Jorge arbitration — constitutive)**: adopt CP-03 §2-compliant renderer as F1 canonical compiler + re-point CP-F1-06 CLI imports to it, OR bring Codex compiler.py into strict CP-03 §2 compliance (enum, envelope, coded reason_codes, concierge/out/ path). CP-F1-04 validator (16 checks + injected-drift) = acceptance gate for chosen compiler.
+
+**PROXIMO**: CODEX fix F-05-1 + F-06-2 + F-05-3/4. ARB decide compiler canonicity. CC BLOCKED on those before CP-F1-07 + vertical slice (needs §4 authz evaluator) + F1_ACCEPTANCE_CANDIDATE. Related: obs 307 (CC CP-F1-03), obs 309 (CC CP-F1-04).
+
+**Type:** manual  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/concierge/cp-f1-04-validator
+TYPE: implementation
+STATUS: active
+DATE: 2026-07-23
+BRANCH: feat/dfl-concierge-cc-render-validator (worktree /opt/dfl-knowledge-cc-render-validator)
+ARTIFACT_COMMIT: a7b418c
+RECEIPT_COMMIT: 62bc16f
+STATE: IMPLEMENTED_AWAITING_CROSS_REVIEW — DURABLE_OFFHOST (git ls-remote verified 62bc16f)
+
+**WHAT**: CP-F1-04 done — runtime-complete validator for generated onboarding artifacts, under CP-03 §2/§5/§8. Uses CP-F1-03 compiler as reference ORACLE: recompiles from canonical and fails closed on any divergence. Never edits/repairs, only reports Findings. Single finding => whole report FAIL.
+
+**MODULE**: concierge/validator/runtime_complete.py — validate_generated_artifacts(out_root, canonical_root) -> ValidationReport(findings, verdict PASS/FAIL). 16 checks: layout, schema (exact metadata/coverage field sets + enum), provenance (source_commit match), reproducibility (doc==recompiled), digests (full 64hex), seals (GENERATED header + no generated_at leak in body), parity (FULL section hashes identical across adapters), coverage (matches canonical-derived matrix), degradations (frozen reason_codes + snapshot_version), NO_TOUCH (protected surfaces present), closure_contract (@$fin present), staleness, manual_edit (sha256==sealed), runtime_target, sensitive_content, local_first. CLI: python -m concierge.validator. Frozen ERR_VALIDATE_* codes.
+
+**IMPORT CYCLE FIX**: compiler.render + compiler.__main__ now import from concierge.validator.canonical (leaf) directly; validator/__init__ no longer re-exports runtime_complete (would cycle: compiler.render->validator init->runtime_complete->compiler.render). Import runtime_complete directly. Generated artifacts UNCHANGED (still reproduce byte-identical, concierge/out not modified).
+
+**TESTS**: concierge/tests/test_cp_f1_04_validator.py, 14 tests. Full suite 01+02+03+04 = 51 PASS. Clean artifacts PASS (16 checks). 12 negative tamper classes each -> expected fail-closed finding (manual edit, truncated digest, missing seal, coverage flip, FULL-with-degradation, NO_TOUCH removed, closure removed, sensitive content, runtime-target mismatch, missing file, parity break, schema extra field). MANDATORY injected canonical drift -> FAIL (ERR_VALIDATE_STALE/REPRODUCIBILITY).
+
+**SCOPE NOTE**: §8.1 groups 8-10 (authz deny for identified-but-unauthorized, ASSERTED state-write deny, register/handoff atomicity) are Codex CP-F1-05/06 + CP-F1-07 integration — NOT in this artifact-focused validator.
+
+**PROXIMO_AGENTE_DEBE**: Codex runs independent 4R review (Risk/Readability/Reliability/Resilience) of CP-F1-03 AND CP-F1-04 — CC does NOT self-approve. CC proceeds to CP-F1-07 (adversarial integrated tests) + thin vertical slice once Codex CP-F1-05/06 (register/receipts/CLI) declare IMPLEMENTED_AWAITING_CROSS_REVIEW on feat/dfl-concierge-codex-register-cli. No F1_ACCEPTANCE_CANDIDATE until cross-review valid + end-to-end passes. Supersedes nothing; builds on obs 307 (CP-F1-03).
 
 ---
 
@@ -443,4 +489,4 @@ CP-B implemented without changing F1 remediation: tools/deepseek_review_adapter.
 
 ---
 
-*Mirror auto-generated 2026-07-23T03:05:11Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-23T22:45:02Z | La Garra → DFLghub/amos-context*
