@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-22T23:21:02Z  
+**Generated:** 2026-07-23T03:05:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,24 +101,36 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### CP-02 cerrado — DRG-002-R1 Access Point thesis + audit appendix normalizados en feat/dfl-concierge
+### DeepSeek SFAT failed — independent reviewer not enabled
 **Type:** decision  
 **Project:** dfl  
 
-TOPIC: dfl/concierge/cp-02-closure
-TYPE: decision
+TOPIC: dfl/concierge/deepseek-sfat-01
+TYPE: review_enablement
 STATUS: active
-DATE: 2026-07-22
+DATE: 2026-07-23
+BRANCH: feat/dfl-concierge
+COMMIT: 1ff9d0b
+RESULT: DEEPSEEK_SFAT_FAIL
+WHAT: Configured a read-only DeepSeek review runner and prepared a closed-scope SFAT packet, but OpenRouter chat/completions for deepseek/deepseek-v4-flash returned 401 Missing Authentication header using the host credential reference. GET /models returned 200, but that did not establish a usable reviewer session. FASE B was not executed.
+COST: 0 billable review tokens accepted; no valid DeepSeek review session established.
+PROXIMO_AGENTE_DEBE: expose a bearer that OpenRouter accepts on POST /chat/completions, rerun FASE A, and only if SFAT passes, dispatch FASE B for the five CP-F1 remediation findings. Do not open CP_F1_03_GATE in the meantime.
 
-What: CP-02 quedó cerrado en /opt/dfl-knowledge sobre la rama feat/dfl-concierge con el commit f6fd7f9 (docs(concierge): close CP-02 normative checkpoint). Se recuperó el trabajo documental dejado sin commit por Claude Code y se verificó contra el checklist pedido: doble propósito DFL Concierge + Access Point Core; separación ACCESS_POINT_CORE / DFL_PROFILE / FUTURE_VERTICALS; AuditEvent con RESOURCE_QUERY, CONTEXT_DELIVERED, ACTION_ATTEMPT, ACTION_RESULT y ACCESS_DENIED; policy_ref; principio de contenido mínimo (registrar hecho + resource_ref + policy_ref + content_digest, nunca contenido sensible); Apéndice A con veredicto GO / GO_WITH_REQUIRED_CHANGES / NO_GO; auditoría destructiva de identidad, autorización, paridad, integridad, sesiones, receipts y handoffs; ATTESTED != AUTHORIZED; prohibición de implementar durante la auditoría.
+### CP-F1-01/02 remediation implemented — awaiting independent review
+**Type:** decision  
+**Project:** dfl  
 
-Corrección mínima aplicada: se normalizó la inconsistencia final del Apéndice A que todavía decía GO-CON-AJUSTES; ahora el criterio usa NO_GO / GO_WITH_REQUIRED_CHANGES, consistente con el resto de la norma.
-
-Artifacts: architecture/DRG-002-R1-dfl-concierge.md ; architecture/receipts/CP-02.md
-
-Git: commit exclusivo CP-02 ya creado en feat/dfl-concierge. El árbol tracked de CP-02 quedó limpio tras commitear; el repo mantiene untracked preexistentes ajenos (AGENTS.md, architecture/AMOS-LOBBY-REDESIGN.md, architecture/first-operable-factory-v01/, audits/codebase-memory-upstream-ddms-v1/, evidence/first-operable-factory-bootstrap-g1/, readiness/) que no se tocaron para no mezclar trabajo ajeno.
-
-PROXIMO_AGENTE_DEBE: auditar constructibilidad/coherencia de DFL Concierge F1 sobre feat/dfl-concierge HEAD=f6fd7f9 usando el Apéndice A ampliado de DRG-002-R1; emitir GO / GO_WITH_REQUIRED_CHANGES / NO_GO; NO implementar F1; no tocar zonas protegidas; guardar el veredicto en Engram y devolver solo ajustes constitutivos o bloqueantes reales.
+TOPIC: dfl/concierge/cp-f1-remediation-01
+TYPE: implementation
+STATUS: active
+DATE: 2026-07-23
+BRANCH: feat/dfl-concierge
+IMPLEMENTATION_COMMIT: bc5e6d3
+RECEIPT_COMMIT: fda6006
+STATE: REMEDIATED_AWAITING_INDEPENDENT_REVIEW
+WHAT: Remediated the five findings from the independent review of CP-F1-01 and CP-F1-02. Full SHA-256 is now preserved in digest_sha256 with digest_display separated as a non-constitutive alias; provenance validation now checks source_commit existence, payload staleness, branch mismatch and dirty canonical input; ownership is constrained to exactly one CONCIERGE_MAINTAINER; CP-F1-01 and CP-F1-02 receipts were reconciled to real push and Engram state; tests now verify full-digest semantics independently from the display alias.
+TESTS: python3 -m unittest concierge.tests.test_cp_f1_01_layout concierge.tests.test_cp_f1_02_validator => PASS
+PROXIMO_AGENTE_DEBE: CC or another independent reviewer must repeat the 4R review only for the original five findings: digest truncation, source/branch drift, exclusive ownership, receipt truthfulness, and test confidence. Do not authorize CP-F1-03 unless that review is no longer REJECTED.
 
 ### CP-01 completado: DRG-002-R1 DFL Concierge diseño normativo commiteado (rama feat/dfl-concierge, sin código, pendiente auditoría Codex)
 **Type:** decision  
@@ -149,34 +161,6 @@ DATE: 2026-07-22
 Recomendación decidida: SÍ construir la conserjería, como capa fina de orquestación que REUSA /go (Board) + hash de push_mirror (versión) + lógica de la matriz (routing) — integración, no obra nueva. Frontera física: CONSULTOR (ChatGPT sin red) no lo alcanza ninguna app; se le genera el capsule vigente para pegar. Consolidación: colapsar los 5 artefactos divergentes (DFL_Agent_Onboarding_Config.md, /root/AGENTS.md, /root/.codex/AGENTS.md, CHATGPT_WORK_ATGO_INSTRUCTION.md, mi ONBOARDING_CAPSULE.md redundante→descartar) a una fuente única + proyecciones versionadas. Plan 3 fases: F1 Fundación (exponer state_version + register + hook Codex check-in), F2 Conserjería (CLI+HTTP), F3 Consolidación.
 
 **Next**: Jorge decide: (1) construir F2 completa o F1 primero; (2) register JSONL vs SQLite; (3) F1 toca main.py (reload proxy) + hook Codex = lote de estado a aprobar.
-
-### Checkpoint @$fin — SFV5→V6 Business OS + JPI MVP rebuild (sesión abierta, no cerrada)
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Sesión Claude Code (EJECUTOR) sobre /opt/futbolweb, trabajando cross-proyecto por pedido de Jorge. Cadena de misiones ejecutada en este orden:
-1. `@$go` bootstrap — perfil EJECUTOR confirmado vía /go local (127.0.0.1:8091) + anexo agents/ejecutor.md.
-2. Auditoría de factibilidad SFV5→V6 (fork) → `/opt/experiments/SFV5_TO_V6_FEASIBILITY.md`. Veredicto: GO parcial (mecanismo base viable; conectores Telegram/WhatsApp/Gmail NO-GO por falta de código base).
-3. Misión 02 (fork) — piloto aislado del Business OS en `/opt/experiments/sfv5-business-os-pilot/`. PASS, 17/17 tests. Sin commits (no pedidos). Reporte: `/opt/experiments/SFV5_BUSINESS_OS_PILOT_REPORT.md`.
-4. Misión 03 (fork) — build soberano del Business OS sobre `/opt/360eventos` (autorización explícita de Jorge para modificar 360eventos completo, revocando restricción previa; ver **Learned**). PASS, 7/7 tests. Commit local `78cfdf0`. Reporte: `/opt/experiments/SFV5_BUSINESS_OS_360EVENTOS_REPORT.md`.
-5. Misión 04 (fork) — reconstrucción del MVP Transporte/Eventos JPI usando fuentes reales (catálogo digital de Rubén + docs DDMS), reemplazando oferta inventada anterior, integrando Business OS de (4). **Jorge pidió detener el fork a mitad de ejecución** (`Detén el fork. Guarda lo ya hecho...`). Fase de discovery quedó completa y commiteada (`d9d7bf2`). Fase de implementación quedó parcial, comiteada como WIP por mí tras el stop (`7d66327`) para no perder trabajo.
-
-**Why**: Jorge evalúa si el patrón "Business OS" anunciado para SaaS Factory V6 es reproducible sobre SFV5 instalado, y quiere usarlo como capa operativa real para relanzar 360eventos (que ya tenía una estrategia de pivot a MVP V2 greenfield decidida el 2026-07-19, commit b766e37) usando el catálogo real de Rubén en vez de datos inventados.
-
-**Where**:
-- `/opt/experiments/SFV5_TO_V6_FEASIBILITY.md`, `SFV5_BUSINESS_OS_PILOT_REPORT.md`, `SFV5_BUSINESS_OS_360EVENTOS_REPORT.md`
-- `/opt/experiments/sfv5-business-os-pilot/` (piloto aislado, worktree propio, no tocar desde 360eventos)
-- `/opt/360eventos/business-os/` (Business OS soberano, Node/Express + SQLite local, puerto 4500 preferido con fallback automático) — commit `78cfdf0`
-- `/opt/360eventos/docs/discovery/`, `domain/` (fuentes reales: catálogo Rubén en `docs/discovery/sources/catalogo-ruben/`, ontología DDMS, facts, business rules) — commit `d9d7bf2`
-- `/opt/360eventos/src/features/jpi/` (db/migrations x6, domain/missing-information.mjs, domain/states.mjs, repository/catalogo.repository.mjs) — commit WIP `7d66327`, **incompleto**: sin migraciones ejecutadas, sin tests, sin capa API/UI, sin integración real con business-os/
-
-**Learned**:
-- `/opt/360eventos/.env.local` apunta a Supabase REAL activo (`uvdunupmjrbndistyrwn.supabase.co`), no placeholder — confirmado por mí antes de autorizar cualquier escritura. Jorge eligió explícitamente mantener todo storage nuevo (Business OS y JPI) aislado en SQLite local, sin tocar ese Supabase ni leer sus credenciales. Esta restricción sigue vigente para cualquier continuación futura, pese a que Jorge autorizó "modificar esquema y datos" de 360eventos en términos generales — esa autorización se interpretó y confirmó como NO aplicable al Supabase vivo.
-- Semántica canónica obligatoria para JPI: `SOLICITUD_DE_COTIZACION` → `REQUIERE_INFORMACION` → `COTIZACION`. `PRECOTIZACION` es término legacy prohibido (decisión DFL 2026-07-19).
-- No hardcodear lógica fiscal — perfil tributario es config, no código.
-- No bloquear con interrogatorios — detección de info faltante debe ser no-bloqueante.
-- Este es un **checkpoint** (@$fin modo CHECKPOINT pedido explícitamente por Jorge), no cierre real: sin barrido de archivado, sin `push_mirror.sh`. La sesión sigue abierta y puede continuar la Misión 04 desde el commit WIP `7d66327` (implementar API/UI, correr migraciones, escribir e integrar tests, conectar con business-os/) cuando Jorge lo pida.
-- En todo el hilo: sin push, sin mirror, sin escritura previa a Engram — este es el primer mem_save de la sesión.
 
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -340,46 +324,17 @@ Limpieza propia: se borraron 2 proyectos de prueba huérfanos (tmp-cbm-test-larg
 
 Método: 4 subagentes fork en paralelo (auth/config, storage/logs/forensics, reproducción controlada, test de concurrencia dedicado) + verificación directa del orquestador.
 
-### CP-02 cerrado — DRG-002-R1 Access Point thesis + audit appendix normalizados en feat/dfl-concierge
-**Type:** decision  
+### Final FASE B accepted; CP-F1-03 gate open
+**Type:** fact  
 **Project:** dfl  
 
-TOPIC: dfl/concierge/cp-02-closure
-TYPE: decision
-STATUS: active
-DATE: 2026-07-22
+Final FASE B executed from baseline b8c25bb03519f4f9b3aa1ce2add039cb73c4a44b using the deterministic evidence catalog and response_contract deepseek-review-v1. DeepSeek returned ACCEPTED with five findings F1-F5 CLOSED, all coverage booleans true, no BLOCKER/HIGH, and adapter schema validation valid. Codex final mechanical validation returned INDEPENDENT_REVIEW_VALID: 18 evidence objects checked, hashes/ranges/exact_text valid, no failures. CP_F1_03_GATE: OPEN. CP-A F4 was reconciled by proving historical push commit ancestry and replacing the HEAD placeholder; CP-B adapter passed 6 synthetic tests and 28 total tests. PROXIMO_AGENTE_DEBE: implement CP-F1-03 only by checkpoints; preserve independent 4R review and do not alter protected contracts. Final reviewer session provider AtlasCloud via OpenRouter; no secrets recorded.
 
-What: CP-02 quedó cerrado en /opt/dfl-knowledge sobre la rama feat/dfl-concierge con el commit f6fd7f9 (docs(concierge): close CP-02 normative checkpoint). Se recuperó el trabajo documental dejado sin commit por Claude Code y se verificó contra el checklist pedido: doble propósito DFL Concierge + Access Point Core; separación ACCESS_POINT_CORE / DFL_PROFILE / FUTURE_VERTICALS; AuditEvent con RESOURCE_QUERY, CONTEXT_DELIVERED, ACTION_ATTEMPT, ACTION_RESULT y ACCESS_DENIED; policy_ref; principio de contenido mínimo (registrar hecho + resource_ref + policy_ref + content_digest, nunca contenido sensible); Apéndice A con veredicto GO / GO_WITH_REQUIRED_CHANGES / NO_GO; auditoría destructiva de identidad, autorización, paridad, integridad, sesiones, receipts y handoffs; ATTESTED != AUTHORIZED; prohibición de implementar durante la auditoría.
+### CP-B deterministic DeepSeek adapter implemented
+**Type:** fact  
+**Project:** dfl  
 
-Corrección mínima aplicada: se normalizó la inconsistencia final del Apéndice A que todavía decía GO-CON-AJUSTES; ahora el criterio usa NO_GO / GO_WITH_REQUIRED_CHANGES, consistente con el resto de la norma.
-
-Artifacts: architecture/DRG-002-R1-dfl-concierge.md ; architecture/receipts/CP-02.md
-
-Git: commit exclusivo CP-02 ya creado en feat/dfl-concierge. El árbol tracked de CP-02 quedó limpio tras commitear; el repo mantiene untracked preexistentes ajenos (AGENTS.md, architecture/AMOS-LOBBY-REDESIGN.md, architecture/first-operable-factory-v01/, audits/codebase-memory-upstream-ddms-v1/, evidence/first-operable-factory-bootstrap-g1/, readiness/) que no se tocaron para no mezclar trabajo ajeno.
-
-PROXIMO_AGENTE_DEBE: auditar constructibilidad/coherencia de DFL Concierge F1 sobre feat/dfl-concierge HEAD=f6fd7f9 usando el Apéndice A ampliado de DRG-002-R1; emitir GO / GO_WITH_REQUIRED_CHANGES / NO_GO; NO implementar F1; no tocar zonas protegidas; guardar el veredicto en Engram y devolver solo ajustes constitutivos o bloqueantes reales.
-
-### DESPACHO a Codex: auditar constructibilidad DFL Concierge F1 (DRG-002-R1 Apéndice A, rama feat/dfl-concierge f3d3283) → GO/GO_WITH_REQUIRED_CHANGES/NO_GO
-**Type:** task  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/onboarding/dispatch-codex-constructibility
-TYPE: task
-STATUS: active
-DATE: 2026-07-22
-
-**DESPACHO A CODEX (EJECUTOR) — auditoría de constructibilidad, NO construir.** Handoff de CC→Codex de la cadena de continuidad (dogfood del ACS).
-
-**Tarea**: auditar si el corte mínimo F1 de DFL Concierge (ACS) es CONSTRUIBLE como se especifica, según el Mission Packet en **DRG-002-R1 Apéndice A**.
-
-**Fuente**: rama `feat/dfl-concierge` (pusheada a origin, DURABLE_OFFHOST). Commit vigente `f3d3283` (ratificado con las 5 resoluciones institucionales). Archivo: `/opt/dfl-knowledge/architecture/DRG-002-R1-dfl-concierge.md` — leer completo, foco en §3 (identidad/trust/authz), §4 (Canonical Onboarding Packet + paridad), §5 (drift/validador), §7 (register/receipts), §10 (corte mínimo) y Apéndice A. Si Codex está en otra rama: `git fetch origin && git checkout feat/dfl-concierge` (o `git log origin/feat/dfl-concierge`).
-
-**Entregar**: veredicto literal **GO / GO_WITH_REQUIRED_CHANGES / NO_GO** con: (1) puntos subespecificados que impidan construir sin adivinar; (2) dependencias ocultas (tools/permisos/formatos) no listadas; (3) cualquier parte que no pueda hacerse determinista/reproducible (crítico §5); (4) riesgo de que el validador NO detecte un drift inyectado (probar el detector conceptualmente); (5) si el tope de authz por trust (§3) es enforceable con la identidad realmente disponible en La Garra.
-
-**Restricciones duras**: NO construir código en esta auditoría; NO migraciones/Supabase/Vercel/secrets/cron; NO push sin aprobación; local-first (onboard de EJECUTOR no puede depender de daemon/HTTP); reproducibilidad = requisito de aceptación. Tools Engram de Codex: search_memory/save_memory/update_memory.
-
-**PROXIMO_AGENTE_DEBE (Codex)**: leer DRG-002-R1 Apéndice A en feat/dfl-concierge, auditar constructibilidad de F1, emitir GO/GO_WITH_REQUIRED_CHANGES/NO_GO con los 5 puntos, guardar el veredicto en Engram (save_memory, topic dfl/onboarding/codex-constructibility-verdict) y reportarlo a Jorge. NO implementar F1.
-**PROXIMO_AGENTE_DEBE (CC/relevo)**: esperar el veredicto de Codex antes de definir el reparto de piezas de F1.
+CP-B implemented without changing F1 remediation: tools/deepseek_review_adapter.py plus strict JSON Schema and six synthetic tests. The adapter preserves raw_response, performs only logged safe normalization (unambiguous outer JSON fence, leading whitespace, exact singleton findings object), rejects ambiguous/truncated JSON, unknown evidence IDs, incoherent verdict/coverage, and evidence references in reason, and emits normalized_response, normalization_log, and schema_validation_result. CP-B plus existing tests pass 28/28. No native response_format support is claimed. Status IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW. PROXIMO_AGENTE_DEBE: push this checkpoint, prepare final evidence packet with response_contract deepseek-review-v1 and allowed evidence IDs, run one final FASE B, and open no CP-F1-03 unless DeepSeek ACCEPTED, all five CLOSED, coverage true, and Codex validation valid.
 
 ---
 
@@ -472,4 +427,4 @@ DATE: 2026-07-22
 
 ---
 
-*Mirror auto-generated 2026-07-22T23:21:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-23T03:05:01Z | La Garra → DFLghub/amos-context*
