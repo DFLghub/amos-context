@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-23T03:05:01Z  
+**Generated:** 2026-07-23T03:05:11Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -264,65 +264,81 @@ Sin cambios de preferencia registrados en esta sesión.
 
 ## RECENT ACTIVITY (cross-project)
 
-**Type:** manual  
-**Project:** futbolweb-app  
-
-CIERRE Nivel A — Auditoría Codebase Memory VM2, 2026-07-21. Aplicado y validado como PASS con caveats (decisión y condiciones explícitas de Jorge).
-
-CAMBIOS REALES:
-- /root/.claude/settings.json: permissions.allow pasó de ["Bash"] a ["Bash"] + 14 tools mcp__codebase-memory-mcp__* (todas, incluidas delete_project y manage_adr — Jorge pidió explícitamente las 14 sin excepción, no la exclusión de destructivas que yo había propuesto). Backup: /root/.claude/settings.json.bak-cbm-nivelA-20260721-230809
-- /root/.codex/config.toml: agregados 7 bloques [mcp_servers.codebase-memory-mcp.tools.<tool>] approval_mode="approve" (index_status, list_projects, delete_project, detect_changes, query_graph, manage_adr, ingest_traces) — total 14/14. Backup: /root/.codex/config.toml.bak-cbm-nivelA-20260721-230809
-- No se tocó /opt/futbolweb/.claude/settings.local.json ni ninguna otra superficie (confirmado con git diff).
-- Índices duplicados (saas-factory-sfv5/opt-saas-factory-v5, opt-360eventos/360eventos-legacy) siguen intactos — NO se borraron, instrucción explícita.
-
-VALIDACIÓN:
-- Claude Code: 4 tools nunca antes autorizadas (get_graph_schema, query_graph, manage_adr modo get, ingest_traces vacío) ejecutadas sin ningún prompt. query_graph devolvió 906 nodos para opt-futbolweb, consistente con list_projects.
-- Codex: `codex doctor` confirma config.toml parse ok, 2 MCP servers, 0 disabled. `codex exec` invocó query_graph sin bloquear, PERO corre con approval:never por diseño headless — NO prueba el comportamiento real de aprobación en sesión interactiva. Queda pendiente esa verificación específica para una sesión futura con Codex interactivo real.
-
-HALLAZGO ABIERTO (registrado, NO investigar sin pedido explícito): en el run de `codex exec`, la misma query Cypher que devolvió 906 en Claude Code devolvió "10" vía Codex. Verificado inmediatamente después con list_projects directo que el store NO está corrupto ni duplicado — los 8 proyectos reales mantienen sus conteos esperados. Causa no determinada (posible reformulación de query por el agente Codex, alcance de proyecto distinto, o artefacto de respuesta del modelo).
-
-Entregables actualizados con este cierre: /opt/dfl-knowledge/audits/codebase-memory-v1/{00-README.md, CODEBASE_MEMORY_AUDIT.md (addendum), ROOT_CAUSE_MATRIX.md (filas 1-3 marcadas APLICADO), IMPLEMENTATION_OPTIONS.md (Nivel A con estado), TEST_PLAN.md (sección de verificación con resultados PASS/PARCIAL)}.
-
-Pendiente para el futuro: puntos 3-4 de Nivel A (indexar los ~11 repos de /opt nunca indexados, limpiar duplicados confirmados), validación interactiva real de Codex, investigación de la anomalía "10 vs 906" si se decide abrirla, y Nivel C (DFL Knowledge Adapter) como arquitectura recomendada de destino — ver DFL_KNOWLEDGE_ADAPTER_PROPOSAL.md.
-
-### CORRECCIÓN diagnóstico onboarding: fix Codex va en /root/.codex/AGENTS.md global (aplicado), ChatGPT = pegar capsule existente (paso humano)
+### ag_topologo v0.1 — LLM mode implementado y operativo 2026-06-27
 **Type:** decision  
-**Project:** dfl-knowledge  
+**Project:** dfl  
 
-TOPIC: dfl/onboarding/codex-chatgpt-fix
-TYPE: decision
-STATUS: active
-DATE: 2026-07-22
+OBS_ID: DFL-OBS-20260627-001
+TIPO: decision
+PROYECTO: dfl
+PLATFORM: vm2
+SUBSISTEMA: graphify/ag_topologo
+PRECEDENCIA: D
+AUTHORITY: operational
+LIFECYCLE: active
+CONFIDENCE: high
+LAST_VERIFIED: 2026-06-27
+SOURCE: session
+SOURCE_REF: MPGE_2026-06-27
 
-**CORRIGE obs #284 (mismo topic) con evidencia real de logs.** El diagnóstico de "falta AGENTS.md por-repo" era capa equivocada. Evidencia (logs Codex v0.145.0 gpt-5.4 + ChatGPT varios días):
+## Qué
+ag_topologo.py en /opt/dfl-knowledge/scripts/ ahora soporta --llm, --target-concepts N, --max-llm-calls N.
 
-CODEX: al recibir `@$go` respondió DOS veces "only contains @$go... not enough task detail" y solo lo ejecutó cuando Jorge lo forzó. Causa raíz REAL: `/root/.codex/AGENTS.md` (único archivo que Codex carga en cada sesión — de ahí salió el bloque codebase-memory de su SessionStart) contenía SOLO las instrucciones de codebase-memory-mcp, cero líneas de @$go. No hay hook SessionStart en Codex (config.toml sin notify/hook). El protocolo existía en /opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md pero NO se auto-carga; Codex lo encontró grepeando tras la orden. FIX APLICADO: appended sección "DFL @$go/@$fin protocolo OBLIGATORIO" a /root/.codex/AGENTS.md FUERA de los marcadores codebase-memory-mcp (dfl-atgo-protocol:start/end), con regla dura de disparo ("si el mensaje es exactamente @$go, ESE es el trabajo; no pidas tarea concreta"), traducción tools search_memory/save_memory/update_memory, gotcha DNS-sandbox (curl falla dentro del sandbox, reintentar fuera), y gate de 6 líneas. Efectivo en la PRÓXIMA sesión de Codex, sin restart/commit. Paridad real con CC (que lo tiene en /root/.claude/CLAUDE.md global). Riesgo residual: si codebase-memory-mcp reescribe el archivo completo podría clobbering; mitigación: repo docs como belt-and-suspenders.
+## Implementación
+- LLMExtractor class: llama endpoint OpenAI-compatible via urllib (stdlib), budget tracking
+- Env vars: AG_TOPOLOGO_LLM_PROVIDER, AG_TOPOLOGO_LLM_ENDPOINT, AG_TOPOLOGO_LLM_MODEL, AG_TOPOLOGO_LLM_API_KEY
+- Secretos en /etc/dfl-secrets (permisos 600). Cargar con: set -a && source /etc/dfl-secrets && set +a
+- ag_topologo ahora escribe graph_context_light.json (además de graph_context.json) — formato que lee /go endpoint
 
-CHATGPT: flip-flop ORQUESTADOR/CONSULTOR día a día = correcto (fetch intermitente real). El único bug fue un día citar fuente ALUCINADA (github.com/sergiocoding96/hermes-multi-agent, repo ajeno) en vez de caer al capsule. El capsule bueno YA EXISTE: /root/CHATGPT_WORK_ATGO_INSTRUCTION.md v2026-07-18.2 (con regla "no descubras el significado por web" + lista de respuestas prohibidas). No se aplicó porque NO está pegado en las Custom Instructions de ChatGPT — ningún archivo de la VM alcanza la sesión privada de ChatGPT. FIX = Jorge pega ese capsule UNA vez en Custom Instructions (paso humano irreducible).
+## Resultado del primer run --llm
+- Modelo: gpt-4o-mini (OpenAI)
+- 3261 nodos, 7804 aristas, 12 comunidades, 80 LLM calls (budget agotado)
+- God nodes: FutbolWeb, estado, IAIM, MERCADER, Función
+- /go endpoint: top_nodes=['FutbolWeb','estado','IAIM'], key_surprise='IAIM ↔ Apps Factory'
 
-DIVERGENCIA a consolidar: mi ONBOARDING_CAPSULE.md (creado hoy en amos-context-mirror) duplica /root/CHATGPT_WORK_ATGO_INSTRUCTION.md. El canónico para ChatGPT es el de /root. Recomendación: no pushear el duplicado; consolidar a uno.
+## Comando de ejecución
+set -a && source /etc/dfl-secrets && set +a && python3 /opt/dfl-knowledge/scripts/ag_topologo.py --full --llm --source /opt/dfl-knowledge --out /opt/dfl-knowledge/graphify-out --target-concepts 140 --max-llm-calls 80
 
-**Next**: (1) Codex fix ya activo, validar en próxima sesión Codex real. (2) Jorge pega el capsule en ChatGPT. (3) decidir consolidación de capsules + si el lote commit/push amos-context sigue en pie o se recorta.
+## Nota de compatibilidad
+ag_topologo escribe schema "agTopologo-DFL-v0.1". gen_summary.py (usa graphify API) no puede leer este formato. Para futuros runs con ag_topologo --llm, el GRAPH_SUMMARY.md lo genera ag_topologo directamente — no necesitar gen_summary.py.
 
-**Type:** manual  
+### AgMaster_amOS_3 — vocabulario y reglas IAIM
+**Type:** fact  
+**Project:** dfl  
+
+AgMaster_amOS_3 es el documento maestro v3 del ecosistema (USAR ESTA, versiones 1 y 2 obsoletas). Vocabulario mínimo para IA invitada: amOS=sistema operativo conceptual/metodológico para absorber/metabolizar información manteniendo soberanía; IAIM=Invisible Augmented Intelligence Mesh, red invisible de IAs aliadas sin nodos fijos, orquestada por HI; HI=Jorge, decisión final soberana; ag10=ChatGPT como router/integrador/destilador/última yarda (no oráculo ni jefe); agPregunta=pregunta aumentada con propósito/dominio/límite/criterio; agLego=pieza conceptual candidata modular trazable; Candado Soberano=restricciones no negociables: no-exec, candidate_only, human-review-first. Prefijo 'ag'=augmented+governed+generative-but-contained. AG10-AUSTERITY-LOCK para fases de cierre/patch/gate. Origin Chain obligatorio para todo agLego. Frase núcleo v3: 'La red ilumina. La HI orquesta. ag10 destila. El candado audita. amOS asimila la cicatriz, no la herida.' Paralelo permitido: máximo 2 nodos, candidate_only, revisión HI.
+
+### Session summary: futbolweb-app
+**Type:** session_summary  
 **Project:** futbolweb-app  
 
-AUDITORÍA Codebase Memory (codebase-memory-mcp v0.9.0) en VM2/La Garra — completada 2026-07-21. Entregables en /opt/dfl-knowledge/audits/codebase-memory-v1/ (00-README, CODEBASE_MEMORY_AUDIT, ROOT_CAUSE_MATRIX, DFL_KNOWLEDGE_ADAPTER_PROPOSAL, IMPLEMENTATION_OPTIONS, TEST_PLAN).
+## Cierre DFL/KNL/FutbolWeb — 2026-06-27
 
-HALLAZGOS CLAVE:
-1. Causa raíz de "autorizaciones repetidas": dos sistemas de permisos de cliente desincronizados — Claude Code usa allowlist por-proyecto en .claude/settings.local.json (solo /opt/futbolweb tiene entradas, 9/14 tools; falta query_graph, get_graph_schema, delete_project, manage_adr, ingest_traces) vs Codex usa approval_mode por tool en ~/.codex/config.toml (7/14 tools). Ningún otro proyecto activo de /opt (~11 repos: dfl-knowledge, 360eventos, mercader-comisiones, engram, etc.) tiene autorización. El propio SKILL.md del producto recomienda query_graph/get_graph_schema, que nunca están autorizadas — garantiza interrupción en el primer uso documentado.
-2. El motor NO tiene timeout configurable ni es lento: reindexar futbolweb (906 nodos) tomó 0.11s vía CLI directo. No se pudo reproducir >300s con ningún repo real de la VM. Causa más probable de los reportes de "timeout": bug confirmado y reproducible que crashea el worker de indexación con inputs problemáticos (mensaje "Indexing worker crashed on a file... contained") — registrado también en logs reales del 2026-07-15. El timeout percibido es del cliente MCP, no del motor.
-3. Sin locks explícitos (solo SQLite WAL) — probado limpio en régimen rápido (3 rondas de doble-index concurrente + 10 reads durante write, sin errores) pero régimen lento/minutos queda no probado.
-4. Duplicación real confirmada por falta de idempotencia (repo+commit): saas-factory-sfv5/opt-saas-factory-v5 y opt-360eventos/360eventos-legacy son el MISMO repo+commit indexado dos veces bajo nombres distintos, grafos divergentes. No hay project_key canónico.
-5. Servidor es child process por sesión (no daemon systemd/docker), persiste independientemente del timeout de un tool-call individual.
+### Goal
+Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar FutbolWeb limpio de dirty files y factory artifacts.
 
-DECISIÓN RECOMENDADA: Nivel A (config global inmediata, 1-2h, bajo riesgo) ya + Nivel C (DFL Knowledge Adapter — servicio persistente delante del motor con jobs async/job_id, project_key canónico, locks explícitos, allowlist propio de rutas, health check, contrato uniforme CC/Codex) como destino estructural, 1-2 semanas. Nivel D (fork del núcleo) explícitamente NO justificado por evidencia — el motor es confiable en el régimen probado.
+### Accomplished
+- Engram #101: payload /go slim — graph_context eliminado, knl canónico único en payload
+- cc-atgo-hook.sh: header @go → @$go corregido
+- dfl-nav fmt_brief: mensaje no-match → "sin god_node — intenta la raíz del concepto"
+- FutbolWeb repo limpio: Blueprint audit movido a /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Auditorias/, graphify-out/ eliminado, .gitignore actualizado, commit 3fd5801
+- Engram #102: higiene FutbolWeb documentada
+- Bitácora creada: /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-PENDIENTE [D] desconocido: compatibilidad con Visualizer/KNL/agTopólogo no investigada — requiere sesión de descubrimiento de contrato antes de diseñar el export de grafo del Adaptador. También pendiente: test de indexación real en régimen lento (repo grande, minutos) — no reproducible en esta VM por falta de repos suficientemente grandes.
+### Discoveries
+- graph_context era alias redundante del payload /go — eliminado sin romper consumidores
+- agProtocol_ATP-D_ROJA_v0.1-1: 3 archivos con MD5 idéntico en corpus (duplicados de indexación)
+- "estado" como nombre de god_node produce colisión léxica en español con el grafo
+- Blueprint_v0.6 audit era inconclusa (Blueprint no disponible en VM2) — conservada en Auditorias/
 
-Limpieza propia: se borraron 2 proyectos de prueba huérfanos (tmp-cbm-test-large, tmp-cbm-test-small) dejados por los forks de reproducción, confirmados por nombre/ruta antes de borrar. No se tocó ningún proyecto real ni configuración de ningún agente — la auditoría fue de solo lectura salvo esa limpieza y los índices desechables de prueba en /tmp.
+### Next Steps
+1. FutbolWeb producto — runtime estable, knockout scoring deployado (91a4531)
+2. KNL próximo ciclo — nota stale graph_context en knl_builder.py, health test local, evaluar renombrar estado → context-proxy
+3. MERCADER — agregar a KNL si se activa como área de trabajo
+4. Corpus — eliminar agProtocol duplicados (-1 variants)
 
-Método: 4 subagentes fork en paralelo (auth/config, storage/logs/forensics, reproducción controlada, test de concurrencia dedicado) + verificación directa del orquestador.
+### Relevant Files
+/opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
 ### Final FASE B accepted; CP-F1-03 gate open
 **Type:** fact  
@@ -416,15 +432,15 @@ CP-B implemented without changing F1 remediation: tools/deepseek_review_adapter.
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 1.0406  
+**Graph entropy:** 0.8646  
 
-- **Community 11** (86 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
-- **Community 0** (12 nodes): Tree-sitter Grammars, Matriz de Contención Operacional, Evaluación de Repositorios
-- **Community 1** (6 nodes): NBLM2, Working Memory, Active Library
-- **Community 2** (4 nodes): Estructura de datos en Rust
-- **Community 3** (4 nodes): Blade en Laravel, Beancount, MCP (Model Context Protocol)
-- **Community 4** (4 nodes): Documentación JSDoc, Estado de la casa DFL, Onboarding multi-agente
+- **Community 11** (92 nodes): MCP Server Behavior, Evaluación de Plantillas, Asunciones de Verificación
+- **Community 0** (10 nodes): amOS, IAIM, ag10
+- **Community 1** (4 nodes): Express Framework, Bicep, Developer Certificate of Origin (DCO)
+- **Community 2** (4 nodes): Onboarding multi-source
+- **Community 3** (4 nodes): Verificación de capacidades
+- **Community 4** (4 nodes): HLSL en MiniEngine, Kconfig en Buildroot, Slang como compilador de sombreado
 
 ---
 
-*Mirror auto-generated 2026-07-23T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-23T03:05:11Z | La Garra → DFLghub/amos-context*
