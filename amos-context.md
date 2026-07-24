@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-24T01:21:02Z  
+**Generated:** 2026-07-24T01:54:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,17 +101,17 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### CP-F1-05/06 remediated against canonical CC compiler
+### SAFE_PARTIAL_CHECKPOINT conformance kit recovery
 **Type:** decision  
 **Project:** dfl  
 
-Codex branch feat/dfl-concierge-codex-register-cli integrated CC baseline 6fc5f70 via merge commit 955c349. Removed incompatible concierge/compiler.py and build/concierge/f1; active compiler is concierge/compiler/ writing concierge/out/ and CP-F1-04 validator passes. Remediated F-05-1 engram_refs structural offline validation, F-05-3 digest seven-field binding, F-05-4 lock retry, F-05-5 check_in/check_out aliases, F-06-2 CP-03 DIGEST_INPUT, and F-06-4 ORQUESTADOR. F-06-3 remains explicit external ACCESS_DENIED decision port, no authz evaluator. Tests: 67/67 Concierge, 6/6 adapter, CP-F1-04 16 checks PASS, 9/9 artifacts byte-identical. Status READY_FOR_REREVIEW. PROXIMO_AGENTE_DEBE: independent re-review only, verify single compiler, validator PASS, digest vectors/binding, engram refs, retry, E2E, and authz boundary; no self-approval.
+Recovered /opt/dfl-knowledge-cc-render-validator at local/remote d0512b0 on feat/dfl-concierge-cc-render-validator. Preserved untracked concierge/conformance/independent.py and kit.py without reset or cleanup. AST syntax passed via python -B; normal py_compile/import was blocked only by worktree __pycache__ permission. Receipt CP-F1-CONFORMANCE-RECOVERY-01 added. PROXIMO_AGENTE_DEBE: commit/push this partial state first, then add concierge.conformance CLI and complete independent conformance tests. Status SAFE_PARTIAL_CHECKPOINT.
 
-### CP-F1-05/06 durable on Codex branch awaiting cross-review
+### CP-F1 authz evaluator implemented awaiting review
 **Type:** decision  
 **Project:** dfl  
 
-CP-F1-05/06 are durable on feat/dfl-concierge-codex-register-cli at remote commit edbe36ff51a9549ce87e3e8fdb85827d7758ad6d. CP-F1-05 register commit d5e698a, receipt 460173e; CP-F1-06 CLI commit 5318565, receipt e5415ed; final receipt reconciliation edbe36f. Tests: Concierge 43/43, DeepSeek adapter 6/6, diff check clean. E2E covers onboarding, context delivery, query, action attempt/result, access denied, outboarding receipt, tail recovery, handoff acceptance, and state reconstruction. Institutional feat/dfl-concierge remains at 34ff4dd. Status for both: IMPLEMENTED_AWAITING_CROSS_REVIEW. PROXIMO_AGENTE_DEBE: perform independent 4R cross-review of CP-F1-05 and CP-F1-06; inspect atomicity, recovery, idempotency, handoffs, receipts, CLI fail-closed behavior, E2E evidence, and scope. Do not self-approve or merge to main.
+On feat/dfl-concierge-f1-authz from baseline 3d0cc649, CP-F1 authz implementation commit 1319983 adds pure fail-closed concierge/authz.py, policy snapshot fixture, CLI authorize integration, and ACCESS_DENIED register adapter. Identity, capability, granted scope, policy, guard, trust, version and expiry remain separate; ATTESTED is not AUTHORIZED. Tests: authz 15/15, full Concierge 91/91, adapter 6/6, runtime validator 16 checks PASS. Status READY_FOR_AUTHZ_REVIEW. PROXIMO_AGENTE_DEBE: independently review precedence, fail-closed behavior, decision digest/tamper, policy version/expiry, guard, register persistence/replay/idempotency, and no self-approval.
 
 ### CP-01 completado: DRG-002-R1 DFL Concierge diseño normativo commiteado (rama feat/dfl-concierge, sin código, pendiente auditoría Codex)
 **Type:** decision  
@@ -344,37 +344,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### CP-F1-05/06 remediated against canonical CC compiler
+### CP-F1 Compiler Conformance Kit ready for independent review
+**Type:** architecture  
+**Project:** dfl  
+
+CP-F1 compiler conformance kit recovered and completed on branch feat/dfl-concierge-cc-render-validator. Recovery was committed as 547fa3d; implementation is a33a772. Stable command: python3 -B -m concierge.conformance --candidate concierge.compiler. Independent oracle validates exact CP-03 envelopes, FULL/DEGRADED/OMITTED coverage, coded reason_codes, full SHA-256, nine artifacts, parity, tamper, secrets, fuzz controls, and rejects static candidates for determinism. Results: focused 5/5 PASS, full CC F1 suite 65/65 PASS, candidate PASS, 9/9 byte-identical, validator 16 controls PASS, git diff --check PASS. Work-unit events are design-only in architecture/design/WORK_UNIT_EVENT_DESIGN.md. PROXIMO_AGENTE_DEBE: perform an independent conformance review; inspect the oracle and reproduce PASS/FAIL/ERROR exit behavior. Do not implement work-unit coordination or begin authz review until this kit is independently reviewed and durable.
+
+### SAFE_PARTIAL_CHECKPOINT conformance kit recovery
 **Type:** decision  
 **Project:** dfl  
 
-Codex branch feat/dfl-concierge-codex-register-cli integrated CC baseline 6fc5f70 via merge commit 955c349. Removed incompatible concierge/compiler.py and build/concierge/f1; active compiler is concierge/compiler/ writing concierge/out/ and CP-F1-04 validator passes. Remediated F-05-1 engram_refs structural offline validation, F-05-3 digest seven-field binding, F-05-4 lock retry, F-05-5 check_in/check_out aliases, F-06-2 CP-03 DIGEST_INPUT, and F-06-4 ORQUESTADOR. F-06-3 remains explicit external ACCESS_DENIED decision port, no authz evaluator. Tests: 67/67 Concierge, 6/6 adapter, CP-F1-04 16 checks PASS, 9/9 artifacts byte-identical. Status READY_FOR_REREVIEW. PROXIMO_AGENTE_DEBE: independent re-review only, verify single compiler, validator PASS, digest vectors/binding, engram refs, retry, E2E, and authz boundary; no self-approval.
-
-**Type:** manual  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/concierge/cp-f1-canonical-custodian
-TYPE: implementation
-STATUS: active
-DATE: 2026-07-24
-BRANCH: feat/dfl-concierge-cc-render-validator @ 9645f79 (DURABLE_OFFHOST, local==remote verified)
-ARBITRATION: Jorge/ARB 2026-07-23 — CC's concierge/compiler/ package + CP-F1-04 validator are CANONICAL F1 (CP-03 §2 compliant). Codex concierge/compiler.py RETIRED from canonical path. Do not reopen without new evidence of frozen-contract breach.
-
-**WHAT**: CP-F1-CANONICAL-CUSTODIAN complete. Post-arbitration custodian + integration-prep deliverables. 60 tests PASS.
-
-**API FREEZE**: added concierge.compiler.DEFAULT_OUT_SUBPATH='concierge/out' + METADATA_ENVELOPE_FIELDS (exact CP-03 §2.3 field set) as frozen public constants (commit 4718d12).
-
-**BOUNDARY TESTS** (concierge/tests/test_cp_f1_canonical_contract.py, 9 anti-regression guards): exact coverage enum {FULL,DEGRADED,OMITTED} (rejects Codex INCLUDED/SNAPSHOT/NOT_AVAILABLE/NOT_APPLICABLE); frozen coded reason_codes (no free text); concierge/out/ path (not build/concierge); §2.3 envelope exact field set (no _seal/adapter_version); full SHA-256; deterministic double compile; EXTERNAL CLI subprocess consuming canonical compile+validate -> PASS; VALIDATOR REJECTS Codex-format artifacts (INCLUDED enum/_seal) -> FAIL; OMITTED/DEGRADED snapshot_version shape.
-
-**DOCS** (commit 9645f79):
-- architecture/F1-CANONICAL-API.md: frozen public API of CP-F1-03/04 (imports, functions, IO, error codes, out paths, envelope, digest rules, validation contract).
-- architecture/F1-INTEGRATION-GUIDE-CODEX.md: how Codex CLI must consume canonical compile_canonical/write_artifacts/validate_generated_artifacts; delete compiler.py; forbidden duplication; compatibility criteria; E2E example.
-- architecture/reviews/CP-F1-05-06-REREVIEW-PLAN.md: gated checklist A-F (compiler singularity, F-05-1, F-06-2, F-05-3/4, CLI delegation, combined E2E) + G vertical slice.
-- architecture/DRG-002-R1-AUTHZ-MISSION-PACKET.md: §4 authz evaluator DESIGN ONLY (module concierge/authz.py, AuthzRequest/Decision, evaluate(), §4.6 decision, ATTESTED≠AUTHORIZED, fail-closed policy:concierge:contract-invalid:v1, 10 adversarial tests, suggested owner CC, exact deps). NOT implemented per mission.
-
-**SCOPE DISCIPLINE**: authz NOT implemented; didn't touch main/Codex branch/NO_TOUCH/secrets/foreign untracked; didn't reopen arbitration.
-
-**PROXIMO**: CC monitors Codex READY_FOR_REREVIEW; on publish immediately run 4R re-review via REREVIEW-PLAN (gates A-F), no integration before READY_FOR_REREVIEW, no merge to main, no self-approve. authz §4 awaits dispatch. Related: obs 307 (CP-F1-03), 309 (CP-F1-04), 310 (4R review).
+Recovered /opt/dfl-knowledge-cc-render-validator at local/remote d0512b0 on feat/dfl-concierge-cc-render-validator. Preserved untracked concierge/conformance/independent.py and kit.py without reset or cleanup. AST syntax passed via python -B; normal py_compile/import was blocked only by worktree __pycache__ permission. Receipt CP-F1-CONFORMANCE-RECOVERY-01 added. PROXIMO_AGENTE_DEBE: commit/push this partial state first, then add concierge.conformance CLI and complete independent conformance tests. Status SAFE_PARTIAL_CHECKPOINT.
 
 ---
 
@@ -467,4 +447,4 @@ ARBITRATION: Jorge/ARB 2026-07-23 — CC's concierge/compiler/ package + CP-F1-0
 
 ---
 
-*Mirror auto-generated 2026-07-24T01:21:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-24T01:54:02Z | La Garra → DFLghub/amos-context*
