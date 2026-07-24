@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-24T01:54:02Z  
+**Generated:** 2026-07-24T03:05:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -198,6 +198,11 @@ Cierre @$fin ejecutado por Codex el 2026-07-14. Actividad de la sesion: el usuar
 
 ## PENDING
 
+### [VERIFIED] Hook SessionStart @go operativo en sesión CC 2026-07-11 — PROXIMO_AGENTE_DEBE FutbolWeb cumplido
+**Project:** futbolweb-app  
+
+[VERIFIED] Hook SessionStart @go apareció correctamente en sesión CC del 2026-07-11: el hook inyectó el payload @go v1.1 completo (decisiones activas, pendientes, CC bootstrap, cierre @$fin) al arrancar la sesión en /opt/futbolweb. PROXIMO_AGENTE_DEBE de FutbolWeb ("verificar que el hook aparece en la próxima sesión CC") queda cumplido. Proxy dfl-context-proxy /go responde HTTP 200 en 127.0.0.1:8091. Perfil EJECUTOR confirmado vía amos-context AGENT DIRECTORY (anexo agents/ejecutor.md).
+
 ### @go Protocol v1.0 — protocolo de arranque DFL
 **Project:** dfl  
 
@@ -344,17 +349,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### CP-F1 Compiler Conformance Kit ready for independent review
+### DeepSeek agent human UI operational
 **Type:** architecture  
 **Project:** dfl  
 
-CP-F1 compiler conformance kit recovered and completed on branch feat/dfl-concierge-cc-render-validator. Recovery was committed as 547fa3d; implementation is a33a772. Stable command: python3 -B -m concierge.conformance --candidate concierge.compiler. Independent oracle validates exact CP-03 envelopes, FULL/DEGRADED/OMITTED coverage, coded reason_codes, full SHA-256, nine artifacts, parity, tamper, secrets, fuzz controls, and rejects static candidates for determinism. Results: focused 5/5 PASS, full CC F1 suite 65/65 PASS, candidate PASS, 9/9 byte-identical, validator 16 controls PASS, git diff --check PASS. Work-unit events are design-only in architecture/design/WORK_UNIT_EVENT_DESIGN.md. PROXIMO_AGENTE_DEBE: perform an independent conformance review; inspect the oracle and reproduce PASS/FAIL/ERROR exit behavior. Do not implement work-unit coordination or begin authz review until this kit is independently reviewed and durable.
+Humanized /opt/deepseek-agent/bin/agent.py without changing the tool protocol. Default --display human shows session header, mission, model/worktree/branch/mode, concise tool steps, PASS/FAIL/BLOCKED, progress and final summary. Added --display verbose, --display raw and --quiet. JSONL retains model messages, tool requests/results, parse errors and termination reason. Long content is hidden/truncated; secrets are redacted in display; tool failures prevent false COMPLETE. git -C is allowed only when it resolves to the assigned worktree. Tests: 7/7 PASS. Real human E2E on /tmp/deepseek-agent-e2e completed COMPLETE with README read and git status, no mutations. Receipt: /opt/deepseek-agent/RECEIPT.md. PROXIMO_AGENTE_DEBE: use default human mode for supervision, --display verbose for technical summaries, --display raw only for debugging, and --quiet for closure-only automation; inspect JSONL when evidence is required.
 
-### SAFE_PARTIAL_CHECKPOINT conformance kit recovery
-**Type:** decision  
+### DeepSeek tool call loop repaired
+**Type:** bugfix  
 **Project:** dfl  
 
-Recovered /opt/dfl-knowledge-cc-render-validator at local/remote d0512b0 on feat/dfl-concierge-cc-render-validator. Preserved untracked concierge/conformance/independent.py and kit.py without reset or cleanup. AST syntax passed via python -B; normal py_compile/import was blocked only by worktree __pycache__ permission. Receipt CP-F1-CONFORMANCE-RECOVERY-01 added. PROXIMO_AGENTE_DEBE: commit/push this partial state first, then add concierge.conformance CLI and complete independent conformance tests. Status SAFE_PARTIAL_CHECKPOINT.
+Repaired /opt/deepseek-agent/bin/agent.py. It now parses native OpenAI message.tool_calls, XML tool_calls with single/multiple tool_call nodes, embedded JSON name+args, and arguments/args. It executes calls, appends role=tool results with tool_call_id, continues until a no-tool final response, logs requests/results/termination, and enforces 24-turn limit. Absolute paths are allowed only inside assigned worktree; .. components, symlink escapes, external paths and obvious system/package commands are blocked. Tests: 5/5 unittest methods covering 10 required scenarios. Final E2E on authz fixture: read concierge/authz.py and concierge/register.py, created marker, ran 15/15 authz tests, committed d29b39d on deepseek-agent-authz-e2e, no push and main untouched. Receipt updated at /opt/deepseek-agent/RECEIPT.md. PROXIMO_AGENTE_DEBE: use deepseek-agent --worktree <assigned-worktree>; inspect status, keep non-main branch, verify tool loop logs and commit checkpoints; do not touch authz branch unless explicitly assigned.
 
 ---
 
@@ -447,4 +452,4 @@ Recovered /opt/dfl-knowledge-cc-render-validator at local/remote d0512b0 on feat
 
 ---
 
-*Mirror auto-generated 2026-07-24T01:54:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-24T03:05:01Z | La Garra → DFLghub/amos-context*
