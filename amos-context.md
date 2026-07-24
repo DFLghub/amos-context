@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-24T21:31:18Z  
+**Generated:** 2026-07-24T21:38:19Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,17 +101,17 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### WORK_UNIT claims implemented awaiting review
+**Type:** decision  
+**Project:** dfl  
+
+CP-F1-WORKUNIT-CLAIMS-01 implementado por Codex en feat/dfl-concierge-workunit-claims, commit aaf740a sobre base 3d0cc64. Added dedicated concierge/workunit.py ledger with CLAIMED/RELEASED/EXPIRED/HANDED_OFF, lock+append+fsync, stable operation idempotency, conflict, owner-only release, expiry/reclaim, explicit handoff, scope support, corruption quarantine/reconcile, and public exports. Tests: focused 8/8, full concierge 84/84, diff-check and API smoke PASS. Receipt architecture/receipts/CP-F1-WORKUNIT-CLAIMS-01.md. Status IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW. PROXIMO_AGENTE_DEBE: independent 4R review; no self-approval or main merge.
+
 ### SAFE_PARTIAL_CHECKPOINT conformance kit recovery
 **Type:** decision  
 **Project:** dfl  
 
 Recovered /opt/dfl-knowledge-cc-render-validator at local/remote d0512b0 on feat/dfl-concierge-cc-render-validator. Preserved untracked concierge/conformance/independent.py and kit.py without reset or cleanup. AST syntax passed via python -B; normal py_compile/import was blocked only by worktree __pycache__ permission. Receipt CP-F1-CONFORMANCE-RECOVERY-01 added. PROXIMO_AGENTE_DEBE: commit/push this partial state first, then add concierge.conformance CLI and complete independent conformance tests. Status SAFE_PARTIAL_CHECKPOINT.
-
-### CP-F1 authz evaluator implemented awaiting review
-**Type:** decision  
-**Project:** dfl  
-
-On feat/dfl-concierge-f1-authz from baseline 3d0cc649, CP-F1 authz implementation commit 1319983 adds pure fail-closed concierge/authz.py, policy snapshot fixture, CLI authorize integration, and ACCESS_DENIED register adapter. Identity, capability, granted scope, policy, guard, trust, version and expiry remain separate; ATTESTED is not AUTHORIZED. Tests: authz 15/15, full Concierge 91/91, adapter 6/6, runtime validator 16 checks PASS. Status READY_FOR_AUTHZ_REVIEW. PROXIMO_AGENTE_DEBE: independently review precedence, fail-closed behavior, decision digest/tamper, policy version/expiry, guard, register persistence/replay/idempotency, and no self-approval.
 
 ### CP-01 completado: DRG-002-R1 DFL Concierge diseño normativo commiteado (rama feat/dfl-concierge, sin código, pendiente auditoría Codex)
 **Type:** decision  
@@ -349,35 +349,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-**Type:** manual  
-**Project:** dfl-knowledge  
+### @$fin cierre Codex — WORK_UNIT claims 2026-07-24
+**Type:** fact  
+**Project:** dfl  
 
-TOPIC: dfl/concierge/workunit-claim
-TYPE: coordination
-STATUS: active
-DATE: 2026-07-24
+Sesión cerrada tras completar el handoff de WORK_UNIT claims en /opt/dfl-knowledge-workunit, rama feat/dfl-concierge-workunit-claims. Commit aaf740a6737d4148515050571f9485602c0f08fb publicado y verificado en origin. Implementación: ledger local-first append-only dedicado, CLAIMED/RELEASED/EXPIRED/HANDED_OFF, conflicto único por unidad/scope, idempotencia, release propietario, expiry/reclaim, handoff, locking, cuarentena/reconcile y exports. Evidencia: tests focalizados 8/8, suite Concierge 84/84, diff-check PASS, smoke claim→handoff→release PASS. Receipt CP-F1-WORKUNIT-CLAIMS-01. Engram incremental #332. Estado institucional: IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW; no autoaprobado ni merge a main. PROXIMO_AGENTE_DEBE: ejecutar revisión 4R independiente antes de integración.
 
-**MANUAL WORK_UNIT CLAIM** (announcing before starting — dogfooding the very feature)
-CLAIMED_BY: CC (this session)
-UNIT_ID: implement-work-unit-claims-on-register
-BRANCH: feat/dfl-concierge-workunit-claims (NEW, from integration baseline 3d0cc64 which has the register)
-SCOPE (minimal): concierge/workunit.py — states CLAIMED/RELEASED/EXPIRED/HANDED_OFF; claim-before-execute; 2nd active claim on same unit -> ERR_WORK_UNIT_CONFLICT; leases + safe recovery/expiration; explicit handoff; idempotent ops; durable evidence (actor, unit, timestamps, state, branch/commit); tests for double-claim, expiration, release, handoff, retry, idempotency.
-NOT DOING: scheduler, UI, general orchestration, main merge, integration without gate. Dedicated ledger (concierge/register/work_units.jsonl) reusing register durability patterns WITHOUT modifying Codex's register.py.
-STATUS: CLAIMED / in-progress.
+### WORK_UNIT claims implemented awaiting review
+**Type:** decision  
+**Project:** dfl  
 
-Any other agent: do NOT implement work-unit claims concurrently until this is RELEASED.
-
-**Type:** manual  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/concierge/authz-accepted
-TYPE: decision
-STATUS: active
-DATE: 2026-07-24
-
-**F1_AUTHZ_ACCEPTED** (institutional acceptance by Jorge; NOT a CC self-declared 4R verdict; no further 4R per directive).
-ACCEPTED_COMMIT: feat/dfl-concierge-deepseek-authz @ 0b2eb91 (acceptance receipt commit 3798c3b, pushed DURABLE_OFFHOST).
-Scope accepted: concierge/authz.py fail-closed evaluator (evaluate ALLOW/DENY, identity/execution trust, ATTESTED!=AUTHORIZED, full-sha256 decision digest, resource guards, deny precedence), validate_access_denied_event register-boundary verifier (digest recompute + actor/scope/resource/session/policy binding + stale/replay rejection + mandatory/valid requested_scope), policy_version bound to rules_version OR full 64-hex snapshot digest (truncated rejected). Evidence: exact suite pytest concierge/tests/ tools/tests/ = 161 passed; focused authz = 79. ACCEPTED but NOT merged to main (integration gated). Receipt: architecture/receipts/CP-F1-AUTHZ-ACCEPTED.md. Supersedes the earlier authz 4R REJECTION (obs from c1ec958). Related: obs 325, 328.
+CP-F1-WORKUNIT-CLAIMS-01 implementado por Codex en feat/dfl-concierge-workunit-claims, commit aaf740a sobre base 3d0cc64. Added dedicated concierge/workunit.py ledger with CLAIMED/RELEASED/EXPIRED/HANDED_OFF, lock+append+fsync, stable operation idempotency, conflict, owner-only release, expiry/reclaim, explicit handoff, scope support, corruption quarantine/reconcile, and public exports. Tests: focused 8/8, full concierge 84/84, diff-check and API smoke PASS. Receipt architecture/receipts/CP-F1-WORKUNIT-CLAIMS-01.md. Status IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW. PROXIMO_AGENTE_DEBE: independent 4R review; no self-approval or main merge.
 
 ---
 
@@ -470,4 +452,4 @@ Scope accepted: concierge/authz.py fail-closed evaluator (evaluate ALLOW/DENY, i
 
 ---
 
-*Mirror auto-generated 2026-07-24T21:31:18Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-24T21:38:19Z | La Garra → DFLghub/amos-context*
