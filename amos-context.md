@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-24T03:05:01Z  
+**Generated:** 2026-07-24T21:31:18Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -349,17 +349,35 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### DeepSeek agent human UI operational
-**Type:** architecture  
-**Project:** dfl  
+**Type:** manual  
+**Project:** dfl-knowledge  
 
-Humanized /opt/deepseek-agent/bin/agent.py without changing the tool protocol. Default --display human shows session header, mission, model/worktree/branch/mode, concise tool steps, PASS/FAIL/BLOCKED, progress and final summary. Added --display verbose, --display raw and --quiet. JSONL retains model messages, tool requests/results, parse errors and termination reason. Long content is hidden/truncated; secrets are redacted in display; tool failures prevent false COMPLETE. git -C is allowed only when it resolves to the assigned worktree. Tests: 7/7 PASS. Real human E2E on /tmp/deepseek-agent-e2e completed COMPLETE with README read and git status, no mutations. Receipt: /opt/deepseek-agent/RECEIPT.md. PROXIMO_AGENTE_DEBE: use default human mode for supervision, --display verbose for technical summaries, --display raw only for debugging, and --quiet for closure-only automation; inspect JSONL when evidence is required.
+TOPIC: dfl/concierge/workunit-claim
+TYPE: coordination
+STATUS: active
+DATE: 2026-07-24
 
-### DeepSeek tool call loop repaired
-**Type:** bugfix  
-**Project:** dfl  
+**MANUAL WORK_UNIT CLAIM** (announcing before starting — dogfooding the very feature)
+CLAIMED_BY: CC (this session)
+UNIT_ID: implement-work-unit-claims-on-register
+BRANCH: feat/dfl-concierge-workunit-claims (NEW, from integration baseline 3d0cc64 which has the register)
+SCOPE (minimal): concierge/workunit.py — states CLAIMED/RELEASED/EXPIRED/HANDED_OFF; claim-before-execute; 2nd active claim on same unit -> ERR_WORK_UNIT_CONFLICT; leases + safe recovery/expiration; explicit handoff; idempotent ops; durable evidence (actor, unit, timestamps, state, branch/commit); tests for double-claim, expiration, release, handoff, retry, idempotency.
+NOT DOING: scheduler, UI, general orchestration, main merge, integration without gate. Dedicated ledger (concierge/register/work_units.jsonl) reusing register durability patterns WITHOUT modifying Codex's register.py.
+STATUS: CLAIMED / in-progress.
 
-Repaired /opt/deepseek-agent/bin/agent.py. It now parses native OpenAI message.tool_calls, XML tool_calls with single/multiple tool_call nodes, embedded JSON name+args, and arguments/args. It executes calls, appends role=tool results with tool_call_id, continues until a no-tool final response, logs requests/results/termination, and enforces 24-turn limit. Absolute paths are allowed only inside assigned worktree; .. components, symlink escapes, external paths and obvious system/package commands are blocked. Tests: 5/5 unittest methods covering 10 required scenarios. Final E2E on authz fixture: read concierge/authz.py and concierge/register.py, created marker, ran 15/15 authz tests, committed d29b39d on deepseek-agent-authz-e2e, no push and main untouched. Receipt updated at /opt/deepseek-agent/RECEIPT.md. PROXIMO_AGENTE_DEBE: use deepseek-agent --worktree <assigned-worktree>; inspect status, keep non-main branch, verify tool loop logs and commit checkpoints; do not touch authz branch unless explicitly assigned.
+Any other agent: do NOT implement work-unit claims concurrently until this is RELEASED.
+
+**Type:** manual  
+**Project:** dfl-knowledge  
+
+TOPIC: dfl/concierge/authz-accepted
+TYPE: decision
+STATUS: active
+DATE: 2026-07-24
+
+**F1_AUTHZ_ACCEPTED** (institutional acceptance by Jorge; NOT a CC self-declared 4R verdict; no further 4R per directive).
+ACCEPTED_COMMIT: feat/dfl-concierge-deepseek-authz @ 0b2eb91 (acceptance receipt commit 3798c3b, pushed DURABLE_OFFHOST).
+Scope accepted: concierge/authz.py fail-closed evaluator (evaluate ALLOW/DENY, identity/execution trust, ATTESTED!=AUTHORIZED, full-sha256 decision digest, resource guards, deny precedence), validate_access_denied_event register-boundary verifier (digest recompute + actor/scope/resource/session/policy binding + stale/replay rejection + mandatory/valid requested_scope), policy_version bound to rules_version OR full 64-hex snapshot digest (truncated rejected). Evidence: exact suite pytest concierge/tests/ tools/tests/ = 161 passed; focused authz = 79. ACCEPTED but NOT merged to main (integration gated). Receipt: architecture/receipts/CP-F1-AUTHZ-ACCEPTED.md. Supersedes the earlier authz 4R REJECTION (obs from c1ec958). Related: obs 325, 328.
 
 ---
 
@@ -452,4 +470,4 @@ Repaired /opt/deepseek-agent/bin/agent.py. It now parses native OpenAI message.t
 
 ---
 
-*Mirror auto-generated 2026-07-24T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-24T21:31:18Z | La Garra → DFLghub/amos-context*
