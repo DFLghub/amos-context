@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-24T21:38:19Z  
+**Generated:** 2026-07-25T02:05:43Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -203,11 +203,6 @@ Cierre @$fin ejecutado por Codex el 2026-07-14. Actividad de la sesion: el usuar
 
 [VERIFIED] Hook SessionStart @go apareció correctamente en sesión CC del 2026-07-11: el hook inyectó el payload @go v1.1 completo (decisiones activas, pendientes, CC bootstrap, cierre @$fin) al arrancar la sesión en /opt/futbolweb. PROXIMO_AGENTE_DEBE de FutbolWeb ("verificar que el hook aparece en la próxima sesión CC") queda cumplido. Proxy dfl-context-proxy /go responde HTTP 200 en 127.0.0.1:8091. Perfil EJECUTOR confirmado vía amos-context AGENT DIRECTORY (anexo agents/ejecutor.md).
 
-### @go Protocol v1.0 — protocolo de arranque DFL
-**Project:** dfl  
-
-Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT, Gemini) arrancar con contexto completo DFL en un paso. Fuente A: amos-context.md en DFLghub/amos-context (commit edd5f51). Fuente B: GET https://context.deepfeelingslabs.com/go — devuelve JSON con identity, recent_decisions, active_constraints, pending, generated_at. Backend: dfl-context-proxy en 127.0.0.1:8091 consulta Engram local 127.0.0.1:7437 con queries: "decisiones activas estado", "restricciones prohibido no tocar", "pendientes criticos". Sin auth requerida en /go. @go v1.0 activo y verificado.
-
 ### [VERIFIED] /go pending filter — resolved/stale cleanup
 **Project:** dfl  
 
@@ -218,6 +213,16 @@ Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT,
 **Where**: /opt/dfl-context-proxy/main.py — loop pending en _handle_go(), +4 líneas.
 
 **Learned**: El patrón [RESOLVED]/[STALE] como prefijo de título es suficiente para filtrar sin tocar el schema de Engram. _is_archived() ya existía pero no se aplicaba al loop de pending — ahora es consistente en los tres loops (decisions, constraints, pending). Engram #14 ya no aparece como pending activo. recent_decisions permanece intacto.
+
+### KNL v1.0 contrato operativo validado
+**Project:** dfl  
+
+TOPIC: dfl/knl/v1
+TYPE: decision
+STATUS: active
+DATE: 2026-06-28
+SUMMARY: KNL v1.0 queda operativo como contrato oficial en /go. knl.json valida schema dfl.knl.v1 con semantic communities/entropy, navigation neighbors, memory, policy, provenance, comparator y validation. graph_context no aparece en /go. knl_compare.py ahora soporta snapshots previos con links y genera comparator status changed con previous_available=true. dfl-nav --brief muestra neighbors. P0/P4 quedan pendientes de confirmacion: regen_graph.sh aun usa OPENAI_API_KEY y graphify como productor; contrato KNL requiere ag_topologo.py como productor canonico de graph.json y Graphify solo como consumidor/analisador. P3 gap: ag_topologo local declara v0.1; no se encontro v0.3 instalable.
+EVIDENCE: python3 /opt/dfl-context-proxy/tests/test_knl_contract.py => knl contract ok. Public /go has knl=true, graph_context=false, validation ok.
 
 ### Session summary: futbolweb-app
 **Project:** futbolweb-app  
@@ -452,4 +457,4 @@ CP-F1-WORKUNIT-CLAIMS-01 implementado por Codex en feat/dfl-concierge-workunit-c
 
 ---
 
-*Mirror auto-generated 2026-07-24T21:38:19Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T02:05:43Z | La Garra → DFLghub/amos-context*
