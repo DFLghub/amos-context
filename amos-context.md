@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T16:16:55Z  
+**Generated:** 2026-07-25T16:17:09Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -107,121 +107,6 @@ Antes de operar, respondé:
 
 Durante el onboarding `@$go` del 2026-07-25 con payload local `generated_at=2026-07-25T16:00:14Z`, Codex detectó que `pending` seguía incluyendo observaciones ya cumplidas o históricas. Sin reconsultar `/go`, archivó en Engram con `LIFECYCLE: archived` y prefijo `[RESOLVED]` las observaciones #217 (hook SessionStart verificado), #236 (reconciliación final consolidación v1), #95 (/go pending filter verificado), #249 (cierre dfl-secrets/ZIP legacy) y #210 (session summary histórico de dfl-knowledge). Motivo: evitar que cierres ya completados y resúmenes de sesión sigan apareciendo como trabajo activo en futuros payloads. No se tocaron superficies protegidas ni se editaron archivos del repo.
 
-### FASE 1 IMPLEMENTADA: Little Bosses + Minions + Factory Requests + Lessons (obs-348)
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-**CHECKPOINT OBS-348 — FASE 1 PILOTO BOS-JPI COMPLETADA**
-
-## Status: ✅ PASS (1 WARN documentado)
-
-**Timestamp:** 2026-07-25 ~06:00Z  
-**Repository:** `/opt/360eventos/business-os`  
-**Branch:** `fase-1-little-bosses-models`  
-**SHA Base:** `788f49a` (HEAD pre-Fase 1)  
-**SHA Final:** `2009533d8b4d1411693514be5febb13e3e9f1798`
-
-## Entregables
-
-### Migraciones (3, todas idempotentes)
-1. **008_little_bosses.js** — Tablas: `little_bosses` (type, authority_level, status), `minions` (boss_id FK, task, status)
-2. **009_factory_requests.js** — Tabla: `factory_requests` (UNIQUE mission+goal_id para idempotencia de negocio)
-3. **010_lessons.js** — Tabla: `candidate_lessons` (append-only, no auto-promoción stage)
-
-### Modelos de Dominio (2)
-1. **models/little-boss.js** (158 LOC)
-   - AUTHORITY_RULES: comercial, operaciones, aprendizaje con scope/can_decide/must_escalate explícitos
-   - Transiciones: active ↔ paused → archived (terminal)
-   - Validaciones: type, authorityDescription, status
-   - Escalamiento: escalateToJorge(db, bossId, reason, goalId) explícito
-
-2. **models/minion.js** (105 LOC)
-   - Ciclo: pending → executing → completed|failed (terminal)
-   - Tasks: lista cerrada (7 items: calificar, verificar_*, excepciones, evidence, outcomes, lecciones)
-   - Operaciones: create, start, complete, getState, getByBoss
-
-### Documentación (1)
-- **docs/pilot-contracts.md** (279 LOC)
-  - Especificación ÚNICAMENTE (no implementada Fase 1)
-  - Contratos HTTP para Fases 2–6: Little Bosses API, Solopreneur OS API, Factory Integration API
-  - Clara separación Fase 1 (AHORA) vs posteriores
-
-### Tests (3 archivos, 29 nuevos + 27 preexistentes = 56/56 PASS)
-- little-boss.test.js (14 tests: creación, transiciones, escalamiento)
-- minion.test.js (10 tests: ciclo, validaciones, búsqueda)
-- idempotency.test.js (5 tests: 2x ejecución, schema, índices)
-
-## Validaciones
-
-### ✓ Idempotencia
-- Migraciones ejecutadas 2x: applied=[], skipped=[001-010] en ambas ejecuciones
-- factory_requests: UNIQUE(mission, goal_id) previene duplicados
-
-### ✓ Tests
-- npm test: 56/56 PASS
-- Nuevos: 29 (100% cobertura de little-boss, minion, migraciones)
-- Preexistentes: 27 (fmd, assistant, port, etc.) — regresión: 0
-
-### ✓ Alcance
-- SOLO Fase 1: migrations/008-010, models/little-boss.js + minion.js, docs/pilot-contracts.md, tests/*
-- SIN rutas HTTP, sin Solopreneur OS, sin SFV5, sin FMD changes, sin server.js changes
-- routes/ (0 changes), fmd/ (0 changes), server.js (0 changes)
-
-### ✓ Autoridad Delegada
-- AUTHORITY_RULES documenta explícitamente qué puede decidir cada Little Boss sin Jorge
-- Escalamiento claro: presupuesto nuevo, desvío L2+, promoción automática
-
-### ✓ Estados y Transiciones
-- Little Boss: active ↔ paused → archived (terminal)
-- Minion: pending → executing → completed|failed (terminal)
-- Factory Request: queued → building|failed → ready (documentada, no validada código)
-- Lessons: candidate → staged|rejected (solo con reviewed=true, no auto-promoción)
-
-## Revisión 4R
-
-| Aspecto | Resultado | Evidencia |
-|---------|-----------|-----------|
-| **Risk** | PASS | Autoridad explícita, ciclos bien definidos, idempotencia confirmada |
-| **Readability** | PASS | Código estructurado, SQL limpio, documentación ejecutable |
-| **Reliability** | PASS | Migraciones robustas (IF NOT EXISTS, CHECK, FK, índices), validaciones completas |
-| **Resilience** | PASS | Migraciones idempotentes, UNIQUE constraints, edge cases cubiertos |
-
-**WARN documentado:** package.json test script cambio (Node 22.11+ dependency, env issue no del código)
-
-## Línea de Git
-
-```
-Rama:    * fase-1-little-bosses-models (2009533)
-Commits: 1 (Fase 1: Little Bosses + Minions + Factory Requests + Lessons)
-Diff:    1235 insertiones(+), 3 eliminaciones(-)
-```
-
-## Riesgos Documentados para Fase 2+
-
-1. **HTTP Routes:** Sin límite de escalamientos → mitigar máx 3/goal
-2. **Solopreneur OS:** Jorge bottleneck → AUTHORITY_RULES permisivo
-3. **SFV5 Bridge:** Timeout bloquea → async polling, no sync
-4. **E2E (Fase 5):** Divergencia mid-flow → transaccionalidad (todo o nada)
-
-## Estado de Siguiente Paso
-
-✅ Fase 1 implementada y testeada  
-⏳ **Revisión independiente (code-review agent, sin push)**  
-⏳ Aprobación  
-⏳ Merge a main  
-⏳ Fase 2 comienza
-
-## Roadmap Referencia
-
-- Roadmap completo: `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md`
-- Summary: `/opt/dfl-knowledge/evidence/CHECKPOINT-OBS-347-SUMMARY.md`
-- Fase 1 report: `/tmp/PHASE1_FINAL_REPORT.md`
-- Decisiones aplicadas (obs-347): Jorge 1–4 (híbrido, 3 Little Bosses, Solopreneur OS híbrido, SFV5 integración parcial)
-
-## Veredicto
-
-✅ **PASS** — Fase 1 del piloto BOS-JPI lista para revisión independiente y merge a main.
-
 ### SFV5 CLAUDE.md Documentation Fix — Independent Mission (NOT part of obs-347 piloto)
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -285,6 +170,115 @@ Diff:    1235 insertiones(+), 3 eliminaciones(-)
 4. ⏳ Merge: After verification
 
 **Can be started immediately after obs-347 piloto approval (orthogonal work).**
+
+### Roadmap Ejecutable: Piloto Híbrido JPI (obs-347 checkpoint)
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+**CHECKPOINT OBS-347 — 2026-07-25 05:30Z**
+
+## Qué se hizo
+Auditoría selectiva + diseño adaptativo del piloto JPI con 3 Little Bosses. Roadmap ejecutable (7–14 días) guardado en `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md` (17 secciones, 400+ líneas).
+
+## Decisiones de Jorge aplicadas ✅
+1. **HÍBRIDO:** Auditoría selectiva del código actual (no exhaustiva) → reúso documentado en 4 categorías (PROBADO ✓, PARCIAL ⚠️, CONTRADICE ✗, AUSENTE ✗)
+2. **PILOTO PEQUEÑO:** 3 Little Bosses (Comercial, Operaciones, Aprendizaje) demostrando coordinación real
+3. **SOLOPRENEUR OS HÍBRIDO:** Políticas + agente observación/síntesis/recomendación + interfaz excepciones (no daemon gestor)
+4. **SFV5 INTEGRACIÓN PARCIAL REAL:** Factory participa; artefacto pequeño (validator disponibilidad) en flujo
+
+## Auditoría selectiva (δ = delta)
+
+**PROBADO Y REUTILIZABLE** (8 capacidades):
+- BOS-JPI HTTP cockpit ✓
+- FMD G0–G1 gates ✓
+- FMD 12-step orchestration ✓
+- Omnichannel abstraction ✓
+- JPI domain integration ✓
+- SFV5 skills framework ✓
+- Idempotency support ✓
+- Goal→plan→gate state machine ✓
+
+**PARCIAL** (5 capacidades): Plan generation (stub OK), Deviation L1 sólo, BOS assistant (rules OK), Real channels (mocks OK), SFV5 feedback (manual OK)
+
+**CONTRADICE** (1): FMD es agente externo, no componente BOS → documentar separación lógica
+
+**AUSENTE** (7): Solopreneur OS, 3 Little Bosses, Minions, SFV5→BOS API, Reviewer, lessons staging, factory requests DB
+
+## Delta código: ~930 LOC
+- Agregar: routes/little-bosses.js, routes/solopreneur-os.js, routes/factory-integration.js, models/little-boss.js, models/minion.js, middleware/review.js, migrations/008–010 (3), scripts/factory-http-bridge.js
+- Mantener: server.js, fmd/goals.js, jpi-pilot.js (sin cambios)
+- Tests: full-pilot-flow.test.js (E2E 13 pasos)
+
+## Flujo empresarial demostrativo (13 pasos → 1 cierre → 1 lección candidata)
+1. SOLICITUD ingresa → 2. Comercial.qualify → 3. Operaciones.verify (3 minions) → 4. Desvío L1 (falta fecha) → 5. FMD replantea (sin Jorge) → 6. Brecha digital (falta validator) → 7. FMD→SFV5 misión → 8. SFV5 artifact → 9. Revisor OK → 10. Operaciones continúa → 11. Goal.closed (evidencia) → 12. Aprendizaje.record → 13. candidate_lessons.staged
+
+## Fases (1–6, parallelizable F2∥F3)
+| Fase | Duración | Artefactos | Deps |
+|------|----------|-----------|------|
+| 1: Fundación | 2d | migrations, models, contracts | — |
+| 2: Solopreneur+Factory | 2.5d | routes/solopreneur, factory-integration, reviewer | F1 |
+| 3: Little Bosses | 2.5d | routes/little-bosses, LB models | F1 |
+| 4: SFV5 Bridge | 1.5d | factory-http-bridge.js | F2 |
+| 5: E2E Piloto | 2d | tests/full-pilot-flow.test.js, lessons | F1–4 |
+| 6: Review+Refine | 1.5d | docs, fixes | F5 |
+
+**Total:** 9.5 agentes-días → 7d (4 agentes) o 14d (2 agentes)
+
+## Estimación realista
+- Agente 1 (Backend): F1, F2, F5 = 3.5d
+- Agente 2 (Little Bosses): F3, soporte F5 = 2.5d
+- Agente 3 (SFV5 bridge): F4, E2E = 2d
+- Agente 4 (Tests/Reviewer): F6 = 1.5d
+- Parallelizable: F2 ∥ F3 (day 2–3)
+
+## Criterio de parada
+✅ **E2E 13-pasos PASS** (≥1x execution)
+✅ **Evidencia persisted** (trace 12-steps, plans v1+v2, deviations+resolutions, SFV5 artifact)
+✅ **Revisor aprobó** closure_package
+✅ **candidate_lessons staged** (no auto-promovida)
+✅ **Tests PASS** (unit + E2E)
+✅ **Docs completos** (contracts, patterns, review-checklist)
+
+## Exclusiones explícitas
+- BOS-UPSTREAM (aislado, no merge)
+- FMD generalización (post-piloto)
+- LLM real assistant (rules-based mock OK)
+- Auto feedback-loop (post-piloto)
+- Real Telegram/WhatsApp (mocks OK)
+- Supabase touches (SQLite en piloto)
+- Auth real (no requiere)
+- Scoring/knockout (untouched)
+
+## Riesgos + mitigaciones
+- **SFV5 HTTP invocable:** Pre-verificar día 4; fallback CLI local
+- **Desvío L1 no resolvible:** Stub genera fecha sintética (garantizado)
+- **Reviewer rechaza:** Checklist claro; iterar SFV5 skill
+- **DB corruption:** Migrations idempotentes; snapshots pre-E2E
+- **Tiempo insuficiente:** Reducir a 1 LB (Operaciones only); minion assistant mock
+
+## Veredicto
+✅ **READY TO IMPLEMENT** (Fase 1 start: next agent)
+
+## Tres movimientos siguientes (post-piloto)
+1. **Generalizar FMD** (s8–9): multiple domains, reusable library, inyectable
+2. **Solopreneur OS completo** (s10–12): 6 áreas + auto-feedback, Jorge excepciones-only
+3. **BOS convergencia** (s13–14): patrón + multi-impl (UPSTREAM, JPI, futuro)
+
+## Artefactos generados
+- `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md` (17 secciones)
+- Indexing reused 2026-07-25 (SHAs identical: SFV5 5e42124, BOS-UP 4428a6d, BOS-JPI 788f49a)
+- Codebase-memory: sin reindex
+
+## Próximo paso
+**Agente ejecutor:** Comienza Fase 1
+- Crear migrations/008_little_bosses.js (little_bosses, minions tables)
+- Crear migrations/009_factory_requests.js (factory_requests, candidate_lessons tables)
+- Crear migrations/010_lessons.js (refined candidate_lessons)
+- Crear models/little-boss.js (state machine, authority)
+- Crear models/minion.js (task interface)
+- Guardar `docs/pilot-contracts.md` (HTTP specs)
+- Ejecutar: `npm test tests/models/` → PASS
+- Checkpoint → Fase 2 (Solopreneur OS + factory-integration)
 
 ### SAFE_PARTIAL_CHECKPOINT — WORK_UNIT remediation paused
 **Type:** decision  
@@ -692,4 +686,4 @@ Corregir los tres hallazgos de la revisión independiente 4R de Fase 1 BOS-JPI: 
 
 ---
 
-*Mirror auto-generated 2026-07-25T16:16:55Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T16:17:09Z | La Garra → DFLghub/amos-context*
