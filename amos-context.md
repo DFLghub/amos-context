@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T04:45:02Z  
+**Generated:** 2026-07-25T05:35:47Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,185 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### FASE 1 IMPLEMENTADA: Little Bosses + Minions + Factory Requests + Lessons (obs-348)
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+**CHECKPOINT OBS-348 — FASE 1 PILOTO BOS-JPI COMPLETADA**
+
+## Status: ✅ PASS (1 WARN documentado)
+
+**Timestamp:** 2026-07-25 ~06:00Z  
+**Repository:** `/opt/360eventos/business-os`  
+**Branch:** `fase-1-little-bosses-models`  
+**SHA Base:** `788f49a` (HEAD pre-Fase 1)  
+**SHA Final:** `2009533d8b4d1411693514be5febb13e3e9f1798`
+
+## Entregables
+
+### Migraciones (3, todas idempotentes)
+1. **008_little_bosses.js** — Tablas: `little_bosses` (type, authority_level, status), `minions` (boss_id FK, task, status)
+2. **009_factory_requests.js** — Tabla: `factory_requests` (UNIQUE mission+goal_id para idempotencia de negocio)
+3. **010_lessons.js** — Tabla: `candidate_lessons` (append-only, no auto-promoción stage)
+
+### Modelos de Dominio (2)
+1. **models/little-boss.js** (158 LOC)
+   - AUTHORITY_RULES: comercial, operaciones, aprendizaje con scope/can_decide/must_escalate explícitos
+   - Transiciones: active ↔ paused → archived (terminal)
+   - Validaciones: type, authorityDescription, status
+   - Escalamiento: escalateToJorge(db, bossId, reason, goalId) explícito
+
+2. **models/minion.js** (105 LOC)
+   - Ciclo: pending → executing → completed|failed (terminal)
+   - Tasks: lista cerrada (7 items: calificar, verificar_*, excepciones, evidence, outcomes, lecciones)
+   - Operaciones: create, start, complete, getState, getByBoss
+
+### Documentación (1)
+- **docs/pilot-contracts.md** (279 LOC)
+  - Especificación ÚNICAMENTE (no implementada Fase 1)
+  - Contratos HTTP para Fases 2–6: Little Bosses API, Solopreneur OS API, Factory Integration API
+  - Clara separación Fase 1 (AHORA) vs posteriores
+
+### Tests (3 archivos, 29 nuevos + 27 preexistentes = 56/56 PASS)
+- little-boss.test.js (14 tests: creación, transiciones, escalamiento)
+- minion.test.js (10 tests: ciclo, validaciones, búsqueda)
+- idempotency.test.js (5 tests: 2x ejecución, schema, índices)
+
+## Validaciones
+
+### ✓ Idempotencia
+- Migraciones ejecutadas 2x: applied=[], skipped=[001-010] en ambas ejecuciones
+- factory_requests: UNIQUE(mission, goal_id) previene duplicados
+
+### ✓ Tests
+- npm test: 56/56 PASS
+- Nuevos: 29 (100% cobertura de little-boss, minion, migraciones)
+- Preexistentes: 27 (fmd, assistant, port, etc.) — regresión: 0
+
+### ✓ Alcance
+- SOLO Fase 1: migrations/008-010, models/little-boss.js + minion.js, docs/pilot-contracts.md, tests/*
+- SIN rutas HTTP, sin Solopreneur OS, sin SFV5, sin FMD changes, sin server.js changes
+- routes/ (0 changes), fmd/ (0 changes), server.js (0 changes)
+
+### ✓ Autoridad Delegada
+- AUTHORITY_RULES documenta explícitamente qué puede decidir cada Little Boss sin Jorge
+- Escalamiento claro: presupuesto nuevo, desvío L2+, promoción automática
+
+### ✓ Estados y Transiciones
+- Little Boss: active ↔ paused → archived (terminal)
+- Minion: pending → executing → completed|failed (terminal)
+- Factory Request: queued → building|failed → ready (documentada, no validada código)
+- Lessons: candidate → staged|rejected (solo con reviewed=true, no auto-promoción)
+
+## Revisión 4R
+
+| Aspecto | Resultado | Evidencia |
+|---------|-----------|-----------|
+| **Risk** | PASS | Autoridad explícita, ciclos bien definidos, idempotencia confirmada |
+| **Readability** | PASS | Código estructurado, SQL limpio, documentación ejecutable |
+| **Reliability** | PASS | Migraciones robustas (IF NOT EXISTS, CHECK, FK, índices), validaciones completas |
+| **Resilience** | PASS | Migraciones idempotentes, UNIQUE constraints, edge cases cubiertos |
+
+**WARN documentado:** package.json test script cambio (Node 22.11+ dependency, env issue no del código)
+
+## Línea de Git
+
+```
+Rama:    * fase-1-little-bosses-models (2009533)
+Commits: 1 (Fase 1: Little Bosses + Minions + Factory Requests + Lessons)
+Diff:    1235 insertiones(+), 3 eliminaciones(-)
+```
+
+## Riesgos Documentados para Fase 2+
+
+1. **HTTP Routes:** Sin límite de escalamientos → mitigar máx 3/goal
+2. **Solopreneur OS:** Jorge bottleneck → AUTHORITY_RULES permisivo
+3. **SFV5 Bridge:** Timeout bloquea → async polling, no sync
+4. **E2E (Fase 5):** Divergencia mid-flow → transaccionalidad (todo o nada)
+
+## Estado de Siguiente Paso
+
+✅ Fase 1 implementada y testeada  
+⏳ **Revisión independiente (code-review agent, sin push)**  
+⏳ Aprobación  
+⏳ Merge a main  
+⏳ Fase 2 comienza
+
+## Roadmap Referencia
+
+- Roadmap completo: `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md`
+- Summary: `/opt/dfl-knowledge/evidence/CHECKPOINT-OBS-347-SUMMARY.md`
+- Fase 1 report: `/tmp/PHASE1_FINAL_REPORT.md`
+- Decisiones aplicadas (obs-347): Jorge 1–4 (híbrido, 3 Little Bosses, Solopreneur OS híbrido, SFV5 integración parcial)
+
+## Veredicto
+
+✅ **PASS** — Fase 1 del piloto BOS-JPI lista para revisión independiente y merge a main.
+
+### SFV5 CLAUDE.md Documentation Fix — Independent Mission (NOT part of obs-347 piloto)
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+**INDEPENDENT MISSION: SFV5 Documentation Fix**  
+**Status:** ✅ ANALYSIS COMPLETE, PROPOSAL READY  
+**Timestamp:** 2026-07-25 05:35Z  
+**Scope:** `/opt/saas-factory-setup/saas-factory` ONLY (not BOS-JPI)
+
+## Executive Summary
+
+**Problem:** CLAUDE.md claims "30 Herramientas" but `.claude/skills/` has 32 real, committed skills  
+**Missing:** Exactly 2 skills not in documentation:
+- `pack-cold-email` (B2B cold email automation, Pillar: Adquisición)
+- `video-visuals` (Sketchnote narrative visuals, Pillar: Distribución)
+
+**Source:** Both exist in DFL `origin/main @ 5e42124` ("feat: establish SaaS Factory V5 operational layer")
+
+## Separación de Misiones Confirmada
+
+**obs-347 (Piloto BOS-JPI):**
+- Modifica: `/opt/360eventos/business-os/`
+- Fases: 1–6, ~9.5 agentes-días
+- Roadmap: `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md`
+
+**SFV5 Doc Fix (INDEPENDENT):**
+- Modifica: `/opt/saas-factory-setup/saas-factory/CLAUDE.md`
+- Scope: Add 2 rows to skills table + update decision tree + update header
+- Duration: ~15 minutos
+- Proposal: `/opt/dfl-knowledge/evidence/SFV5-DOCUMENTATION-FIX-PROPOSAL.md`
+
+**Zero conflicts.** Can proceed in parallel or sequentially.
+
+## Exact Changes Needed (from proposal)
+
+1. Line 140: "30 Herramientas" → "32 Herramientas (18 V4 + 14 V5)"
+2. Add row #31: `pack-cold-email` (Adquisición pillar)
+3. Add row #32: `video-visuals` (Distribución pillar)
+4. Update "Que Cambia en V5" table: link Distribución to both acquisition + video-visuals
+5. Add 2 branches to Decision Tree (~lines 134–136)
+
+## Verification Evidence
+
+**Skills confirmed real:**
+- `./.claude/skills/pack-cold-email/SKILL.md` (3.6 KB, valid)
+- `./.claude/skills/video-visuals/SKILL.md` (8.9 KB, valid)
+- Git commit: 5e42124 "feat: establish SaaS Factory V5 operational layer"
+
+**Analysis:** `/opt/dfl-knowledge/evidence/SFV5-DOCUMENTATION-FIX-PROPOSAL.md`
+- Complete enumeration (32 skills listed)
+- Git history traced
+- Branch status verified
+- Exact line-by-line changes specified
+- Acceptance criteria defined
+
+## Next Steps
+
+1. ✅ Analysis + proposal: DONE
+2. ⏳ Decision: Proceed? (YES/NO from Jorge or delegated)
+3. ⏳ Implementation: Edit CLAUDE.md + PR
+4. ⏳ Merge: After verification
+
+**Can be started immediately after obs-347 piloto approval (orthogonal work).**
+
 ### SAFE_PARTIAL_CHECKPOINT — WORK_UNIT remediation paused
 **Type:** decision  
 **Project:** dfl  
@@ -116,36 +295,6 @@ Pruebas existentes antes de remediar: focused WORK_UNIT 8/8, suite Concierge 84/
 **Project:** dfl  
 
 CP-F1-WORKUNIT-CLAIMS-01 implementado por Codex en feat/dfl-concierge-workunit-claims, commit aaf740a sobre base 3d0cc64. Added dedicated concierge/workunit.py ledger with CLAIMED/RELEASED/EXPIRED/HANDED_OFF, lock+append+fsync, stable operation idempotency, conflict, owner-only release, expiry/reclaim, explicit handoff, scope support, corruption quarantine/reconcile, and public exports. Tests: focused 8/8, full concierge 84/84, diff-check and API smoke PASS. Receipt architecture/receipts/CP-F1-WORKUNIT-CLAIMS-01.md. Status IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW. PROXIMO_AGENTE_DEBE: independent 4R review; no self-approval or main merge.
-
-### CP-01 completado: DRG-002-R1 DFL Concierge diseño normativo commiteado (rama feat/dfl-concierge, sin código, pendiente auditoría Codex)
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/onboarding/drg-002-r1-cp01
-TYPE: decision
-STATUS: active
-DATE: 2026-07-22
-
-**CP-01 COMPLETADO** — DRG-002-R1 (DFL Concierge / ACS) diseño normativo redactado y commiteado. Rama `feat/dfl-concierge`: commit 7cbf471 (doc `architecture/DRG-002-R1-dfl-concierge.md`) + e8edaef (receipt `architecture/receipts/CP-01.md`). Sin código, sin push (offhost_durable=false: recuperable en La Garra + Engram, NO durable off-host — decisión abierta).
-
-Diseño = síntesis onboarding ACS (propuesta GPT) + mis 5 disciplinas + los 4 ajustes obligatorios de Jorge: [A1] drift prevenible+detectable con artefactos generados inmutables (version+source_commit+hashes), NO "imposible"; [A2] paridad sobre Canonical Onboarding Packet normalizado con hashes por sección + coverage manifest por adaptador + degradaciones DECLARADAS (READY_WITH_LIMITATIONS, no fingir igualdad); [A3] identidad separada agent/runtime/session + capability + authorization, niveles de confianza ATTESTED/CORROBORATED/ASSERTED/UNKNOWN, tope de authz por trust (columna de seguridad — ASSERTED nunca escribe estado); [A4] checkpoint receipt versionado + durabilidad off-host honesta. participant_type admite AI_AGENT/SYSTEM_AGENT/AUTOMATION/HUMAN/SERVICE desde ya; build F1 solo AI_AGENT (3 tiers). Corte mínimo F1: fuente canónica estructurada + compilador determinista + validador (staleness/reproducibilidad/cobertura/paridad) + register JSONL/receipts + identidad ATTESTED/ASSERTED + CLI local-first, SIN daemon/HTTP/UI. Supersede borrador R0 AMOS-LOBBY-REDESIGN.md.
-
-**Next / PROXIMO_AGENTE_DEBE**: Jorge decide (1) las 4 decisiones abiertas inevitables §11 (durabilidad off-host, mecanismo de atestación, tabla scope→min_trust, hogar de la fuente canónica) y (2) si despacha el Mission Packet (DRG-002-R1 Apéndice A) a Codex para auditoría de constructibilidad. NO construir hasta veredicto GO de Codex. Relevo: reanudar desde rama feat/dfl-concierge (e8edaef) + este obs.
-
-### DRG-002 amOS Lobby: rediseño onboarding (conserjería ejecutada + paridad por state_version + libro de registro) — diseño, pendiente build
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-TOPIC: dfl/onboarding/amos-lobby-redesign
-TYPE: decision
-STATUS: active
-DATE: 2026-07-22
-
-**What**: DRG-002 emitido — rediseño del onboarding/outboarding DFL como "amOS Lobby". Doc en /opt/dfl-knowledge/architecture/AMOS-LOBBY-REDESIGN.md (solo diseño, sin implementar, sin commit). Responde el pedido de Jorge (metáfora Directorio de hotel/condominio + conserjería que registra entradas/salidas y enruta por fallout). Tres garantías: G1 acceso único = Conserjería que EJECUTA detección→ruta→log (CLI `dfl onboard/outboard/capsule/register` + `GET /onboard`), no self-serve desde prosa (que es la causa raíz de todos los fallos vistos). G2 PARIDAD llegado↔incumbente = exponer un `state_version` único; primitiva YA existe: push_mirror.sh hashea el payload /go sin generated_at en .last-mirror-hash — solo falta exponerlo; incumbentes comparan vía GET /board/version y re-sincronizan; divergencia se vuelve detectable+resoluble. G3 libro de registro = onboarding_register.jsonl append-only (ts, runtime, profile, transport, state_version, gate_result, errors[], outcome) escrito por la conserjería en cada check-in/out — da a Jorge quién onboardeó/resultado/errores consultable, telemetría (ej. atgo_not_triggered).
-
-Recomendación decidida: SÍ construir la conserjería, como capa fina de orquestación que REUSA /go (Board) + hash de push_mirror (versión) + lógica de la matriz (routing) — integración, no obra nueva. Frontera física: CONSULTOR (ChatGPT sin red) no lo alcanza ninguna app; se le genera el capsule vigente para pegar. Consolidación: colapsar los 5 artefactos divergentes (DFL_Agent_Onboarding_Config.md, /root/AGENTS.md, /root/.codex/AGENTS.md, CHATGPT_WORK_ATGO_INSTRUCTION.md, mi ONBOARDING_CAPSULE.md redundante→descartar) a una fuente única + proyecciones versionadas. Plan 3 fases: F1 Fundación (exponer state_version + register + hook Codex check-in), F2 Conserjería (CLI+HTTP), F3 Consolidación.
-
-**Next**: Jorge decide: (1) construir F2 completa o F1 primero; (2) register JSONL vs SQLite; (3) F1 toca main.py (reload proxy) + hook Codex = lote de estado a aprobar.
 
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -226,15 +375,14 @@ Cierre @$fin ejecutado por Codex el 2026-07-14. Actividad de la sesion: el usuar
 
 **Learned**: El patrón [RESOLVED]/[STALE] como prefijo de título es suficiente para filtrar sin tocar el schema de Engram. _is_archived() ya existía pero no se aplicaba al loop de pending — ahora es consistente en los tres loops (decisions, constraints, pending). Engram #14 ya no aparece como pending activo. recent_decisions permanece intacto.
 
-### KNL v1.0 contrato operativo validado
+### [CIERRE] /etc/dfl-secrets protegido off-host y ZIP legacy retirado
 **Project:** dfl  
 
-TOPIC: dfl/knl/v1
+TOPIC: dfl/security/dfl-secrets-offhost-zip-close
 TYPE: decision
 STATUS: active
-DATE: 2026-06-28
-SUMMARY: KNL v1.0 queda operativo como contrato oficial en /go. knl.json valida schema dfl.knl.v1 con semantic communities/entropy, navigation neighbors, memory, policy, provenance, comparator y validation. graph_context no aparece en /go. knl_compare.py ahora soporta snapshots previos con links y genera comparator status changed con previous_available=true. dfl-nav --brief muestra neighbors. P0/P4 quedan pendientes de confirmacion: regen_graph.sh aun usa OPENAI_API_KEY y graphify como productor; contrato KNL requiere ag_topologo.py como productor canonico de graph.json y Graphify solo como consumidor/analisador. P3 gap: ag_topologo local declara v0.1; no se encontro v0.3 instalable.
-EVIDENCE: python3 /opt/dfl-context-proxy/tests/test_knl_contract.py => knl contract ok. Public /go has knl=true, graph_context=false, validation ok.
+DATE: 2026-07-12
+SUMMARY: backup GPG /opt/backups/organ-preservation/dfl-secrets-20260712.env.gpg confirmado en VM3 bajo /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1; SHA-256 cipher local/remoto 33df04c5159de1f2c0a2b880f29a32d06317d0aa83aff4dd06a0415af926bdd8; restore desde copia off-host coincide byte a byte con /etc/dfl-secrets, SHA-256 e7e78d8f0f0f2628ec6f9232ffb8a6ff12ae2db879aacfd92b57e32f82e63b66; passphrase nueva únicamente en keyfile root-0600; ZIP 12_FutbolWeb/futbolweb-env-backup.zip retirado del HEAD y bloqueado en gitignore; historia no reescrita porque contiene solo Supabase key revocada; commit 3957967 pusheado origin/main. Drive ZIP y 1Password.txt NO tocados, pendientes OAuth/rclone. Evidencia audits/diagnostico-institucional-dfl-v1/13-CIERRE-ZIP-ANTIGUO.md y EVIDENCE/b14-relevo-dfl-secrets-y-zip.md. NO_TOUCH preservado.
 
 ### Session summary: dfl-knowledge
 **Project:** dfl-knowledge  
@@ -339,29 +487,166 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-**Type:** manual  
+### Session summary: dfl-knowledge
+**Type:** session_summary  
 **Project:** dfl-knowledge  
 
-{
-  "topic": "dfl/indexing/sfv5-bos-fmd-ecosystem",
-  "type": "indexing_checkpoint_addendum",
-  "status": "updated",
-  "timestamp": "2026-07-25T04:42:00Z",
-  "title": "Addendum: ARCHITECTURE_GRAPH.json + Database Count Correction",
-  "body": "## Discrepancies Resolved\n\n### Correction 1: Fifth Persistent Database\n\nReported: 5 databases  \nActual: 5 databases found, 4 systems analyzed\n\n**Clarification:**\n- `/opt/saas-factory-setup/saas-factory/.codebase-memory/graph.db.zst` (SFV5)\n- `/opt/experiments/business-os-new-audit/.codebase-memory/graph.db.zst` (BOS-UPSTREAM)\n- `/opt/360eventos/business-os/.codebase-memory/graph.db.zst` (BOS-JPI)\n- `/opt/360eventos/business-os/fmd/.codebase-memory/graph.db.zst` (FMD-JPI)\n- `/opt/dfl-knowledge/.codebase-memory/graph.db.zst` ← Fifth: IAIM context layer (indexed in prior session)\n\n**Resolution:** Fifth database is IAIM (Knowledge Navigation Layer), not part of SFV5+BOS+FMD ecosystem but forms knowledge context layer.\n\n### Correction 2: ARCHITECTURE_GRAPH.json Generated\n\n**Location:** `/opt/dfl-knowledge/evidence/sfv5-bos-fmd-indexing-2026-07-25/ARCHITECTURE_GRAPH.json` (14 KB)\n\n**Contents:** Inter-system topology without duplicating internal codebase-memory nodes\n\n**Structure:**\n- Systems (4): descriptors, capabilities, outputs, ownership\n- Contracts (4): SFV5→BOS, BOS↔FMD, FMD↔Domain, Omnichannel abstraction\n- Flows (3): SFV5 V5 loop, FMD goal→delivery, BOS cockpit observation→action\n- Gaps & Candidates (6): Integration opportunities with effort estimates\n- Ecosystem Layers (4): Metafactory → Cockpit → Orchestration → Knowledge\n- Reference Indexes: Pointers to .codebase-memory/.db.zst queries per system\n- Next Analysis: 5-step deep-dive roadmap\n\n**Note:** No internal node duplication. Grafo is schema/contract-level, with pointers to index artifacts.\n\n## Artifact Manifest (Updated)\n\nAll files in `/opt/dfl-knowledge/evidence/sfv5-bos-fmd-indexing-2026-07-25/`:\n\n1. **SOURCE_MANIFEST.json** (4.8 KB) — 4 repos, SHAs, metrics, reusability\n2. **INDEXING_REPORT.md** (24 KB) — Deep-dive per system, cross-analysis, quality assessment\n3. **ARCHITECTURE_GRAPH_REPORT.md** (24 KB) — Comparative architecture, integration paths, recommendations\n4. **REFRESH_INSTRUCTIONS.md** (7.4 KB) — Operational guide for future reindexing\n5. **ARCHITECTURE_GRAPH.json** (14 KB) — Inter-system topology, contracts, flows, gaps, candidates\n\n**Total:** 74.2 KB of persistent evidence (+ 2.9 MB graph artifacts in .codebase-memory/)\n\n## Verification\n\n✓ All 5 artifacts persisted  \n✓ No re-indexing performed (SHAs unchanged)  \n✓ ARCHITECTURE_GRAPH.json is schema-level, not node-duplication  \n✓ Engram checkpoint updated  \n\n## Ready for Next Phase\n\nDeep analysis can now proceed using:\n- ARCHITECTURE_GRAPH.json (topology + contracts)\n- Persistent indexes (.codebase-memory/graph.db.zst) for detail queries\n- INDEXING_REPORT + ARCHITECTURE_GRAPH_REPORT for context"
-}
+## CIERRE DE SESIÓN: FASE 1 DEL PILOTO BOS-JPI IMPLEMENTADA
 
-**Type:** manual  
+### Objetivo
+Implementar Fase 1 del piloto BOS-JPI: infraestructura de persistencia (migraciones), dominio (Little Bosses, Minions, Factory Requests, Lessons) y especificación de contratos HTTP para Fases 2–6.
+
+### Descubrimientos
+- Auditoría selectiva previa validó arquitectura: 70% reutilizable de BOS-JPI, 30% nuevas capacidades
+- SFV5 tiene 32 skills (documentación dice 30) → gap identificado como MISIÓN INDEPENDIENTE (no bloqueante)
+- Rama aislada `fase-1-little-bosses-models` limpia: cero derrames a otras fases
+- Migraciones idempotentes confirmadas (2x ejecución = skipped)
+- AUTHORITY_RULES explícita previene escalamiento implícito a Jorge
+
+### Logros
+✅ **3 Migraciones** (008-010): tablas little_bosses, minions, factory_requests, candidate_lessons — todas IF NOT EXISTS idempotentes  
+✅ **2 Modelos de dominio:** little-boss.js (158 LOC, AUTHORITY_RULES explícito, transiciones validadas), minion.js (105 LOC, ciclo lineal pending→executing→terminal)  
+✅ **1 Documento de contratos:** pilot-contracts.md (279 LOC) especificando Fases 2–6 sin implementar  
+✅ **29 Tests nuevos + 27 preexistentes:** 56/56 PASS, regresión 0  
+✅ **Revisión 4R:** PASS (Risk, Readability, Reliability, Resilience) con 1 WARN (Node 22.11+ dependency, env issue no del código)  
+✅ **Alcance estricto:** migrations, models, docs, tests — sin HTTP routes, sin FMD changes, sin SFV5, sin Solopreneur OS  
+✅ **Checkpoint obs-348** guardado en Engram
+
+### Siguientes Pasos
+1. **Revisión independiente** (code-review agent distinto del implementador, sin push)
+2. **Aprobación** sin hallazgos bloqueantes
+3. **Merge a main** (rama local, no origin todavía)
+4. **Fase 2:** rutas HTTP (Solopreneur OS, factory-integration, little-bosses)
+5. **Riesgos documentados:** escalamiento sin límite (máx 3/goal), Jorge bottleneck, SFV5 timeout (async polling), divergencia E2E (transaccionalidad)
+
+### Archivos Relevantes
+- Implementación: /opt/360eventos/business-os/{migrations,models,docs,tests}/
+- Roadmap referencia: /opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md
+- Decisiones aplicadas: /opt/dfl-knowledge/evidence/CHECKPOINT-OBS-347-SUMMARY.md
+- SHA final: 2009533d8b4d1411693514be5febb13e3e9f1798
+- Reporte 4R: /tmp/PHASE1_FINAL_REPORT.md
+
+### Notas para Próximo Agente
+- Rama local `fase-1-little-bosses-models` en /opt/360eventos/business-os lista para revisión independiente
+- No pushear a origin/main sin revisión 4R independiente y aprobación
+- SFV5 documentation gap (misión separada obs-350) no bloquea piloto
+- Para Fase 2: revisar `docs/pilot-contracts.md` secciones 1–3 para interfaces esperadas
+- Migraciones son baseline: todas las fases posteriores dependen de estos esquemas
+
+### FASE 1 IMPLEMENTADA: Little Bosses + Minions + Factory Requests + Lessons (obs-348)
+**Type:** decision  
 **Project:** dfl-knowledge  
 
-{
-  "topic": "dfl/indexing/sfv5-bos-fmd-ecosystem",
-  "type": "indexing_checkpoint",
-  "status": "completed",
-  "timestamp": "2026-07-25T04:35:00Z",
-  "title": "Complete Ecosystem Indexing: SFV5 + BOS-UPSTREAM + BOS-JPI + FMD-JPI",
-  "body": "## Indexing Mission Completed\n\n**Scope:** Four distinct systems analyzed with full code graph indexing + comparative architecture analysis.\n\n### Repositories Indexed\n\n1. **SFV5** (`/opt/saas-factory-setup/saas-factory`)\n   - SHA: 5e42124aa0a070701f0a400b714d2a133b361a86 (2026-07-11)\n   - Index: 4,975 nodes | 5,166 edges | 392 files\n   - Status: ✓ INDEXED\n   - Role: Agent-first software factory (30 skills, V5 loop closure)\n\n2. **BOS-UPSTREAM** (`/opt/experiments/business-os-new-audit`) **[CRITICAL CORRECTION]**\n   - SHA: 4428a6dba1df56afe0759f3248c8955a927cfd7c (2026-07-21)\n   - Index: 4,066 nodes | 10,849 edges | 1,889 files\n   - Status: ✓ INDEXED\n   - Role: Original Business OS cockpit (Draw3, Calendar, Kanban, Tauri desktop, integrations)\n   - NOTE: This is the upstream reference; BOS-JPI is NOT a subset\n\n3. **BOS-JPI** (`/opt/360eventos/business-os`) **[ADAPTED, NOT SUBSET]**\n   - SHA: 788f49ace33dc80c901785d00077bfef76412cdd (2026-07-22)\n   - Index: 202 nodes | 320 edges | 30 files\n   - Status: ✓ INDEXED\n   - Role: Minimal, aislado Business OS for JPI pilot (omnichannel adapters, compliance, FMD stub)\n   - DIVERGENCE: Different tech stack (Express+SQLite vs Next.js+Supabase); simplified scope; DFL extensions added\n\n4. **FMD-JPI** (`/opt/360eventos/business-os/fmd`) **[DFL ADDITION, NOT FROM BOS-UP]**\n   - SHA: 788f49ace33dc80c901785d00077bfef76412cdd (part of BOS-JPI)\n   - Index: 42 nodes | 78 edges | 2 files\n   - Status: ✓ INDEXED\n   - Role: Factory Manager Daemon (G0+G1 gates, goal→plan orchestration, JPI domain integration)\n   - OWNERSHIP: DFL creation; no ancestor in BOS-UPSTREAM codebase\n\n### Integration Status\n\n✗ **FINDING: No code-level integration detected**\n- Cross-repo-intelligence: 0 HTTP calls, 0 async channels, 0 gRPC/GraphQL/tRPC\n- Integration is documentary/contractual, NOT compiled\n- Implication: Architecture is sound; convergence path exists but not yet wired\n\n### Artifacts Created & Persisted\n\nLocation: `/opt/dfl-knowledge/evidence/sfv5-bos-fmd-indexing-2026-07-25/`\n\n1. **SOURCE_MANIFEST.json** (4 repos, SHAs, file counts, index node/edge metrics, exclusions)\n2. **INDEXING_REPORT.md** (7 sections: overview, SFV5 deep-dive, BOS-UP deep-dive, BOS-JPI deep-dive, FMD-JPI deep-dive, cross-analysis, quality assessment)\n3. **ARCHITECTURE_GRAPH_REPORT.md** (8 sections: systems comparison, individual architectures, integration paths, critical findings, recommendations)\n4. **REFRESH_INSTRUCTIONS.md** (Operational guide for future reindexing: scenarios, costs, decision trees)\n\n### Key Findings\n\n1. **BOS-UPSTREAM ≠ BOS-JPI:** Not a subset/divergence; parallel implementations for different goals\n   - Upstream: Rich cockpit (Draw3, Calendar, Desktop, integrations)\n   - JPI: Minimal pilot (omnichannel mocks, compliance table, FMD orchestration)\n\n2. **FMD is DFL, not BOS:** No FMD code in BOS-UPSTREAM; FMD-JPI is pure DFL innovation\n   - Distinction: BOS = observation/cockpit; FMD = decision/orchestration\n\n3. **SFV5 is mature:** 30 skills implemented, tested, proven\n   - Gap: Feedback loop from production back to factory-brain incomplete\n\n4. **Omnichannel pattern unique to BOS-JPI:** Could be back-ported to BOS-UPSTREAM\n\n5. **No proven convergence yet:** But architectural roadmap clear (HTTP contracts, FMD as injectable orchestrator)\n\n### Reusability & Refresh Strategy\n\n✓ **Indexes are persistent:** Each repo has `.codebase-memory/graph.db.zst` (compressed, shareable)\n✓ **SHAs recorded:** Can detect code changes (triggers reindex only if changed)\n⚠️ **Incremental update NOT supported:** Full re-index of changed repo required (but only that repo, cost 5–15 sec)\n✓ **Decision tree in REFRESH_INSTRUCTIONS.md:** Future sessions can decide: reuse or reindex\n\n### Quality Assessment\n\n| Aspect | Result | Evidence |\n|--------|--------|----------|\n| **File coverage** | ✓ PASS | 2,313 files, zero skipped |\n| **Graph density** | ✓ PASS | 9,285 nodes, 16,412 edges, realistic |\n| **Language coverage** | ✓ PASS | TS, JS, SQL, Rust, Python, CSS, HTML |\n| **Entry point detection** | ✓ PASS | 23+ entry points found |\n| **Cross-repo integration** | ⚠️ WARN | Zero edges (expected; confirms architectural independence) |\n| **Architecture clarity** | ✓ PASS | Clear layers, clusters, hotspots identified |\n| **FMD positioning** | ✗ FAIL | Is FMD standalone, BOS component, or DFL agent? Now clarified: DFL agent. |\n\n### Metrics Summary\n\n- **Total system:** 9,285 nodes, 16,412 edges, 2,313 files, 178 directories\n- **Largest project:** BOS-UPSTREAM (4,066 nodes, 10,849 edges — high complexity)\n- **Smallest project:** FMD-JPI (42 nodes, 78 edges — minimal, focused)\n- **Cohesion ranges:** 0.4–1.0 (BOS-JPI mixed; others 0.81–0.95 tight)\n- **Languages:** TypeScript dominant (299 files); JavaScript, SQL, Rust secondary\n\n### Limitations Documented\n\n⚠️ Dynamic imports (ESM) tracked but semantic meaning partial  \n⚠️ Async flows not distinguished from sync in call graph  \n⚠️ Config/environment setup not indexed  \n⚠️ External API calls (Google, Todoist, Polar) not captured in graph  \n\n### Next Analysis That Should Consume This Index\n\n1. **HTTP contract design:** SFV5 output → BOS-JPI intake → FMD execution\n2. **FMD generalization:** Extract JPI-specific logic; make injectable\n3. **BOS as pattern:** Define API contract, data model, multi-implementation strategy\n4. **Feedback loop wiring:** Production metrics → factory-brain → next project\n5. **Integration roadmap:** Priority, sequence, dependencies\n\n### Verdict\n\n**Status: PASS (with documented caveats)**\n\n✓ Indexing complete, persistent, reusable  \n✓ Architecture understood across 4 systems  \n✓ Integration paths identified (not yet wired)  \n✓ Refresh strategy documented  \n⚠️ Code-level integration remains zero (expected at this phase)  \n⚠️ Feedback loops incomplete (documented blockers)  \n\n### File Locations\n\nAll artifacts in: `/opt/dfl-knowledge/evidence/sfv5-bos-fmd-indexing-2026-07-25/`\n\n- SOURCE_MANIFEST.json (4 repos, SHAs, metrics, reusability)\n- INDEXING_REPORT.md (comprehensive findings)\n- ARCHITECTURE_GRAPH_REPORT.md (comparative + recommendations)\n- REFRESH_INSTRUCTIONS.md (operational guide)\n\n**Do NOT modify these manually; regenerate if indexes change.**"
-}
+**CHECKPOINT OBS-348 — FASE 1 PILOTO BOS-JPI COMPLETADA**
+
+## Status: ✅ PASS (1 WARN documentado)
+
+**Timestamp:** 2026-07-25 ~06:00Z  
+**Repository:** `/opt/360eventos/business-os`  
+**Branch:** `fase-1-little-bosses-models`  
+**SHA Base:** `788f49a` (HEAD pre-Fase 1)  
+**SHA Final:** `2009533d8b4d1411693514be5febb13e3e9f1798`
+
+## Entregables
+
+### Migraciones (3, todas idempotentes)
+1. **008_little_bosses.js** — Tablas: `little_bosses` (type, authority_level, status), `minions` (boss_id FK, task, status)
+2. **009_factory_requests.js** — Tabla: `factory_requests` (UNIQUE mission+goal_id para idempotencia de negocio)
+3. **010_lessons.js** — Tabla: `candidate_lessons` (append-only, no auto-promoción stage)
+
+### Modelos de Dominio (2)
+1. **models/little-boss.js** (158 LOC)
+   - AUTHORITY_RULES: comercial, operaciones, aprendizaje con scope/can_decide/must_escalate explícitos
+   - Transiciones: active ↔ paused → archived (terminal)
+   - Validaciones: type, authorityDescription, status
+   - Escalamiento: escalateToJorge(db, bossId, reason, goalId) explícito
+
+2. **models/minion.js** (105 LOC)
+   - Ciclo: pending → executing → completed|failed (terminal)
+   - Tasks: lista cerrada (7 items: calificar, verificar_*, excepciones, evidence, outcomes, lecciones)
+   - Operaciones: create, start, complete, getState, getByBoss
+
+### Documentación (1)
+- **docs/pilot-contracts.md** (279 LOC)
+  - Especificación ÚNICAMENTE (no implementada Fase 1)
+  - Contratos HTTP para Fases 2–6: Little Bosses API, Solopreneur OS API, Factory Integration API
+  - Clara separación Fase 1 (AHORA) vs posteriores
+
+### Tests (3 archivos, 29 nuevos + 27 preexistentes = 56/56 PASS)
+- little-boss.test.js (14 tests: creación, transiciones, escalamiento)
+- minion.test.js (10 tests: ciclo, validaciones, búsqueda)
+- idempotency.test.js (5 tests: 2x ejecución, schema, índices)
+
+## Validaciones
+
+### ✓ Idempotencia
+- Migraciones ejecutadas 2x: applied=[], skipped=[001-010] en ambas ejecuciones
+- factory_requests: UNIQUE(mission, goal_id) previene duplicados
+
+### ✓ Tests
+- npm test: 56/56 PASS
+- Nuevos: 29 (100% cobertura de little-boss, minion, migraciones)
+- Preexistentes: 27 (fmd, assistant, port, etc.) — regresión: 0
+
+### ✓ Alcance
+- SOLO Fase 1: migrations/008-010, models/little-boss.js + minion.js, docs/pilot-contracts.md, tests/*
+- SIN rutas HTTP, sin Solopreneur OS, sin SFV5, sin FMD changes, sin server.js changes
+- routes/ (0 changes), fmd/ (0 changes), server.js (0 changes)
+
+### ✓ Autoridad Delegada
+- AUTHORITY_RULES documenta explícitamente qué puede decidir cada Little Boss sin Jorge
+- Escalamiento claro: presupuesto nuevo, desvío L2+, promoción automática
+
+### ✓ Estados y Transiciones
+- Little Boss: active ↔ paused → archived (terminal)
+- Minion: pending → executing → completed|failed (terminal)
+- Factory Request: queued → building|failed → ready (documentada, no validada código)
+- Lessons: candidate → staged|rejected (solo con reviewed=true, no auto-promoción)
+
+## Revisión 4R
+
+| Aspecto | Resultado | Evidencia |
+|---------|-----------|-----------|
+| **Risk** | PASS | Autoridad explícita, ciclos bien definidos, idempotencia confirmada |
+| **Readability** | PASS | Código estructurado, SQL limpio, documentación ejecutable |
+| **Reliability** | PASS | Migraciones robustas (IF NOT EXISTS, CHECK, FK, índices), validaciones completas |
+| **Resilience** | PASS | Migraciones idempotentes, UNIQUE constraints, edge cases cubiertos |
+
+**WARN documentado:** package.json test script cambio (Node 22.11+ dependency, env issue no del código)
+
+## Línea de Git
+
+```
+Rama:    * fase-1-little-bosses-models (2009533)
+Commits: 1 (Fase 1: Little Bosses + Minions + Factory Requests + Lessons)
+Diff:    1235 insertiones(+), 3 eliminaciones(-)
+```
+
+## Riesgos Documentados para Fase 2+
+
+1. **HTTP Routes:** Sin límite de escalamientos → mitigar máx 3/goal
+2. **Solopreneur OS:** Jorge bottleneck → AUTHORITY_RULES permisivo
+3. **SFV5 Bridge:** Timeout bloquea → async polling, no sync
+4. **E2E (Fase 5):** Divergencia mid-flow → transaccionalidad (todo o nada)
+
+## Estado de Siguiente Paso
+
+✅ Fase 1 implementada y testeada  
+⏳ **Revisión independiente (code-review agent, sin push)**  
+⏳ Aprobación  
+⏳ Merge a main  
+⏳ Fase 2 comienza
+
+## Roadmap Referencia
+
+- Roadmap completo: `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md`
+- Summary: `/opt/dfl-knowledge/evidence/CHECKPOINT-OBS-347-SUMMARY.md`
+- Fase 1 report: `/tmp/PHASE1_FINAL_REPORT.md`
+- Decisiones aplicadas (obs-347): Jorge 1–4 (híbrido, 3 Little Bosses, Solopreneur OS híbrido, SFV5 integración parcial)
+
+## Veredicto
+
+✅ **PASS** — Fase 1 del piloto BOS-JPI lista para revisión independiente y merge a main.
 
 ---
 
@@ -454,4 +739,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-25T04:45:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T05:35:47Z | La Garra → DFLghub/amos-context*
