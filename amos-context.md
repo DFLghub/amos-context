@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T03:03:02Z  
+**Generated:** 2026-07-25T03:04:35Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -484,15 +484,15 @@ Jorge:
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.8646  
+**Graph entropy:** 0.884  
 
-- **Community 11** (92 nodes): MCP Server Behavior, Evaluación de Plantillas, Asunciones de Verificación
-- **Community 0** (10 nodes): amOS, IAIM, ag10
-- **Community 1** (4 nodes): Express Framework, Bicep, Developer Certificate of Origin (DCO)
-- **Community 2** (4 nodes): Onboarding multi-source
-- **Community 3** (4 nodes): Verificación de capacidades
-- **Community 4** (4 nodes): HLSL en MiniEngine, Kconfig en Buildroot, Slang como compilador de sombreado
+- **Community 11** (96 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
+- **Community 0** (4 nodes): Express Framework, Bicep, RON (Rusty Object Notation)
+- **Community 1** (4 nodes): JSON Schema
+- **Community 2** (4 nodes): agLego-PTE-001
+- **Community 3** (4 nodes): Preocupaciones operativas
+- **Community 4** (4 nodes): amOS, IAIM, ag10
 
 ---
 
-*Mirror auto-generated 2026-07-25T03:03:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T03:04:35Z | La Garra → DFLghub/amos-context*
