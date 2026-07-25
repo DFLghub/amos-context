@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T02:24:57Z  
+**Generated:** 2026-07-25T02:27:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,17 +101,21 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### SAFE_PARTIAL_CHECKPOINT — WORK_UNIT remediation paused
+**Type:** decision  
+**Project:** dfl  
+
+Checkpoint provisional solicitado por Jorge. Rama/worktree: feat/dfl-concierge-workunit-claims en /opt/dfl-knowledge-workunit, HEAD aaf740a6737d4148515050571f9485602c0f08fb, base 3d0cc64. No se modificaron archivos, no hubo commit ni push durante este checkpoint. La remediación de los findings 4R quedó detenida para otro agente.
+
+Findings pendientes: HIGH 1 — idempotency_key personalizado se busca por operation_key y retorna idempotente sin comparar operación, unit_id, scope, actor/owner y transición; requiere fingerprint constitutivo y rechazo ERR_WORK_UNIT_IDEMPOTENCY_REUSE ante reutilización incompatible. HIGH 2 — falta validador central estricto antes de _read_events(), reconcile() y _fold(); eventos incompletos/desconocidos pueden producir KeyError o READY falso; requiere validación de tipo, campos, IDs, timestamps, event_key, operation_key/fingerprint y semántica por transición, con ContractError/quarantine. MEDIUM — expire_stale() devuelve solo strings unit_id; debe devolver estructura inequívoca con unit_id, scope y actor.
+
+Pruebas existentes antes de remediar: focused WORK_UNIT 8/8, suite Concierge 84/84, git diff --check y smoke claim→handoff→release PASS. PROXIMO_AGENTE_DEBE: inspeccionar nuevamente estado limpio; implementar únicamente esos tres findings; agregar pruebas adversariales para reutilización de clave, repetición legítima, eventos inválidos/missing/unknown, reconcile mixto y expiraciones del mismo unit_id en scopes distintos; ejecutar focalizada, suite completa, diff-check, smoke; actualizar receipt, commit separado y push solo de esta rama. No tocar AuthZ, register.py, scheduler, UI, main ni otros slices. Estado: SAFE_PARTIAL_CHECKPOINT / IMPLEMENTED_AWAITING_REMEDIATION.
+
 ### WORK_UNIT claims implemented awaiting review
 **Type:** decision  
 **Project:** dfl  
 
 CP-F1-WORKUNIT-CLAIMS-01 implementado por Codex en feat/dfl-concierge-workunit-claims, commit aaf740a sobre base 3d0cc64. Added dedicated concierge/workunit.py ledger with CLAIMED/RELEASED/EXPIRED/HANDED_OFF, lock+append+fsync, stable operation idempotency, conflict, owner-only release, expiry/reclaim, explicit handoff, scope support, corruption quarantine/reconcile, and public exports. Tests: focused 8/8, full concierge 84/84, diff-check and API smoke PASS. Receipt architecture/receipts/CP-F1-WORKUNIT-CLAIMS-01.md. Status IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW. PROXIMO_AGENTE_DEBE: independent 4R review; no self-approval or main merge.
-
-### SAFE_PARTIAL_CHECKPOINT conformance kit recovery
-**Type:** decision  
-**Project:** dfl  
-
-Recovered /opt/dfl-knowledge-cc-render-validator at local/remote d0512b0 on feat/dfl-concierge-cc-render-validator. Preserved untracked concierge/conformance/independent.py and kit.py without reset or cleanup. AST syntax passed via python -B; normal py_compile/import was blocked only by worktree __pycache__ permission. Receipt CP-F1-CONFORMANCE-RECOVERY-01 added. PROXIMO_AGENTE_DEBE: commit/push this partial state first, then add concierge.conformance CLI and complete independent conformance tests. Status SAFE_PARTIAL_CHECKPOINT.
 
 ### CP-01 completado: DRG-002-R1 DFL Concierge diseño normativo commiteado (rama feat/dfl-concierge, sin código, pendiente auditoría Codex)
 **Type:** decision  
@@ -203,6 +207,14 @@ Cierre @$fin ejecutado por Codex el 2026-07-14. Actividad de la sesion: el usuar
 
 [VERIFIED] Hook SessionStart @go apareció correctamente en sesión CC del 2026-07-11: el hook inyectó el payload @go v1.1 completo (decisiones activas, pendientes, CC bootstrap, cierre @$fin) al arrancar la sesión en /opt/futbolweb. PROXIMO_AGENTE_DEBE de FutbolWeb ("verificar que el hook aparece en la próxima sesión CC") queda cumplido. Proxy dfl-context-proxy /go responde HTTP 200 en 127.0.0.1:8091. Perfil EJECUTOR confirmado vía amos-context AGENT DIRECTORY (anexo agents/ejecutor.md).
 
+### [CIERRE] Reconciliación final Consolidación DFL v1 (7b77b78) — D-1/D-2/B-2 resueltas, hallazgo Drive nuevo
+**Project:** futbolweb-app  
+
+**What**: Reconciliación final de la Consolidación Institucional v1 (HLC 2026-07-12) COMPLETADA. Causa raíz de contradicciones: los artefactos de consolidación se construyeron sobre 06/09/obs#221, anteriores al cierre de residuales Ola 1 (docs 11/12/13, Codex 2026-07-11 noche). Hechos REVALIDADOS HOY contra realidad: (1) PAT: cero holders (0 archivos, 0 proc), remote prediccion2026 SSH sano — D-1 RESUELTA, sin fecha dura, retiro DESBLOQUEADO; (2) bundles off-host: pull rsync real desde /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1/, SHA-256 idénticos los 4 — B-2 de la consolidación ERA FALSA (ruta correcta va bajo prefijo engram/); (3) SaaS Factory: DFLghub/saas-factory-setup main=5e42124=HEAD local, upstream push DISABLED — D-2 RESUELTA; (4) Drive vía conector CC: ZIP antiguo presente (524B) + HALLAZGO NUEVO 12_FutbolWeb/backups/1Password.txt (204B, 2026-07-06, fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ) — NO LEÍDO, posible material de credenciales, requiere revisión Jorge; (5) paridad: Drive sigue única brecha material, perfil dfl-mission intacto. Artefactos corregidos: 00/01/02/04/05/06 + 08-RECONCILIACION-FINAL + HANDOFF-CODEX nuevos; registro-vivo.json actualizado. Verificador post-commit: solo 5 residuales reales (SIN-PUSH prediccion2026; SIN-RESPALDO engram-mcp/futbolweb-v2/mercader-comisiones/roof-issues-mini). Commit 7b77b78 pusheado. Nota: futbolweb recibió 2 commits de Codex producto (5595c24, e55d2c5) durante la sesión — no tocado.
+**Why**: Mandato HLC — eliminar pendientes obsoletos antes de cerrar la Consolidación v1.
+**Where**: /opt/dfl-knowledge/audits/consolidacion-institucional-dfl-v1/ (08-, HANDOFF-CODEX, EVIDENCE/reconciliacion-*), governance/registro-vivo/registro-vivo.json
+**Learned**: Regla de método: antes de declarar pendiente en el registro vivo, contrastar contra el ÚLTIMO doc de cierre del expediente Y contra realidad ejecutable. Pendientes de Jorge tras reconciliación: retiros B-5 (desbloqueados), D-4 copias únicas, D-5 ZIP (CC ejecuta a la orden), revisión 1Password.txt, B-3 repos manuales, B-1 Drive-Codex.
+
 ### [VERIFIED] /go pending filter — resolved/stale cleanup
 **Project:** dfl  
 
@@ -223,33 +235,6 @@ STATUS: active
 DATE: 2026-06-28
 SUMMARY: KNL v1.0 queda operativo como contrato oficial en /go. knl.json valida schema dfl.knl.v1 con semantic communities/entropy, navigation neighbors, memory, policy, provenance, comparator y validation. graph_context no aparece en /go. knl_compare.py ahora soporta snapshots previos con links y genera comparator status changed con previous_available=true. dfl-nav --brief muestra neighbors. P0/P4 quedan pendientes de confirmacion: regen_graph.sh aun usa OPENAI_API_KEY y graphify como productor; contrato KNL requiere ag_topologo.py como productor canonico de graph.json y Graphify solo como consumidor/analisador. P3 gap: ag_topologo local declara v0.1; no se encontro v0.3 instalable.
 EVIDENCE: python3 /opt/dfl-context-proxy/tests/test_knl_contract.py => knl contract ok. Public /go has knl=true, graph_context=false, validation ok.
-
-### Session summary: futbolweb-app
-**Project:** futbolweb-app  
-
-## Goal
-Cierre de incidente P0 de seguridad en 360Eventos: service role key de Supabase comprometida, rotada y verificada en producción.
-
-## Instructions
-Sin cambios de preferencia registrados en esta sesión.
-
-## Discoveries
-- Engram obs #112 fue creado en proyecto `futbolweb-app` por herencia del cwd (`/opt/futbolweb`) aunque el incidente pertenecía a 360Eventos. `mem_update` no soporta reasignación de proyecto — workaround: crear nuevo obs en proyecto correcto + marcar el original como MIGRADO.
-- `mem_delete` no está disponible como herramienta deferred en este entorno.
-
-## Accomplished
-- ✅ Bootstrap @$go completado — contexto DFL activo al 2026-06-30
-- ✅ Incidente P0 360Eventos cerrado: key `sb_secret_qcasL...` eliminada, producción migrada a `sb_secret_5E52V...`, Vercel actualizado, /cotizar verificado
-- ✅ Engram obs #121 creado en proyecto `360eventos` con resolución completa
-- ✅ Engram obs #112 marcado como MIGRADO (apunta a #121)
-
-## Next Steps
-- Pendientes FutbolWeb activos: knockout DB layer wiring, case-sensitivity de realAdvancingTeam, diagnóstico webhook GitHub-Vercel
-- Verificar deploy commit `50316e3` en Vercel
-
-## Relevant Files
-- Supabase proyecto 360Eventos: uvdunupmjrbndistyrwn (key rotada)
-- Vercel env vars 360Eventos: actualizadas con secret_key_2
 
 ### Session summary: dfl-knowledge
 **Project:** dfl-knowledge  
@@ -354,68 +339,69 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Session summary: dfl-knowledge
-**Type:** session_summary  
-**Project:** dfl-knowledge  
+### CHECKPOINT Codex review parcial — WORK_UNIT claims independent review en feat/dfl-concierge-workunit-claims
+**Type:** fact  
+**Project:** dfl  
 
-## Goal
-Reconstruir el estado del hook SessionStart de Codex y validar la integración del bootstrap DFL tras una investigación anterior bloqueada.
+CHECKPOINT MODE — no @$fin, no archivado Gate 4B paso 2, no push_mirror.sh.
 
-## Instructions
-- Inspección solo lectura en /root/.codex (archivos config/AGENTS/respaldos)
-- NO escribir, NO ejecutar Codex, NO probar hooks, NO escalar investigación más allá de lo autorizado
-- Handoff claro: qué falta validar + comando mínimo para próxima sesión interactiva
+What:
+Se ejecutó una revisión independiente parcial sobre el frente del payload `WORK_UNIT claims implemented awaiting review` en el worktree `/opt/dfl-knowledge-workunit`, rama `feat/dfl-concierge-workunit-claims`, commit `aaf740a` (`feat(concierge): add work unit claim ledger`).
 
-## Discoveries
-- Dos hooks SessionStart insertados en config.toml (codebase-memory-mcp + dfl-bootstrap)
-- Hook dfl-bootstrap usa proxy local http://127.0.0.1:8091/go (Single Source of Truth, sin DNS, sin GitHub)
-- trusted_hash en hooks.state (sha256:ed997f9766959ba56dc2243cd02468d6eadad80d92b7f5a650e6fc0fb0c050) valida estado post-ejecución
-- AGENTS.md contiene protocolo @$go/@$fin: reglas duras de red, VALIDATION GATE (6 líneas), Gate 4B incremental
-- approval_mode desigual: search_memory/search_graph=auto, save/update=approve (reduce prompts en lectura)
-- Respaldo reciente backup-onboarding-fix-20260725-015251 creado 01:52 (anterior a config.toml final 01:58)
+Validation gate / bootstrap:
+- SOURCE: DFL_BOOTSTRAP local `http://127.0.0.1:8091/go`
+- generated_at: `2026-07-25T02:14:45Z`
+- PROFILE: EJECUTOR confirmado por shell + git + Engram
+- Engram consulted with `search_memory("contexto DFL")`
 
-## Accomplished
-- ✅ Lectura /root/.codex/config.toml — hook SessionStart identificado + trusted_hash + approval_mode
-- ✅ Lectura /root/.codex/AGENTS.md — protocolo @$go/@$fin completo documentado
-- ✅ Listado /root/.codex — respaldos previos identificados, timestamps capturados
-- ✅ Diff relevante aislado — líneas 90-104 (hooks), líneas 108-109 (state)
-- 🔲 Validación del hook en runtime real de Codex (próxima sesión interactiva)
-- 🔲 Inspección del contenido de backup-onboarding-fix-20260725-015251/ (autorizado leer, no inspeccionado)
+Evidence gathered:
+- Indexed `/opt/dfl-knowledge-workunit` with codebase-memory-mcp.
+- Focused tests passed: `python3 -m pytest concierge/tests/test_workunit.py -q` => `8 passed`.
+- Review target files: `concierge/workunit.py`, `concierge/tests/test_workunit.py`, receipt `architecture/receipts/CP-F1-WORKUNIT-CLAIMS-01.md`.
 
-## Next Steps
-1. **Próxima sesión o agente**: Ejecutar `curl -fsS --max-time 5 http://127.0.0.1:8091/go` en terminal interactiva Codex para confirmar proxy local responde
-2. Inspeccionar contenido de backup-onboarding-fix-20260725-015251/ si es necesario validar rollback
-3. Si proxy no responde: verificar que /opt/dfl-context-proxy está ejecutándose (systemctl status / ps aux)
-4. Ejecutar sesión real de Codex con @$go para validar inyección del payload en el contexto de sesión
-5. Cierre real (@$fin) cuando se confirme operatividad del bootstrap
+Findings confirmed so far:
+1. HIGH — caller-supplied `idempotency_key` aliases unrelated operations globally.
+   Repro confirmed: claiming `unit:a` with custom key `K`, then claiming `unit:b` with the same key `K`, returns idempotent success for the second call without writing a second event. History remains length 1.
+   Relevant code: operation_key ingestion/lookups in `concierge/workunit.py` claim/release/hand_off paths.
 
-## Relevant Files
-- /root/.codex/config.toml — hook SessionStart (líneas 90-104), trusted_hash (líneas 108-109)
-- /root/.codex/AGENTS.md — protocolo @$go/@$fin (líneas 25-109), reglas de red, Gate 4B
-- /opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md — contrato completo (no leído, archivo local)
-- /opt/dfl-context-proxy/push_mirror.sh — cierre real: Gate 4B paso 3 (@$fin solo)
-- backup-onboarding-fix-20260725-015251/ — respaldo onboarding reciente (contenido no inspeccionado)
+2. HIGH — `reconcile()` and `_read_events()` accept schema-valid garbage if `idempotency_key` looks valid.
+   Repro confirmed: append JSON line with only `idempotency_key`, `unit_id`, `scope`; `reconcile()` returns READY and later `current_claim()` crashes with raw `KeyError: 'event_type'` instead of controlled corruption handling.
+   Relevant code: `_read_events`, `_fold`, `reconcile` in `concierge/workunit.py`.
 
-### Codex SessionStart hook — DFL bootstrap inyectado
-**Type:** config  
-**Project:** dfl-knowledge  
+3. MEDIUM — `expire_stale()` returns only `unit_id`, not `(unit_id, scope)`.
+   Repro confirmed: same unit claimed in two scopes yields ambiguous result `['unit:same', 'unit:same']`.
 
-**What**: SessionStart hook instalado en /root/.codex/config.toml que inyecta dfl-bootstrap payload local vía curl http://127.0.0.1:8091/go (proxy local, sin DNS).
+Constraints respected:
+- No edits made.
+- No merge / self-approval.
+- No touch on protected surfaces (`puntajeTigreKnockout`, Supabase, Vercel config, env vars, HLC templates, CRON 3:05am UTC, `/etc/dfl-secrets`).
 
-**Why**: Bootstrap automático de contexto DFL en arranque Codex — fuente única LOCAL, no GitHub. Cierra el ciclo de onboarding: @$go dispara el hook, hook trae el payload, sesión arranca con contexto inyectado.
+HANDOFF / PROXIMO_AGENTE_DEBE:
+1. Continue the independent review or move to remediation on `/opt/dfl-knowledge-workunit` at commit `aaf740a`.
+2. Add regression tests first for:
+   - custom `idempotency_key` collision across different unit/scope/actor operations,
+   - schema-valid malformed ledger lines surviving `reconcile()`,
+   - scoped expiry return shape.
+3. Fix design choice for operation identity:
+   - either namespace caller idempotency under normalized operation payload,
+   - or reject raw caller key reuse that does not match the same semantic operation.
+4. Harden ledger validation:
+   - validate required event fields/types/event_type before accepting lines in `_read_events` and `reconcile`.
+5. Decide whether `expire_stale()` contract should return scoped tuples/objects instead of bare unit ids.
+6. Re-run focused tests plus any broader concierge suite after changes.
 
-**Where**: 
-- /root/.codex/config.toml líneas 90-104 (dos hooks SessionStart: codebase-memory-mcp + dfl-bootstrap)
-- /root/.codex/config.toml líneas 108-109 (hooks.state con trusted_hash para validación)
-- /root/.codex/AGENTS.md líneas 25-109 (dfl-atgo-protocol: reglas @$go/@$fin, Gate 4B)
+Status:
+Partial checkpoint saved so another agent can resume without repeating discovery.
 
-**Learned**: 
-- El hook usa matcher="startup|resume|clear|compact" — ejecuta en arranque, no solo en primer arranque
-- trusted_hash en hooks.state es fingerprint de validación del estado (sha256:ed997f3f9766959ba56dc2243cd02468d6eadad80d92b7f5a650e6fc0fb0c050)
-- Proxy local http://127.0.0.1:8091 es Single Source of Truth durante sesión (@$go), nunca refetch de GitHub
-- approval_mode diferenciado: search_memory/search_graph=auto, save/update=approve
-- Respaldos previos: config.toml.bak-cbm-nivelA (2026-07-21), config.toml.bak-paridad (2026-07-12)
-- Backup onboarding-fix-20260725-015251 creado 01:52 (6 min antes del estado final a las 01:58)
+### SAFE_PARTIAL_CHECKPOINT — WORK_UNIT remediation paused
+**Type:** decision  
+**Project:** dfl  
+
+Checkpoint provisional solicitado por Jorge. Rama/worktree: feat/dfl-concierge-workunit-claims en /opt/dfl-knowledge-workunit, HEAD aaf740a6737d4148515050571f9485602c0f08fb, base 3d0cc64. No se modificaron archivos, no hubo commit ni push durante este checkpoint. La remediación de los findings 4R quedó detenida para otro agente.
+
+Findings pendientes: HIGH 1 — idempotency_key personalizado se busca por operation_key y retorna idempotente sin comparar operación, unit_id, scope, actor/owner y transición; requiere fingerprint constitutivo y rechazo ERR_WORK_UNIT_IDEMPOTENCY_REUSE ante reutilización incompatible. HIGH 2 — falta validador central estricto antes de _read_events(), reconcile() y _fold(); eventos incompletos/desconocidos pueden producir KeyError o READY falso; requiere validación de tipo, campos, IDs, timestamps, event_key, operation_key/fingerprint y semántica por transición, con ContractError/quarantine. MEDIUM — expire_stale() devuelve solo strings unit_id; debe devolver estructura inequívoca con unit_id, scope y actor.
+
+Pruebas existentes antes de remediar: focused WORK_UNIT 8/8, suite Concierge 84/84, git diff --check y smoke claim→handoff→release PASS. PROXIMO_AGENTE_DEBE: inspeccionar nuevamente estado limpio; implementar únicamente esos tres findings; agregar pruebas adversariales para reutilización de clave, repetición legítima, eventos inválidos/missing/unknown, reconcile mixto y expiraciones del mismo unit_id en scopes distintos; ejecutar focalizada, suite completa, diff-check, smoke; actualizar receipt, commit separado y push solo de esta rama. No tocar AuthZ, register.py, scheduler, UI, main ni otros slices. Estado: SAFE_PARTIAL_CHECKPOINT / IMPLEMENTED_AWAITING_REMEDIATION.
 
 ---
 
@@ -508,4 +494,4 @@ Reconstruir el estado del hook SessionStart de Codex y validar la integración d
 
 ---
 
-*Mirror auto-generated 2026-07-25T02:24:57Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T02:27:02Z | La Garra → DFLghub/amos-context*
