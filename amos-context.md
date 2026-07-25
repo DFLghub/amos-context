@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T03:05:02Z  
+**Generated:** 2026-07-25T03:39:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -339,70 +339,73 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-**Type:** manual  
-**Project:** dfl-knowledge  
+### Diagnóstico @$go 2026-07-25 — /go pending expone observaciones cerradas con prefijos [VERIFIED]/[CIERRE]
+**Type:** bugfix  
+**Project:** dfl  
 
-**Operational Status Summary for Jorge — 2026-07-25 02:40 UTC**
+**What**: Durante `@$go` con payload local `generated_at=2026-07-25T03:37:43Z`, el primer `pending` activo resultó ser una observación ya cumplida (`[VERIFIED] Hook SessionStart @go operativo...`). La inspección del god node `context-proxy` mostró que `/opt/dfl-context-proxy/main.py` en `ProxyHandler._handle_go()` filtra `pending` por prefijos `[RESOLVED]`, `[STALE]` y `[PARCIALMENTE RESUELTO]`, además de `LIFECYCLE: archived`, pero no excluye títulos cerrados con prefijos `[VERIFIED]` ni `[CIERRE]`.
 
-=== PRIORITY 1: CP-F1-REMEDIATION-01 (Ready for Review) ===
+**Why**: Esto hace que `/go` siga exponiendo como `pending` observaciones semánticamente cerradas, degradando el onboarding al priorizar trabajo ya resuelto.
 
-Status: REMEDIATED_AWAITING_INDEPENDENT_REVIEW
-Verification: PASS (22/22 tests)
+**Evidence**:
+- Payload hook local: primer pending = `[VERIFIED] Hook SessionStart @go operativo en sesión CC 2026-07-11 — PROXIMO_AGENTE_DEBE FutbolWeb cumplido`.
+- `dfl-context-proxy.main.ProxyHandler._handle_go` contiene `if title.startswith("[RESOLVED]") or title.startswith("[STALE]") or title.startswith("[PARCIALMENTE RESUELTO]"):`.
+- `_is_archived()` solo respeta `LIFECYCLE: archived` en contenido.
 
-Five findings remediated and tested:
-✓ BLOCKER: digest_sha256 (64 hex) | digest_display (16 hex alias, non-constitutive)
-✓ HIGH: Git provenance validation (detects stale/mismatch/dirty)
-✓ HIGH: owners array constrained to exactly 1 CONCIERGE_MAINTAINER
-✓ MEDIUM: receipts CP-F1-01/02 reconciled with commit hashes + Engram
-✓ MEDIUM: tests distinguish full digest from display prefix
-
-Action: Independent (non-Codex) 4R review of five findings only. CP-F1-03 blocked pending verdict.
-
-Commits on feat/dfl-concierge:
-- bc5e6d3 (artifact: manifest, schemas, validator, tests)
-- fda6006 (receipt: CP-F1-REMEDIATION-01)
-- Branch: up-to-date with origin/feat/dfl-concierge
-
-=== PRIORITY 2: DRG-002-R1 Design (Awaiting Jorge Decision) ===
-
-Status: DESIGN_COMPLETE (all four open decisions RESOLVED 2026-07-22)
-
-Design doc: /opt/dfl-knowledge/architecture/DRG-002-R1-dfl-concierge.md
-Contracts: /opt/dfl-knowledge/architecture/DRG-002-R1-F1-CONTRACTS-CP03.md (RCQ-01 through RCQ-09 all CLOSED)
-
-Resolved decisions:
-1. Off-host durability: dedicated branch push → DURABLE_OFFHOST
-2. Attestation: three trust axes (identity/execution/source); F1 NO special credentials
-3. Authorization: writes require execution_trust=ATTESTED; ATTESTED ≠ AUTHORIZED
-4. Canonical source: /opt/dfl-knowledge/concierge/canonical; generated artifacts sealed
-
-Appendix A: Mission Packet for Codex constructibility audit (ready to dispatch; NOT extracting without Jorge approval)
-
-Decision point: Should we dispatch Appendix A (Mission Packet) to Codex for independent audit of F1 minimum-cut buildability? NO building yet—audit only.
-
-=== UNTRACKED FILES (Exploration Phase) ===
-
-Not blocking. Remain untracked pending disposition:
-- architecture/first-operable-factory-v01/ (factory planning)
-- architecture/AMOS-LOBBY-REDESIGN.md (superseded by DRG-002-R1)
-- readiness/tdl-mercader/ (MERCADER readiness docs)
-- evidence/first-operable-factory-bootstrap-g1/ (pilot evidence)
-- AGENTS.md (for Codex bootstrap — normative, ready)
-- .codebase-memory/ (graphify output)
-
-=== IMMEDIATE NEXT ACTIONS ===
-
-CC (EJECUTOR):
-→ Awaiting Jorge approval on: (1) independent review of CP-F1-REMEDIATION-01 findings; (2) dispatch of Appendix A to Codex.
-
-Jorge:
-→ Decision 1: Approve independent 4R review of CP-F1 five findings?
-→ Decision 2: Dispatch Mission Packet (Appendix A) to Codex for F1 constructibility audit?
+**Status**: diagnóstico persistido; no se aplicó remediación porque esta sesión no escribió fuera de `/opt/dfl-knowledge`.
 
 **Type:** manual  
 **Project:** dfl-knowledge  
 
-**[RECTIFICACIÓN 2026-07-25 02:50]** Observación sobre DRG-002-R1 INVÁLIDA. AuthZ cerrado. Única línea: corregir WORK_UNIT (2 HIGH + 1 MEDIUM).
+**CHECKPOINT — WORK_UNIT Revisión Independiente (2026-07-25 02:50-03:30 UTC)**
+
+## Completado
+
+1. ✓ **Diagnóstico deepseek-agent permissions:** regex `/opt/` bloqueaba ALL commands
+   - Causa raíz: `run_shell()` línea 251-256 bloqueaba rutas del sistema sin discriminar operaciones
+   - Solución: separar hard-blocks (destructivas) vs soft-blocks (protegidas); permitir read-only
+   - Pruebas: 16/16 pass (11 read-only ✓, 5 destructivos bloqueados ✓)
+
+2. ✓ **Remediación WORK_UNIT (CC):** 3 findings (2 HIGH + 1 MEDIUM)
+   - HIGH 1: idempotency_key operation-type binding (validación en lookup)
+   - HIGH 2: event validation centralizada (_validate_event())
+   - MEDIUM: expire_stale() scope-unambiguous identity
+   - Tests: 17/17 pass (10 existing + 7 regression)
+   - Suite Concierge: 93/93 pass
+   - Commit: b899c0c + receipt 6670429
+
+3. ✓ **Configuración deepseek-agent:** timeout aumentado 120s → 1800s (30 min)
+   - Problema: urllib chunked response timeout insuficiente en OpenRouter
+   - Solución: permitir 1800s para síntesis de modelo
+
+## En Progreso
+
+- **deepseek-agent:** ejecutando revisión 4R independiente de WORK_UNIT
+  - Pasos completados: 40+
+  - Script Python: creando /tmp/workunit_review.py
+  - Reportará: SHA, tabla findings, 4R evaluation, veredicto PASS/WARN/FAIL
+  - Estado: moliendo (no interrumpir)
+
+## Pendiente
+
+1. DS completa revisión 4R → veredicto independiente
+2. Si DS falla en síntesis: usar **Codex** para revisión (no Qwen)
+3. Después: decisión CC vs Codex para próximas revisiones (sin auto-revisión)
+
+## Restricciones Activas
+
+- No modificar código WORK_UNIT
+- No merge a main
+- No AuthZ ni register.py changes
+- Permiso deepseek-agent: shell read-only + git safe + python3 + pytest
+
+## Estado Operativo
+
+- Rama: feat/dfl-concierge-workunit-claims
+- Base: 3d0cc64 → SHA b899c0c
+- Permisos: corregidos ✓
+- Timeout: 1800s ✓
+- Contexto: mínimo (por diseño; DS hace investigación, veredicto depende de modelo)
 
 ---
 
@@ -495,4 +498,4 @@ Jorge:
 
 ---
 
-*Mirror auto-generated 2026-07-25T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T03:39:02Z | La Garra → DFLghub/amos-context*
