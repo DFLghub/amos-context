@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T19:45:37Z  
+**Generated:** 2026-07-25T20:56:39Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,31 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### 360eventos Phase 3 SFV5 bridge completed
+**Type:** decision  
+**Project:** dfl  
+
+Date: 2026-07-25 UTC
+Repo: /opt/360eventos
+Branch: fase-3-bos-fmd-sfv5-bridge
+Final SHA: 4cac081e2d7fe914fc362a8861c66b5498c55679
+Base SHA: b80c10ddfee9cd651847e9e85367387295cb983e
+Summary:
+- Completed Phase 2 zero by publishing main, fase-2-organizational-runtime, and tag jpi-phase-2-closed; verified with ls-remote; mirror push succeeded.
+- Implemented BOS/FMD -> SFV5 bridge on business-os using existing factory_requests lifecycle plus new factory_request_bridge persistence.
+- Added replaceable SFV5 adapter registry: sfv5 fails explicitly when no producer is connected, sfv5-test is deterministic local for tests.
+- Added operational availability artifact consumer integrated with validateByOperaciones.
+- Added HTTP endpoints for create/poll/review/use factory requests.
+- Added migration 016_factory_request_bridge.
+- Full business-os regression passed: 224/224 tests.
+- Branch pushed to origin/fase-3-bos-fmd-sfv5-bridge.
+Evidence:
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/00-FROZEN-SCOPE.md
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/01-ARCHITECTURE.md
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/02-REVIEW.md
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/03-COMMANDS.md
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/04-REPORT.md
+
 ### 360eventos Phase 2 zero published and mirrored
 **Type:** decision  
 **Project:** dfl  
@@ -117,12 +142,6 @@ Verification:
 - refs/tags/jpi-phase-2-closed^{} resolved to b80c10ddfee9cd651847e9e85367387295cb983e
 - /opt/dfl-context-proxy/push_mirror.sh reported MIRROR: unchanged | commit a757bd63707ccbd857a769cd95a8e957e5a63445 | 2026-07-25 16:17:09 +0000
 No Phase 2 code changes were made during CERO.
-
-### @$go cleanup 2026-07-25 — archivados pending históricos filtrados por snapshot local
-**Type:** decision  
-**Project:** dfl  
-
-Durante el onboarding `@$go` del 2026-07-25 con payload local `generated_at=2026-07-25T16:00:14Z`, Codex detectó que `pending` seguía incluyendo observaciones ya cumplidas o históricas. Sin reconsultar `/go`, archivó en Engram con `LIFECYCLE: archived` y prefijo `[RESOLVED]` las observaciones #217 (hook SessionStart verificado), #236 (reconciliación final consolidación v1), #95 (/go pending filter verificado), #249 (cierre dfl-secrets/ZIP legacy) y #210 (session summary histórico de dfl-knowledge). Motivo: evitar que cierres ya completados y resúmenes de sesión sigan apareciendo como trabajo activo en futuros payloads. No se tocaron superficies protegidas ni se editaron archivos del repo.
 
 ### SFV5 CLAUDE.md Documentation Fix — Independent Mission (NOT part of obs-347 piloto)
 **Type:** decision  
@@ -517,6 +536,31 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### 360eventos Phase 3 SFV5 bridge completed
+**Type:** decision  
+**Project:** dfl  
+
+Date: 2026-07-25 UTC
+Repo: /opt/360eventos
+Branch: fase-3-bos-fmd-sfv5-bridge
+Final SHA: 4cac081e2d7fe914fc362a8861c66b5498c55679
+Base SHA: b80c10ddfee9cd651847e9e85367387295cb983e
+Summary:
+- Completed Phase 2 zero by publishing main, fase-2-organizational-runtime, and tag jpi-phase-2-closed; verified with ls-remote; mirror push succeeded.
+- Implemented BOS/FMD -> SFV5 bridge on business-os using existing factory_requests lifecycle plus new factory_request_bridge persistence.
+- Added replaceable SFV5 adapter registry: sfv5 fails explicitly when no producer is connected, sfv5-test is deterministic local for tests.
+- Added operational availability artifact consumer integrated with validateByOperaciones.
+- Added HTTP endpoints for create/poll/review/use factory requests.
+- Added migration 016_factory_request_bridge.
+- Full business-os regression passed: 224/224 tests.
+- Branch pushed to origin/fase-3-bos-fmd-sfv5-bridge.
+Evidence:
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/00-FROZEN-SCOPE.md
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/01-ARCHITECTURE.md
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/02-REVIEW.md
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/03-COMMANDS.md
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/04-REPORT.md
+
 ### 360eventos Phase 2 zero published and mirrored
 **Type:** decision  
 **Project:** dfl  
@@ -533,39 +577,6 @@ Verification:
 - refs/tags/jpi-phase-2-closed^{} resolved to b80c10ddfee9cd651847e9e85367387295cb983e
 - /opt/dfl-context-proxy/push_mirror.sh reported MIRROR: unchanged | commit a757bd63707ccbd857a769cd95a8e957e5a63445 | 2026-07-25 16:17:09 +0000
 No Phase 2 code changes were made during CERO.
-
-### Session summary: dfl-knowledge
-**Type:** fact  
-**Project:** dfl-knowledge  
-
-## Goal
-Revisión independiente 4R de la Fase 1 del piloto Empresa Sintética JPI en `/opt/360eventos/business-os`, base `788f49a`, commit `2009533d8b4d1411693514be5febb13e3e9f1798`, rama esperada `fase-1-little-bosses-models`.
-
-## Accomplished
-- Verificado estado git solicitado: `git status`, `git branch -v`, `git rev-parse HEAD`, diff exacto `788f49a..2009533d8b4d1411693514be5febb13e3e9f1798`.
-- Ejecutada revisión integral del cambio (1235 inserciones, 11 archivos): migraciones 008/009/010, modelos `little-boss` y `minion`, `package.json`, pruebas y `pilot-contracts.md`.
-- Ejecutada suite completa: `npm test` => 56/56 PASS.
-- Ejecutadas validaciones manuales adicionales del revisor: un boss `archived` aún acepta minions; `candidate_lessons` permite `stage='staged'` con `reviewed=0` y mutación retroactiva; `factory_requests` permite saltar/reabrir estados.
-- Persistido informe en `/opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-1-independent-review.md`.
-
-## Findings
-- HIGH bloqueante: `createMinion()` permite crear minions para un Little Boss `archived`.
-- HIGH bloqueante: `candidate_lessons` no hace cumplir staging manual ni append-only.
-- MEDIUM: `factory_requests` no codifica su lifecycle, solo enum + UNIQUE.
-- Cambio en `package.json` justificado: `node --test tests/` falla en Node 22.23.1; `node --test` ejecuta la suite correctamente.
-
-## Outcome
-- Veredicto: FAIL.
-- Decisión: FIX THEN REVIEW.
-- Independencia respecto del implementador: confirmada.
-
-## Relevant Files
-- `/opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-1-independent-review.md`
-- `/opt/360eventos/business-os/models/little-boss.js`
-- `/opt/360eventos/business-os/models/minion.js`
-- `/opt/360eventos/business-os/migrations/009_factory_requests.js`
-- `/opt/360eventos/business-os/migrations/010_lessons.js`
-- `/opt/360eventos/business-os/package.json`
 
 ---
 
@@ -658,4 +669,4 @@ Revisión independiente 4R de la Fase 1 del piloto Empresa Sintética JPI en `/o
 
 ---
 
-*Mirror auto-generated 2026-07-25T19:45:37Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T20:56:39Z | La Garra → DFLghub/amos-context*
