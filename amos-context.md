@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T16:17:09Z  
+**Generated:** 2026-07-25T19:45:37Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -100,6 +100,23 @@ Antes de operar, respondé:
 ---
 
 ## RECENT DECISIONS
+
+### 360eventos Phase 2 zero published and mirrored
+**Type:** decision  
+**Project:** dfl  
+
+Date: 2026-07-25 UTC
+Repo: /opt/360eventos
+Approved Phase 2 SHA b80c10ddfee9cd651847e9e85367387295cb983e was on local main and local branch fase-2-organizational-runtime.
+Actions completed without force push:
+- git push origin main
+- git push origin fase-2-organizational-runtime
+- git push origin refs/tags/jpi-phase-2-closed
+Verification:
+- git ls-remote confirmed refs/heads/main and refs/heads/fase-2-organizational-runtime at b80c10ddfee9cd651847e9e85367387295cb983e
+- refs/tags/jpi-phase-2-closed^{} resolved to b80c10ddfee9cd651847e9e85367387295cb983e
+- /opt/dfl-context-proxy/push_mirror.sh reported MIRROR: unchanged | commit a757bd63707ccbd857a769cd95a8e957e5a63445 | 2026-07-25 16:17:09 +0000
+No Phase 2 code changes were made during CERO.
 
 ### @$go cleanup 2026-07-25 — archivados pending históricos filtrados por snapshot local
 **Type:** decision  
@@ -279,16 +296,6 @@ Auditoría selectiva + diseño adaptativo del piloto JPI con 3 Little Bosses. Ro
 - Guardar `docs/pilot-contracts.md` (HTTP specs)
 - Ejecutar: `npm test tests/models/` → PASS
 - Checkpoint → Fase 2 (Solopreneur OS + factory-integration)
-
-### SAFE_PARTIAL_CHECKPOINT — WORK_UNIT remediation paused
-**Type:** decision  
-**Project:** dfl  
-
-Checkpoint provisional solicitado por Jorge. Rama/worktree: feat/dfl-concierge-workunit-claims en /opt/dfl-knowledge-workunit, HEAD aaf740a6737d4148515050571f9485602c0f08fb, base 3d0cc64. No se modificaron archivos, no hubo commit ni push durante este checkpoint. La remediación de los findings 4R quedó detenida para otro agente.
-
-Findings pendientes: HIGH 1 — idempotency_key personalizado se busca por operation_key y retorna idempotente sin comparar operación, unit_id, scope, actor/owner y transición; requiere fingerprint constitutivo y rechazo ERR_WORK_UNIT_IDEMPOTENCY_REUSE ante reutilización incompatible. HIGH 2 — falta validador central estricto antes de _read_events(), reconcile() y _fold(); eventos incompletos/desconocidos pueden producir KeyError o READY falso; requiere validación de tipo, campos, IDs, timestamps, event_key, operation_key/fingerprint y semántica por transición, con ContractError/quarantine. MEDIUM — expire_stale() devuelve solo strings unit_id; debe devolver estructura inequívoca con unit_id, scope y actor.
-
-Pruebas existentes antes de remediar: focused WORK_UNIT 8/8, suite Concierge 84/84, git diff --check y smoke claim→handoff→release PASS. PROXIMO_AGENTE_DEBE: inspeccionar nuevamente estado limpio; implementar únicamente esos tres findings; agregar pruebas adversariales para reutilización de clave, repetición legítima, eventos inválidos/missing/unknown, reconcile mixto y expiraciones del mismo unit_id en scopes distintos; ejecutar focalizada, suite completa, diff-check, smoke; actualizar receipt, commit separado y push solo de esta rama. No tocar AuthZ, register.py, scheduler, UI, main ni otros slices. Estado: SAFE_PARTIAL_CHECKPOINT / IMPLEMENTED_AWAITING_REMEDIATION.
 
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -510,6 +517,23 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### 360eventos Phase 2 zero published and mirrored
+**Type:** decision  
+**Project:** dfl  
+
+Date: 2026-07-25 UTC
+Repo: /opt/360eventos
+Approved Phase 2 SHA b80c10ddfee9cd651847e9e85367387295cb983e was on local main and local branch fase-2-organizational-runtime.
+Actions completed without force push:
+- git push origin main
+- git push origin fase-2-organizational-runtime
+- git push origin refs/tags/jpi-phase-2-closed
+Verification:
+- git ls-remote confirmed refs/heads/main and refs/heads/fase-2-organizational-runtime at b80c10ddfee9cd651847e9e85367387295cb983e
+- refs/tags/jpi-phase-2-closed^{} resolved to b80c10ddfee9cd651847e9e85367387295cb983e
+- /opt/dfl-context-proxy/push_mirror.sh reported MIRROR: unchanged | commit a757bd63707ccbd857a769cd95a8e957e5a63445 | 2026-07-25 16:17:09 +0000
+No Phase 2 code changes were made during CERO.
+
 ### Session summary: dfl-knowledge
 **Type:** fact  
 **Project:** dfl-knowledge  
@@ -542,58 +566,6 @@ Revisión independiente 4R de la Fase 1 del piloto Empresa Sintética JPI en `/o
 - `/opt/360eventos/business-os/migrations/009_factory_requests.js`
 - `/opt/360eventos/business-os/migrations/010_lessons.js`
 - `/opt/360eventos/business-os/package.json`
-
-### Session summary: dfl-knowledge
-**Type:** session_summary  
-**Project:** dfl-knowledge  
-
-## Goal
-Corregir los tres hallazgos de la revisión independiente 4R de Fase 1 BOS-JPI: terminalidad de Little Boss archivado, staging manual de candidate lessons, y lifecycle de factory requests.
-
-## Instructions
-- Correcciones exclusivas a hallazgos del reporte 4R en `/opt/360eventos/business-os`
-- No iniciar Fase 2, no mezclar WORK_UNIT o SFV5, no hacer merge/push
-- Ejecutar migraciones dos veces para verificar idempotencia
-- Único commit local con mensaje "fix: enforce phase 1 lifecycle invariants"
-- Excluir .codebase-memory/ del commit
-
-## Discoveries
-- Triggers SQL BEFORE INSERT/UPDATE son la herramienta correcta para enforcement de invariantes en SQLite
-- La terminalidad debe ser bidireccional: no solo bloquear transiciones, sino también bloquear mutaciones de estado filho
-- Los campos `immutable` después de insert requieren CHECK constraints + UPDATE triggers para protección real
-- Migration idempotencia se verifica correctamente con dos ejecuciones consecutivas en memoria
-
-## Accomplished
-- ✅ **Hallazgo 1 (HIGH):** Bloqueo de minion creation para archived boss
-  - Modificado `models/minion.js` para verificar status del boss
-  - Prueba adversarial en `tests/models/minion.test.js`
-- ✅ **Hallazgo 2 (HIGH):** Enforcement de staging manual y append-only
-  - Creado `models/candidate-lessons.js` con modelo de dominio completo (6 funciones)
-  - Triggers SQL en `migrations/010_lessons.js` (4 reglas + BEFORE INSERT/UPDATE guards)
-  - Test suite `tests/models/candidate-lessons.test.js` (7 adversariales + 7 flujo válido)
-- ✅ **Hallazgo 3 (MEDIUM):** Ciclo de vida de factory requests
-  - Creado `models/factory-request.js` con máquina de estados (8 funciones)
-  - Triggers SQL en `migrations/009_factory_requests.js` (5 reglas de transición)
-  - Test suite `tests/models/factory-request.test.js` (5 adversariales + 8 transiciones válidas)
-- ✅ Verificaciones: suite 97/97 passing, idempotencia confirmada (20 tablas + 4 triggers)
-- ✅ Commit `ca1f8d6` con 1,148 inserciones, 9 archivos modificados/creados
-- ✅ .gitignore actualizado para excluir .codebase-memory/
-
-## Next Steps
-- [Observer/Reviewer]: Validar que hallazgos están completamente cerrados antes de Fase 2
-- Code review de los 41 tests nuevos para cobertura adversarial
-- Integración con rutas HTTP de Fase 3 (una vez que existan)
-
-## Relevant Files
-- `business-os/models/minion.js` — añadida validación de archived status
-- `business-os/models/candidate-lessons.js` — nuevo: 262 líneas, modelo + triggers design
-- `business-os/models/factory-request.js` — nuevo: 275 líneas, máquina de estados
-- `business-os/migrations/010_lessons.js` — triggers BEFORE INSERT/UPDATE para immutable fields
-- `business-os/migrations/009_factory_requests.js` — triggers para validación de transiciones
-- `business-os/tests/models/candidate-lessons.test.js` — nuevo: 407 líneas, 14 tests
-- `business-os/tests/models/factory-request.test.js` — nuevo: 446 líneas, 13 tests
-- `business-os/tests/models/minion.test.js` — añadido 1 test adversarial (archived boss)
-- `business-os/.gitignore` — excluye .codebase-memory/ permanentemente
 
 ---
 
@@ -686,4 +658,4 @@ Corregir los tres hallazgos de la revisión independiente 4R de Fase 1 BOS-JPI: 
 
 ---
 
-*Mirror auto-generated 2026-07-25T16:17:09Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T19:45:37Z | La Garra → DFLghub/amos-context*
