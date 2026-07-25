@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T02:05:43Z  
+**Generated:** 2026-07-25T02:24:57Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -354,17 +354,68 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### @$fin cierre Codex — WORK_UNIT claims 2026-07-24
-**Type:** fact  
-**Project:** dfl  
+### Session summary: dfl-knowledge
+**Type:** session_summary  
+**Project:** dfl-knowledge  
 
-Sesión cerrada tras completar el handoff de WORK_UNIT claims en /opt/dfl-knowledge-workunit, rama feat/dfl-concierge-workunit-claims. Commit aaf740a6737d4148515050571f9485602c0f08fb publicado y verificado en origin. Implementación: ledger local-first append-only dedicado, CLAIMED/RELEASED/EXPIRED/HANDED_OFF, conflicto único por unidad/scope, idempotencia, release propietario, expiry/reclaim, handoff, locking, cuarentena/reconcile y exports. Evidencia: tests focalizados 8/8, suite Concierge 84/84, diff-check PASS, smoke claim→handoff→release PASS. Receipt CP-F1-WORKUNIT-CLAIMS-01. Engram incremental #332. Estado institucional: IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW; no autoaprobado ni merge a main. PROXIMO_AGENTE_DEBE: ejecutar revisión 4R independiente antes de integración.
+## Goal
+Reconstruir el estado del hook SessionStart de Codex y validar la integración del bootstrap DFL tras una investigación anterior bloqueada.
 
-### WORK_UNIT claims implemented awaiting review
-**Type:** decision  
-**Project:** dfl  
+## Instructions
+- Inspección solo lectura en /root/.codex (archivos config/AGENTS/respaldos)
+- NO escribir, NO ejecutar Codex, NO probar hooks, NO escalar investigación más allá de lo autorizado
+- Handoff claro: qué falta validar + comando mínimo para próxima sesión interactiva
 
-CP-F1-WORKUNIT-CLAIMS-01 implementado por Codex en feat/dfl-concierge-workunit-claims, commit aaf740a sobre base 3d0cc64. Added dedicated concierge/workunit.py ledger with CLAIMED/RELEASED/EXPIRED/HANDED_OFF, lock+append+fsync, stable operation idempotency, conflict, owner-only release, expiry/reclaim, explicit handoff, scope support, corruption quarantine/reconcile, and public exports. Tests: focused 8/8, full concierge 84/84, diff-check and API smoke PASS. Receipt architecture/receipts/CP-F1-WORKUNIT-CLAIMS-01.md. Status IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW. PROXIMO_AGENTE_DEBE: independent 4R review; no self-approval or main merge.
+## Discoveries
+- Dos hooks SessionStart insertados en config.toml (codebase-memory-mcp + dfl-bootstrap)
+- Hook dfl-bootstrap usa proxy local http://127.0.0.1:8091/go (Single Source of Truth, sin DNS, sin GitHub)
+- trusted_hash en hooks.state (sha256:ed997f9766959ba56dc2243cd02468d6eadad80d92b7f5a650e6fc0fb0c050) valida estado post-ejecución
+- AGENTS.md contiene protocolo @$go/@$fin: reglas duras de red, VALIDATION GATE (6 líneas), Gate 4B incremental
+- approval_mode desigual: search_memory/search_graph=auto, save/update=approve (reduce prompts en lectura)
+- Respaldo reciente backup-onboarding-fix-20260725-015251 creado 01:52 (anterior a config.toml final 01:58)
+
+## Accomplished
+- ✅ Lectura /root/.codex/config.toml — hook SessionStart identificado + trusted_hash + approval_mode
+- ✅ Lectura /root/.codex/AGENTS.md — protocolo @$go/@$fin completo documentado
+- ✅ Listado /root/.codex — respaldos previos identificados, timestamps capturados
+- ✅ Diff relevante aislado — líneas 90-104 (hooks), líneas 108-109 (state)
+- 🔲 Validación del hook en runtime real de Codex (próxima sesión interactiva)
+- 🔲 Inspección del contenido de backup-onboarding-fix-20260725-015251/ (autorizado leer, no inspeccionado)
+
+## Next Steps
+1. **Próxima sesión o agente**: Ejecutar `curl -fsS --max-time 5 http://127.0.0.1:8091/go` en terminal interactiva Codex para confirmar proxy local responde
+2. Inspeccionar contenido de backup-onboarding-fix-20260725-015251/ si es necesario validar rollback
+3. Si proxy no responde: verificar que /opt/dfl-context-proxy está ejecutándose (systemctl status / ps aux)
+4. Ejecutar sesión real de Codex con @$go para validar inyección del payload en el contexto de sesión
+5. Cierre real (@$fin) cuando se confirme operatividad del bootstrap
+
+## Relevant Files
+- /root/.codex/config.toml — hook SessionStart (líneas 90-104), trusted_hash (líneas 108-109)
+- /root/.codex/AGENTS.md — protocolo @$go/@$fin (líneas 25-109), reglas de red, Gate 4B
+- /opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md — contrato completo (no leído, archivo local)
+- /opt/dfl-context-proxy/push_mirror.sh — cierre real: Gate 4B paso 3 (@$fin solo)
+- backup-onboarding-fix-20260725-015251/ — respaldo onboarding reciente (contenido no inspeccionado)
+
+### Codex SessionStart hook — DFL bootstrap inyectado
+**Type:** config  
+**Project:** dfl-knowledge  
+
+**What**: SessionStart hook instalado en /root/.codex/config.toml que inyecta dfl-bootstrap payload local vía curl http://127.0.0.1:8091/go (proxy local, sin DNS).
+
+**Why**: Bootstrap automático de contexto DFL en arranque Codex — fuente única LOCAL, no GitHub. Cierra el ciclo de onboarding: @$go dispara el hook, hook trae el payload, sesión arranca con contexto inyectado.
+
+**Where**: 
+- /root/.codex/config.toml líneas 90-104 (dos hooks SessionStart: codebase-memory-mcp + dfl-bootstrap)
+- /root/.codex/config.toml líneas 108-109 (hooks.state con trusted_hash para validación)
+- /root/.codex/AGENTS.md líneas 25-109 (dfl-atgo-protocol: reglas @$go/@$fin, Gate 4B)
+
+**Learned**: 
+- El hook usa matcher="startup|resume|clear|compact" — ejecuta en arranque, no solo en primer arranque
+- trusted_hash en hooks.state es fingerprint de validación del estado (sha256:ed997f3f9766959ba56dc2243cd02468d6eadad80d92b7f5a650e6fc0fb0c050)
+- Proxy local http://127.0.0.1:8091 es Single Source of Truth durante sesión (@$go), nunca refetch de GitHub
+- approval_mode diferenciado: search_memory/search_graph=auto, save/update=approve
+- Respaldos previos: config.toml.bak-cbm-nivelA (2026-07-21), config.toml.bak-paridad (2026-07-12)
+- Backup onboarding-fix-20260725-015251 creado 01:52 (6 min antes del estado final a las 01:58)
 
 ---
 
@@ -457,4 +508,4 @@ CP-F1-WORKUNIT-CLAIMS-01 implementado por Codex en feat/dfl-concierge-workunit-c
 
 ---
 
-*Mirror auto-generated 2026-07-25T02:05:43Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T02:24:57Z | La Garra → DFLghub/amos-context*
