@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T02:27:02Z  
+**Generated:** 2026-07-25T03:03:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -339,69 +339,70 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### CHECKPOINT Codex review parcial — WORK_UNIT claims independent review en feat/dfl-concierge-workunit-claims
-**Type:** fact  
-**Project:** dfl  
+**Type:** manual  
+**Project:** dfl-knowledge  
 
-CHECKPOINT MODE — no @$fin, no archivado Gate 4B paso 2, no push_mirror.sh.
+**Operational Status Summary for Jorge — 2026-07-25 02:40 UTC**
 
-What:
-Se ejecutó una revisión independiente parcial sobre el frente del payload `WORK_UNIT claims implemented awaiting review` en el worktree `/opt/dfl-knowledge-workunit`, rama `feat/dfl-concierge-workunit-claims`, commit `aaf740a` (`feat(concierge): add work unit claim ledger`).
+=== PRIORITY 1: CP-F1-REMEDIATION-01 (Ready for Review) ===
 
-Validation gate / bootstrap:
-- SOURCE: DFL_BOOTSTRAP local `http://127.0.0.1:8091/go`
-- generated_at: `2026-07-25T02:14:45Z`
-- PROFILE: EJECUTOR confirmado por shell + git + Engram
-- Engram consulted with `search_memory("contexto DFL")`
+Status: REMEDIATED_AWAITING_INDEPENDENT_REVIEW
+Verification: PASS (22/22 tests)
 
-Evidence gathered:
-- Indexed `/opt/dfl-knowledge-workunit` with codebase-memory-mcp.
-- Focused tests passed: `python3 -m pytest concierge/tests/test_workunit.py -q` => `8 passed`.
-- Review target files: `concierge/workunit.py`, `concierge/tests/test_workunit.py`, receipt `architecture/receipts/CP-F1-WORKUNIT-CLAIMS-01.md`.
+Five findings remediated and tested:
+✓ BLOCKER: digest_sha256 (64 hex) | digest_display (16 hex alias, non-constitutive)
+✓ HIGH: Git provenance validation (detects stale/mismatch/dirty)
+✓ HIGH: owners array constrained to exactly 1 CONCIERGE_MAINTAINER
+✓ MEDIUM: receipts CP-F1-01/02 reconciled with commit hashes + Engram
+✓ MEDIUM: tests distinguish full digest from display prefix
 
-Findings confirmed so far:
-1. HIGH — caller-supplied `idempotency_key` aliases unrelated operations globally.
-   Repro confirmed: claiming `unit:a` with custom key `K`, then claiming `unit:b` with the same key `K`, returns idempotent success for the second call without writing a second event. History remains length 1.
-   Relevant code: operation_key ingestion/lookups in `concierge/workunit.py` claim/release/hand_off paths.
+Action: Independent (non-Codex) 4R review of five findings only. CP-F1-03 blocked pending verdict.
 
-2. HIGH — `reconcile()` and `_read_events()` accept schema-valid garbage if `idempotency_key` looks valid.
-   Repro confirmed: append JSON line with only `idempotency_key`, `unit_id`, `scope`; `reconcile()` returns READY and later `current_claim()` crashes with raw `KeyError: 'event_type'` instead of controlled corruption handling.
-   Relevant code: `_read_events`, `_fold`, `reconcile` in `concierge/workunit.py`.
+Commits on feat/dfl-concierge:
+- bc5e6d3 (artifact: manifest, schemas, validator, tests)
+- fda6006 (receipt: CP-F1-REMEDIATION-01)
+- Branch: up-to-date with origin/feat/dfl-concierge
 
-3. MEDIUM — `expire_stale()` returns only `unit_id`, not `(unit_id, scope)`.
-   Repro confirmed: same unit claimed in two scopes yields ambiguous result `['unit:same', 'unit:same']`.
+=== PRIORITY 2: DRG-002-R1 Design (Awaiting Jorge Decision) ===
 
-Constraints respected:
-- No edits made.
-- No merge / self-approval.
-- No touch on protected surfaces (`puntajeTigreKnockout`, Supabase, Vercel config, env vars, HLC templates, CRON 3:05am UTC, `/etc/dfl-secrets`).
+Status: DESIGN_COMPLETE (all four open decisions RESOLVED 2026-07-22)
 
-HANDOFF / PROXIMO_AGENTE_DEBE:
-1. Continue the independent review or move to remediation on `/opt/dfl-knowledge-workunit` at commit `aaf740a`.
-2. Add regression tests first for:
-   - custom `idempotency_key` collision across different unit/scope/actor operations,
-   - schema-valid malformed ledger lines surviving `reconcile()`,
-   - scoped expiry return shape.
-3. Fix design choice for operation identity:
-   - either namespace caller idempotency under normalized operation payload,
-   - or reject raw caller key reuse that does not match the same semantic operation.
-4. Harden ledger validation:
-   - validate required event fields/types/event_type before accepting lines in `_read_events` and `reconcile`.
-5. Decide whether `expire_stale()` contract should return scoped tuples/objects instead of bare unit ids.
-6. Re-run focused tests plus any broader concierge suite after changes.
+Design doc: /opt/dfl-knowledge/architecture/DRG-002-R1-dfl-concierge.md
+Contracts: /opt/dfl-knowledge/architecture/DRG-002-R1-F1-CONTRACTS-CP03.md (RCQ-01 through RCQ-09 all CLOSED)
 
-Status:
-Partial checkpoint saved so another agent can resume without repeating discovery.
+Resolved decisions:
+1. Off-host durability: dedicated branch push → DURABLE_OFFHOST
+2. Attestation: three trust axes (identity/execution/source); F1 NO special credentials
+3. Authorization: writes require execution_trust=ATTESTED; ATTESTED ≠ AUTHORIZED
+4. Canonical source: /opt/dfl-knowledge/concierge/canonical; generated artifacts sealed
 
-### SAFE_PARTIAL_CHECKPOINT — WORK_UNIT remediation paused
-**Type:** decision  
-**Project:** dfl  
+Appendix A: Mission Packet for Codex constructibility audit (ready to dispatch; NOT extracting without Jorge approval)
 
-Checkpoint provisional solicitado por Jorge. Rama/worktree: feat/dfl-concierge-workunit-claims en /opt/dfl-knowledge-workunit, HEAD aaf740a6737d4148515050571f9485602c0f08fb, base 3d0cc64. No se modificaron archivos, no hubo commit ni push durante este checkpoint. La remediación de los findings 4R quedó detenida para otro agente.
+Decision point: Should we dispatch Appendix A (Mission Packet) to Codex for independent audit of F1 minimum-cut buildability? NO building yet—audit only.
 
-Findings pendientes: HIGH 1 — idempotency_key personalizado se busca por operation_key y retorna idempotente sin comparar operación, unit_id, scope, actor/owner y transición; requiere fingerprint constitutivo y rechazo ERR_WORK_UNIT_IDEMPOTENCY_REUSE ante reutilización incompatible. HIGH 2 — falta validador central estricto antes de _read_events(), reconcile() y _fold(); eventos incompletos/desconocidos pueden producir KeyError o READY falso; requiere validación de tipo, campos, IDs, timestamps, event_key, operation_key/fingerprint y semántica por transición, con ContractError/quarantine. MEDIUM — expire_stale() devuelve solo strings unit_id; debe devolver estructura inequívoca con unit_id, scope y actor.
+=== UNTRACKED FILES (Exploration Phase) ===
 
-Pruebas existentes antes de remediar: focused WORK_UNIT 8/8, suite Concierge 84/84, git diff --check y smoke claim→handoff→release PASS. PROXIMO_AGENTE_DEBE: inspeccionar nuevamente estado limpio; implementar únicamente esos tres findings; agregar pruebas adversariales para reutilización de clave, repetición legítima, eventos inválidos/missing/unknown, reconcile mixto y expiraciones del mismo unit_id en scopes distintos; ejecutar focalizada, suite completa, diff-check, smoke; actualizar receipt, commit separado y push solo de esta rama. No tocar AuthZ, register.py, scheduler, UI, main ni otros slices. Estado: SAFE_PARTIAL_CHECKPOINT / IMPLEMENTED_AWAITING_REMEDIATION.
+Not blocking. Remain untracked pending disposition:
+- architecture/first-operable-factory-v01/ (factory planning)
+- architecture/AMOS-LOBBY-REDESIGN.md (superseded by DRG-002-R1)
+- readiness/tdl-mercader/ (MERCADER readiness docs)
+- evidence/first-operable-factory-bootstrap-g1/ (pilot evidence)
+- AGENTS.md (for Codex bootstrap — normative, ready)
+- .codebase-memory/ (graphify output)
+
+=== IMMEDIATE NEXT ACTIONS ===
+
+CC (EJECUTOR):
+→ Awaiting Jorge approval on: (1) independent review of CP-F1-REMEDIATION-01 findings; (2) dispatch of Appendix A to Codex.
+
+Jorge:
+→ Decision 1: Approve independent 4R review of CP-F1 five findings?
+→ Decision 2: Dispatch Mission Packet (Appendix A) to Codex for F1 constructibility audit?
+
+**Type:** manual  
+**Project:** dfl-knowledge  
+
+**[RECTIFICACIÓN 2026-07-25 02:50]** Observación sobre DRG-002-R1 INVÁLIDA. AuthZ cerrado. Única línea: corregir WORK_UNIT (2 HIGH + 1 MEDIUM).
 
 ---
 
@@ -494,4 +495,4 @@ Pruebas existentes antes de remediar: focused WORK_UNIT 8/8, suite Concierge 84/
 
 ---
 
-*Mirror auto-generated 2026-07-25T02:27:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T03:03:02Z | La Garra → DFLghub/amos-context*
