@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T03:39:02Z  
+**Generated:** 2026-07-25T03:51:16Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -339,6 +339,12 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Codex @$fin 2026-07-25 — dogfood WORK_UNIT claims pilot completado
+**Type:** fact  
+**Project:** dfl  
+
+**What**: Sesión cerrada con `@$fin` tras dos frentes. (1) Revisión focal de WORK_UNIT en `/opt/dfl-knowledge-workunit`: rama `feat/dfl-concierge-workunit-claims`, HEAD real `d909147318003b3b79dc25f554fd8059fc2df140`; findings HIGH 1 / HIGH 2 / MEDIUM verificados como CLOSED; suite focal `python3 -m unittest concierge.tests.test_workunit` OK; smoke `claim -> handoff -> release` OK; `git diff --check` OK; diff `aaf740a..b899c0c` sin cambios en `concierge/register.py` ni capas AuthZ; veredicto WARN solo por desalineación de HEAD respecto de la precondición declarada. (2) Dogfooding real aislado de WORK_UNIT en worktree `/tmp/dfl-workunit-dogfood`, rama `feat/dfl-concierge-workunit-dogfood`, base `767c5e2`, commit nuevo `994c007`, push a `origin/feat/dfl-concierge-workunit-dogfood`. Se generaron: script `scripts/workunit_dogfood_pilot.py`, helper `concierge/dogfood_workunit.py`, test `concierge/tests/test_workunit_dogfood_pilot.py`, protocolo `architecture/WORK_UNIT-DOGFOOD-PROTOCOL.md`, receipt `architecture/receipts/CP-F1-WORKUNIT-DOGFOOD-01.md`, ledger real `evidence/workunit-dogfood-pilot/ledger/work_units.jsonl`, summary `evidence/workunit-dogfood-pilot/pilot-summary.json`.\n\n**Evidence**: `python3 -m unittest concierge.tests.test_workunit concierge.tests.test_workunit_dogfood_pilot` => 18 tests OK; `python3 scripts/workunit_dogfood_pilot.py --branch feat/dfl-concierge-workunit-dogfood --commit 767c5e2 --output-dir evidence/workunit-dogfood-pilot` => PASS; ledger real con secuencia `CLAIMED -> HANDED_OFF -> RELEASED` para `dogfood.claims.protocol` y `CLAIMED -> EXPIRED -> CLAIMED` para `dogfood.claims.expiry`; `git diff --check` limpio; `git push origin feat/dfl-concierge-workunit-dogfood` exitoso.\n\n**Protected surfaces respected**: sin cambios en `main`, `AuthZ`, `register.py`, `scheduler`, `UI`, `NO_TOUCH`, Supabase, Vercel, env vars ni scoring protegido.\n\n**Outcome**: dogfood verdict `DOGFOOD_PASS`; cierre ordenado listo para mirror.
+
 ### Diagnóstico @$go 2026-07-25 — /go pending expone observaciones cerradas con prefijos [VERIFIED]/[CIERRE]
 **Type:** bugfix  
 **Project:** dfl  
@@ -353,59 +359,6 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 - `_is_archived()` solo respeta `LIFECYCLE: archived` en contenido.
 
 **Status**: diagnóstico persistido; no se aplicó remediación porque esta sesión no escribió fuera de `/opt/dfl-knowledge`.
-
-**Type:** manual  
-**Project:** dfl-knowledge  
-
-**CHECKPOINT — WORK_UNIT Revisión Independiente (2026-07-25 02:50-03:30 UTC)**
-
-## Completado
-
-1. ✓ **Diagnóstico deepseek-agent permissions:** regex `/opt/` bloqueaba ALL commands
-   - Causa raíz: `run_shell()` línea 251-256 bloqueaba rutas del sistema sin discriminar operaciones
-   - Solución: separar hard-blocks (destructivas) vs soft-blocks (protegidas); permitir read-only
-   - Pruebas: 16/16 pass (11 read-only ✓, 5 destructivos bloqueados ✓)
-
-2. ✓ **Remediación WORK_UNIT (CC):** 3 findings (2 HIGH + 1 MEDIUM)
-   - HIGH 1: idempotency_key operation-type binding (validación en lookup)
-   - HIGH 2: event validation centralizada (_validate_event())
-   - MEDIUM: expire_stale() scope-unambiguous identity
-   - Tests: 17/17 pass (10 existing + 7 regression)
-   - Suite Concierge: 93/93 pass
-   - Commit: b899c0c + receipt 6670429
-
-3. ✓ **Configuración deepseek-agent:** timeout aumentado 120s → 1800s (30 min)
-   - Problema: urllib chunked response timeout insuficiente en OpenRouter
-   - Solución: permitir 1800s para síntesis de modelo
-
-## En Progreso
-
-- **deepseek-agent:** ejecutando revisión 4R independiente de WORK_UNIT
-  - Pasos completados: 40+
-  - Script Python: creando /tmp/workunit_review.py
-  - Reportará: SHA, tabla findings, 4R evaluation, veredicto PASS/WARN/FAIL
-  - Estado: moliendo (no interrumpir)
-
-## Pendiente
-
-1. DS completa revisión 4R → veredicto independiente
-2. Si DS falla en síntesis: usar **Codex** para revisión (no Qwen)
-3. Después: decisión CC vs Codex para próximas revisiones (sin auto-revisión)
-
-## Restricciones Activas
-
-- No modificar código WORK_UNIT
-- No merge a main
-- No AuthZ ni register.py changes
-- Permiso deepseek-agent: shell read-only + git safe + python3 + pytest
-
-## Estado Operativo
-
-- Rama: feat/dfl-concierge-workunit-claims
-- Base: 3d0cc64 → SHA b899c0c
-- Permisos: corregidos ✓
-- Timeout: 1800s ✓
-- Contexto: mínimo (por diseño; DS hace investigación, veredicto depende de modelo)
 
 ---
 
@@ -498,4 +451,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-07-25T03:39:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-25T03:51:16Z | La Garra → DFLghub/amos-context*
