@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-25T20:56:39Z  
+**Generated:** 2026-07-26T03:03:50Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -460,81 +460,46 @@ Sin cambios de preferencia registrados en esta sesión.
 
 ## RECENT ACTIVITY (cross-project)
 
-### ag_topologo v0.1 — LLM mode implementado y operativo 2026-06-27
-**Type:** decision  
-**Project:** dfl  
-
-OBS_ID: DFL-OBS-20260627-001
-TIPO: decision
-PROYECTO: dfl
-PLATFORM: vm2
-SUBSISTEMA: graphify/ag_topologo
-PRECEDENCIA: D
-AUTHORITY: operational
-LIFECYCLE: active
-CONFIDENCE: high
-LAST_VERIFIED: 2026-06-27
-SOURCE: session
-SOURCE_REF: MPGE_2026-06-27
-
-## Qué
-ag_topologo.py en /opt/dfl-knowledge/scripts/ ahora soporta --llm, --target-concepts N, --max-llm-calls N.
-
-## Implementación
-- LLMExtractor class: llama endpoint OpenAI-compatible via urllib (stdlib), budget tracking
-- Env vars: AG_TOPOLOGO_LLM_PROVIDER, AG_TOPOLOGO_LLM_ENDPOINT, AG_TOPOLOGO_LLM_MODEL, AG_TOPOLOGO_LLM_API_KEY
-- Secretos en /etc/dfl-secrets (permisos 600). Cargar con: set -a && source /etc/dfl-secrets && set +a
-- ag_topologo ahora escribe graph_context_light.json (además de graph_context.json) — formato que lee /go endpoint
-
-## Resultado del primer run --llm
-- Modelo: gpt-4o-mini (OpenAI)
-- 3261 nodos, 7804 aristas, 12 comunidades, 80 LLM calls (budget agotado)
-- God nodes: FutbolWeb, estado, IAIM, MERCADER, Función
-- /go endpoint: top_nodes=['FutbolWeb','estado','IAIM'], key_surprise='IAIM ↔ Apps Factory'
-
-## Comando de ejecución
-set -a && source /etc/dfl-secrets && set +a && python3 /opt/dfl-knowledge/scripts/ag_topologo.py --full --llm --source /opt/dfl-knowledge --out /opt/dfl-knowledge/graphify-out --target-concepts 140 --max-llm-calls 80
-
-## Nota de compatibilidad
-ag_topologo escribe schema "agTopologo-DFL-v0.1". gen_summary.py (usa graphify API) no puede leer este formato. Para futuros runs con ag_topologo --llm, el GRAPH_SUMMARY.md lo genera ag_topologo directamente — no necesitar gen_summary.py.
-
-### AgMaster_amOS_3 — vocabulario y reglas IAIM
-**Type:** fact  
-**Project:** dfl  
-
-AgMaster_amOS_3 es el documento maestro v3 del ecosistema (USAR ESTA, versiones 1 y 2 obsoletas). Vocabulario mínimo para IA invitada: amOS=sistema operativo conceptual/metodológico para absorber/metabolizar información manteniendo soberanía; IAIM=Invisible Augmented Intelligence Mesh, red invisible de IAs aliadas sin nodos fijos, orquestada por HI; HI=Jorge, decisión final soberana; ag10=ChatGPT como router/integrador/destilador/última yarda (no oráculo ni jefe); agPregunta=pregunta aumentada con propósito/dominio/límite/criterio; agLego=pieza conceptual candidata modular trazable; Candado Soberano=restricciones no negociables: no-exec, candidate_only, human-review-first. Prefijo 'ag'=augmented+governed+generative-but-contained. AG10-AUSTERITY-LOCK para fases de cierre/patch/gate. Origin Chain obligatorio para todo agLego. Frase núcleo v3: 'La red ilumina. La HI orquesta. ag10 destila. El candado audita. amOS asimila la cicatriz, no la herida.' Paralelo permitido: máximo 2 nodos, candidate_only, revisión HI.
-
 ### Session summary: futbolweb-app
 **Type:** session_summary  
 **Project:** futbolweb-app  
 
-## Cierre DFL/KNL/FutbolWeb — 2026-06-27
+## Goal
+Completar el Diagnóstico Institucional DFL v1 (misión retomada tras corte de conexión): auditoría solo-lectura de La Garra con separación evidencia/inventario/interpretación/diagnóstico y clasificación explícita de certeza. Cierre con estado de la casa y orden institucional, NO propuesta tecnológica.
 
-### Goal
-Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar FutbolWeb limpio de dirty files y factory artifacts.
+## Accomplished
+- Verificado estado persistido tras el corte: 17 archivos de evidencia en EVIDENCE/ sobrevivieron; ningún artefacto de análisis existía; Engram sin registro de la misión (murió antes del Gate 4B).
+- Cerrados 2 huecos de evidencia (solo lectura): git-remotes-redactado.txt (PAT detectado por prefijo, valor jamás registrado) y git-dirty-detalle.txt.
+- Escritos los 5 artefactos en /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/: 00-README (método + taxonomía [V]/[I]/[NV]/[D]), 01-INVENTARIO-INFRAESTRUCTURA, 02-INTERPRETACION, 03-HALLAZGOS (18 hallazgos: 1 crítico, 6 altos, 5 medios, 6 bajos), 04-DIAGNOSTICO-INSTITUCIONAL (orden: ACLARAR → VERIFICAR → CONSOLIDAR → GOBERNAR → RETIRAR).
 
-### Accomplished
-- Engram #101: payload /go slim — graph_context eliminado, knl canónico único en payload
-- cc-atgo-hook.sh: header @go → @$go corregido
-- dfl-nav fmt_brief: mensaje no-match → "sin god_node — intenta la raíz del concepto"
-- FutbolWeb repo limpio: Blueprint audit movido a /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Auditorias/, graphify-out/ eliminado, .gitignore actualizado, commit 3fd5801
-- Engram #102: higiene FutbolWeb documentada
-- Bitácora creada: /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+## Discoveries (clave)
+- H-01 CRÍTICO: PAT GitHub en remote de prediccion2026 (obs #218) — registrado sin rotar por mandato.
+- H-02 ALTO: backups off-host de Engram NO verificables desde La Garra (ssh denegado + receptor rechaza inspección) — durabilidad es hipótesis, no hecho.
+- H-03 ALTO: engram-backup-offhost.sh y engram-sync-cron.sh corren desde working tree sin commit — crons ejecutan código que git no declara.
+- H-04 ALTO: producto público (360eventos demo a Rubén, futbolweb) servido por next dev servers NODE_ENV=development en puertos públicos; explica swap 1.4Gi/2.0Gi.
+- H-05 ALTO: saas-factory-setup V5 (5e42124) local con remote apuntando a org externa saas-factory-community — push reflejo filtraría IP de fábrica.
+- H-06/H-07: n8n público dormido desde 2026-05-17; futbolweb-env-backup.zip en Drive sin verificar.
+- Organismo intacto: cero correcciones, reinicios, limpiezas o actualizaciones.
 
-### Discoveries
-- graph_context era alias redundante del payload /go — eliminado sin romper consumidores
-- agProtocol_ATP-D_ROJA_v0.1-1: 3 archivos con MD5 idéntico en corpus (duplicados de indexación)
-- "estado" como nombre de god_node produce colisión léxica en español con el grafo
-- Blueprint_v0.6 audit era inconclusa (Blueprint no disponible en VM2) — conservada en Auditorias/
+## Next Steps
+- Bloques 1º-2º del diagnóstico antes de cualquier evolución: aclarar alcance del PAT, registro vivo/muerto de órganos /opt, rol n8n, dry-run metabolismo, destino V5; verificar backups desde VM3, auth n8n/8080, vigencia PAT.
+- Commitear el expediente de auditoría en dfl-knowledge (C-2) cuando Jorge autorice.
 
-### Next Steps
-1. FutbolWeb producto — runtime estable, knockout scoring deployado (91a4531)
-2. KNL próximo ciclo — nota stale graph_context en knl_builder.py, health test local, evaluar renombrar estado → context-proxy
-3. MERCADER — agregar a KNL si se activa como área de trabajo
-4. Corpus — eliminar agProtocol duplicados (-1 variants)
+## Relevant Files
+- /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/{00-README,01-INVENTARIO-INFRAESTRUCTURA,02-INTERPRETACION,03-HALLAZGOS,04-DIAGNOSTICO-INSTITUCIONAL}.md
+- EVIDENCE/ (19 archivos, incl. git-remotes-redactado.txt y git-dirty-detalle.txt nuevos)
 
-### Relevant Files
-/opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+### amOS Event Model — veredicto auditoría 2026-06-23
+**Type:** decision  
+**Project:** dfl  
+
+Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (AgMaster_amOS_3, AI_amOS_Acta_Fundacional v1.1, Protocolo MS→amOS). Veredicto: B — Existe parcialmente pero disperso. Cobertura: Peso/costo metabólico→confidence+value en tabla events (Parcial, consolidar); Persistencia→status Origin Chain+estados Candidate Vault (Parcial, consolidar); Intención→scope+forbidden_uses agLego+Layer3 VALUE (Implícita, nombrar); Propagación→C-009+G-002 Protocol Taxonomy (Incompleta, GAP REAL); Relación con estado→Layer6+tabla asset_states (Existe, conservar). Conclusión: NO hace falta constructo nuevo tipo 'Light Signals'. Hace falta unificar y nombrar lo disperso. Gap real confirmado: G-002 Protocol Taxonomy (propagación, marcado como no cerrado en el Acta Fundacional). Próximo paso: cerrar G-002 dentro del Libro 1 amOS o como PRP independiente. Prerequisito: localizar RFC-DFL-001 (puede contener Event Model más completo).
+
+### amOS — ontología activa 13 capas (Acta Fundacional v1.1)
+**Type:** fact  
+**Project:** dfl  
+
+13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
 
 ### 360eventos Phase 3 SFV5 bridge completed
 **Type:** decision  
@@ -658,15 +623,15 @@ No Phase 2 code changes were made during CERO.
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.884  
+**Graph entropy:** 0.8274  
 
-- **Community 11** (96 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
-- **Community 0** (4 nodes): Express Framework, Bicep, RON (Rusty Object Notation)
-- **Community 1** (4 nodes): JSON Schema
-- **Community 2** (4 nodes): agLego-PTE-001
-- **Community 3** (4 nodes): Preocupaciones operativas
-- **Community 4** (4 nodes): amOS, IAIM, ag10
+- **Community 11** (95 nodes): Asunciones de Verificación, Digest de Contenido, Artifact and Runtime Matrix
+- **Community 0** (7 nodes): Capacidades Comunes Reutilizables, dfl-secrets
+- **Community 1** (4 nodes): Onboarding Capability
+- **Community 2** (4 nodes): Blade en Laravel, Beancount, MCP (Model Context Protocol)
+- **Community 3** (4 nodes): NBLM2, Working Memory, Active Library
+- **Community 4** (4 nodes): Documentación JSDoc, Estado de la casa DFL, Onboarding multi-agente
 
 ---
 
-*Mirror auto-generated 2026-07-25T20:56:39Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-26T03:03:50Z | La Garra → DFLghub/amos-context*
