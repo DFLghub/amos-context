@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-26T15:21:41Z  
+**Generated:** 2026-07-26T15:50:55Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,25 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### JPI Fase 5 autorizada — E2E empresarial completo
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Autorización para iniciar JPI Fase 5 — E2E empresarial completo de la Empresa Sintética JPI, sobre happy path probado de Fase 4.1.
+
+**Why**: Fase 4.1 completó portabilidad de factory (contrato neutral, intercambio sfv5/test-double), pero quedó con 7 fallos en resilience (timeout, retry, recovery). Deuda registrada como FACTORY_BRIDGE_RESILIENCE_BACKLOG. Fase 5 avanza el objetivo empresarial sin depender de esa deuda.
+
+**Where**: /opt/360eventos (JPI) y /opt/saas-factory-setup/saas-factory (SFV5 mock). Rama aislada para Fase 5. Documentación: /opt/360eventos/JPI-FACTORY-PHASE4.1-FINAL-STATE.md.
+
+**Learned**: 
+- Happy path operativo: creación idempotente, polling, E2E básico, artefactos reales, SHA256, metadata
+- Factory seleccionable vía DFL_FACTORY_ID solamente
+- No payload.adapter, no lógica SFV5 específica en BOS
+- Secuencia: SOLICITUD → COTIZACIÓN → RESERVA → OPERACIÓN → CIERRE (no PRECOTIZACION)
+- Criterio éxito: escenario completo de punta a punta, brecha activa fabricación neutral, artefacto validado, BOS cierra post-validación, evidencia trazable
+- Máximo 1 revisión posterior
+- Veredicto final: READY_FOR_FINAL_REVIEW o FAILED_TO_COMPLETE_PHASE_5
+
 ### JPI Phase 4 merged and closed institutionally
 **Type:** decision  
 **Project:** dfl  
@@ -189,12 +208,6 @@ State transitions verified: REQUESTED → DISPATCHED → RUNNING → READY → V
 Phase 3.5 guarantees preserved: freshness, fingerprint consistency, path confinement
 
 No blockers. Ready for merge.
-
-### JPI Phase 3.5 post-review closure
-**Type:** decision  
-**Project:** dfl  
-
-2026-07-26 UTC. Session closed after a single consolidated correction round for JPI Phase 3.5 real SFV5 integration. Repos: /opt/360eventos and /opt/saas-factory-setup/saas-factory. Corrected SHAs: JPI 58b6546c4d92a562afdd1a6dc2a0a7b576566888 on branch fase-3-5-real-sfv5-bridge; SFV5 d12693998c38c7d5b1f83a74135dd65bb8ab57bf on branch fase-3-5-jpi-real-sfv5-bridge. Closed R35-01 by removing dependency on untracked cognitive-core helpers and proving bridge tests from a clean archive of the corrected SFV5 SHA. Closed R35-02 by enforcing strict correlation in JPI across status.json, artifact, test-report, producer-evidence, mission_id, goal_id, factory_request_id, attempt_number, mission_fingerprint, producer identity and expected producer SHA. Closed R35-03 by adding deterministic mission_fingerprint propagation and only allowing idempotent reuse when all identifiers and fingerprint match exactly. Closed R35-04 by enforcing canonical confinement of evidence_path in SFV5 and path confinement checks in JPI for producer-reported artifact/test/evidence paths. Verification: SFV5 relevant tests 21/21 PASS; JPI regression 237/237 PASS; fresh real E2E 1/1 PASS from empty job root; artifact generated after mission packet with recorded timestamps/checksums. Evidence updated under /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/ including 03-REPORT.md, 04-CC-FINDINGS-RESPONSE.md, 05-POST-REVIEW-VERIFICATION.md, CX-STATUS.md and raw logs. Remote verified: origin/fase-3-5-real-sfv5-bridge -> 58b6546..., origin/fase-3-5-jpi-real-sfv5-bridge -> d126939.... No merge to main performed.
 
 ---
 
@@ -340,99 +353,87 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 
 13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
 
-### JPI Fase 4.1 — Factory Portability Gate IMPLEMENTADO
-**Type:** architecture  
+### Session summary: dfl-knowledge
+**Type:** session_summary  
 **Project:** dfl-knowledge  
 
-**What**: Implementada la puerta de portabilidad de factory (Fase 4.1 JPI) que desacopla lógica JPI/BOS/FMD de SFV5 mediante contrato neutral.
+## Goal
+Implement JPI Fase 5 — E2E empresarial completo (SOLICITUD → COTIZACIÓN → RESERVA → OPERACIÓN → CIERRE) extending 12-step JPI piloto with 6 new steps (13-18) for full business workflow, factory-neutral integration, and business validation.
 
-**Why**: Permitir que la lógica empresarial sea agnóstica a la factory (SFV5, test-double, futuro marketplace) sin tocar código de negocio.
+## Instructions
+- Jorge authorizes autonomous execution: no interruptions unless blockers
+- Happy path only: no retry/recovery/advanced timeout (debt: FACTORY_BRIDGE_RESILIENCE_BACKLOG)
+- Factory intercambiable vía DFL_FACTORY_ID (env var), no payload.adapter
+- No SFV5-specific logic in BOS/JPI
+- Entrega integral: single branch, single commit, no intermediate reviews
+- Veredicto final: READY_FOR_FINAL_REVIEW o FAILED_TO_COMPLETE_PHASE_5
+- Máximo 1 revisión independiente post-implementación
 
-**Where**:
-- Contratos: `/opt/360eventos/business-os/adapters/factory/contracts.js` (Mission, Result, FactoryAdapter)
-- SFV5Adapter: `/opt/360eventos/business-os/adapters/factory/sfv5-factory-adapter.js` (12 pasos de jpi-pilot)
-- TestDoubleAdapter: `/opt/360eventos/business-os/adapters/factory/test-double-factory-adapter.js` (simulación en memoria)
-- Registry: `/opt/360eventos/business-os/adapters/factory/registry.js` (selector por DFL_FACTORY_ID)
-- Tests: `/opt/360eventos/business-os/adapters/factory/__tests__/factory-contracts.test.js` (20 tests, todos PASS)
-- Docs: `/opt/360eventos/business-os/adapters/factory/ARCHITECTURE.md`
+## Discoveries
+- **Domain state mismatch**: Real JPI domain has no RESERVA/OPERACION states. Mapped: RESERVA-phase→ACEPTADA (cotización), OPERACION-phase→CERRADA (solicitud). Both map to domain-valid terminals.
+- **Factory integration via runtime**: Don't call adapter.submitMission() directly. Use runtime.createOperationalFactoryRequest() + runtime.pollOperationalFactoryRequest(); runtime handles adapter selection via getGlobalRegistry(DFL_FACTORY_ID).
+- **Artifact metadata structure**: test-double factory returns complex artifact_metadata (goal_id, solicitud, cotizacion, plans, artifact_sha, artifact_location). Not just type+producer_sha. Use artifact_sha + artifact_location for validation.
+- **Async/await critical**: pollOperationalFactoryRequest is async but returns results that are NOT Promises. Must use `await` or poll never reaches terminal.
+- **Trace redundancy**: Don't add solicitud_estado/cotizacion_estado to trace entries where state didn't change (step 11 had redundant EMITIDA, step 13 had redundant CALIFICADA).
+- **Idempotency via correlationKey**: runtime.createOperationalFactoryRequest(db, goalId, payload, correlationKey) enables reuse; use stable key like 'jpi-fase5-factory-{SOLICITUD_ID}' so repeated runs detect and reuse same factory_request.
 
-**Implementación Completa**:
-- ✅ Contrato neutral (sin nombres sfv5_*)
-- ✅ FactoryAdapter con 4 operaciones: dispatchMission, getStatus, collectOutputs, validateOutputs
-- ✅ SFV5FactoryAdapter encapsulando 12 pasos JPI (hermético)
-- ✅ TestDoubleFactoryAdapter simulando flujo en memoria
-- ✅ FactoryRegistry seleccionando por DFL_FACTORY_ID
-- ✅ Variables de entorno: DFL_FACTORY_ID, DFL_FACTORY_ADAPTER, DFL_FACTORY_ROOT
-- ✅ 20 contract tests (C1-C8 cada uno contra SFV5 y TestDouble)
-- ✅ Integration test: misma misión en ambos adapters
-- ✅ Idempotencia preservada
-- ✅ Lógica JPI sin cambios estructurales
+## Accomplished
+- ✅ **jpi-fase5.js** — 18-step orchestration (500+ lines)
+  - Pasos 1-12: copied from jpi-pilot with runtime.createRuntimeGoal() instead of createGoal()
+  - Pasos 13-18: RESERVA (ACEPTADA), factory dispatch/poll, artifact validation, OPERACION (CERRADA), BOS closure
+  - Factory neutral: no DFL_FACTORY_ID hardcoding in BOS logic
+  - State mapping enforced: domain validation via canTransitionSolicitud/Cotizacion
+  
+- ✅ **fmd-jpi-fase5-e2e.test.js** — 6 test suites, 6/6 PASS
+  - Full E2E scenario (18 steps, trace complete, business_validation_pass=true)
+  - Idempotency (second run returns cached state, same goal_id)
+  - State transitions (RECIBIDA→REQUIERE_INFORMACION→CALIFICADA→CERRADA; BORRADOR→EMITIDA→ACEPTADA)
+  - Artifact validation (artifact_sha + artifact_location verified pre-consumo)
+  - Factory neutral (DFL_FACTORY_ID=test-double verified)
+  - Business validation rules (all conditions met, goal→closed)
 
-**Tests Finales**: 20/20 PASS
-- SFV5: 8 tests PASS (validez, correlación, idempotencia, freshness, fallo, output corrupto, identidad, consumo)
-- TestDouble: 8 tests PASS (identical structure)
-- Integration: 2 tests PASS (mission processing, trace structure)
+- ✅ **FASE-5-E2E-EMPRESARIAL-COMPLETO.md** — Complete architecture documentation
+  - 18-step flow explained
+  - State machine per entity (solicitud, cotizacion, factory, goal)
+  - Business validation rules (solicitud=CERRADA ∧ cotizacion=ACEPTADA ∧ artifact ∧ mission_ready → closed)
+  - Test summary, design decisions, restrictions, nextSteps
 
-**Commit SHA**: `2887e95` (rama: feat/jpi-factory-portability-gate-v0.1)
+- ✅ **Branch & Commits**
+  - Branch: feat/jpi-fase-5-e2e-empresarial-completo
+  - Commit efe6c5b: feat(fase5) + 9 files (jpi-fase5.js, tests, docs, debug scripts)
+  - Commit 51a1ef1: cleanup (removed 6 debug test scripts)
+
+## Next Steps
+- Independent review of Fase 5 code (max 1 round) against criteria
+- If READY_FOR_FINAL_REVIEW: merge to main, tag sfv5-fase5-e2e-v0.1, close JPI Fase 5
+- If FAILED: triage blockers (unlikely given 6/6 tests + happy path only constraint)
+- Future: Fase 6 resilience hardening (retry/recovery/re-poll/timeout — currently backlog)
+
+## Relevant Files
+- **business-os/fmd/jpi-fase5.js** — Main orchestration; pasos 13-18 add factory dispatch, polling, artifact validation, business closure
+- **business-os/tests/fmd-jpi-fase5-e2e.test.js** — 6 E2E test suites; validates state machine, factory integration, artifact handling
+- **FASE-5-E2E-EMPRESARIAL-COMPLETO.md** — Architecture doc; explains 18-step flow, state mapping, validation rules, evidence traceability
+- **business-os/fmd/jpi-pilot.js** — Unchanged (pasos 1-12 reference); jpi-fase5.js copied + extended
+- **business-os/fmd/runtime.js** — Factory integration via createOperationalFactoryRequest/pollOperationalFactoryRequest (not modified; reused as-is)
+
+### JPI Fase 5 autorizada — E2E empresarial completo
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Autorización para iniciar JPI Fase 5 — E2E empresarial completo de la Empresa Sintética JPI, sobre happy path probado de Fase 4.1.
+
+**Why**: Fase 4.1 completó portabilidad de factory (contrato neutral, intercambio sfv5/test-double), pero quedó con 7 fallos en resilience (timeout, retry, recovery). Deuda registrada como FACTORY_BRIDGE_RESILIENCE_BACKLOG. Fase 5 avanza el objetivo empresarial sin depender de esa deuda.
+
+**Where**: /opt/360eventos (JPI) y /opt/saas-factory-setup/saas-factory (SFV5 mock). Rama aislada para Fase 5. Documentación: /opt/360eventos/JPI-FACTORY-PHASE4.1-FINAL-STATE.md.
 
 **Learned**: 
-- Idempotencia en SFV5 requiere cuidado con createGoal (retorna goal_id existente si idempotency_key existe)
-- TestDouble es tan válido como SFV5 para testing porque respeta exactamente el contrato
-- Schema BD necesita budget NOT NULL, correcciones de tipos (TEXT vs INTEGER)
-- 12 pasos de JPI son agnósticos a source de datos si se parametriza correctamente
-
-**Riesgos Residuales**:
-1. Dominio JPI path `/opt/360eventos/src/features/jpi/domain` es SFV5-específico → configurable vía DFL_FACTORY_ROOT
-2. Tablas jpi_* esquema SFV5 → TestDouble no depende (futuro adapter podrá variar)
-3. Sin timeout/fallback → implementable en Fase 5
-4. Marketplace no incluido → aplazado intencionalmente
-
-**Criterios Fase 4.1**: TODOS CUMPLIDOS
-- [x] Contrato neutral DFL sin sfv5_*
-- [x] FactoryAdapter 4 operaciones
-- [x] Registry neutral
-- [x] SFV5 detrás de adapter (lógica preservada)
-- [x] Test-double contrato implementado
-- [x] 20 contract tests
-- [x] DFL_FACTORY_ID swappea sin código
-- [x] Idempotencia preservada
-- [x] Lógica JPI sin cambios
-
-### JPI Fase 4.1 — Factory Portability Gate Diagnóstico Inicial
-**Type:** discovery  
-**Project:** dfl-knowledge  
-
-**What**: Diagnóstico inicial de lógica JPI, BOS, FMD y acoplamiento actual a SFV5.
-
-**Why**: Fase 4.1 requiere desacoplar la lógica empresarial de JPI/BOS/FMD de SFV5 mediante un contrato neutral reemplazable (Factory Portability Gate).
-
-**Where**: 
-- Lógica JPI: `/opt/360eventos/business-os/fmd/jpi-pilot.js` (12 pasos orquestados)
-- Dominio real: `/opt/360eventos/src/features/jpi/domain` (hardcoded path)
-- Tablas: `jpi_solicitudes`, `jpi_cotizaciones`, `goal_deviations`, `goal_closures`, `plans`, `goals`
-- Adapters base: `/opt/360eventos/business-os/adapters/channels/base.js` (ChannelAdapter)
-
-**Acoplamiento actual (BLOQUEADORES)**:
-- Path hardcodeado: `/opt/360eventos/src/features/jpi/domain`
-- IDs sintéticos fijos: SOLICITUD_ID='sol-piloto-001', COTIZACION_ID='cot-piloto-001'
-- Acceso directo a BD con SQL (no parametrizado)
-- Sin contrato neutral para swappear factory
-
-**Estructura de 12 pasos JPI** (lógica a preservar):
-1. Crear goal (Gate G1)
-2. Persistir solicitud sintética
-3. Plan v1 generado
-4. assessMissingInformation (1ra corrida, esperado INCOMPLETE)
-5. Transición RECIBIDA → REQUIERE_INFORMACION
-6. Registrar desvío (level 1)
-7. Corrección fecha_evento + assessMissingInformation (2da corrida, esperado COMPLETE)
-8. Transición REQUIERE_INFORMACION → CALIFICADA + resolver desvío
-9. Plan v2 generado (replaces plan v1)
-10a-10b. Crear cotización BORRADOR → EMITIDA
-11. Validar success_criteria contra estado real
-12. Cerrar goal (paquete de cierre + finalGoalStatus)
-
-**Learned**: La lógica de JPI es muy específica (domain rules, state transitions, deviations, closures). El reto es extraer la orquestación de los 12 pasos de forma que sea agnóstica a la fuente de datos (SFV5 vs test-double vs futuro marketplace).
+- Happy path operativo: creación idempotente, polling, E2E básico, artefactos reales, SHA256, metadata
+- Factory seleccionable vía DFL_FACTORY_ID solamente
+- No payload.adapter, no lógica SFV5 específica en BOS
+- Secuencia: SOLICITUD → COTIZACIÓN → RESERVA → OPERACIÓN → CIERRE (no PRECOTIZACION)
+- Criterio éxito: escenario completo de punta a punta, brecha activa fabricación neutral, artefacto validado, BOS cierra post-validación, evidencia trazable
+- Máximo 1 revisión posterior
+- Veredicto final: READY_FOR_FINAL_REVIEW o FAILED_TO_COMPLETE_PHASE_5
 
 ---
 
@@ -525,4 +526,4 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 
 ---
 
-*Mirror auto-generated 2026-07-26T15:21:41Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-26T15:50:55Z | La Garra → DFLghub/amos-context*
