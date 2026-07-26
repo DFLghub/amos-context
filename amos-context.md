@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-26T05:31:18Z  
+**Generated:** 2026-07-26T15:21:41Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -196,47 +196,6 @@ No blockers. Ready for merge.
 
 2026-07-26 UTC. Session closed after a single consolidated correction round for JPI Phase 3.5 real SFV5 integration. Repos: /opt/360eventos and /opt/saas-factory-setup/saas-factory. Corrected SHAs: JPI 58b6546c4d92a562afdd1a6dc2a0a7b576566888 on branch fase-3-5-real-sfv5-bridge; SFV5 d12693998c38c7d5b1f83a74135dd65bb8ab57bf on branch fase-3-5-jpi-real-sfv5-bridge. Closed R35-01 by removing dependency on untracked cognitive-core helpers and proving bridge tests from a clean archive of the corrected SFV5 SHA. Closed R35-02 by enforcing strict correlation in JPI across status.json, artifact, test-report, producer-evidence, mission_id, goal_id, factory_request_id, attempt_number, mission_fingerprint, producer identity and expected producer SHA. Closed R35-03 by adding deterministic mission_fingerprint propagation and only allowing idempotent reuse when all identifiers and fingerprint match exactly. Closed R35-04 by enforcing canonical confinement of evidence_path in SFV5 and path confinement checks in JPI for producer-reported artifact/test/evidence paths. Verification: SFV5 relevant tests 21/21 PASS; JPI regression 237/237 PASS; fresh real E2E 1/1 PASS from empty job root; artifact generated after mission packet with recorded timestamps/checksums. Evidence updated under /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/ including 03-REPORT.md, 04-CC-FINDINGS-RESPONSE.md, 05-POST-REVIEW-VERIFICATION.md, CX-STATUS.md and raw logs. Remote verified: origin/fase-3-5-real-sfv5-bridge -> 58b6546..., origin/fase-3-5-jpi-real-sfv5-bridge -> d126939.... No merge to main performed.
 
-**Type:** decision  
-**Project:** futbolweb-app  
-
-TOPIC: futbolweb/knockout-placeholders/deploy-verificado
-TYPE: decision
-STATUS: active
-DATE: 2026-07-15
-
-[RESUELVE pendiente de obs #262] Deploy de producción del commit 2a12586 VERIFICADO en Vercel: deployment id 5452404203, environment Production, state success, 2026-07-15T05:55:26Z (via GitHub Deployments API pública; sin CLI de Vercel en esta VM).
-
-Evidencia en https://www.futbolweb.app (host canónico; apex futbolweb.app hace 307 → www):
-- /match/mundial-2026-partido-089/grupo → "Paraguay vs Francia" (feeders resueltos, antes placeholders)
-- /match/mundial-2026-partido-093/grupo → "Portugal vs España"
-- /match/mundial-2026-partido-104/grupo → "España vs Ganador Partido 102" (SF 102 pendiente conserva placeholder)
-- /mis-pronosticos → 200, RSC payload contiene completedResults con 101 filas y advancing_team reales (España×4 = finalista) — getCompletedMatchResultsSafe funcionando (no cayó al fallback [])
-- /api/my-predictions contrato intacto {"ok":true}; /api/admin/reminder-candidates → 401 sin token (handler vivo, no se disparó); predict 104 → 200
-
-Limitación: logs de función de Vercel no accesibles desde esta VM (sin token; /etc/dfl-secrets protegido) — evidencia indirecta: 200s, sin marcadores de error en HTML, resolución canónica operando.
-
-**Type:** decision  
-**Project:** futbolweb-app  
-
-TOPIC: futbolweb/knockout-placeholders/fix-desplegado
-TYPE: decision
-STATUS: active
-DATE: 2026-07-15
-
-**Fix ejecutado y pusheado**: commit 2a12586 en main (origin) — "fix(knockout): resolve KO bracket names on mis-pronosticos, grupo page and reminder candidates". Resuelve la obs #261 (diagnóstico).
-
-**Diseño (aprobado por Jorge, sin pipeline paralelo)**:
-- `resolveWorldCupMatches(completedResults, locale)` en lib/knockout-reality.ts — función pura que compone localizeWorldCupMatches + applyKnockoutBracketAssignments (autoridad existente). Client-safe.
-- `getCompletedMatchResultsSafe(now)` en lib/tournament-reality.ts — fetch canónico con degradación a [] ante fallo (placeholders, nunca crash).
-- /mis-pronosticos: page.tsx (server) pasa completedResults como prop; MyPredictionsClient resuelve client-side manteniendo relocalización por locale.
-- grupo page y reminder-candidates usan el mismo par de funciones (reminder con locale "es"; getOpenKoMatches ahora acepta matches como parámetro con default estático).
-
-**Validación**: 84/84 tests (9 nuevos: KO resuelto/pendiente/sin resultados, mensaje reminder con nombres reales, render smoke MyPredictionsClient), lint limpio, build limpio (/mis-pronosticos ahora dinámica). Evidencia E2E local (next start + Supabase prod, solo lectura): partido 89 "Paraguay vs Francia", 93 "Portugal vs España", final 104 "España vs Ganador Partido 102" (SF 102 pendiente conserva placeholder — regla cumplida).
-
-**No tocado**: puntajeTigreKnockout, scoring, Supabase schema/data, contratos de predicción, superficies ya correctas (upcoming/predict/today/oracle).
-
-**Pendiente**: verificar deploy Vercel del commit 2a12586 en producción.
-
 ---
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
@@ -381,49 +340,99 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 
 13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
 
-### JPI Phase 4 merged and closed institutionally
-**Type:** decision  
-**Project:** dfl  
-
-Fecha: 2026-07-26
-Resultado: JPI Fase 4 cerrada institucionalmente con merge a main en ambos repos.
-SFV5 main before: d12693998c38c7d5b1f83a74135dd65bb8ab57bf
-SFV5 main after: 9b18947fab2c0874caba729fdb464025dfdde8f0
-SFV5 tag: sfv5-bos-fmd-automation-v0.1 -> 9b18947fab2c0874caba729fdb464025dfdde8f0
-JPI main before: 58b6546c4d92a562afdd1a6dc2a0a7b576566888
-JPI main after: 2a1efe243e564a30e273b9ccf0e7077032e65d33
-JPI tag: jpi-phase-4-closed -> 2a1efe243e564a30e273b9ccf0e7077032e65d33
-Pruebas: SFV5 8/8 PASS; JPI 247/247 PASS.
-E2E post-merge real PASS usando SFV5_FACTORY_ROOT=/tmp/sfv5-phase4-merge/saas-factory.
-mission_fingerprint: 73a6993be1e43653e16266e465bebeec638703193e4cb418fdb4042ff6b7f2c5
-producer_sha: 9b18947fab2c0874caba729fdb464025dfdde8f0
-artifact_sha: 1080ba4b35341c7ba0b1ad7e48d4e9efd1246ac854aed29ec87583e77d205f09
-Operaciones consumió: YES. BOS cerró: YES. Estado final: CLOSED.
-Evidencia: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/06-MERGE-AND-CLOSURE.md, 07-POST-MERGE-E2E.md, FINAL-POST-MERGE-STATE.json y raw/merge-closure/.
-Blockers: 0. Veredicto: PASS / MERGED / READY_FOR_FINAL_REVIEW.
-
-### Session summary: dfl-knowledge
-**Type:** session_summary  
+### JPI Fase 4.1 — Factory Portability Gate IMPLEMENTADO
+**Type:** architecture  
 **Project:** dfl-knowledge  
 
-**Goal**: Post-merge institutional closure verification for JPI Phase 4. Independent reproducible validation of all merge artifacts, tests, and end-to-end guarantees.
+**What**: Implementada la puerta de portabilidad de factory (Fase 4.1 JPI) que desacopla lógica JPI/BOS/FMD de SFV5 mediante contrato neutral.
 
-**Discoveries**: JPI Phase 4 (BOS/FMD autonomous automation without relay) merge is complete and verified across three independent reviews:
+**Why**: Permitir que la lógica empresarial sea agnóstica a la factory (SFV5, test-double, futuro marketplace) sin tocar código de negocio.
 
-1. Phase 3.5 post-merge: PASS/PHASE_CLOSED
-2. Phase 4 pre-merge: PASS/READY_TO_MERGE  
-3. Phase 4 post-merge final: PASS/PHASE_CLOSED
+**Where**:
+- Contratos: `/opt/360eventos/business-os/adapters/factory/contracts.js` (Mission, Result, FactoryAdapter)
+- SFV5Adapter: `/opt/360eventos/business-os/adapters/factory/sfv5-factory-adapter.js` (12 pasos de jpi-pilot)
+- TestDoubleAdapter: `/opt/360eventos/business-os/adapters/factory/test-double-factory-adapter.js` (simulación en memoria)
+- Registry: `/opt/360eventos/business-os/adapters/factory/registry.js` (selector por DFL_FACTORY_ID)
+- Tests: `/opt/360eventos/business-os/adapters/factory/__tests__/factory-contracts.test.js` (20 tests, todos PASS)
+- Docs: `/opt/360eventos/business-os/adapters/factory/ARCHITECTURE.md`
 
-All institutional closure criteria met: SHAs match remote, tags published correctly, all tests pass from clean checkouts (247/247 JPI regression, 8/8 SFV5 bridge, 8/8 Phase 4 E2E scenarios), producer_sha exactly 9b18947fab2c0874caba729fdb464025dfdde8f0 in all 5 outputs, strict correlation verified, artifact freshness (+60ms), state transitions verified, validation enforced pre-consumption, closure enforced post-consumption, no mocks/fallback/relay, factory root fail-closed, merge scope clean. Phase 3.5 guarantees preserved. Zero blockers.
+**Implementación Completa**:
+- ✅ Contrato neutral (sin nombres sfv5_*)
+- ✅ FactoryAdapter con 4 operaciones: dispatchMission, getStatus, collectOutputs, validateOutputs
+- ✅ SFV5FactoryAdapter encapsulando 12 pasos JPI (hermético)
+- ✅ TestDoubleFactoryAdapter simulando flujo en memoria
+- ✅ FactoryRegistry seleccionando por DFL_FACTORY_ID
+- ✅ Variables de entorno: DFL_FACTORY_ID, DFL_FACTORY_ADAPTER, DFL_FACTORY_ROOT
+- ✅ 20 contract tests (C1-C8 cada uno contra SFV5 y TestDouble)
+- ✅ Integration test: misma misión en ambos adapters
+- ✅ Idempotencia preservada
+- ✅ Lógica JPI sin cambios estructurales
 
-**Accomplished**: Three independent verifications completed. Identified and resolved producer_sha discrepancy (configuration issue, not code). All evidence reports generated and signed.
+**Tests Finales**: 20/20 PASS
+- SFV5: 8 tests PASS (validez, correlación, idempotencia, freshness, fallo, output corrupto, identidad, consumo)
+- TestDouble: 8 tests PASS (identical structure)
+- Integration: 2 tests PASS (mission processing, trace structure)
 
-**Next Steps**: Phase 4 ready for operational deployment. Relay Controller remains replaceable boundary. No further action needed for Phase 4.
+**Commit SHA**: `2887e95` (rama: feat/jpi-factory-portability-gate-v0.1)
 
-**Evidence**: 
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/08-INDEPENDENT-POST-MERGE-REVIEW-CC.md
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/05-INDEPENDENT-REVIEW-CC.md
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/08-INDEPENDENT-POST-MERGE-REVIEW-CC.md
+**Learned**: 
+- Idempotencia en SFV5 requiere cuidado con createGoal (retorna goal_id existente si idempotency_key existe)
+- TestDouble es tan válido como SFV5 para testing porque respeta exactamente el contrato
+- Schema BD necesita budget NOT NULL, correcciones de tipos (TEXT vs INTEGER)
+- 12 pasos de JPI son agnósticos a source de datos si se parametriza correctamente
+
+**Riesgos Residuales**:
+1. Dominio JPI path `/opt/360eventos/src/features/jpi/domain` es SFV5-específico → configurable vía DFL_FACTORY_ROOT
+2. Tablas jpi_* esquema SFV5 → TestDouble no depende (futuro adapter podrá variar)
+3. Sin timeout/fallback → implementable en Fase 5
+4. Marketplace no incluido → aplazado intencionalmente
+
+**Criterios Fase 4.1**: TODOS CUMPLIDOS
+- [x] Contrato neutral DFL sin sfv5_*
+- [x] FactoryAdapter 4 operaciones
+- [x] Registry neutral
+- [x] SFV5 detrás de adapter (lógica preservada)
+- [x] Test-double contrato implementado
+- [x] 20 contract tests
+- [x] DFL_FACTORY_ID swappea sin código
+- [x] Idempotencia preservada
+- [x] Lógica JPI sin cambios
+
+### JPI Fase 4.1 — Factory Portability Gate Diagnóstico Inicial
+**Type:** discovery  
+**Project:** dfl-knowledge  
+
+**What**: Diagnóstico inicial de lógica JPI, BOS, FMD y acoplamiento actual a SFV5.
+
+**Why**: Fase 4.1 requiere desacoplar la lógica empresarial de JPI/BOS/FMD de SFV5 mediante un contrato neutral reemplazable (Factory Portability Gate).
+
+**Where**: 
+- Lógica JPI: `/opt/360eventos/business-os/fmd/jpi-pilot.js` (12 pasos orquestados)
+- Dominio real: `/opt/360eventos/src/features/jpi/domain` (hardcoded path)
+- Tablas: `jpi_solicitudes`, `jpi_cotizaciones`, `goal_deviations`, `goal_closures`, `plans`, `goals`
+- Adapters base: `/opt/360eventos/business-os/adapters/channels/base.js` (ChannelAdapter)
+
+**Acoplamiento actual (BLOQUEADORES)**:
+- Path hardcodeado: `/opt/360eventos/src/features/jpi/domain`
+- IDs sintéticos fijos: SOLICITUD_ID='sol-piloto-001', COTIZACION_ID='cot-piloto-001'
+- Acceso directo a BD con SQL (no parametrizado)
+- Sin contrato neutral para swappear factory
+
+**Estructura de 12 pasos JPI** (lógica a preservar):
+1. Crear goal (Gate G1)
+2. Persistir solicitud sintética
+3. Plan v1 generado
+4. assessMissingInformation (1ra corrida, esperado INCOMPLETE)
+5. Transición RECIBIDA → REQUIERE_INFORMACION
+6. Registrar desvío (level 1)
+7. Corrección fecha_evento + assessMissingInformation (2da corrida, esperado COMPLETE)
+8. Transición REQUIERE_INFORMACION → CALIFICADA + resolver desvío
+9. Plan v2 generado (replaces plan v1)
+10a-10b. Crear cotización BORRADOR → EMITIDA
+11. Validar success_criteria contra estado real
+12. Cerrar goal (paquete de cierre + finalGoalStatus)
+
+**Learned**: La lógica de JPI es muy específica (domain rules, state transitions, deviations, closures). El reto es extraer la orquestación de los 12 pasos de forma que sea agnóstica a la fuente de datos (SFV5 vs test-double vs futuro marketplace).
 
 ---
 
@@ -516,4 +525,4 @@ All institutional closure criteria met: SHAs match remote, tags published correc
 
 ---
 
-*Mirror auto-generated 2026-07-26T05:31:18Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-26T15:21:41Z | La Garra → DFLghub/amos-context*
