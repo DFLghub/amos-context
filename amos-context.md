@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-26T17:08:17Z  
+**Generated:** 2026-07-26T17:17:43Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -370,83 +370,69 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 
 13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
 
-### JPI erradicación total de etapa intermedia en /opt/360eventos
-**Type:** decision  
-**Project:** dfl  
+### Corrección auditoría Concierge — main tiene register/CLI que la auditoría inicial no vio
+**Type:** discovery  
+**Project:** dfl-knowledge  
 
-Fecha: 2026-07-26
-Repositorio: /opt/360eventos
-Rama: feat/jpi-fase-5-real-runtime-v0.1
-SHA revisado: a241ef5b2aeb76bfd0eae45f7dcf49166a4739dc
-Trabajo realizado: erradicación literal del término eliminado en todo el repo, sin allowlist, sin excepciones y sin conservarlo en decisión ni gate.
-Cambios clave: reescritura positiva de la decisión canónica en domain/02_knowledge/decisions/NO_INTERMEDIATE_STAGE.md; reescritura positiva del gate scripts/jpi-domain-term-guard.mjs; reescritura del test src/features/jpi/domain-term-guard.test.mjs; limpieza de superficies activas de runtime, ontología, business rules, business logic, discovery y knowledge.
-Evidencia: búsqueda exhaustiva en /opt/360eventos con TOTAL_OCCURRENCES=0 y ALLOWLISTED_OCCURRENCES=0; CHANGELOG.md inspeccionado aparte sin coincidencias.
-Validación: node scripts/jpi-domain-term-guard.mjs PASS; node --test src/features/jpi/domain-term-guard.test.mjs 3/3 PASS; npm run test:jpi PASS; node --test business-os/tests/fmd-jpi-fase5-e2e.test.js business-os/tests/fmd-runtime-integration.test.js business-os/tests/fmd-runtime-invariants-fix.test.js 49/49 PASS.
-Resultado: PASS / PRECOTIZACION_PERMANENTLY_ERADICATED.
+**What**: La auditoría integral de Concierge (2026-07-26, entregada en `/opt/dfl-knowledge/audits/concierge-live-path-2026-07-26/`) se hizo inicialmente contra el árbol de trabajo de la rama `feat/dfl-agent-relay-controller-v0.1`, que tiene una versión vieja/chica de `concierge/`. El Gate 4B de cierre (`mem_search "concierge"`) reveló que `main` (y 3+ ramas feature no fusionadas: `feat/dfl-concierge-workunit-claims`, `feat/dfl-concierge-deepseek-authz`, `feat/dfl-concierge-codex-register-cli`) tienen register.py, cli.py, workunit.py, validator/runtime_complete.py — código real y probado que la auditoría había marcado como "0 código, ASPIRACIONAL".
+
+**Why**: Publicar un veredicto de auditoría sin haber revisado todas las ramas relevantes de git (solo se miró el working tree activo) produjo afirmaciones factualmente incorrectas sobre qué código existe, y un tono de "abandono/duplicación sin gobierno" injusto frente a lo que en realidad fue un proceso arbitrado institucionalmente (Jorge/ARB 2026-07-23, obs Engram #311) con 2 auditorías de constructibilidad previas (v1: NO_GO, v2: constructible) y una revisión externa DeepSeek SFAT, todas ya en `main` bajo `audits/dfl-concierge-*`.
+
+**Where**:
+- Addendum de corrección completo: `/opt/dfl-knowledge/audits/concierge-live-path-2026-07-26/CONCIERGE-CORRECTION-ADDENDUM.md`
+- Banner de advertencia agregado al inicio de `CONCIERGE-EXECUTIVE-ASSESSMENT.md`
+- Evidencia previa relevante: Engram obs #287 (CP-01), #288 (dispatch Codex), #307/#309 (CP-F1-03/04), #311 (arbitración CC-canónico), #325/#328/#329 (authz remediation + F1_AUTHZ_ACCEPTED), #330 (workunit claims)
+- Trabajo no fusionado a main: rama `feat/dfl-concierge-deepseek-authz` (authz aceptado institucionalmente por Jorge pero NO aparece en `main..HEAD` — no confirmado si `concierge/authz.py` existe como código real)
+
+**Learned**:
+- El hallazgo CENTRAL de la auditoría (0% de conexión entre cualquier versión de Concierge y el servicio real desplegado `/opt/dfl-context-proxy/main.py`) se mantiene y se refuerza — es independiente de qué rama de `dfl-knowledge` se mire, porque `dfl-context-proxy` es un directorio/servicio separado que no importa `concierge` bajo ninguna forma (verificado con `git grep -l concierge main -- . ':!concierge/**'` → vacío).
+- Lo que cambia es la causa atribuida: no es negligencia/abandono, es "se construyó y revisó rigurosamente pero nunca se dio el paso de integrarlo al proxy real", y el trabajo está fragmentado en 3+ ramas sin consolidar a `main`.
+- **Antes de cualquier trabajo futuro de `CONNECT` sobre Concierge**: primero fusionar a `main` el trabajo disperso (register+CLI ya en main, workunit.py en una rama más adelantada, authz posiblemente aceptado en una tercera rama sin fusionar), y verificar el estado real de `concierge/authz.py`, antes de diseñar cualquier integración con `dfl-context-proxy`.
+- **Lección de proceso para futuras auditorías de este tipo**: cuando el alcance incluye "¿qué existe realmente?", el primer comando debe ser `git log --all --oneline | grep <tema>` y `git branch --merged main` — no asumir que el working tree activo representa todo el trabajo relevante en un repo con muchas ramas feature de vida larga.
 
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
 **Project:** dfl-knowledge  
 
 ## Goal
-Reconstruct JPI Fase 5 E2E vertical as a real business process using ONLY runtime APIs (no DB bypasses), with all preconditions validated, domain model clarified, and happy path proven.
+Auditoría integral de capacidades, arquitectura, conexión real y utilización óptima de DFL Concierge — determinar por qué CC/CX siguen haciendo onboardings inflados/inconsistentes pese a que Concierge existe para resolver exactamente eso. Modo solo lectura, sin correcciones de código.
 
 ## Instructions
-From DFL protocol in CLAUDE.md:
-- Use codebase-memory tools (search_graph, trace_path, get_code_snippet) BEFORE manual exploration
-- Engram memory is MANDATORY: save decisions, bugs, discoveries proactively
-- Gate 4B incremental: save per-commit, per-decision, per-blocker-resolved (not just at end)
-- Bootstrap required: read @$go context; respect MASTER_INDEX + Blueprint precedence
-- No graphify without explicit authorization
+- El usuario dio un prompt inicial equivocado (misión JPI Fase 5 en /opt/360eventos) y lo corrigió explícitamente a mitad de sesión con la misión real de auditoría de Concierge. Cuando esto pase, tratar el redirect como autoritativo y no intentar retomar la misión anterior.
+- Para auditorías grandes de investigación (no implementación de código), el usuario aprueba entrar en un modo de planificación ligero (plan de metodología, no plan de código) antes de ejecutar, y espera ajustes explícitos antes de proceder: carpeta única de entregables (no contaminar raíz del repo), alcance limitado (no sub-auditorías completas de sistemas tangenciales salvo que expliquen una conexión concreta), medición cuantificada real en vez de atribución sin evidencia, separación explícita de "valor estratégico de diseño" vs "calidad de integración real", y verificación de que cualquier ejecución de código de terceros (ej. un compilador) no toque estado compartido/versionado antes de correrlo.
+- `ExitPlanMode` está documentado para NO usarse en tareas de investigación pura — pero para una auditoría con 8 entregables formales y alcance grande, usarlo para confirmar metodología antes de ejecutar fue aceptado por el usuario vía corrección con ajustes (no vía aprobación directa del tool).
 
 ## Discoveries
-- **closeGoal() preconditions are non-negotiable guardians**: quote_request.status='qualified', operaciones assignment + operations_validation=PASS decision, all deviations resolved, latest plan, factory_bridge_records with review_status='approved' AND operations_status='used'. Missing any one blocks closure.
-- **RESERVA/OPERACION are NOT entities**: No jpi_reservas or jpi_operaciones tables in migrations. RESERVA is jpi_cotizaciones.estado='ACEPTADA' transition; OPERACION is coordination of 4 APIs (createOperationalFactoryRequest + pollOperationalFactoryRequest + reviewOperationalFactoryRequest + useOperationalFactoryArtifact). Both are conceptual phases emerging from existing entity orchestration.
-- **quote_requests table is separate from jpi_solicitudes**: createRuntimeGoal creates both; must be qualified separately via qualifyByComercial() before closeGoal will accept.
-- **assignLittleBoss must happen early**: comercial must be assigned BEFORE qualifyByComercial can be called; operaciones must be assigned BEFORE closeGoal can validate preconditions.
-- **useOperationalFactoryArtifact auto-resolves deviations**: evaluateOperationalAvailability(artifact, validationInput) is called inside useOperationalFactoryArtifact; if evaluation.pass=true, it auto-marks all goal_deviations.resolved_at. This is REQUIRED precondition for closeGoal.
-- **Prior implementation had 2 critical bypasses**: (1) artifact_consumed=true declared manually without calling useOperationalFactoryArtifact; (2) goals.status updated via SQL without calling closeGoal. Both removed.
-- **factory_bridge test failures are preexisting**: 7/11 tests in fmd-runtime-factory-bridge.test.js fail; these are edge cases (timeouts, re-approval) NOT in Caso Cero scope. Happy path test (test 11) passes; E2E bridge successful.
+- **DFL Concierge tiene 0% de conexión real.** Diseño normativo completo y ratificado (`architecture/DRG-002-R1-dfl-concierge.md`, checkpoint CP-01 PASS, contratos F1 congelados en CP-03) con implementación parcial (compiler.py + validator/ + canonical/*.yaml, 30 tests unitarios pasando) que nunca fue conectada a nada — verificado por grep exhaustivo de imports/subprocess en todo /opt, systemd units, crontab, y `~/.claude/settings.json`/hooks: cero coincidencias fuera del propio directorio `concierge/`.
+- **`/go` (el endpoint real de onboarding) lo gobierna `/opt/dfl-context-proxy/main.py`**, un servidor HTTP hecho a mano (sin framework) que genera un payload de 68,317 bytes medidos, con cientos de líneas de instrucciones hardcodeadas en Python (`validation_gate`, `agent_directory`, `access_model`) — totalmente independiente de Concierge.
+- **El hook `cc-atgo-hook.sh` (SessionStart de Claude Code) filtra el payload de 68,317 B a solo 1,730 B reales inyectados** — es el inyector de contexto más disciplinado medido, no la causa de bloat.
+- **La causa real del "engordamiento" reportado no es Concierge ni el hook DFL**: es (a) el plugin genérico `engram@engram` de Claude Code, que por sí solo inyecta ~10,600 bytes en cada SessionStart (más grande que todo el bloque `knl` del payload de /go), y (b) el riesgo — ya anticipado por una advertencia defensiva dentro del propio `main.py` ("PROHIBIDO solicitar MASTER_INDEX...") — de que un agente lea documentación completa en vez de confiar en el resumen filtrado.
+- **Duplicación de taxonomía de perfil**: el sistema real usa EJECUTOR/ORQUESTADOR/CONSULTOR (por capacidad observada, viven en `/opt/amos-context-mirror/agents/*.md`); Concierge usa claude-code/codex/chatgpt-work (por marca de runtime, en `canonical/runtimes/*.yaml`) — contradice el propio principio del diseño normativo ("perfil por capacidad, no por marca").
+- **El problema de continuidad/relay ya tiene dueño real y probado**: `tools/agent-relay/` (Relay Controller), construido de forma completamente independiente, sin ninguna referencia a Concierge — mientras que el diseño de Concierge (§7/§8, register JSONL, receipts, onboard/outboard) quedó con contrato cerrado (CP-03, 3 RCQ) pero cero código.
+- **4 copias huérfanas del build de Concierge F1** existen en directorios hermanos no-git (`dfl-knowledge-f1-integration`, `-cc-render-validator`, `-workunit`), todas de la ventana 23-25 jul 2026 — residuos de sesiones de agente pasadas construyendo/validando F1 sin lugar único de verdad.
+- `concierge/compiler.py::compile_bundle()` acepta `output_root` explícito y lanza `ContractError` si está dentro de `canonical_root` — permite compilar de forma segura a una ruta temporal sin tocar estado versionado (usado para medir el output real: 2,815–2,992 bytes por runtime, estático, sin contenido dinámico de sesión).
+- No hay tiktoken instalado en el entorno — estimaciones de tokens usan heurística chars/4, explícitamente etiquetada como estimación en los entregables.
 
 ## Accomplished
-- ✅ **Analyzed prior implementation**: Found 2 bypasses (manual artifact_consumed, direct SQL UPDATE goals.status) and missing 3 APIs (reviewOperationalFactoryRequest, useOperationalFactoryArtifact, closeGoal).
-- ✅ **Implemented real E2E using 8 runtime APIs**:
-  - createRuntimeGoal(payload.quote_request) — creates goal + quote_request(received)
-  - assignLittleBoss(comercial) + assignLittleBoss(operaciones) — roles required by guards
-  - qualifyByComercial() — transitions quote_request RECEIVED→QUALIFIED (precondition for closeGoal)
-  - createOperationalFactoryRequest() — factory dispatch via DFL_FACTORY_ID
-  - pollOperationalFactoryRequest() — await factory ready or failed
-  - reviewOperationalFactoryRequest(approve=true) — review_status→approved (precondition for useOperationalFactoryArtifact)
-  - useOperationalFactoryArtifact() — operations_status→used + auto-resolves deviations (precondition for closeGoal)
-  - closeGoal() — validates ALL preconditions, records closure, transitions goal_runtime_state→closed (REPLACES direct SQL UPDATE)
-- ✅ **Removed bypasses**:
-  - Removed: `db.prepare('UPDATE goals SET status = ?').run()` line 609
-  - Removed: manual `artifact_consumed: true` assignment line 568
-  - Added: real API calls with correlation keys for idempotency
-- ✅ **Clarified domain model**:
-  - RESERVA: state transition jpi_cotizaciones→ACEPTADA, not table
-  - OPERACION: 4-API orchestration, not table
-  - Documented as next domain increment if needed
-- ✅ **Validated all 7 preconditions for closeGoal**: quote_request.status='qualified', operaciones assignment exists, operations_validation=PASS decision exists, all deviations resolved, plan exists, factory_bridge review_status='approved', factory_bridge operations_status='used'.
-- ✅ **Tests passing**: 6/6 JPI Fase 5 E2E tests PASS (idempotency, state transitions, artifact validation, factory integration, business validation all verified).
-- ✅ **No regresions**: Same score on other suites; factory bridge preexisting failures untouched.
-- ✅ **Delivered**:
-  - File: business-os/fmd/jpi-fase5.js (+184, -24)
-  - File: DELIVERY-JPI-FASE5-REAL-E2E.md (425 lines, complete analysis)
-  - Branch: feat/jpi-fase-5-real-runtime-v0.1
-  - Commits: 8155a4f (implementation), a241ef5 (documentation)
+- ✅ Reconstruido el camino vivo completo de `@$go` y `@$fin` con tamaños medidos en cada etapa.
+- ✅ Medido el payload real de `/go` (68,317 B) con desglose por bloque (`knl`=41%, `recent_engram_dfl`=21%, etc.) y comparado contra lo que el hook realmente inyecta (1,730 B) y contra el output aislado de Concierge (2,815 B).
+- ✅ Confirmado, con búsqueda exhaustiva, que Concierge no participa en ningún punto del camino real.
+- ✅ Comparado diseño normativo (DRG-002-R1) vs. observado, incluyendo lectura completa del documento de diseño, su checkpoint receipt (CP-01), y la matriz de cierre de contratos (CP-03 RCQ).
+- ✅ Producidos los 8 entregables completos en `/opt/dfl-knowledge/audits/concierge-live-path-2026-07-26/`: EXECUTIVE-ASSESSMENT, CAPABILITY-MATRIX, LIVE-PATH-MAP, DESIGNED-VS-OBSERVED, OPTIMAL-UTILIZATION, COST-VALUE-ASSESSMENT, DECISION-MATRIX, EVIDENCE.
+- ✅ Veredicto final: **B. HIGH_VALUE / INTEGRATION_FAILURE** — valor estratégico del diseño alto (condicionado a un Future Vertical que aún no existe), calidad de implementación F1 alta para lo construido, integración real nula (0 de 13 capacidades conectadas).
+- ✅ Verificado al cierre que `git status` no muestra ninguna modificación a archivos existentes — solo la carpeta nueva de entregables. Ningún hook, servicio, config o código de producción fue tocado.
 
 ## Next Steps
-- Code review: verify no bypasses via grep (artifact_consumed manual, UPDATE goals.status)
-- Final approval for merge to main (requires confirmation that happy path E2E is acceptable as Caso Cero)
-- FACTORY_BRIDGE_RESILIENCE_BACKLOG remains (7 edge case tests); not blocking this vertical
+- Si Jorge decide actuar sobre la recomendación "CONNECT parcialmente" (Mission Context Concierge, solo porción estática del contrato), el siguiente PRP debería: (1) resolver primero la duplicación de taxonomía de perfil (marca vs. capacidad) antes de conectar nada, (2) decidir explícitamente retirar el alcance de continuidad/relay de Concierge en favor de `tools/agent-relay/`, (3) escribir el puente real entre `concierge/compiler.py` y `dfl-context-proxy/main.py`.
+- Limpieza de housekeeping (no arquitectónica): los 3 directorios huérfanos de build de Concierge F1 (`dfl-knowledge-f1-integration`, `-cc-render-validator`, `-workunit`) podrían eliminarse si se confirma que no tienen otro propósito activo — no verificado en esta auditoría por estar fuera de su alcance.
+- La misión original de esta sesión (JPI Fase 5 real E2E en /opt/360eventos) fue completada y committeada ANTES del redirect a esta auditoría — ver memoria separada `jpi/fase5-completion-status` para ese trabajo, que sigue vigente y no fue invalidado por esta auditoría (son proyectos distintos, sin relación).
 
 ## Relevant Files
-- business-os/fmd/jpi-fase5.js — E2E orchestration; replaced manual assignments with 8 real API calls; no direct DB writes
-- business-os/tests/fmd-jpi-fase5-e2e.test.js — 6 tests all passing; validates happy path, idempotency, state transitions, artifact incorporation
-- business-os/fmd/runtime.js — source of truth for API contracts (closeGoal preconditions at line 102)
-- business-os/models/goal-runtime-state.js — guards on terminal state transitions
-- DELIVERY-JPI-FASE5-REAL-E2E.md — complete analysis with mapa requisito→entidad→API→evidencia
+- /opt/dfl-knowledge/audits/concierge-live-path-2026-07-26/CONCIERGE-EXECUTIVE-ASSESSMENT.md — resumen ejecutivo con las 5 preguntas obligatorias respondidas
+- /opt/dfl-knowledge/audits/concierge-live-path-2026-07-26/CONCIERGE-EVIDENCE.md — 13 bloques de evidencia con comando reproducible cada uno, base de todas las afirmaciones de los otros 7 documentos
+- /opt/dfl-knowledge/architecture/DRG-002-R1-dfl-concierge.md — diseño normativo original de Concierge, fuente de la comparación diseño-vs-observado
+- /opt/dfl-context-proxy/main.py — el componente real que gobierna `/go` (no Concierge)
+- /opt/dfl-knowledge/concierge/compiler.py — compilador determinista de Concierge, funcional pero sin conexión
 
 ---
 
@@ -539,4 +525,4 @@ From DFL protocol in CLAUDE.md:
 
 ---
 
-*Mirror auto-generated 2026-07-26T17:08:17Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-26T17:17:43Z | La Garra → DFLghub/amos-context*
