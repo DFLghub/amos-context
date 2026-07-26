@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-26T04:54:02Z  
+**Generated:** 2026-07-26T05:24:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,40 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### JPI Phase 4 Independent Review Complete — PASS / READY_TO_MERGE
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+**What**: Independent verification of JPI Phase 4 BOS/FMD automation without relay completed. Verdict: PASS / READY_TO_MERGE.
+
+**Why**: Phase 4 introduces autonomous BOS/FMD mission orchestration without human relay. Critical verification required to confirm: all state transitions, scenario matrix, producer SHA resolution, and Phase 3.5 guarantee preservation.
+
+**Where**:
+- JPI: /opt/360eventos (origin/fase-4-bos-fmd-sfv5-automation: 4d21c01...)
+- SFV5: /opt/saas-factory-setup (origin/fase-4-bos-fmd-sfv5-automation: 6bc82f5...)
+- Evidence: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/05-INDEPENDENT-REVIEW-CC.md
+
+**Learned**:
+
+CRITICAL FINDING — producer_sha discrepancy explained:
+- Prior evidence showed producer_sha = d126939... (Phase 3.5) when SFV5 branch head = 6bc82f... (Phase 4)
+- Independent reproduction shows this was SFV5_FACTORY_ROOT configuration issue, NOT code defect
+- When factory root correctly set to Phase 4 branch → producer_sha reports correctly (6bc82f...)
+- Phase 4 commit 6bc82f5 added proper git metadata resolution to getProducerSha()
+- Code is correct; requires proper env configuration
+
+Test results:
+- JPI full regression: 247/247 PASS
+- Phase 4 focal suite (factory automation): 8/8 PASS
+- Scenario matrix: 10/10 scenarios verified
+- E2E real from clean job root: PASS
+
+State transitions verified: REQUESTED → DISPATCHED → RUNNING → READY → VALIDATED → CONSUMED → CLOSED
+
+Phase 3.5 guarantees preserved: freshness, fingerprint consistency, path confinement
+
+No blockers. Ready for merge.
+
 ### JPI Phase 3.5 Post-Merge Independent Verification — PASS / PHASE_CLOSED
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -157,70 +191,6 @@ Evidence:
 - /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/02-REVIEW.md
 - /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/03-COMMANDS.md
 - /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/04-REPORT.md
-
-### SFV5 CLAUDE.md Documentation Fix — Independent Mission (NOT part of obs-347 piloto)
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-**INDEPENDENT MISSION: SFV5 Documentation Fix**  
-**Status:** ✅ ANALYSIS COMPLETE, PROPOSAL READY  
-**Timestamp:** 2026-07-25 05:35Z  
-**Scope:** `/opt/saas-factory-setup/saas-factory` ONLY (not BOS-JPI)
-
-## Executive Summary
-
-**Problem:** CLAUDE.md claims "30 Herramientas" but `.claude/skills/` has 32 real, committed skills  
-**Missing:** Exactly 2 skills not in documentation:
-- `pack-cold-email` (B2B cold email automation, Pillar: Adquisición)
-- `video-visuals` (Sketchnote narrative visuals, Pillar: Distribución)
-
-**Source:** Both exist in DFL `origin/main @ 5e42124` ("feat: establish SaaS Factory V5 operational layer")
-
-## Separación de Misiones Confirmada
-
-**obs-347 (Piloto BOS-JPI):**
-- Modifica: `/opt/360eventos/business-os/`
-- Fases: 1–6, ~9.5 agentes-días
-- Roadmap: `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md`
-
-**SFV5 Doc Fix (INDEPENDENT):**
-- Modifica: `/opt/saas-factory-setup/saas-factory/CLAUDE.md`
-- Scope: Add 2 rows to skills table + update decision tree + update header
-- Duration: ~15 minutos
-- Proposal: `/opt/dfl-knowledge/evidence/SFV5-DOCUMENTATION-FIX-PROPOSAL.md`
-
-**Zero conflicts.** Can proceed in parallel or sequentially.
-
-## Exact Changes Needed (from proposal)
-
-1. Line 140: "30 Herramientas" → "32 Herramientas (18 V4 + 14 V5)"
-2. Add row #31: `pack-cold-email` (Adquisición pillar)
-3. Add row #32: `video-visuals` (Distribución pillar)
-4. Update "Que Cambia en V5" table: link Distribución to both acquisition + video-visuals
-5. Add 2 branches to Decision Tree (~lines 134–136)
-
-## Verification Evidence
-
-**Skills confirmed real:**
-- `./.claude/skills/pack-cold-email/SKILL.md` (3.6 KB, valid)
-- `./.claude/skills/video-visuals/SKILL.md` (8.9 KB, valid)
-- Git commit: 5e42124 "feat: establish SaaS Factory V5 operational layer"
-
-**Analysis:** `/opt/dfl-knowledge/evidence/SFV5-DOCUMENTATION-FIX-PROPOSAL.md`
-- Complete enumeration (32 skills listed)
-- Git history traced
-- Branch status verified
-- Exact line-by-line changes specified
-- Acceptance criteria defined
-
-## Next Steps
-
-1. ✅ Analysis + proposal: DONE
-2. ⏳ Decision: Proceed? (YES/NO from Jorge or delegated)
-3. ⏳ Implementation: Edit CLAUDE.md + PR
-4. ⏳ Merge: After verification
-
-**Can be started immediately after obs-347 piloto approval (orthogonal work).**
 
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -407,6 +377,40 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 
 13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
 
+### JPI Phase 4 Independent Review Complete — PASS / READY_TO_MERGE
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+**What**: Independent verification of JPI Phase 4 BOS/FMD automation without relay completed. Verdict: PASS / READY_TO_MERGE.
+
+**Why**: Phase 4 introduces autonomous BOS/FMD mission orchestration without human relay. Critical verification required to confirm: all state transitions, scenario matrix, producer SHA resolution, and Phase 3.5 guarantee preservation.
+
+**Where**:
+- JPI: /opt/360eventos (origin/fase-4-bos-fmd-sfv5-automation: 4d21c01...)
+- SFV5: /opt/saas-factory-setup (origin/fase-4-bos-fmd-sfv5-automation: 6bc82f5...)
+- Evidence: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/05-INDEPENDENT-REVIEW-CC.md
+
+**Learned**:
+
+CRITICAL FINDING — producer_sha discrepancy explained:
+- Prior evidence showed producer_sha = d126939... (Phase 3.5) when SFV5 branch head = 6bc82f... (Phase 4)
+- Independent reproduction shows this was SFV5_FACTORY_ROOT configuration issue, NOT code defect
+- When factory root correctly set to Phase 4 branch → producer_sha reports correctly (6bc82f...)
+- Phase 4 commit 6bc82f5 added proper git metadata resolution to getProducerSha()
+- Code is correct; requires proper env configuration
+
+Test results:
+- JPI full regression: 247/247 PASS
+- Phase 4 focal suite (factory automation): 8/8 PASS
+- Scenario matrix: 10/10 scenarios verified
+- E2E real from clean job root: PASS
+
+State transitions verified: REQUESTED → DISPATCHED → RUNNING → READY → VALIDATED → CONSUMED → CLOSED
+
+Phase 3.5 guarantees preserved: freshness, fingerprint consistency, path confinement
+
+No blockers. Ready for merge.
+
 ### JPI Phase 3.5 Post-Merge Independent Verification — PASS / PHASE_CLOSED
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -432,12 +436,6 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 - No blockers found
 
 Verdict: PASS / PHASE_CLOSED. Ready for next phase entry.
-
-### JPI Phase 3.5 post-review closure
-**Type:** decision  
-**Project:** dfl  
-
-2026-07-26 UTC. Session closed after a single consolidated correction round for JPI Phase 3.5 real SFV5 integration. Repos: /opt/360eventos and /opt/saas-factory-setup/saas-factory. Corrected SHAs: JPI 58b6546c4d92a562afdd1a6dc2a0a7b576566888 on branch fase-3-5-real-sfv5-bridge; SFV5 d12693998c38c7d5b1f83a74135dd65bb8ab57bf on branch fase-3-5-jpi-real-sfv5-bridge. Closed R35-01 by removing dependency on untracked cognitive-core helpers and proving bridge tests from a clean archive of the corrected SFV5 SHA. Closed R35-02 by enforcing strict correlation in JPI across status.json, artifact, test-report, producer-evidence, mission_id, goal_id, factory_request_id, attempt_number, mission_fingerprint, producer identity and expected producer SHA. Closed R35-03 by adding deterministic mission_fingerprint propagation and only allowing idempotent reuse when all identifiers and fingerprint match exactly. Closed R35-04 by enforcing canonical confinement of evidence_path in SFV5 and path confinement checks in JPI for producer-reported artifact/test/evidence paths. Verification: SFV5 relevant tests 21/21 PASS; JPI regression 237/237 PASS; fresh real E2E 1/1 PASS from empty job root; artifact generated after mission packet with recorded timestamps/checksums. Evidence updated under /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/ including 03-REPORT.md, 04-CC-FINDINGS-RESPONSE.md, 05-POST-REVIEW-VERIFICATION.md, CX-STATUS.md and raw logs. Remote verified: origin/fase-3-5-real-sfv5-bridge -> 58b6546..., origin/fase-3-5-jpi-real-sfv5-bridge -> d126939.... No merge to main performed.
 
 ---
 
@@ -530,4 +528,4 @@ Verdict: PASS / PHASE_CLOSED. Ready for next phase entry.
 
 ---
 
-*Mirror auto-generated 2026-07-26T04:54:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-26T05:24:02Z | La Garra → DFLghub/amos-context*
