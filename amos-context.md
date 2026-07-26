@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-26T04:01:22Z  
+**Generated:** 2026-07-26T04:54:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,32 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### JPI Phase 3.5 Post-Merge Independent Verification — PASS / PHASE_CLOSED
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+**What**: Independent verification of JPI Phase 3.5 post-merge closure completed. All criteria verified: SHAs, tags, commits, tests, E2E, correlations, path confinement.
+
+**Why**: Institutional checkpoint required before phase closure. Verifies that merge was successful, all approved commits are on origin/main, tests pass, and E2E flow works end-to-end from empty job root.
+
+**Where**: 
+- SFV5: /opt/saas-factory-setup (origin/main: d12693998c38c7d5b1f83a74135dd65bb8ab57bf)
+- JPI: /opt/360eventos (origin/main: 58b6546c4d92a562afdd1a6dc2a0a7b576566888)
+- Evidence: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/08-INDEPENDENT-POST-MERGE-REVIEW-CC.md
+
+**Learned**: 
+- SFV5 clean clone bridge tests: 8/8 PASS (path confinement, traversal rejection verified)
+- JPI full regression: 237/237 PASS (from merged main)
+- E2E real from clean job root: 1/1 PASS (artifact generated +69ms after mission packet)
+- mission_fingerprint consistent across 5 outputs
+- producer_sha consistent, equals SFV5 main HEAD
+- Tags published and dereferenced correctly
+- All path escapes rejected; confinement enforced
+- Strict correlation verified: mission, goal, request, attempt, producer, artifact SHA
+- No blockers found
+
+Verdict: PASS / PHASE_CLOSED. Ready for next phase entry.
+
 ### JPI Phase 3.5 post-review closure
 **Type:** decision  
 **Project:** dfl  
@@ -195,115 +221,6 @@ Evidence:
 4. ⏳ Merge: After verification
 
 **Can be started immediately after obs-347 piloto approval (orthogonal work).**
-
-### Roadmap Ejecutable: Piloto Híbrido JPI (obs-347 checkpoint)
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-**CHECKPOINT OBS-347 — 2026-07-25 05:30Z**
-
-## Qué se hizo
-Auditoría selectiva + diseño adaptativo del piloto JPI con 3 Little Bosses. Roadmap ejecutable (7–14 días) guardado en `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md` (17 secciones, 400+ líneas).
-
-## Decisiones de Jorge aplicadas ✅
-1. **HÍBRIDO:** Auditoría selectiva del código actual (no exhaustiva) → reúso documentado en 4 categorías (PROBADO ✓, PARCIAL ⚠️, CONTRADICE ✗, AUSENTE ✗)
-2. **PILOTO PEQUEÑO:** 3 Little Bosses (Comercial, Operaciones, Aprendizaje) demostrando coordinación real
-3. **SOLOPRENEUR OS HÍBRIDO:** Políticas + agente observación/síntesis/recomendación + interfaz excepciones (no daemon gestor)
-4. **SFV5 INTEGRACIÓN PARCIAL REAL:** Factory participa; artefacto pequeño (validator disponibilidad) en flujo
-
-## Auditoría selectiva (δ = delta)
-
-**PROBADO Y REUTILIZABLE** (8 capacidades):
-- BOS-JPI HTTP cockpit ✓
-- FMD G0–G1 gates ✓
-- FMD 12-step orchestration ✓
-- Omnichannel abstraction ✓
-- JPI domain integration ✓
-- SFV5 skills framework ✓
-- Idempotency support ✓
-- Goal→plan→gate state machine ✓
-
-**PARCIAL** (5 capacidades): Plan generation (stub OK), Deviation L1 sólo, BOS assistant (rules OK), Real channels (mocks OK), SFV5 feedback (manual OK)
-
-**CONTRADICE** (1): FMD es agente externo, no componente BOS → documentar separación lógica
-
-**AUSENTE** (7): Solopreneur OS, 3 Little Bosses, Minions, SFV5→BOS API, Reviewer, lessons staging, factory requests DB
-
-## Delta código: ~930 LOC
-- Agregar: routes/little-bosses.js, routes/solopreneur-os.js, routes/factory-integration.js, models/little-boss.js, models/minion.js, middleware/review.js, migrations/008–010 (3), scripts/factory-http-bridge.js
-- Mantener: server.js, fmd/goals.js, jpi-pilot.js (sin cambios)
-- Tests: full-pilot-flow.test.js (E2E 13 pasos)
-
-## Flujo empresarial demostrativo (13 pasos → 1 cierre → 1 lección candidata)
-1. SOLICITUD ingresa → 2. Comercial.qualify → 3. Operaciones.verify (3 minions) → 4. Desvío L1 (falta fecha) → 5. FMD replantea (sin Jorge) → 6. Brecha digital (falta validator) → 7. FMD→SFV5 misión → 8. SFV5 artifact → 9. Revisor OK → 10. Operaciones continúa → 11. Goal.closed (evidencia) → 12. Aprendizaje.record → 13. candidate_lessons.staged
-
-## Fases (1–6, parallelizable F2∥F3)
-| Fase | Duración | Artefactos | Deps |
-|------|----------|-----------|------|
-| 1: Fundación | 2d | migrations, models, contracts | — |
-| 2: Solopreneur+Factory | 2.5d | routes/solopreneur, factory-integration, reviewer | F1 |
-| 3: Little Bosses | 2.5d | routes/little-bosses, LB models | F1 |
-| 4: SFV5 Bridge | 1.5d | factory-http-bridge.js | F2 |
-| 5: E2E Piloto | 2d | tests/full-pilot-flow.test.js, lessons | F1–4 |
-| 6: Review+Refine | 1.5d | docs, fixes | F5 |
-
-**Total:** 9.5 agentes-días → 7d (4 agentes) o 14d (2 agentes)
-
-## Estimación realista
-- Agente 1 (Backend): F1, F2, F5 = 3.5d
-- Agente 2 (Little Bosses): F3, soporte F5 = 2.5d
-- Agente 3 (SFV5 bridge): F4, E2E = 2d
-- Agente 4 (Tests/Reviewer): F6 = 1.5d
-- Parallelizable: F2 ∥ F3 (day 2–3)
-
-## Criterio de parada
-✅ **E2E 13-pasos PASS** (≥1x execution)
-✅ **Evidencia persisted** (trace 12-steps, plans v1+v2, deviations+resolutions, SFV5 artifact)
-✅ **Revisor aprobó** closure_package
-✅ **candidate_lessons staged** (no auto-promovida)
-✅ **Tests PASS** (unit + E2E)
-✅ **Docs completos** (contracts, patterns, review-checklist)
-
-## Exclusiones explícitas
-- BOS-UPSTREAM (aislado, no merge)
-- FMD generalización (post-piloto)
-- LLM real assistant (rules-based mock OK)
-- Auto feedback-loop (post-piloto)
-- Real Telegram/WhatsApp (mocks OK)
-- Supabase touches (SQLite en piloto)
-- Auth real (no requiere)
-- Scoring/knockout (untouched)
-
-## Riesgos + mitigaciones
-- **SFV5 HTTP invocable:** Pre-verificar día 4; fallback CLI local
-- **Desvío L1 no resolvible:** Stub genera fecha sintética (garantizado)
-- **Reviewer rechaza:** Checklist claro; iterar SFV5 skill
-- **DB corruption:** Migrations idempotentes; snapshots pre-E2E
-- **Tiempo insuficiente:** Reducir a 1 LB (Operaciones only); minion assistant mock
-
-## Veredicto
-✅ **READY TO IMPLEMENT** (Fase 1 start: next agent)
-
-## Tres movimientos siguientes (post-piloto)
-1. **Generalizar FMD** (s8–9): multiple domains, reusable library, inyectable
-2. **Solopreneur OS completo** (s10–12): 6 áreas + auto-feedback, Jorge excepciones-only
-3. **BOS convergencia** (s13–14): patrón + multi-impl (UPSTREAM, JPI, futuro)
-
-## Artefactos generados
-- `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md` (17 secciones)
-- Indexing reused 2026-07-25 (SHAs identical: SFV5 5e42124, BOS-UP 4428a6d, BOS-JPI 788f49a)
-- Codebase-memory: sin reindex
-
-## Próximo paso
-**Agente ejecutor:** Comienza Fase 1
-- Crear migrations/008_little_bosses.js (little_bosses, minions tables)
-- Crear migrations/009_factory_requests.js (factory_requests, candidate_lessons tables)
-- Crear migrations/010_lessons.js (refined candidate_lessons)
-- Crear models/little-boss.js (state machine, authority)
-- Crear models/minion.js (task interface)
-- Guardar `docs/pilot-contracts.md` (HTTP specs)
-- Ejecutar: `npm test tests/models/` → PASS
-- Checkpoint → Fase 2 (Solopreneur OS + factory-integration)
 
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -490,36 +407,37 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 
 13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
 
+### JPI Phase 3.5 Post-Merge Independent Verification — PASS / PHASE_CLOSED
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+**What**: Independent verification of JPI Phase 3.5 post-merge closure completed. All criteria verified: SHAs, tags, commits, tests, E2E, correlations, path confinement.
+
+**Why**: Institutional checkpoint required before phase closure. Verifies that merge was successful, all approved commits are on origin/main, tests pass, and E2E flow works end-to-end from empty job root.
+
+**Where**: 
+- SFV5: /opt/saas-factory-setup (origin/main: d12693998c38c7d5b1f83a74135dd65bb8ab57bf)
+- JPI: /opt/360eventos (origin/main: 58b6546c4d92a562afdd1a6dc2a0a7b576566888)
+- Evidence: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/08-INDEPENDENT-POST-MERGE-REVIEW-CC.md
+
+**Learned**: 
+- SFV5 clean clone bridge tests: 8/8 PASS (path confinement, traversal rejection verified)
+- JPI full regression: 237/237 PASS (from merged main)
+- E2E real from clean job root: 1/1 PASS (artifact generated +69ms after mission packet)
+- mission_fingerprint consistent across 5 outputs
+- producer_sha consistent, equals SFV5 main HEAD
+- Tags published and dereferenced correctly
+- All path escapes rejected; confinement enforced
+- Strict correlation verified: mission, goal, request, attempt, producer, artifact SHA
+- No blockers found
+
+Verdict: PASS / PHASE_CLOSED. Ready for next phase entry.
+
 ### JPI Phase 3.5 post-review closure
 **Type:** decision  
 **Project:** dfl  
 
 2026-07-26 UTC. Session closed after a single consolidated correction round for JPI Phase 3.5 real SFV5 integration. Repos: /opt/360eventos and /opt/saas-factory-setup/saas-factory. Corrected SHAs: JPI 58b6546c4d92a562afdd1a6dc2a0a7b576566888 on branch fase-3-5-real-sfv5-bridge; SFV5 d12693998c38c7d5b1f83a74135dd65bb8ab57bf on branch fase-3-5-jpi-real-sfv5-bridge. Closed R35-01 by removing dependency on untracked cognitive-core helpers and proving bridge tests from a clean archive of the corrected SFV5 SHA. Closed R35-02 by enforcing strict correlation in JPI across status.json, artifact, test-report, producer-evidence, mission_id, goal_id, factory_request_id, attempt_number, mission_fingerprint, producer identity and expected producer SHA. Closed R35-03 by adding deterministic mission_fingerprint propagation and only allowing idempotent reuse when all identifiers and fingerprint match exactly. Closed R35-04 by enforcing canonical confinement of evidence_path in SFV5 and path confinement checks in JPI for producer-reported artifact/test/evidence paths. Verification: SFV5 relevant tests 21/21 PASS; JPI regression 237/237 PASS; fresh real E2E 1/1 PASS from empty job root; artifact generated after mission packet with recorded timestamps/checksums. Evidence updated under /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/ including 03-REPORT.md, 04-CC-FINDINGS-RESPONSE.md, 05-POST-REVIEW-VERIFICATION.md, CX-STATUS.md and raw logs. Remote verified: origin/fase-3-5-real-sfv5-bridge -> 58b6546..., origin/fase-3-5-jpi-real-sfv5-bridge -> d126939.... No merge to main performed.
-
-### 360eventos Phase 3 SFV5 bridge completed
-**Type:** decision  
-**Project:** dfl  
-
-Date: 2026-07-25 UTC
-Repo: /opt/360eventos
-Branch: fase-3-bos-fmd-sfv5-bridge
-Final SHA: 4cac081e2d7fe914fc362a8861c66b5498c55679
-Base SHA: b80c10ddfee9cd651847e9e85367387295cb983e
-Summary:
-- Completed Phase 2 zero by publishing main, fase-2-organizational-runtime, and tag jpi-phase-2-closed; verified with ls-remote; mirror push succeeded.
-- Implemented BOS/FMD -> SFV5 bridge on business-os using existing factory_requests lifecycle plus new factory_request_bridge persistence.
-- Added replaceable SFV5 adapter registry: sfv5 fails explicitly when no producer is connected, sfv5-test is deterministic local for tests.
-- Added operational availability artifact consumer integrated with validateByOperaciones.
-- Added HTTP endpoints for create/poll/review/use factory requests.
-- Added migration 016_factory_request_bridge.
-- Full business-os regression passed: 224/224 tests.
-- Branch pushed to origin/fase-3-bos-fmd-sfv5-bridge.
-Evidence:
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/00-FROZEN-SCOPE.md
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/01-ARCHITECTURE.md
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/02-REVIEW.md
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/03-COMMANDS.md
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/04-REPORT.md
 
 ---
 
@@ -612,4 +530,4 @@ Evidence:
 
 ---
 
-*Mirror auto-generated 2026-07-26T04:01:22Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-26T04:54:02Z | La Garra → DFLghub/amos-context*
