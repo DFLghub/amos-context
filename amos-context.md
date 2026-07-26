@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-26T05:24:02Z  
+**Generated:** 2026-07-26T05:31:18Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,61 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### JPI Phase 4 merged and closed institutionally
+**Type:** decision  
+**Project:** dfl  
+
+Fecha: 2026-07-26
+Resultado: JPI Fase 4 cerrada institucionalmente con merge a main en ambos repos.
+SFV5 main before: d12693998c38c7d5b1f83a74135dd65bb8ab57bf
+SFV5 main after: 9b18947fab2c0874caba729fdb464025dfdde8f0
+SFV5 tag: sfv5-bos-fmd-automation-v0.1 -> 9b18947fab2c0874caba729fdb464025dfdde8f0
+JPI main before: 58b6546c4d92a562afdd1a6dc2a0a7b576566888
+JPI main after: 2a1efe243e564a30e273b9ccf0e7077032e65d33
+JPI tag: jpi-phase-4-closed -> 2a1efe243e564a30e273b9ccf0e7077032e65d33
+Pruebas: SFV5 8/8 PASS; JPI 247/247 PASS.
+E2E post-merge real PASS usando SFV5_FACTORY_ROOT=/tmp/sfv5-phase4-merge/saas-factory.
+mission_fingerprint: 73a6993be1e43653e16266e465bebeec638703193e4cb418fdb4042ff6b7f2c5
+producer_sha: 9b18947fab2c0874caba729fdb464025dfdde8f0
+artifact_sha: 1080ba4b35341c7ba0b1ad7e48d4e9efd1246ac854aed29ec87583e77d205f09
+Operaciones consumió: YES. BOS cerró: YES. Estado final: CLOSED.
+Evidencia: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/06-MERGE-AND-CLOSURE.md, 07-POST-MERGE-E2E.md, FINAL-POST-MERGE-STATE.json y raw/merge-closure/.
+Blockers: 0. Veredicto: PASS / MERGED / READY_FOR_FINAL_REVIEW.
+
+### JPI Phase 4 Post-Merge Closure Final — PASS / PHASE_CLOSED
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+**What**: Independent post-merge verification of JPI Phase 4 completed. Verdict: PASS / PHASE_CLOSED. All institutional closure criteria verified end-to-end.
+
+**Why**: Final checkpoint before operational deployment. Requires verification that merge was clean, all tests pass from post-merge main, E2E executes real, and all guarantees are preserved.
+
+**Where**:
+- SFV5 origin/main: 9b18947fab2c0874caba729fdb464025dfdde8f0 (tag: sfv5-bos-fmd-automation-v0.1)
+- JPI origin/main: 2a1efe243e564a30e273b9ccf0e7077032e65d33 (tag: jpi-phase-4-closed)
+- Evidence: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/08-INDEPENDENT-POST-MERGE-REVIEW-CC.md
+
+**Learned**:
+
+Critical verifications completed:
+- Both SHAs verified via git ls-remote and clean clone
+- Tags published and dereferenced to correct commits
+- SFV5 bridge tests: 8/8 PASS (post-merge main, clean checkout)
+- JPI regression: 247/247 PASS (post-merge main, clean checkout)
+- E2E from empty job root with post-merge mains: 8/8 PASS
+- producer_sha exact: 9b18947fab2c0874caba729fdb464025dfdde8f0
+- mission_fingerprint consistent across 5 outputs
+- All state transitions verified (REQUESTED→DISPATCHED→RUNNING→READY→VALIDATED→CONSUMED→CLOSED)
+- Artifact freshness: all +60ms after Mission Packet
+- Validation enforced before consumption
+- Closure enforced after consumption confirmed
+- No mocks, no fallback, no manual relay
+- Factory root fail-closed validation
+- Merge scope clean (no foreign changes)
+- Idempotency verified
+
+No blockers. No residual risks. Ready for operational deployment.
+
 ### JPI Phase 4 Independent Review Complete — PASS / READY_TO_MERGE
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -135,62 +190,11 @@ Phase 3.5 guarantees preserved: freshness, fingerprint consistency, path confine
 
 No blockers. Ready for merge.
 
-### JPI Phase 3.5 Post-Merge Independent Verification — PASS / PHASE_CLOSED
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-**What**: Independent verification of JPI Phase 3.5 post-merge closure completed. All criteria verified: SHAs, tags, commits, tests, E2E, correlations, path confinement.
-
-**Why**: Institutional checkpoint required before phase closure. Verifies that merge was successful, all approved commits are on origin/main, tests pass, and E2E flow works end-to-end from empty job root.
-
-**Where**: 
-- SFV5: /opt/saas-factory-setup (origin/main: d12693998c38c7d5b1f83a74135dd65bb8ab57bf)
-- JPI: /opt/360eventos (origin/main: 58b6546c4d92a562afdd1a6dc2a0a7b576566888)
-- Evidence: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/08-INDEPENDENT-POST-MERGE-REVIEW-CC.md
-
-**Learned**: 
-- SFV5 clean clone bridge tests: 8/8 PASS (path confinement, traversal rejection verified)
-- JPI full regression: 237/237 PASS (from merged main)
-- E2E real from clean job root: 1/1 PASS (artifact generated +69ms after mission packet)
-- mission_fingerprint consistent across 5 outputs
-- producer_sha consistent, equals SFV5 main HEAD
-- Tags published and dereferenced correctly
-- All path escapes rejected; confinement enforced
-- Strict correlation verified: mission, goal, request, attempt, producer, artifact SHA
-- No blockers found
-
-Verdict: PASS / PHASE_CLOSED. Ready for next phase entry.
-
 ### JPI Phase 3.5 post-review closure
 **Type:** decision  
 **Project:** dfl  
 
 2026-07-26 UTC. Session closed after a single consolidated correction round for JPI Phase 3.5 real SFV5 integration. Repos: /opt/360eventos and /opt/saas-factory-setup/saas-factory. Corrected SHAs: JPI 58b6546c4d92a562afdd1a6dc2a0a7b576566888 on branch fase-3-5-real-sfv5-bridge; SFV5 d12693998c38c7d5b1f83a74135dd65bb8ab57bf on branch fase-3-5-jpi-real-sfv5-bridge. Closed R35-01 by removing dependency on untracked cognitive-core helpers and proving bridge tests from a clean archive of the corrected SFV5 SHA. Closed R35-02 by enforcing strict correlation in JPI across status.json, artifact, test-report, producer-evidence, mission_id, goal_id, factory_request_id, attempt_number, mission_fingerprint, producer identity and expected producer SHA. Closed R35-03 by adding deterministic mission_fingerprint propagation and only allowing idempotent reuse when all identifiers and fingerprint match exactly. Closed R35-04 by enforcing canonical confinement of evidence_path in SFV5 and path confinement checks in JPI for producer-reported artifact/test/evidence paths. Verification: SFV5 relevant tests 21/21 PASS; JPI regression 237/237 PASS; fresh real E2E 1/1 PASS from empty job root; artifact generated after mission packet with recorded timestamps/checksums. Evidence updated under /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/ including 03-REPORT.md, 04-CC-FINDINGS-RESPONSE.md, 05-POST-REVIEW-VERIFICATION.md, CX-STATUS.md and raw logs. Remote verified: origin/fase-3-5-real-sfv5-bridge -> 58b6546..., origin/fase-3-5-jpi-real-sfv5-bridge -> d126939.... No merge to main performed.
-
-### 360eventos Phase 3 SFV5 bridge completed
-**Type:** decision  
-**Project:** dfl  
-
-Date: 2026-07-25 UTC
-Repo: /opt/360eventos
-Branch: fase-3-bos-fmd-sfv5-bridge
-Final SHA: 4cac081e2d7fe914fc362a8861c66b5498c55679
-Base SHA: b80c10ddfee9cd651847e9e85367387295cb983e
-Summary:
-- Completed Phase 2 zero by publishing main, fase-2-organizational-runtime, and tag jpi-phase-2-closed; verified with ls-remote; mirror push succeeded.
-- Implemented BOS/FMD -> SFV5 bridge on business-os using existing factory_requests lifecycle plus new factory_request_bridge persistence.
-- Added replaceable SFV5 adapter registry: sfv5 fails explicitly when no producer is connected, sfv5-test is deterministic local for tests.
-- Added operational availability artifact consumer integrated with validateByOperaciones.
-- Added HTTP endpoints for create/poll/review/use factory requests.
-- Added migration 016_factory_request_bridge.
-- Full business-os regression passed: 224/224 tests.
-- Branch pushed to origin/fase-3-bos-fmd-sfv5-bridge.
-Evidence:
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/00-FROZEN-SCOPE.md
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/01-ARCHITECTURE.md
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/02-REVIEW.md
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/03-COMMANDS.md
-- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/04-REPORT.md
 
 **Type:** decision  
 **Project:** futbolweb-app  
@@ -377,65 +381,49 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 
 13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
 
-### JPI Phase 4 Independent Review Complete — PASS / READY_TO_MERGE
+### JPI Phase 4 merged and closed institutionally
 **Type:** decision  
+**Project:** dfl  
+
+Fecha: 2026-07-26
+Resultado: JPI Fase 4 cerrada institucionalmente con merge a main en ambos repos.
+SFV5 main before: d12693998c38c7d5b1f83a74135dd65bb8ab57bf
+SFV5 main after: 9b18947fab2c0874caba729fdb464025dfdde8f0
+SFV5 tag: sfv5-bos-fmd-automation-v0.1 -> 9b18947fab2c0874caba729fdb464025dfdde8f0
+JPI main before: 58b6546c4d92a562afdd1a6dc2a0a7b576566888
+JPI main after: 2a1efe243e564a30e273b9ccf0e7077032e65d33
+JPI tag: jpi-phase-4-closed -> 2a1efe243e564a30e273b9ccf0e7077032e65d33
+Pruebas: SFV5 8/8 PASS; JPI 247/247 PASS.
+E2E post-merge real PASS usando SFV5_FACTORY_ROOT=/tmp/sfv5-phase4-merge/saas-factory.
+mission_fingerprint: 73a6993be1e43653e16266e465bebeec638703193e4cb418fdb4042ff6b7f2c5
+producer_sha: 9b18947fab2c0874caba729fdb464025dfdde8f0
+artifact_sha: 1080ba4b35341c7ba0b1ad7e48d4e9efd1246ac854aed29ec87583e77d205f09
+Operaciones consumió: YES. BOS cerró: YES. Estado final: CLOSED.
+Evidencia: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/06-MERGE-AND-CLOSURE.md, 07-POST-MERGE-E2E.md, FINAL-POST-MERGE-STATE.json y raw/merge-closure/.
+Blockers: 0. Veredicto: PASS / MERGED / READY_FOR_FINAL_REVIEW.
+
+### Session summary: dfl-knowledge
+**Type:** session_summary  
 **Project:** dfl-knowledge  
 
-**What**: Independent verification of JPI Phase 4 BOS/FMD automation without relay completed. Verdict: PASS / READY_TO_MERGE.
+**Goal**: Post-merge institutional closure verification for JPI Phase 4. Independent reproducible validation of all merge artifacts, tests, and end-to-end guarantees.
 
-**Why**: Phase 4 introduces autonomous BOS/FMD mission orchestration without human relay. Critical verification required to confirm: all state transitions, scenario matrix, producer SHA resolution, and Phase 3.5 guarantee preservation.
+**Discoveries**: JPI Phase 4 (BOS/FMD autonomous automation without relay) merge is complete and verified across three independent reviews:
 
-**Where**:
-- JPI: /opt/360eventos (origin/fase-4-bos-fmd-sfv5-automation: 4d21c01...)
-- SFV5: /opt/saas-factory-setup (origin/fase-4-bos-fmd-sfv5-automation: 6bc82f5...)
-- Evidence: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/05-INDEPENDENT-REVIEW-CC.md
+1. Phase 3.5 post-merge: PASS/PHASE_CLOSED
+2. Phase 4 pre-merge: PASS/READY_TO_MERGE  
+3. Phase 4 post-merge final: PASS/PHASE_CLOSED
 
-**Learned**:
+All institutional closure criteria met: SHAs match remote, tags published correctly, all tests pass from clean checkouts (247/247 JPI regression, 8/8 SFV5 bridge, 8/8 Phase 4 E2E scenarios), producer_sha exactly 9b18947fab2c0874caba729fdb464025dfdde8f0 in all 5 outputs, strict correlation verified, artifact freshness (+60ms), state transitions verified, validation enforced pre-consumption, closure enforced post-consumption, no mocks/fallback/relay, factory root fail-closed, merge scope clean. Phase 3.5 guarantees preserved. Zero blockers.
 
-CRITICAL FINDING — producer_sha discrepancy explained:
-- Prior evidence showed producer_sha = d126939... (Phase 3.5) when SFV5 branch head = 6bc82f... (Phase 4)
-- Independent reproduction shows this was SFV5_FACTORY_ROOT configuration issue, NOT code defect
-- When factory root correctly set to Phase 4 branch → producer_sha reports correctly (6bc82f...)
-- Phase 4 commit 6bc82f5 added proper git metadata resolution to getProducerSha()
-- Code is correct; requires proper env configuration
+**Accomplished**: Three independent verifications completed. Identified and resolved producer_sha discrepancy (configuration issue, not code). All evidence reports generated and signed.
 
-Test results:
-- JPI full regression: 247/247 PASS
-- Phase 4 focal suite (factory automation): 8/8 PASS
-- Scenario matrix: 10/10 scenarios verified
-- E2E real from clean job root: PASS
+**Next Steps**: Phase 4 ready for operational deployment. Relay Controller remains replaceable boundary. No further action needed for Phase 4.
 
-State transitions verified: REQUESTED → DISPATCHED → RUNNING → READY → VALIDATED → CONSUMED → CLOSED
-
-Phase 3.5 guarantees preserved: freshness, fingerprint consistency, path confinement
-
-No blockers. Ready for merge.
-
-### JPI Phase 3.5 Post-Merge Independent Verification — PASS / PHASE_CLOSED
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-**What**: Independent verification of JPI Phase 3.5 post-merge closure completed. All criteria verified: SHAs, tags, commits, tests, E2E, correlations, path confinement.
-
-**Why**: Institutional checkpoint required before phase closure. Verifies that merge was successful, all approved commits are on origin/main, tests pass, and E2E flow works end-to-end from empty job root.
-
-**Where**: 
-- SFV5: /opt/saas-factory-setup (origin/main: d12693998c38c7d5b1f83a74135dd65bb8ab57bf)
-- JPI: /opt/360eventos (origin/main: 58b6546c4d92a562afdd1a6dc2a0a7b576566888)
-- Evidence: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/08-INDEPENDENT-POST-MERGE-REVIEW-CC.md
-
-**Learned**: 
-- SFV5 clean clone bridge tests: 8/8 PASS (path confinement, traversal rejection verified)
-- JPI full regression: 237/237 PASS (from merged main)
-- E2E real from clean job root: 1/1 PASS (artifact generated +69ms after mission packet)
-- mission_fingerprint consistent across 5 outputs
-- producer_sha consistent, equals SFV5 main HEAD
-- Tags published and dereferenced correctly
-- All path escapes rejected; confinement enforced
-- Strict correlation verified: mission, goal, request, attempt, producer, artifact SHA
-- No blockers found
-
-Verdict: PASS / PHASE_CLOSED. Ready for next phase entry.
+**Evidence**: 
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/08-INDEPENDENT-POST-MERGE-REVIEW-CC.md
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/05-INDEPENDENT-REVIEW-CC.md
+- /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/08-INDEPENDENT-POST-MERGE-REVIEW-CC.md
 
 ---
 
@@ -528,4 +516,4 @@ Verdict: PASS / PHASE_CLOSED. Ready for next phase entry.
 
 ---
 
-*Mirror auto-generated 2026-07-26T05:24:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-26T05:31:18Z | La Garra → DFLghub/amos-context*
