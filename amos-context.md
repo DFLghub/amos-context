@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-26T15:50:55Z  
+**Generated:** 2026-07-26T15:51:16Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -353,6 +353,41 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 
 13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
 
+### Cierre de sesión: revisión independiente final JPI Fase 4.1 Factory Portability Gate
+**Type:** architecture  
+**Project:** dfl  
+
+Fecha: 2026-07-26
+Repositorio revisado: /opt/360eventos
+Rama: feat/jpi-factory-remediation-v0.1
+SHA revisado: e09348b5edc1e00eec16ef4df257397071224122
+Historial verificado: incluye 2887e952c1064a0386f4ebbbe976ca5d8cd497e5 y 90c5045.
+
+Trabajo realizado:
+- Validación de revisión exacta entregada por CC.
+- Inspección de arquitectura, contratos, registry, bridge y runtime vivo.
+- Ejecución de suite focal nueva y suite completa de business-os.
+- Ejecución de pruebas negativas y evidencia runtime de selección de factory.
+
+Resultados principales:
+- Suite focal nueva: 33/33 PASS.
+- Suite completa de business-os: FAIL real, 259 pass / 12 fail.
+- Runtime no usa la interfaz neutral; sigue invocando submitMission/pollMission desde fmd/runtime.js.
+- Flujo vivo con DFL_FACTORY_ID=sfv5 y con DFL_FACTORY_ID=test-double falla al crear factory_request por intento de persistir nextPollAt como Date object, causando: SQLite3 can only bind numbers, strings, bigints, buffers, and null.
+- runtime-bridge define pollMission como async pero runtime lo invoca síncronamente, dejando una segunda incompatibilidad estructural.
+- Persisten defaults sfv5 en lógica superior (runtime.js y registry.js).
+- DFL_FACTORY_ID inválido falla cerrado correctamente.
+
+Veredicto emitido al usuario:
+FAIL / FACTORY_COUPLING_REMAINS
+
+Hallazgos críticos:
+1. Camino vivo roto antes de completar el flujo con ambas factories.
+2. Acoplamiento residual al contrato legacy submit/poll en la lógica superior.
+3. La suite verde de adapters no demuestra operatividad end-to-end del runtime real.
+
+No se modificó código, no se hizo commit, no se hizo merge.
+
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
 **Project:** dfl-knowledge  
@@ -415,25 +450,6 @@ Implement JPI Fase 5 — E2E empresarial completo (SOLICITUD → COTIZACIÓN →
 - **FASE-5-E2E-EMPRESARIAL-COMPLETO.md** — Architecture doc; explains 18-step flow, state mapping, validation rules, evidence traceability
 - **business-os/fmd/jpi-pilot.js** — Unchanged (pasos 1-12 reference); jpi-fase5.js copied + extended
 - **business-os/fmd/runtime.js** — Factory integration via createOperationalFactoryRequest/pollOperationalFactoryRequest (not modified; reused as-is)
-
-### JPI Fase 5 autorizada — E2E empresarial completo
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Autorización para iniciar JPI Fase 5 — E2E empresarial completo de la Empresa Sintética JPI, sobre happy path probado de Fase 4.1.
-
-**Why**: Fase 4.1 completó portabilidad de factory (contrato neutral, intercambio sfv5/test-double), pero quedó con 7 fallos en resilience (timeout, retry, recovery). Deuda registrada como FACTORY_BRIDGE_RESILIENCE_BACKLOG. Fase 5 avanza el objetivo empresarial sin depender de esa deuda.
-
-**Where**: /opt/360eventos (JPI) y /opt/saas-factory-setup/saas-factory (SFV5 mock). Rama aislada para Fase 5. Documentación: /opt/360eventos/JPI-FACTORY-PHASE4.1-FINAL-STATE.md.
-
-**Learned**: 
-- Happy path operativo: creación idempotente, polling, E2E básico, artefactos reales, SHA256, metadata
-- Factory seleccionable vía DFL_FACTORY_ID solamente
-- No payload.adapter, no lógica SFV5 específica en BOS
-- Secuencia: SOLICITUD → COTIZACIÓN → RESERVA → OPERACIÓN → CIERRE (no PRECOTIZACION)
-- Criterio éxito: escenario completo de punta a punta, brecha activa fabricación neutral, artefacto validado, BOS cierra post-validación, evidencia trazable
-- Máximo 1 revisión posterior
-- Veredicto final: READY_FOR_FINAL_REVIEW o FAILED_TO_COMPLETE_PHASE_5
 
 ---
 
@@ -526,4 +542,4 @@ Implement JPI Fase 5 — E2E empresarial completo (SOLICITUD → COTIZACIÓN →
 
 ---
 
-*Mirror auto-generated 2026-07-26T15:50:55Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-26T15:51:16Z | La Garra → DFLghub/amos-context*
