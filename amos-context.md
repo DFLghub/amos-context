@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-26T03:05:01Z  
+**Generated:** 2026-07-26T04:01:22Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,12 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### JPI Phase 3.5 post-review closure
+**Type:** decision  
+**Project:** dfl  
+
+2026-07-26 UTC. Session closed after a single consolidated correction round for JPI Phase 3.5 real SFV5 integration. Repos: /opt/360eventos and /opt/saas-factory-setup/saas-factory. Corrected SHAs: JPI 58b6546c4d92a562afdd1a6dc2a0a7b576566888 on branch fase-3-5-real-sfv5-bridge; SFV5 d12693998c38c7d5b1f83a74135dd65bb8ab57bf on branch fase-3-5-jpi-real-sfv5-bridge. Closed R35-01 by removing dependency on untracked cognitive-core helpers and proving bridge tests from a clean archive of the corrected SFV5 SHA. Closed R35-02 by enforcing strict correlation in JPI across status.json, artifact, test-report, producer-evidence, mission_id, goal_id, factory_request_id, attempt_number, mission_fingerprint, producer identity and expected producer SHA. Closed R35-03 by adding deterministic mission_fingerprint propagation and only allowing idempotent reuse when all identifiers and fingerprint match exactly. Closed R35-04 by enforcing canonical confinement of evidence_path in SFV5 and path confinement checks in JPI for producer-reported artifact/test/evidence paths. Verification: SFV5 relevant tests 21/21 PASS; JPI regression 237/237 PASS; fresh real E2E 1/1 PASS from empty job root; artifact generated after mission packet with recorded timestamps/checksums. Evidence updated under /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/ including 03-REPORT.md, 04-CC-FINDINGS-RESPONSE.md, 05-POST-REVIEW-VERIFICATION.md, CX-STATUS.md and raw logs. Remote verified: origin/fase-3-5-real-sfv5-bridge -> 58b6546..., origin/fase-3-5-jpi-real-sfv5-bridge -> d126939.... No merge to main performed.
+
 ### 360eventos Phase 3 SFV5 bridge completed
 **Type:** decision  
 **Project:** dfl  
@@ -125,23 +131,6 @@ Evidence:
 - /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/02-REVIEW.md
 - /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/03-COMMANDS.md
 - /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/04-REPORT.md
-
-### 360eventos Phase 2 zero published and mirrored
-**Type:** decision  
-**Project:** dfl  
-
-Date: 2026-07-25 UTC
-Repo: /opt/360eventos
-Approved Phase 2 SHA b80c10ddfee9cd651847e9e85367387295cb983e was on local main and local branch fase-2-organizational-runtime.
-Actions completed without force push:
-- git push origin main
-- git push origin fase-2-organizational-runtime
-- git push origin refs/tags/jpi-phase-2-closed
-Verification:
-- git ls-remote confirmed refs/heads/main and refs/heads/fase-2-organizational-runtime at b80c10ddfee9cd651847e9e85367387295cb983e
-- refs/tags/jpi-phase-2-closed^{} resolved to b80c10ddfee9cd651847e9e85367387295cb983e
-- /opt/dfl-context-proxy/push_mirror.sh reported MIRROR: unchanged | commit a757bd63707ccbd857a769cd95a8e957e5a63445 | 2026-07-25 16:17:09 +0000
-No Phase 2 code changes were made during CERO.
 
 ### SFV5 CLAUDE.md Documentation Fix — Independent Mission (NOT part of obs-347 piloto)
 **Type:** decision  
@@ -501,6 +490,12 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 
 13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
 
+### JPI Phase 3.5 post-review closure
+**Type:** decision  
+**Project:** dfl  
+
+2026-07-26 UTC. Session closed after a single consolidated correction round for JPI Phase 3.5 real SFV5 integration. Repos: /opt/360eventos and /opt/saas-factory-setup/saas-factory. Corrected SHAs: JPI 58b6546c4d92a562afdd1a6dc2a0a7b576566888 on branch fase-3-5-real-sfv5-bridge; SFV5 d12693998c38c7d5b1f83a74135dd65bb8ab57bf on branch fase-3-5-jpi-real-sfv5-bridge. Closed R35-01 by removing dependency on untracked cognitive-core helpers and proving bridge tests from a clean archive of the corrected SFV5 SHA. Closed R35-02 by enforcing strict correlation in JPI across status.json, artifact, test-report, producer-evidence, mission_id, goal_id, factory_request_id, attempt_number, mission_fingerprint, producer identity and expected producer SHA. Closed R35-03 by adding deterministic mission_fingerprint propagation and only allowing idempotent reuse when all identifiers and fingerprint match exactly. Closed R35-04 by enforcing canonical confinement of evidence_path in SFV5 and path confinement checks in JPI for producer-reported artifact/test/evidence paths. Verification: SFV5 relevant tests 21/21 PASS; JPI regression 237/237 PASS; fresh real E2E 1/1 PASS from empty job root; artifact generated after mission packet with recorded timestamps/checksums. Evidence updated under /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3-5/ including 03-REPORT.md, 04-CC-FINDINGS-RESPONSE.md, 05-POST-REVIEW-VERIFICATION.md, CX-STATUS.md and raw logs. Remote verified: origin/fase-3-5-real-sfv5-bridge -> 58b6546..., origin/fase-3-5-jpi-real-sfv5-bridge -> d126939.... No merge to main performed.
+
 ### 360eventos Phase 3 SFV5 bridge completed
 **Type:** decision  
 **Project:** dfl  
@@ -525,23 +520,6 @@ Evidence:
 - /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/02-REVIEW.md
 - /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/03-COMMANDS.md
 - /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-3/04-REPORT.md
-
-### 360eventos Phase 2 zero published and mirrored
-**Type:** decision  
-**Project:** dfl  
-
-Date: 2026-07-25 UTC
-Repo: /opt/360eventos
-Approved Phase 2 SHA b80c10ddfee9cd651847e9e85367387295cb983e was on local main and local branch fase-2-organizational-runtime.
-Actions completed without force push:
-- git push origin main
-- git push origin fase-2-organizational-runtime
-- git push origin refs/tags/jpi-phase-2-closed
-Verification:
-- git ls-remote confirmed refs/heads/main and refs/heads/fase-2-organizational-runtime at b80c10ddfee9cd651847e9e85367387295cb983e
-- refs/tags/jpi-phase-2-closed^{} resolved to b80c10ddfee9cd651847e9e85367387295cb983e
-- /opt/dfl-context-proxy/push_mirror.sh reported MIRROR: unchanged | commit a757bd63707ccbd857a769cd95a8e957e5a63445 | 2026-07-25 16:17:09 +0000
-No Phase 2 code changes were made during CERO.
 
 ---
 
@@ -634,4 +612,4 @@ No Phase 2 code changes were made during CERO.
 
 ---
 
-*Mirror auto-generated 2026-07-26T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-26T04:01:22Z | La Garra → DFLghub/amos-context*
