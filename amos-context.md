@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-26T17:17:43Z  
+**Generated:** 2026-07-27T03:04:44Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -329,46 +329,78 @@ Sin cambios de preferencia registrados en esta sesión.
 
 ## RECENT ACTIVITY (cross-project)
 
+### @$fin cierre Codex - Modelo B2 Salud Institucional
+**Type:** fact  
+**Project:** dfl  
+
+Cierre @$fin ejecutado por Codex el 2026-07-10. Trabajo realizado: creado el artefacto /opt/dfl-knowledge/audits/organismo-v1/MODELO-SALUD-INSTITUCIONAL-DFL-B2.md con el Modelo B2 de Salud Institucional de DFL; copiado tambien a /root/DFL-ChatGPT/MODELO-SALUD-INSTITUCIONAL-DFL-B2.md como destino Google Drive/local solicitado. El documento cambia el marco desde auditoria de organos/componentes hacia medicina interna institucional: dimensiones de salud estrategica, arquitectonica, operacional, metabolica, cognitiva, organizacional, economica, Digital Workforce, fabricas, BOS y ecosistema; incluye sistema permanente de vigilancia, panel clinico, critica del informe anterior y relectura del stack Gentleman Programming/Alan. Tambien se dejo previamente el suplemento /opt/dfl-knowledge/audits/organismo-v1/INFORME-CODEX-AUDITORIA-ORGANISMO.md. No se hizo commit de estos nuevos artefactos B2.
+
 ### Session summary: futbolweb-app
 **Type:** session_summary  
 **Project:** futbolweb-app  
 
 ## Goal
-Completar el Diagnóstico Institucional DFL v1 (misión retomada tras corte de conexión): auditoría solo-lectura de La Garra con separación evidencia/inventario/interpretación/diagnóstico y clasificación explícita de certeza. Cierre con estado de la casa y orden institucional, NO propuesta tecnológica.
+Construir el circuito @$go → Graphify → Engram: regenerar el grafo semántico de /opt/dfl-knowledge/, conectarlo al endpoint /go del dfl-context-proxy, y mejorar el onboarding DFL para que cualquier agente arranque con contexto topológico preciso.
+
+## Instructions
+- METABOLISMO: Conserve. Respuestas cortas. Solo output de comandos cuando se pide diagnóstico.
+- No sugerir próximos pasos cuando el usuario pide solo diagnóstico.
+- Reportar cada entrega cuando está completa antes de continuar a la siguiente.
+- Circuit breakers en producción: reportar criterio antes de activar, no ejecutar regen completa sin autorización.
+
+## Discoveries
+- graphify detecta automáticamente OPENAI_API_KEY como backend — no necesita GEMINI para extracción semántica en cron
+- El grafo de dfl-knowledge tiene 51 componentes conectados y grado promedio 1.36 — la sparsidad es estructural. El parámetro `resolution` en cluster() no reduce singletons aislados. Fix real: filtrar display, no ajustar algoritmo.
+- graphify cluster() acepta `resolution: float = 1.0` pero no ayuda con grafos muy dispersos
+- 52 comunidades para 118 nodos: 44 son singletons/pares, solo 8 son comunidades activas (>2 nodos)
+- El endpoint /go previo viajaba con ~4KB de markdown en cada request sin importar si se necesitaba
+- gen_summary.py original perdía hiperedges y alertas vs. el GRAPH_SUMMARY.md escrito manualmente — divergencia silenciosa
+- graphify.build.build_from_json() + cluster() + god_nodes() + surprising_connections() funcionan sin LLM — pueden correr en cron
+- El campo `recent_engram_dfl` del /go filtra por topic_key o title conteniendo "dfl" u "onboarding"
+- regen_graph.sh necesitaba circuit breaker porque CRON 2 en producción puede fallar silenciosamente y sobreescribir un graph.json válido con uno vacío
+- @$go (comando del agente) y /go (ruta HTTP) son capas distintas — confusión frecuente en onboarding
 
 ## Accomplished
-- Verificado estado persistido tras el corte: 17 archivos de evidencia en EVIDENCE/ sobrevivieron; ningún artefacto de análisis existía; Engram sin registro de la misión (murió antes del Gate 4B).
-- Cerrados 2 huecos de evidencia (solo lectura): git-remotes-redactado.txt (PAT detectado por prefijo, valor jamás registrado) y git-dirty-detalle.txt.
-- Escritos los 5 artefactos en /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/: 00-README (método + taxonomía [V]/[I]/[NV]/[D]), 01-INVENTARIO-INFRAESTRUCTURA, 02-INTERPRETACION, 03-HALLAZGOS (18 hallazgos: 1 crítico, 6 altos, 5 medios, 6 bajos), 04-DIAGNOSTICO-INSTITUCIONAL (orden: ACLARAR → VERIFICAR → CONSOLIDAR → GOBERNAR → RETIRAR).
-
-## Discoveries (clave)
-- H-01 CRÍTICO: PAT GitHub en remote de prediccion2026 (obs #218) — registrado sin rotar por mandato.
-- H-02 ALTO: backups off-host de Engram NO verificables desde La Garra (ssh denegado + receptor rechaza inspección) — durabilidad es hipótesis, no hecho.
-- H-03 ALTO: engram-backup-offhost.sh y engram-sync-cron.sh corren desde working tree sin commit — crons ejecutan código que git no declara.
-- H-04 ALTO: producto público (360eventos demo a Rubén, futbolweb) servido por next dev servers NODE_ENV=development en puertos públicos; explica swap 1.4Gi/2.0Gi.
-- H-05 ALTO: saas-factory-setup V5 (5e42124) local con remote apuntando a org externa saas-factory-community — push reflejo filtraría IP de fábrica.
-- H-06/H-07: n8n público dormido desde 2026-05-17; futbolweb-env-backup.zip en Drive sin verificar.
-- Organismo intacto: cero correcciones, reinicios, limpiezas o actualizaciones.
+- ✅ Diagnóstico completo del servidor: todos los servicios activos (engram 7437/8090, dfl-context-proxy 8091, MCP 8092, caddy, next-server 3001, n8n 5678)
+- ✅ Mapeado /opt/dfl-knowledge/ como directorio fuente principal de documentación DFL: 66 .md, 29 .docx, 5 .pdf, estructura 00-12 + CO-001
+- ✅ Regenerado graph.json de /opt/dfl-knowledge/ con extracción semántica completa (118 nodos, 80 edges, 60 archivos desde caché, 12 nuevos via subagente)
+- ✅ Labeleadas 15 comunidades principales: FutbolWeb Identity & UAS (0.67), MERCADER BOS (0.67), FutbolWeb Scoring Pipeline (0.50), DFL Core Doctrine (0.50), etc.
+- ✅ Creado /opt/dfl-knowledge/graphify-out/GRAPH_SUMMARY.md con god nodes, comunidades, sorpresas, hiperedges, alertas
+- ✅ Modificado /opt/dfl-context-proxy/main.py: endpoint /go agrega graph_summary y recent_engram_dfl
+- ✅ Fix 1: GET /go → graph_context ligero (top-3 nodes + 1 sorpresa, ~500 bytes). GET /go?deep=1 → graph_summary completo (~4KB)
+- ✅ Fix 2: gen_summary.py con hash guard — no sobreescribe GRAPH_SUMMARY.md si graph.json no cambió. Hash en .summary_graph_hash
+- ✅ Fix 3: display corregido — header muestra "8 comunidades activas (44 singletons/pares filtrados)" en vez de "52 comunidades"
+- ✅ Fix 4: circuit breaker en regen_graph.sh — si nuevo graph.json tiene <90% nodos del anterior, aborta y restaura desde backup (.prev)
+- ✅ Fix 5: nota explícita en DFL_Agent_Onboarding_Config.md — @$go vs /go son capas distintas, nunca intercambiar
+- ✅ Cron 1 (diario 3am UTC): daily_check.sh — regenera GRAPH_SUMMARY.md; si >5 .md modificados desde última regen completa, dispara CRON 2
+- ✅ Cron 2 (domingo 4am UTC): regen_graph.sh — extracción semántica completa con OpenAI + circuit breaker + actualiza summary
+- ✅ DFL_Agent_Onboarding_Config.md actualizado a v0.3: @go → @$go en todas las ocurrencias (sin tocar URLs), sección 1.1 con circuito completo
+- ✅ /opt/dfl-knowledge/graphify-out/.last_full_regen inicializado con timestamp 2026-06-26T23:26:49Z
 
 ## Next Steps
-- Bloques 1º-2º del diagnóstico antes de cualquier evolución: aclarar alcance del PAT, registro vivo/muerto de órganos /opt, rol n8n, dry-run metabolismo, destino V5; verificar backups desde VM3, auth n8n/8080, vigencia PAT.
-- Commitear el expediente de auditoría en dfl-knowledge (C-2) cuando Jorge autorice.
+- Instalar poppler-utils para habilitar extracción de PDFs (5 archivos actualmente inaccesibles: agPattern INGENIERIA-DE-NBLMS + 3 PDFs de Guia Personal)
+- Considerar excluir Guia Personal/ de futuros runs de graphify (documentos inmobiliarios personales sin relación con DFL)
+- Renovar cron-job.org ESPN sync antes de 2026-07-20 (alerta activa)
+- Evaluar si los campos `recent_engram_dfl` y `graph_context` en /go tienen el tamaño correcto — el response ligero sigue siendo ~21KB por el contenido completo de memorias Engram
+- El graph_context light podría incluir la "key_bridge" (nodo con mayor betweenness centrality) además del key_surprise
 
 ## Relevant Files
-- /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/{00-README,01-INVENTARIO-INFRAESTRUCTURA,02-INTERPRETACION,03-HALLAZGOS,04-DIAGNOSTICO-INSTITUCIONAL}.md
-- EVIDENCE/ (19 archivos, incl. git-remotes-redactado.txt y git-dirty-detalle.txt nuevos)
+- /opt/dfl-knowledge/graphify-out/graph.json — grafo semántico completo (118 nodos, 80 edges), generado 2026-06-26
+- /opt/dfl-knowledge/graphify-out/GRAPH_SUMMARY.md — resumen humano-legible del grafo (god nodes, comunidades, sorpresas)
+- /opt/dfl-knowledge/graphify-out/graph_context_light.json — payload mínimo para /go sin ?deep=1
+- /opt/dfl-knowledge/graphify-out/.summary_graph_hash — hash md5 de graph.json al momento de última escritura de GRAPH_SUMMARY.md
+- /opt/dfl-knowledge/graphify-out/.last_full_regen — timestamp de última ejecución exitosa de CRON 2
+- /opt/dfl-context-proxy/main.py — proxy HTTP: /go (light/deep), /context/dfl, /health
+- /opt/dfl-knowledge/scripts/gen_summary.py — regenera GRAPH_SUMMARY.md + graph_context_light.json sin LLM
+- /opt/dfl-knowledge/scripts/regen_graph.sh — CRON 2: extracción semántica completa con circuit breaker
+- /opt/dfl-knowledge/scripts/daily_check.sh — CRON 1: check condición + regen summary o full
+- /opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md — onboarding v0.3: @$go corregido, sección 1.1 con circuito completo
 
-### amOS Event Model — veredicto auditoría 2026-06-23
-**Type:** decision  
-**Project:** dfl  
-
-Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (AgMaster_amOS_3, AI_amOS_Acta_Fundacional v1.1, Protocolo MS→amOS). Veredicto: B — Existe parcialmente pero disperso. Cobertura: Peso/costo metabólico→confidence+value en tabla events (Parcial, consolidar); Persistencia→status Origin Chain+estados Candidate Vault (Parcial, consolidar); Intención→scope+forbidden_uses agLego+Layer3 VALUE (Implícita, nombrar); Propagación→C-009+G-002 Protocol Taxonomy (Incompleta, GAP REAL); Relación con estado→Layer6+tabla asset_states (Existe, conservar). Conclusión: NO hace falta constructo nuevo tipo 'Light Signals'. Hace falta unificar y nombrar lo disperso. Gap real confirmado: G-002 Protocol Taxonomy (propagación, marcado como no cerrado en el Acta Fundacional). Próximo paso: cerrar G-002 dentro del Libro 1 amOS o como PRP independiente. Prerequisito: localizar RFC-DFL-001 (puede contener Event Model más completo).
-
-### amOS — ontología activa 13 capas (Acta Fundacional v1.1)
+### Candidate Vault 04: estructura y estado 2026-06-24
 **Type:** fact  
 **Project:** dfl  
 
-13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
+Ubicación: DFL-ChatGPT/04_Candidate_Vault/. Ciclo de vida de artefactos: pending_review → audited_pass → promoted → hibernated → rejected. Contenido actual: audited_pass/ tiene Gate_Engine_Caso01/02/03_PRP001, Gate_Engine_MVP_Spec_v0.2, Gate_Engine_v0_Checklist_Manual, MEMO_CIERRE_Gate_Engine_v0, PERIMETRO_DECLARADO_v1.0, SDLC_Matriz_Correspondencia. pending_review/ tiene: NBLM2-FISIO-DFL-01_Matriz_de_Fisiologia_Contextual_CANDIDATE.md, agPattern-INGENIERIA-DE-NBLMS-v1_CANDIDATE.pdf, agProtocol-METRICS-REALITY-ROI-v2.5.3.5-C.md. En raíz del vault: agLego-PATTERN-ASYNC_INSPECTION_SPLIT.md/.docx (estado candidate/sealed, sin HI approval), agPattern-ECDA-Topologia_de_Roles-v1.0_CANDIDATE.md (duplicado). Nota verificación ONBOARDING: los archivos agLego-PATTERN-ASYNC_INSPECTION_SPLIT.docx/.md y agPattern-ECDA-Topologia_de_Roles-v1.0_CANDIDATE (1).md están en la raíz del vault (no en root ni en subdirectorios incorrectos) — condición de Zapata3 sobre artefactos stray no se aplica aquí.
 
 ### Corrección auditoría Concierge — main tiene register/CLI que la auditoría inicial no vio
 **Type:** discovery  
@@ -514,15 +546,15 @@ Auditoría integral de capacidades, arquitectura, conexión real y utilización 
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.8274  
+**Graph entropy:** 0.5961  
 
-- **Community 11** (95 nodes): Asunciones de Verificación, Digest de Contenido, Artifact and Runtime Matrix
-- **Community 0** (7 nodes): Capacidades Comunes Reutilizables, dfl-secrets
-- **Community 1** (4 nodes): Onboarding Capability
-- **Community 2** (4 nodes): Blade en Laravel, Beancount, MCP (Model Context Protocol)
-- **Community 3** (4 nodes): NBLM2, Working Memory, Active Library
-- **Community 4** (4 nodes): Documentación JSDoc, Estado de la casa DFL, Onboarding multi-agente
+- **Community 11** (101 nodes): Onboarding Capability, Índices Canónicos, Artifact and Runtime Matrix
+- **Community 0** (4 nodes): PAT clásico, Componentes DFL
+- **Community 1** (4 nodes): KDL, Jsonnet, Mermaid
+- **Community 2** (4 nodes): FutbolWeb - Reality Sync, FutbolWeb - Ranking Summary, Dependencias Críticas
+- **Community 4** (4 nodes): agLego, Soberana + Triunvirato, ag10
+- **Community 3** (4 nodes): Motor de scoring knockout
 
 ---
 
-*Mirror auto-generated 2026-07-26T17:17:43Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-27T03:04:44Z | La Garra → DFLghub/amos-context*
