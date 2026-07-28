@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-28T03:05:01Z  
+**Generated:** 2026-07-28T03:06:46Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -319,78 +319,69 @@ Sin cambios de preferencia registrados en esta sesión.
 
 ## RECENT ACTIVITY (cross-project)
 
-### @$fin cierre Codex - Modelo B2 Salud Institucional
-**Type:** fact  
-**Project:** dfl  
-
-Cierre @$fin ejecutado por Codex el 2026-07-10. Trabajo realizado: creado el artefacto /opt/dfl-knowledge/audits/organismo-v1/MODELO-SALUD-INSTITUCIONAL-DFL-B2.md con el Modelo B2 de Salud Institucional de DFL; copiado tambien a /root/DFL-ChatGPT/MODELO-SALUD-INSTITUCIONAL-DFL-B2.md como destino Google Drive/local solicitado. El documento cambia el marco desde auditoria de organos/componentes hacia medicina interna institucional: dimensiones de salud estrategica, arquitectonica, operacional, metabolica, cognitiva, organizacional, economica, Digital Workforce, fabricas, BOS y ecosistema; incluye sistema permanente de vigilancia, panel clinico, critica del informe anterior y relectura del stack Gentleman Programming/Alan. Tambien se dejo previamente el suplemento /opt/dfl-knowledge/audits/organismo-v1/INFORME-CODEX-AUDITORIA-ORGANISMO.md. No se hizo commit de estos nuevos artefactos B2.
-
 ### Session summary: futbolweb-app
 **Type:** session_summary  
 **Project:** futbolweb-app  
 
-## Goal
-Construir el circuito @$go → Graphify → Engram: regenerar el grafo semántico de /opt/dfl-knowledge/, conectarlo al endpoint /go del dfl-context-proxy, y mejorar el onboarding DFL para que cualquier agente arranque con contexto topológico preciso.
+## Cierre DFL/KNL/FutbolWeb — 2026-06-27
 
-## Instructions
-- METABOLISMO: Conserve. Respuestas cortas. Solo output de comandos cuando se pide diagnóstico.
-- No sugerir próximos pasos cuando el usuario pide solo diagnóstico.
-- Reportar cada entrega cuando está completa antes de continuar a la siguiente.
-- Circuit breakers en producción: reportar criterio antes de activar, no ejecutar regen completa sin autorización.
+### Goal
+Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar FutbolWeb limpio de dirty files y factory artifacts.
 
-## Discoveries
-- graphify detecta automáticamente OPENAI_API_KEY como backend — no necesita GEMINI para extracción semántica en cron
-- El grafo de dfl-knowledge tiene 51 componentes conectados y grado promedio 1.36 — la sparsidad es estructural. El parámetro `resolution` en cluster() no reduce singletons aislados. Fix real: filtrar display, no ajustar algoritmo.
-- graphify cluster() acepta `resolution: float = 1.0` pero no ayuda con grafos muy dispersos
-- 52 comunidades para 118 nodos: 44 son singletons/pares, solo 8 son comunidades activas (>2 nodos)
-- El endpoint /go previo viajaba con ~4KB de markdown en cada request sin importar si se necesitaba
-- gen_summary.py original perdía hiperedges y alertas vs. el GRAPH_SUMMARY.md escrito manualmente — divergencia silenciosa
-- graphify.build.build_from_json() + cluster() + god_nodes() + surprising_connections() funcionan sin LLM — pueden correr en cron
-- El campo `recent_engram_dfl` del /go filtra por topic_key o title conteniendo "dfl" u "onboarding"
-- regen_graph.sh necesitaba circuit breaker porque CRON 2 en producción puede fallar silenciosamente y sobreescribir un graph.json válido con uno vacío
-- @$go (comando del agente) y /go (ruta HTTP) son capas distintas — confusión frecuente en onboarding
+### Accomplished
+- Engram #101: payload /go slim — graph_context eliminado, knl canónico único en payload
+- cc-atgo-hook.sh: header @go → @$go corregido
+- dfl-nav fmt_brief: mensaje no-match → "sin god_node — intenta la raíz del concepto"
+- FutbolWeb repo limpio: Blueprint audit movido a /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Auditorias/, graphify-out/ eliminado, .gitignore actualizado, commit 3fd5801
+- Engram #102: higiene FutbolWeb documentada
+- Bitácora creada: /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-## Accomplished
-- ✅ Diagnóstico completo del servidor: todos los servicios activos (engram 7437/8090, dfl-context-proxy 8091, MCP 8092, caddy, next-server 3001, n8n 5678)
-- ✅ Mapeado /opt/dfl-knowledge/ como directorio fuente principal de documentación DFL: 66 .md, 29 .docx, 5 .pdf, estructura 00-12 + CO-001
-- ✅ Regenerado graph.json de /opt/dfl-knowledge/ con extracción semántica completa (118 nodos, 80 edges, 60 archivos desde caché, 12 nuevos via subagente)
-- ✅ Labeleadas 15 comunidades principales: FutbolWeb Identity & UAS (0.67), MERCADER BOS (0.67), FutbolWeb Scoring Pipeline (0.50), DFL Core Doctrine (0.50), etc.
-- ✅ Creado /opt/dfl-knowledge/graphify-out/GRAPH_SUMMARY.md con god nodes, comunidades, sorpresas, hiperedges, alertas
-- ✅ Modificado /opt/dfl-context-proxy/main.py: endpoint /go agrega graph_summary y recent_engram_dfl
-- ✅ Fix 1: GET /go → graph_context ligero (top-3 nodes + 1 sorpresa, ~500 bytes). GET /go?deep=1 → graph_summary completo (~4KB)
-- ✅ Fix 2: gen_summary.py con hash guard — no sobreescribe GRAPH_SUMMARY.md si graph.json no cambió. Hash en .summary_graph_hash
-- ✅ Fix 3: display corregido — header muestra "8 comunidades activas (44 singletons/pares filtrados)" en vez de "52 comunidades"
-- ✅ Fix 4: circuit breaker en regen_graph.sh — si nuevo graph.json tiene <90% nodos del anterior, aborta y restaura desde backup (.prev)
-- ✅ Fix 5: nota explícita en DFL_Agent_Onboarding_Config.md — @$go vs /go son capas distintas, nunca intercambiar
-- ✅ Cron 1 (diario 3am UTC): daily_check.sh — regenera GRAPH_SUMMARY.md; si >5 .md modificados desde última regen completa, dispara CRON 2
-- ✅ Cron 2 (domingo 4am UTC): regen_graph.sh — extracción semántica completa con OpenAI + circuit breaker + actualiza summary
-- ✅ DFL_Agent_Onboarding_Config.md actualizado a v0.3: @go → @$go en todas las ocurrencias (sin tocar URLs), sección 1.1 con circuito completo
-- ✅ /opt/dfl-knowledge/graphify-out/.last_full_regen inicializado con timestamp 2026-06-26T23:26:49Z
+### Discoveries
+- graph_context era alias redundante del payload /go — eliminado sin romper consumidores
+- agProtocol_ATP-D_ROJA_v0.1-1: 3 archivos con MD5 idéntico en corpus (duplicados de indexación)
+- "estado" como nombre de god_node produce colisión léxica en español con el grafo
+- Blueprint_v0.6 audit era inconclusa (Blueprint no disponible en VM2) — conservada en Auditorias/
 
-## Next Steps
-- Instalar poppler-utils para habilitar extracción de PDFs (5 archivos actualmente inaccesibles: agPattern INGENIERIA-DE-NBLMS + 3 PDFs de Guia Personal)
-- Considerar excluir Guia Personal/ de futuros runs de graphify (documentos inmobiliarios personales sin relación con DFL)
-- Renovar cron-job.org ESPN sync antes de 2026-07-20 (alerta activa)
-- Evaluar si los campos `recent_engram_dfl` y `graph_context` en /go tienen el tamaño correcto — el response ligero sigue siendo ~21KB por el contenido completo de memorias Engram
-- El graph_context light podría incluir la "key_bridge" (nodo con mayor betweenness centrality) además del key_surprise
+### Next Steps
+1. FutbolWeb producto — runtime estable, knockout scoring deployado (91a4531)
+2. KNL próximo ciclo — nota stale graph_context en knl_builder.py, health test local, evaluar renombrar estado → context-proxy
+3. MERCADER — agregar a KNL si se activa como área de trabajo
+4. Corpus — eliminar agProtocol duplicados (-1 variants)
 
-## Relevant Files
-- /opt/dfl-knowledge/graphify-out/graph.json — grafo semántico completo (118 nodos, 80 edges), generado 2026-06-26
-- /opt/dfl-knowledge/graphify-out/GRAPH_SUMMARY.md — resumen humano-legible del grafo (god nodes, comunidades, sorpresas)
-- /opt/dfl-knowledge/graphify-out/graph_context_light.json — payload mínimo para /go sin ?deep=1
-- /opt/dfl-knowledge/graphify-out/.summary_graph_hash — hash md5 de graph.json al momento de última escritura de GRAPH_SUMMARY.md
-- /opt/dfl-knowledge/graphify-out/.last_full_regen — timestamp de última ejecución exitosa de CRON 2
-- /opt/dfl-context-proxy/main.py — proxy HTTP: /go (light/deep), /context/dfl, /health
-- /opt/dfl-knowledge/scripts/gen_summary.py — regenera GRAPH_SUMMARY.md + graph_context_light.json sin LLM
-- /opt/dfl-knowledge/scripts/regen_graph.sh — CRON 2: extracción semántica completa con circuit breaker
-- /opt/dfl-knowledge/scripts/daily_check.sh — CRON 1: check condición + regen summary o full
-- /opt/dfl-knowledge/DFL_Agent_Onboarding_Config.md — onboarding v0.3: @$go corregido, sección 1.1 con circuito completo
+### Relevant Files
+/opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### Candidate Vault 04: estructura y estado 2026-06-24
+### Stack FutbolWeb — runtime activo
 **Type:** fact  
+**Project:** futbolweb-app  
+
+FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
+
+### [CERTIFIED] Roadmap DFL @$go/KNL/hooks — orquestación 2026-06-27
+**Type:** decision  
 **Project:** dfl  
 
-Ubicación: DFL-ChatGPT/04_Candidate_Vault/. Ciclo de vida de artefactos: pending_review → audited_pass → promoted → hibernated → rejected. Contenido actual: audited_pass/ tiene Gate_Engine_Caso01/02/03_PRP001, Gate_Engine_MVP_Spec_v0.2, Gate_Engine_v0_Checklist_Manual, MEMO_CIERRE_Gate_Engine_v0, PERIMETRO_DECLARADO_v1.0, SDLC_Matriz_Correspondencia. pending_review/ tiene: NBLM2-FISIO-DFL-01_Matriz_de_Fisiologia_Contextual_CANDIDATE.md, agPattern-INGENIERIA-DE-NBLMS-v1_CANDIDATE.pdf, agProtocol-METRICS-REALITY-ROI-v2.5.3.5-C.md. En raíz del vault: agLego-PATTERN-ASYNC_INSPECTION_SPLIT.md/.docx (estado candidate/sealed, sin HI approval), agPattern-ECDA-Topologia_de_Roles-v1.0_CANDIDATE.md (duplicado). Nota verificación ONBOARDING: los archivos agLego-PATTERN-ASYNC_INSPECTION_SPLIT.docx/.md y agPattern-ECDA-Topologia_de_Roles-v1.0_CANDIDATE (1).md están en la raíz del vault (no en root ni en subdirectorios incorrectos) — condición de Zapata3 sobre artefactos stray no se aplica aquí.
+**What**: Orquestación ejecutiva del stack DFL post-certificación: incidente FW, slim /go, fallback local, handoff bidireccional, modelo de confianza.
+
+**Decisiones:**
+- Incidente FW 2026-06-19: STALE. Engram #14 lo cierra (fix aplicado 2026-06-24). El `pending` en /go es ruido — debe limpiarse. Los archivos dirty en /opt/futbolweb (espn-world-cup.ts +175l, scoring-propagation.ts +30l) son trabajo en progreso nuevo, no el incidente.
+- Slim /go: servir solo restrictions + god_nodes + pending + recent_decisions(max 4) por defecto. Identity → 2 líneas. graph_summary → ?full=1. -40% payload estimado.
+- Fallback local: cc-atgo-hook.sh debe leer /opt/dfl-knowledge/graphify-out/knl.json si /go falla. Banner MODO FALLBACK para agente. Elimina único punto de fallo silencioso.
+- Handoff bidireccional: agent-lock.json en /opt/dfl-context-proxy/. Read en SessionStart, write al iniciar trabajo, cleanup en session_end. Sin infraestructura distribuida.
+- Modelo confianza: convención [VERIFIED]/[CERTIFIED]/[CLAIMED]/[STALE] en títulos Engram. Cero código. Si restricción es CLAIMED, preguntar a Jorge antes de actuar.
+
+**Orden de ejecución recomendado:**
+1. Limpiar pending Engram #14 (5 min)
+2. Fallback local cc-atgo-hook.sh (30 min)
+3. Slim /go payload main.py (1h)
+4. Convención evidence_level en Engram (inmediato, convención)
+5. Agent lock file — solo cuando haya colisiones reales documentadas
+
+**Why**: Reducir ruido en bootstrap inter-agente y eliminar puntos de fallo sin tocar producción.
+
+**Where**: cc-atgo-hook.sh, main.py (/go endpoint), Engram project dfl.
+
+**Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
@@ -524,15 +515,15 @@ Sesión multi-misión sobre DFL Concierge: reconciliación → recovery → merg
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.5961  
+**Graph entropy:** 0.8141  
 
-- **Community 11** (101 nodes): Onboarding Capability, Índices Canónicos, Artifact and Runtime Matrix
-- **Community 0** (4 nodes): PAT clásico, Componentes DFL
-- **Community 1** (4 nodes): KDL, Jsonnet, Mermaid
-- **Community 2** (4 nodes): FutbolWeb - Reality Sync, FutbolWeb - Ranking Summary, Dependencias Críticas
-- **Community 4** (4 nodes): agLego, Soberana + Triunvirato, ag10
-- **Community 3** (4 nodes): Motor de scoring knockout
+- **Community 11** (96 nodes): MCP Server Behavior, Evaluación de Plantillas HTML, Preguntas para el Desarrollador
+- **Community 0** (4 nodes): Veredicto Modular en DFL
+- **Community 1** (4 nodes): CP-03 y contratos F1, PATTERN_TRANSFER_ENGINE
+- **Community 2** (4 nodes): Garra, Deudas estructurales, Onboarding multi-agente
+- **Community 3** (4 nodes): KDL, Jsonnet
+- **Community 4** (4 nodes): Verificación de Identidad, Auditoría de Capacidades, Gestión de Credenciales
 
 ---
 
-*Mirror auto-generated 2026-07-28T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-28T03:06:46Z | La Garra → DFLghub/amos-context*
