@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-28T02:18:02Z  
+**Generated:** 2026-07-28T02:19:24Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -392,6 +392,12 @@ Construir el circuito @$go → Graphify → Engram: regenerar el grafo semántic
 
 Ubicación: DFL-ChatGPT/04_Candidate_Vault/. Ciclo de vida de artefactos: pending_review → audited_pass → promoted → hibernated → rejected. Contenido actual: audited_pass/ tiene Gate_Engine_Caso01/02/03_PRP001, Gate_Engine_MVP_Spec_v0.2, Gate_Engine_v0_Checklist_Manual, MEMO_CIERRE_Gate_Engine_v0, PERIMETRO_DECLARADO_v1.0, SDLC_Matriz_Correspondencia. pending_review/ tiene: NBLM2-FISIO-DFL-01_Matriz_de_Fisiologia_Contextual_CANDIDATE.md, agPattern-INGENIERIA-DE-NBLMS-v1_CANDIDATE.pdf, agProtocol-METRICS-REALITY-ROI-v2.5.3.5-C.md. En raíz del vault: agLego-PATTERN-ASYNC_INSPECTION_SPLIT.md/.docx (estado candidate/sealed, sin HI approval), agPattern-ECDA-Topologia_de_Roles-v1.0_CANDIDATE.md (duplicado). Nota verificación ONBOARDING: los archivos agLego-PATTERN-ASYNC_INSPECTION_SPLIT.docx/.md y agPattern-ECDA-Topologia_de_Roles-v1.0_CANDIDATE (1).md están en la raíz del vault (no en root ni en subdirectorios incorrectos) — condición de Zapata3 sobre artefactos stray no se aplica aquí.
 
+### CX final delta gate for Concierge F1B target 1f415b3
+**Type:** fact  
+**Project:** dfl  
+
+2026-07-28. Se ejecutó el cierre de la revisión delta final de Concierge F1B sobre el target inmutable 1f415b3a77eb22a5ac0369ca55ad27bb18d61c34. Verificación exclusiva: commits 52c0e3c y 1f415b3; --json no forma parte del contrato real, documentación y decisiones alcanzables, suite 248/248 PASS previamente confirmada, target limpio e inmutable. Bundle final del High-Certainty Gate con constructor CC y revisor independiente CX, target_hash_manifest con hashes coincidentes, grafo fresco/cobertura suficiente/convergencia confirmada: validate_harness ok=true, decision APPROVED, blockers []. Resultado final: HIGH_CERTAINTY_GATE PASS; READY_TO_MERGE_MAIN YES; no se ejecutó merge ni se modificó camino vivo. Revisión preservada localmente en /tmp/f1b-final-gate-1f415 y reportes previos en commits locales 7a459f6, 994ca79, 0cc757f; push remoto previo bloqueado por DNS.
+
 **Type:** manual  
 **Project:** dfl-knowledge  
 
@@ -421,32 +427,6 @@ Ubicación: DFL-ChatGPT/04_Candidate_Vault/. Ciclo de vida de artefactos: pendin
 **VEREDICTO**: LIVE_PATH_MAPPED=YES, ADAPTER_CANDIDATE=BUILT, SHADOW_MODE=READY, LEGACY_PATH_PRESERVED=YES, TESTS=PASS, ROLLBACK=PROVEN (por 2 tests mecánicos, no por ciclo activar→revertir real), HIGH_CERTAINTY_GATE=CONDITIONAL, READY_FOR_CONTROLLED_LIVE_TEST=YES, LIVE_ACTIVATION_PERFORMED=NO.
 
 **RELACIONADO**: [[dfl/concierge/f1a-merged-to-main]] obs #379.
-
-**Type:** manual  
-**Project:** dfl-knowledge  
-
-**TOPIC**: dfl/concierge/f1a-merged-to-main
-**TYPE**: decision
-**DATE**: 2026-07-28
-**MISSION**: CONCIERGE F1A — MERGE CANDIDATE TO MAIN (autorizado por Jorge)
-
-**WHAT**: `origin/integration/concierge-f1b-candidate @ 1f415b3` fusionado a `main` mediante fast-forward puro (sin commit de merge nuevo, sin squash, sin rewrite — MAIN_MERGE_SHA == TARGET_SHA == 1f415b3). `main` previo: `9f364c0`. Rollback ref `rollback/concierge-pre-f1a-merge-2026-07-27` creada y pusheada ANTES de tocar main.
-
-**VERIFICACIONES PREVIAS**: target sin cambios desde revisión independiente, main limpio, ancestry lineal confirmada (merge-base == main previo exacto), 9 commits de primer padre exactamente los ya revisados, sin sorpresas.
-
-**POST-MERGE en main real**: 248/248 PASS + 11 checks individuales (compiler, validator, CLI compile/validate SIN --skip-provenance ahora funcionando en main por primera vez, authz 79/79, conformance 14/14 + kit PASS, workunit 17/17, dogfood 1/1, adversariales 56/56, provenance 22/22, CLI+doc-regression 4/4). Working tree limpio antes y después. Nota de entorno: worktree /opt/dfl-knowledge-workunit tiene "dubious ownership" preexistente, resuelto con GIT_CONFIG_* env vars transitorias (sin tocar ningún config file).
-
-**PUSH**: `origin/main` confirmado en `1f415b3`.
-
-**GRAFOS**: Graphify (dfl-knowledge-workunit) re-indexado en el SHA exacto de main, 0 errores, 9 paquetes concierge confirmados. agTopólogo NO regenerado — mismo razonamiento que la ronda anterior (no es commit-addressable entre worktrees, muestreo LLM parcial, no agregaría cobertura real).
-
-**PRESERVACIÓN**: receipt completo en `audits/concierge-f1a-reconciliation-2026-07-27/f1a-main-merge-2026-07-28/CONCIERGE-F1A-MAIN-MERGE-RECEIPT.md`, commiteado y pusheado.
-
-**LÍMITES RESPETADOS**: dfl-context-proxy, hooks @$go/@$fin, servicios vivos, configuración de producción — sin ningún cambio. F1B vivo NO iniciado.
-
-**VEREDICTO FINAL**: CONCIERGE_F1A: CLOSED. Concierge (canonical source, compiler, validator, register, workunit, CLI, authz, conformance, dogfood, 56 tests adversariales, fix de provenance, documentación consistente) queda consolidado en `main`, pero sin ninguna conexión al camino vivo — READY_FOR_LIVE_F1B: NO (requiere una misión separada, explícitamente fuera de alcance aquí, para diseñar/construir el puente hacia dfl-context-proxy).
-
-**RELACIONADO**: [[dfl/concierge/f1b-json-documentation-closure]] obs #378, [[dfl/concierge/f1b-provenance-fix-conformance-closure]] obs #377.
 
 ---
 
@@ -539,4 +519,4 @@ Ubicación: DFL-ChatGPT/04_Candidate_Vault/. Ciclo de vida de artefactos: pendin
 
 ---
 
-*Mirror auto-generated 2026-07-28T02:18:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-28T02:19:24Z | La Garra → DFLghub/amos-context*
