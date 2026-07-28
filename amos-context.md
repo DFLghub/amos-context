@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-28T03:06:46Z  
+**Generated:** 2026-07-28T23:42:03Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,19 +101,51 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### JPI erradicación total de etapa intermedia en /opt/360eventos
+### [INSTITUTIONAL_DECISION] Preservación no Equivale a Integración
 **Type:** decision  
 **Project:** dfl  
 
-Fecha: 2026-07-26
-Repositorio: /opt/360eventos
-Rama: feat/jpi-fase-5-real-runtime-v0.1
-SHA revisado: a241ef5b2aeb76bfd0eae45f7dcf49166a4739dc
-Trabajo realizado: erradicación literal del término eliminado en todo el repo, sin allowlist, sin excepciones y sin conservarlo en decisión ni gate.
-Cambios clave: reescritura positiva de la decisión canónica en domain/02_knowledge/decisions/NO_INTERMEDIATE_STAGE.md; reescritura positiva del gate scripts/jpi-domain-term-guard.mjs; reescritura del test src/features/jpi/domain-term-guard.test.mjs; limpieza de superficies activas de runtime, ontología, business rules, business logic, discovery y knowledge.
-Evidencia: búsqueda exhaustiva en /opt/360eventos con TOTAL_OCCURRENCES=0 y ALLOWLISTED_OCCURRENCES=0; CHANGELOG.md inspeccionado aparte sin coincidencias.
-Validación: node scripts/jpi-domain-term-guard.mjs PASS; node --test src/features/jpi/domain-term-guard.test.mjs 3/3 PASS; npm run test:jpi PASS; node --test business-os/tests/fmd-jpi-fase5-e2e.test.js business-os/tests/fmd-runtime-integration.test.js business-os/tests/fmd-runtime-invariants-fix.test.js 49/49 PASS.
-Resultado: PASS / PRECOTIZACION_PERMANENTLY_ERADICATED.
+**What**: Regla institucional transversal. **Ninguna de estas acciones promueve el estado de una capacidad**: guardar un archivo en el repo, commitearlo, registrar una observación en Engram, pasar tests aislados, escribir un documento de diseño, o publicar el mirror. Preservar es dejar constancia; integrar es cambiar el comportamiento del sistema vivo y demostrarlo.
+
+**Why**: Es la generalización del "falso integrado" ya identificado en Skill Engineering (declarar una skill integrada por copiar sus archivos, omitiendo el registro real de descubrimiento). El mismo error apareció en Concierge F1B: 34/34 PASS y un artefacto preservado, con el bridge sin cablear al camino vivo. Sin esta regla, la evidencia de preservación se confunde con evidencia de funcionamiento y produce un falso positivo indistinguible del real.
+
+**Where**: Caso testigo verificado directamente en La Garra el 2026-07-28:
+- `git diff --stat main..0701a52 -- main.py` → vacío (el candidato no toca el entrypoint)
+- `grep -n "concierge" /opt/dfl-context-proxy/main.py` → 0 coincidencias (el proxy vivo no conoce el bridge)
+- `ls /opt/dfl-artifacts` → no existe (la raíz soberana "decidida" nunca se materializó)
+- Snapshot: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28.md` — SHA256 `202bcc49f6fe3e7496478c9888719b3d9503171822bb7c40f64f04e024d3f941`
+- Addendum: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28-addendum-f1b-review.md`
+- Commit: `72ed69b7a2a870d11bfbbb71f218fe6edca34a63`
+- Revisión independiente: CX, 2026-07-28, candidato `0701a52`, veredicto `REQUIRES_CHANGES`
+
+**Learned**: El test decisivo de integración es siempre el mismo — **¿cambia el comportamiento observable del sistema vivo, y hay un log que lo pruebe?** Si la respuesta necesita un "debería", no está integrado. Aplica a skills (¿el orquestador la descubre sin que le pasen la ruta?), a bridges (¿una request real lo atraviesa?) y a rollbacks (¿se ejecutó alguna vez?).
+
+**PROXIMO_AGENTE_DEBE**: al reportar estado, separar siempre "preservado" de "integrado" en dos líneas distintas. Ver [[dfl/institutional/f1b-gates-evidenciados]] y [[dfl/institutional/snapshot-longitudinal-canonico]].
+
+### [INSTITUTIONAL_DECISION] F1B se Promueve por Gates Evidenciados
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Concierge F1B solo se promueve de estado atravesando **cinco gates con evidencia ejecutable**, en orden. Ningún gate se da por cumplido por documentación, razonamiento o tests aislados.
+
+1. **Revisión lineal** — recorrido del diff real del candidato contra `main`, archivo por archivo, sin depender del grafo. Evidencia: inventario lineal con SHAs.
+2. **Shadow vivo observable** — el bridge integrado en el hook real de `/go`, default `off`, legacy produciendo SIEMPRE la respuesta entregada al usuario, Concierge solo comparando. Evidencia: receipts reales de ejecuciones shadow (timestamp, artifact SHA, source_commit, hashes legacy/Concierge, resultado de los 5 probes, tamaño de cada bloque, divergencias, fallback/error).
+3. **Composición Engram** — la discrepancia `58,174 / 58,472 / 20,944` bytes reproducida y explicada, con identificación de qué cifra corresponde a tabla, receipt y fixture. Evidencia: reproducción determinista.
+4. **Rollback operativo** — script idempotente ejecutado de verdad: restaura modo `off`, reinicia el servicio, verifica `/go`. Evidencia: log de una corrida real off → shadow → receipt → rollback → `/go` legacy confirmado.
+5. **Criterios de salida** — declarados ANTES de ejecutar el gate, no derivados del resultado obtenido.
+
+**Why**: El candidato `0701a52` llegó con 34/34 PASS y aun así el veredicto fue `REQUIRES_CHANGES`. Un harness verde valida la pieza, no la integración; sin gates explícitos la diferencia se vuelve invisible y se promueve por optimismo. Los gates convierten "parece listo" en "demostró esto, en este log, en esta fecha".
+
+**Where**:
+- Addendum (blockers y distinción): `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28-addendum-f1b-review.md`
+- Snapshot: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28.md` — SHA256 `202bcc49f6fe3e7496478c9888719b3d9503171822bb7c40f64f04e024d3f941`
+- Commit: `72ed69b7a2a870d11bfbbb71f218fe6edca34a63`
+- Candidato: `0701a5248fb71e38a21a766b7794f1692235a1b2`, rama `integration/concierge-live-f1b-candidate`, worktree `/opt/dfl-context-proxy-f1b-candidate`
+- Revisión independiente: CX, 2026-07-28, veredicto `REQUIRES_CHANGES`
+
+**Learned**: Veredictos permitidos al cerrar la remediación: `REQUIRES_CHANGES` o `SHADOW_WIRED_READY_FOR_OBSERVATION`. **Prohibidos**: `SHADOW_READY` y `READY_FOR_CONTROLLED_LIVE_TEST` — no hay evidencia que los sostenga y nombrarlos anticipa una promoción no autorizada. `live` exige un gate técnico adicional independiente de `DFL_CONCIERGE_MODE=live`.
+
+**PROXIMO_AGENTE_DEBE**: no saltar gates ni reordenarlos. Ver [[dfl/institutional/preservacion-no-es-integracion]] y [[dfl/institutional/agtopologo-no-autoridad-f1b]].
 
 ### JPI Fase 5 Real E2E Completion Summary
 **Type:** decision  
@@ -172,25 +204,6 @@ Resultado: PASS / PRECOTIZACION_PERMANENTLY_ERADICATED.
 - No bypasses
 - Domain model clarified
 - Preconditions documented and validated
-
-### JPI Fase 5 autorizada — E2E empresarial completo
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Autorización para iniciar JPI Fase 5 — E2E empresarial completo de la Empresa Sintética JPI, sobre happy path probado de Fase 4.1.
-
-**Why**: Fase 4.1 completó portabilidad de factory (contrato neutral, intercambio sfv5/test-double), pero quedó con 7 fallos en resilience (timeout, retry, recovery). Deuda registrada como FACTORY_BRIDGE_RESILIENCE_BACKLOG. Fase 5 avanza el objetivo empresarial sin depender de esa deuda.
-
-**Where**: /opt/360eventos (JPI) y /opt/saas-factory-setup/saas-factory (SFV5 mock). Rama aislada para Fase 5. Documentación: /opt/360eventos/JPI-FACTORY-PHASE4.1-FINAL-STATE.md.
-
-**Learned**: 
-- Happy path operativo: creación idempotente, polling, E2E básico, artefactos reales, SHA256, metadata
-- Factory seleccionable vía DFL_FACTORY_ID solamente
-- No payload.adapter, no lógica SFV5 específica en BOS
-- Secuencia: SOLICITUD → COTIZACIÓN → RESERVA → OPERACIÓN → CIERRE (no PRECOTIZACION)
-- Criterio éxito: escenario completo de punta a punta, brecha activa fabricación neutral, artefacto validado, BOS cierra post-validación, evidencia trazable
-- Máximo 1 revisión posterior
-- Veredicto final: READY_FOR_FINAL_REVIEW o FAILED_TO_COMPLETE_PHASE_5
 
 ### JPI Phase 4 Post-Merge Closure Final — PASS / PHASE_CLOSED
 **Type:** decision  
@@ -383,57 +396,51 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
-### Session summary: dfl-knowledge
-**Type:** session_summary  
-**Project:** dfl-knowledge  
-
-## Goal
-Sesión multi-misión sobre DFL Concierge: reconciliación → recovery → merge a main → preparación de integración viva. Más revisión independiente de DFL Skill Engineer v0.1.
-
-## Instructions
-- Corrección de método de Jorge a mitad de sesión: "NO TOCAR PRODUCCIÓN ≠ NO DEJAR HUELLA". La política read-only previa era excesiva; toda exploración significativa debe terminar con evidencia preservada en rama/commit direccionable.
-- No auto-promoción: el agente que construye una candidata no la certifica.
-- Doble recorrido obligatorio (lineal + gráfico + ejecución) antes de afirmaciones fuertes.
-
-## Discoveries
-- **`git log --all` NO es recorrido completo de la historia.** `git fsck --unreachable` encontró 56 tests adversariales de WorkUnitLedger (705 líneas) y 3 documentos de arquitectura sin ninguna rama que los referenciara. Los 56 pasaron 56/56 al ejecutarlos contra main. Causa raíz del error de la ronda previa: tratar "recorrido por refs" como equivalente a "recorrido de historia".
-- **8 worktrees físicos preexistentes** de Concierge nunca detectados antes (nunca se había corrido `git worktree list`).
-- **agTopólogo: 6 de 140 nodos sobre Concierge**, ninguno posterior al 2026-07-23. El "graph preflight mandatorio" de KNL habría inducido una imagen falsa. IMPORTANTE: el grafo de código (codebase-memory) SÍ estaba fresco y fue el método fiable — no conflacionar ambos grafos.
-- **Bug de provenance vivo en main**: `ERR_CANONICAL_BRANCH_MISMATCH` rompía `concierge.cli compile/validate` en main desde julio. El chequeo por nombre de rama era además MÁS DÉBIL de lo aparente: nunca verificaba alcanzabilidad real del source_commit.
-- **`--json` nunca existió** en el CLI de conformance — propuesta documental de un stash huérfano nunca reconciliada con el código (único commit de `__main__.py` en toda su historia no lo tiene).
-- **`/go` = 68.631 bytes; solo 10.159 (14,8%) son contrato estático** que Concierge podría poseer. Los otros 58KB son Engram/KNL vivo que debe seguir por el camino actual.
-- **DEFAULT_ARTIFACT_ROOT no funciona**: `/opt/dfl-knowledge` está parado en rama vieja sin `concierge/out`; el artefacto solo vive en el worktree de main.
-- **Skill Engineer**: el bloqueo de autopromoción es política escrita sin enforcement mecánico (0 constraints condicionales en los 6 schemas, 0 campos de identidad de revisor). Además "1 skill con tests" es falso positivo de regex; el valor real es 0.
-- **Limitación del harness**: su validador rechaza `git.unreachable` vacío como "missing" — vacío es indistinguible de "no revisado".
-
-## Accomplished
-- ✅ **CONCIERGE_F1A: CLOSED** — merge fast-forward a `main @ 1f415b3`, 248/248 PASS, CLI compile/validate funcionando en main sin `--skip-provenance` por primera vez.
-- ✅ Cadena completa: reconciliación → dual exploration → recovery → integración (5 commits) → fix provenance `797d14c` (ancestry vía `git merge-base --is-ancestor` en vez de nombre de rama) → resolución conformance `aacd073` → fix `--json` `52c0e3c` → docs alcanzables `1f415b3`.
-- ✅ 2 ramas de recuperación pusheadas; rollback `rollback/concierge-pre-f1a-merge-2026-07-27` → `9f364c09` creada ANTES de tocar main.
-- ✅ **F1B candidata**: `dfl-context-proxy`, rama `integration/concierge-live-f1b-candidate` @ `0701a52`, 34/34 tests. Worktree aislado — decisión de seguridad clave porque el servicio corre `main.py` desde `/opt/dfl-context-proxy` con `Restart=on-failure`.
-- ✅ Revisión independiente de Skill Engineer preservada (`715a2ee`).
-- ✅ Harness ejecutado 2x con resultado honesto CONDITIONAL (bloqueador declarado: revisor no independiente).
-- ✅ Producción intacta y verificada byte a byte: `main.py` idéntico, 4 hooks idénticos, servicio activo desde 18-jul sin reiniciar, `/go` con 14 bloques sin clave `concierge`.
-
-## Next Steps
-1. **CX revisa independientemente** el SHA `0701a5248fb71e38a21a766b7794f1692235a1b2` en worktree propio e inmutable.
-2. **Decidir raíz soberana del artefacto.** La propuesta de Jorge (`/opt/dfl-artifacts/concierge/<sha>/` + symlink `current`) es superior a mi recomendación original de env var: da rollback atómico por symlink, inmutabilidad y provenance clara.
-3. Publicar artefacto, aplicar el diff de 14 líneas, activar `DFL_CONCIERGE_MODE=shadow`.
-4. ≥24h de receipts de shadow antes de considerar live.
-5. **Sin resolver**: obs #311 "contested (pending)"; CP-03 §1.4/§1.5 textualmente desactualizado tras el fix de provenance (enmienda = decisión institucional de Jorge); discrepancia de tooling con CX sobre visibilidad del grafo de la candidata.
-
-## Relevant Files
-- `audits/concierge-f1a-reconciliation-2026-07-27/` — 11 documentos + 2 harness bundles + receipt de merge
-- `/opt/dfl-context-proxy-f1b-candidate/concierge_bridge.py` — adapter fail-open que lee el artefacto compilado sin importar el paquete concierge
-- `/opt/dfl-context-proxy-f1b-candidate/docs/CONCIERGE-F1B-*.md` — contract, diff plan, test plan, rollback, preservation receipt
-- `experiments/dfl-skill-engineer-v0.1/first-materialization/CC-CROSS-REVIEW.md`
-- `experiments/dfl-high-certainty-exploration-harness-v0.1/` — construido por sesión concurrente, usado por mí
-
-### CX final delta gate for Concierge F1B target 1f415b3
-**Type:** fact  
+### [INSTITUTIONAL_DECISION] Preservación no Equivale a Integración
+**Type:** decision  
 **Project:** dfl  
 
-2026-07-28. Se ejecutó el cierre de la revisión delta final de Concierge F1B sobre el target inmutable 1f415b3a77eb22a5ac0369ca55ad27bb18d61c34. Verificación exclusiva: commits 52c0e3c y 1f415b3; --json no forma parte del contrato real, documentación y decisiones alcanzables, suite 248/248 PASS previamente confirmada, target limpio e inmutable. Bundle final del High-Certainty Gate con constructor CC y revisor independiente CX, target_hash_manifest con hashes coincidentes, grafo fresco/cobertura suficiente/convergencia confirmada: validate_harness ok=true, decision APPROVED, blockers []. Resultado final: HIGH_CERTAINTY_GATE PASS; READY_TO_MERGE_MAIN YES; no se ejecutó merge ni se modificó camino vivo. Revisión preservada localmente en /tmp/f1b-final-gate-1f415 y reportes previos en commits locales 7a459f6, 994ca79, 0cc757f; push remoto previo bloqueado por DNS.
+**What**: Regla institucional transversal. **Ninguna de estas acciones promueve el estado de una capacidad**: guardar un archivo en el repo, commitearlo, registrar una observación en Engram, pasar tests aislados, escribir un documento de diseño, o publicar el mirror. Preservar es dejar constancia; integrar es cambiar el comportamiento del sistema vivo y demostrarlo.
+
+**Why**: Es la generalización del "falso integrado" ya identificado en Skill Engineering (declarar una skill integrada por copiar sus archivos, omitiendo el registro real de descubrimiento). El mismo error apareció en Concierge F1B: 34/34 PASS y un artefacto preservado, con el bridge sin cablear al camino vivo. Sin esta regla, la evidencia de preservación se confunde con evidencia de funcionamiento y produce un falso positivo indistinguible del real.
+
+**Where**: Caso testigo verificado directamente en La Garra el 2026-07-28:
+- `git diff --stat main..0701a52 -- main.py` → vacío (el candidato no toca el entrypoint)
+- `grep -n "concierge" /opt/dfl-context-proxy/main.py` → 0 coincidencias (el proxy vivo no conoce el bridge)
+- `ls /opt/dfl-artifacts` → no existe (la raíz soberana "decidida" nunca se materializó)
+- Snapshot: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28.md` — SHA256 `202bcc49f6fe3e7496478c9888719b3d9503171822bb7c40f64f04e024d3f941`
+- Addendum: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28-addendum-f1b-review.md`
+- Commit: `72ed69b7a2a870d11bfbbb71f218fe6edca34a63`
+- Revisión independiente: CX, 2026-07-28, candidato `0701a52`, veredicto `REQUIRES_CHANGES`
+
+**Learned**: El test decisivo de integración es siempre el mismo — **¿cambia el comportamiento observable del sistema vivo, y hay un log que lo pruebe?** Si la respuesta necesita un "debería", no está integrado. Aplica a skills (¿el orquestador la descubre sin que le pasen la ruta?), a bridges (¿una request real lo atraviesa?) y a rollbacks (¿se ejecutó alguna vez?).
+
+**PROXIMO_AGENTE_DEBE**: al reportar estado, separar siempre "preservado" de "integrado" en dos líneas distintas. Ver [[dfl/institutional/f1b-gates-evidenciados]] y [[dfl/institutional/snapshot-longitudinal-canonico]].
+
+### [INSTITUTIONAL_DECISION] F1B se Promueve por Gates Evidenciados
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Concierge F1B solo se promueve de estado atravesando **cinco gates con evidencia ejecutable**, en orden. Ningún gate se da por cumplido por documentación, razonamiento o tests aislados.
+
+1. **Revisión lineal** — recorrido del diff real del candidato contra `main`, archivo por archivo, sin depender del grafo. Evidencia: inventario lineal con SHAs.
+2. **Shadow vivo observable** — el bridge integrado en el hook real de `/go`, default `off`, legacy produciendo SIEMPRE la respuesta entregada al usuario, Concierge solo comparando. Evidencia: receipts reales de ejecuciones shadow (timestamp, artifact SHA, source_commit, hashes legacy/Concierge, resultado de los 5 probes, tamaño de cada bloque, divergencias, fallback/error).
+3. **Composición Engram** — la discrepancia `58,174 / 58,472 / 20,944` bytes reproducida y explicada, con identificación de qué cifra corresponde a tabla, receipt y fixture. Evidencia: reproducción determinista.
+4. **Rollback operativo** — script idempotente ejecutado de verdad: restaura modo `off`, reinicia el servicio, verifica `/go`. Evidencia: log de una corrida real off → shadow → receipt → rollback → `/go` legacy confirmado.
+5. **Criterios de salida** — declarados ANTES de ejecutar el gate, no derivados del resultado obtenido.
+
+**Why**: El candidato `0701a52` llegó con 34/34 PASS y aun así el veredicto fue `REQUIRES_CHANGES`. Un harness verde valida la pieza, no la integración; sin gates explícitos la diferencia se vuelve invisible y se promueve por optimismo. Los gates convierten "parece listo" en "demostró esto, en este log, en esta fecha".
+
+**Where**:
+- Addendum (blockers y distinción): `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28-addendum-f1b-review.md`
+- Snapshot: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28.md` — SHA256 `202bcc49f6fe3e7496478c9888719b3d9503171822bb7c40f64f04e024d3f941`
+- Commit: `72ed69b7a2a870d11bfbbb71f218fe6edca34a63`
+- Candidato: `0701a5248fb71e38a21a766b7794f1692235a1b2`, rama `integration/concierge-live-f1b-candidate`, worktree `/opt/dfl-context-proxy-f1b-candidate`
+- Revisión independiente: CX, 2026-07-28, veredicto `REQUIRES_CHANGES`
+
+**Learned**: Veredictos permitidos al cerrar la remediación: `REQUIRES_CHANGES` o `SHADOW_WIRED_READY_FOR_OBSERVATION`. **Prohibidos**: `SHADOW_READY` y `READY_FOR_CONTROLLED_LIVE_TEST` — no hay evidencia que los sostenga y nombrarlos anticipa una promoción no autorizada. `live` exige un gate técnico adicional independiente de `DFL_CONCIERGE_MODE=live`.
+
+**PROXIMO_AGENTE_DEBE**: no saltar gates ni reordenarlos. Ver [[dfl/institutional/preservacion-no-es-integracion]] y [[dfl/institutional/agtopologo-no-autoridad-f1b]].
 
 ---
 
@@ -526,4 +533,4 @@ Sesión multi-misión sobre DFL Concierge: reconciliación → recovery → merg
 
 ---
 
-*Mirror auto-generated 2026-07-28T03:06:46Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-28T23:42:03Z | La Garra → DFLghub/amos-context*
