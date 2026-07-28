@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-27T03:05:01Z  
+**Generated:** 2026-07-28T00:39:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -402,69 +402,53 @@ Construir el circuito @$go → Graphify → Engram: regenerar el grafo semántic
 
 Ubicación: DFL-ChatGPT/04_Candidate_Vault/. Ciclo de vida de artefactos: pending_review → audited_pass → promoted → hibernated → rejected. Contenido actual: audited_pass/ tiene Gate_Engine_Caso01/02/03_PRP001, Gate_Engine_MVP_Spec_v0.2, Gate_Engine_v0_Checklist_Manual, MEMO_CIERRE_Gate_Engine_v0, PERIMETRO_DECLARADO_v1.0, SDLC_Matriz_Correspondencia. pending_review/ tiene: NBLM2-FISIO-DFL-01_Matriz_de_Fisiologia_Contextual_CANDIDATE.md, agPattern-INGENIERIA-DE-NBLMS-v1_CANDIDATE.pdf, agProtocol-METRICS-REALITY-ROI-v2.5.3.5-C.md. En raíz del vault: agLego-PATTERN-ASYNC_INSPECTION_SPLIT.md/.docx (estado candidate/sealed, sin HI approval), agPattern-ECDA-Topologia_de_Roles-v1.0_CANDIDATE.md (duplicado). Nota verificación ONBOARDING: los archivos agLego-PATTERN-ASYNC_INSPECTION_SPLIT.docx/.md y agPattern-ECDA-Topologia_de_Roles-v1.0_CANDIDATE (1).md están en la raíz del vault (no en root ni en subdirectorios incorrectos) — condición de Zapata3 sobre artefactos stray no se aplica aquí.
 
-### Corrección auditoría Concierge — main tiene register/CLI que la auditoría inicial no vio
-**Type:** discovery  
+**Type:** manual  
 **Project:** dfl-knowledge  
 
-**What**: La auditoría integral de Concierge (2026-07-26, entregada en `/opt/dfl-knowledge/audits/concierge-live-path-2026-07-26/`) se hizo inicialmente contra el árbol de trabajo de la rama `feat/dfl-agent-relay-controller-v0.1`, que tiene una versión vieja/chica de `concierge/`. El Gate 4B de cierre (`mem_search "concierge"`) reveló que `main` (y 3+ ramas feature no fusionadas: `feat/dfl-concierge-workunit-claims`, `feat/dfl-concierge-deepseek-authz`, `feat/dfl-concierge-codex-register-cli`) tienen register.py, cli.py, workunit.py, validator/runtime_complete.py — código real y probado que la auditoría había marcado como "0 código, ASPIRACIONAL".
+**TOPIC**: dfl/concierge/f1a-dual-exploration-addendum
+**TYPE**: decision
+**DATE**: 2026-07-28
+**MISSION**: CONCIERGE F1A — DUAL EXPLORATION WITH GRAPHIFY AND agTOPÓLOGO (reabre focalizadamente [[dfl/concierge/f1a-reconciliation]] obs #373)
 
-**Why**: Publicar un veredicto de auditoría sin haber revisado todas las ramas relevantes de git (solo se miró el working tree activo) produjo afirmaciones factualmente incorrectas sobre qué código existe, y un tono de "abandono/duplicación sin gobierno" injusto frente a lo que en realidad fue un proceso arbitrado institucionalmente (Jorge/ARB 2026-07-23, obs Engram #311) con 2 auditorías de constructibilidad previas (v1: NO_GO, v2: constructible) y una revisión externa DeepSeek SFAT, todas ya en `main` bajo `audits/dfl-concierge-*`.
+**WHAT**: Addendum en `audits/concierge-f1a-reconciliation-2026-07-27/CONCIERGE-F1A-DUAL-EXPLORATION-ADDENDUM.md`. Repitió la reconciliación de Concierge por 3 caminos independientes: lineal extendido (git worktree list, git stash list, git fsck --unreachable — ninguno corrido en la ronda anterior), Graphify (codebase-memory-mcp sobre el proyecto ya indexado `dfl-knowledge-workunit` = main@9f364c0, 3873 nodos/5716 aristas), y agTopólogo (graph.json semántico institucional, 140 nodos).
 
-**Where**:
-- Addendum de corrección completo: `/opt/dfl-knowledge/audits/concierge-live-path-2026-07-26/CONCIERGE-CORRECTION-ADDENDUM.md`
-- Banner de advertencia agregado al inicio de `CONCIERGE-EXECUTIVE-ASSESSMENT.md`
-- Evidencia previa relevante: Engram obs #287 (CP-01), #288 (dispatch Codex), #307/#309 (CP-F1-03/04), #311 (arbitración CC-canónico), #325/#328/#329 (authz remediation + F1_AUTHZ_ACCEPTED), #330 (workunit claims)
-- Trabajo no fusionado a main: rama `feat/dfl-concierge-deepseek-authz` (authz aceptado institucionalmente por Jorge pero NO aparece en `main..HEAD` — no confirmado si `concierge/authz.py` existe como código real)
+**HALLAZGO MÁS IMPORTANTE**: 56 tests adversariales de `WorkUnitLedger` (boundary, tiempo, máquina de estados, concurrencia real, serialización, replay) existen SOLO como commits huérfanos (`1f9d1ec`/`66cb84c`/`d909147`, construidos sobre `6670429` = tip remoto de `feat/dfl-concierge-workunit-claims`, nunca fusionados ni referenciados por ninguna rama). Verifiqué EJECUTÁNDOLOS (no solo leyendo) contra el `concierge/workunit.py` real de `main` hoy: 56/56 PASS. Recuperable con `git branch <nombre> d909147318003b3b79dc25f554fd8059fc2df140` antes de cualquier `git gc`.
 
-**Learned**:
-- El hallazgo CENTRAL de la auditoría (0% de conexión entre cualquier versión de Concierge y el servicio real desplegado `/opt/dfl-context-proxy/main.py`) se mantiene y se refuerza — es independiente de qué rama de `dfl-knowledge` se mire, porque `dfl-context-proxy` es un directorio/servicio separado que no importa `concierge` bajo ninguna forma (verificado con `git grep -l concierge main -- . ':!concierge/**'` → vacío).
-- Lo que cambia es la causa atribuida: no es negligencia/abandono, es "se construyó y revisó rigurosamente pero nunca se dio el paso de integrarlo al proxy real", y el trabajo está fragmentado en 3+ ramas sin consolidar a `main`.
-- **Antes de cualquier trabajo futuro de `CONNECT` sobre Concierge**: primero fusionar a `main` el trabajo disperso (register+CLI ya en main, workunit.py en una rama más adelantada, authz posiblemente aceptado en una tercera rama sin fusionar), y verificar el estado real de `concierge/authz.py`, antes de diseñar cualquier integración con `dfl-context-proxy`.
-- **Lección de proceso para futuras auditorías de este tipo**: cuando el alcance incluye "¿qué existe realmente?", el primer comando debe ser `git log --all --oneline | grep <tema>` y `git branch --merged main` — no asumir que el working tree activo representa todo el trabajo relevante en un repo con muchas ramas feature de vida larga.
+**SEGUNDO HALLAZGO**: 3 documentos de arquitectura (`F1-COMPILER-CONFORMANCE-KIT.md`, `CP-F1-CONFORMANCE-KIT.md`, `DRG-002-R1-WORK-UNIT-COORDINATION-DESIGN.md`) existen solo en un commit-stash huérfano (`34b6a7d3`/`521a4e1e`), nunca commiteados en ninguna rama — el código relacionado (conformance/independent.py, kit.py) SÍ está en `feat/dfl-concierge-cc-render-validator`, pero su documentación de diseño no.
 
-### Session summary: dfl-knowledge
-**Type:** session_summary  
+**HALLAZGO METODOLÓGICO CLAVE**: el grafo semántico institucional (`graphify-out/graph.json`, productor ag_topologo.py, el que KNL ordena consultar ANTES de exploración manual) solo tiene 6 de 140 nodos relacionados con Concierge, y NINGUNO posterior a 2026-07-23 — falta toda la arbitración, congelamiento de API, DeepSeek review, authz, workunit, conformance, dogfood. Un agente que siguiera literalmente "graph preflight mandatorio" de KNL antes de explorar manualmente habría visto solo el veredicto v1 NO_GO original y concluido erróneamente que Concierge es un diseño temprano abandonado — exactamente el error que causó la primera auditoría live-path antes de su propio addendum de corrección.
+
+**TRIANGULACIÓN DEL CAMINO VIVO**: 0% de conexión reconfirmado por 3 métodos independientes (grep textual, search_graph BM25 sobre dfl-context-proxy, query Cypher de aristas IMPORTS sobre main completo) — 0 resultados en los 3. Hallazgo más sólido de toda la reconciliación, sin ninguna discrepancia entre métodos.
+
+**BASELINE**: main@9f364c0 CONFIRMED (no cambia) — reforzado, no cuestionado, por los 3 métodos.
+
+**VEREDICTO**: LINEAR_INVENTORY=COMPLETE (ahora sí), GRAPHIFY_COVERAGE=PARTIAL, AGTOPOLOGO_COVERAGE=PARTIAL (casi nula para Concierge específicamente), CANONICAL_BASELINE=CONFIRMED, EXISTING_WORK_RECONCILED=WARN (2 nuevos ítems de recuperación + los 3 previos), F1B_READY=NO (sin cambio), PREVIOUS_ANALYSIS_ERRORS=IDENTIFIED.
+
+**CAUSA RAÍZ DEL ERROR METODOLÓGICO ANTERIOR**: tratar "recorrido por refs" (git branch -a -v + git log --all) como equivalente a "recorrido completo de la historia del repo" — git fsck --unreachable encuentra objetos que --all nunca muestra. Además, un flag `[ahead 1, behind 1]` se reportó como dato de estado sin investigar QUÉ commit era la divergencia real.
+
+**PRÓXIMA ACCIÓN**: agregar 2 pasos al plan de consolidación ya propuesto: (4) recuperar la cadena de 56 tests adversariales, (5) recuperar los 3 docs de conformance — antes de que corra un git gc que los elimine.
+
+**Type:** manual  
 **Project:** dfl-knowledge  
 
-## Goal
-Auditoría integral de capacidades, arquitectura, conexión real y utilización óptima de DFL Concierge — determinar por qué CC/CX siguen haciendo onboardings inflados/inconsistentes pese a que Concierge existe para resolver exactamente eso. Modo solo lectura, sin correcciones de código.
+**TOPIC**: dfl/skill-engineer/cc-cross-review-v0.1
+**TYPE**: decision
+**DATE**: 2026-07-28
+**MISSION**: DFL SKILL ENGINEER v0.1 — CROSS-REVIEW BY CC (repo /opt/dfl-knowledge)
 
-## Instructions
-- El usuario dio un prompt inicial equivocado (misión JPI Fase 5 en /opt/360eventos) y lo corrigió explícitamente a mitad de sesión con la misión real de auditoría de Concierge. Cuando esto pase, tratar el redirect como autoritativo y no intentar retomar la misión anterior.
-- Para auditorías grandes de investigación (no implementación de código), el usuario aprueba entrar en un modo de planificación ligero (plan de metodología, no plan de código) antes de ejecutar, y espera ajustes explícitos antes de proceder: carpeta única de entregables (no contaminar raíz del repo), alcance limitado (no sub-auditorías completas de sistemas tangenciales salvo que expliquen una conexión concreta), medición cuantificada real en vez de atribución sin evidencia, separación explícita de "valor estratégico de diseño" vs "calidad de integración real", y verificación de que cualquier ejecución de código de terceros (ej. un compilador) no toque estado compartido/versionado antes de correrlo.
-- `ExitPlanMode` está documentado para NO usarse en tareas de investigación pura — pero para una auditoría con 8 entregables formales y alcance grande, usarlo para confirmar metodología antes de ejecutar fue aceptado por el usuario vía corrección con ajustes (no vía aprobación directa del tool).
+**WHAT**: Revisión independiente de ingeniería sobre `/opt/dfl-knowledge/experiments/dfl-skill-engineer-v0.1/first-materialization/` (materialización de CX). Entregable completo en `CC-CROSS-REVIEW.md` dentro de esa misma carpeta. Modo read-only + ejecución de tests/validadores existentes (sin editar nada, sin tocar SFV5).
 
-## Discoveries
-- **DFL Concierge tiene 0% de conexión real.** Diseño normativo completo y ratificado (`architecture/DRG-002-R1-dfl-concierge.md`, checkpoint CP-01 PASS, contratos F1 congelados en CP-03) con implementación parcial (compiler.py + validator/ + canonical/*.yaml, 30 tests unitarios pasando) que nunca fue conectada a nada — verificado por grep exhaustivo de imports/subprocess en todo /opt, systemd units, crontab, y `~/.claude/settings.json`/hooks: cero coincidencias fuera del propio directorio `concierge/`.
-- **`/go` (el endpoint real de onboarding) lo gobierna `/opt/dfl-context-proxy/main.py`**, un servidor HTTP hecho a mano (sin framework) que genera un payload de 68,317 bytes medidos, con cientos de líneas de instrucciones hardcodeadas en Python (`validation_gate`, `agent_directory`, `access_model`) — totalmente independiente de Concierge.
-- **El hook `cc-atgo-hook.sh` (SessionStart de Claude Code) filtra el payload de 68,317 B a solo 1,730 B reales inyectados** — es el inyector de contexto más disciplinado medido, no la causa de bloat.
-- **La causa real del "engordamiento" reportado no es Concierge ni el hook DFL**: es (a) el plugin genérico `engram@engram` de Claude Code, que por sí solo inyecta ~10,600 bytes en cada SessionStart (más grande que todo el bloque `knl` del payload de /go), y (b) el riesgo — ya anticipado por una advertencia defensiva dentro del propio `main.py` ("PROHIBIDO solicitar MASTER_INDEX...") — de que un agente lea documentación completa en vez de confiar en el resumen filtrado.
-- **Duplicación de taxonomía de perfil**: el sistema real usa EJECUTOR/ORQUESTADOR/CONSULTOR (por capacidad observada, viven en `/opt/amos-context-mirror/agents/*.md`); Concierge usa claude-code/codex/chatgpt-work (por marca de runtime, en `canonical/runtimes/*.yaml`) — contradice el propio principio del diseño normativo ("perfil por capacidad, no por marca").
-- **El problema de continuidad/relay ya tiene dueño real y probado**: `tools/agent-relay/` (Relay Controller), construido de forma completamente independiente, sin ninguna referencia a Concierge — mientras que el diseño de Concierge (§7/§8, register JSONL, receipts, onboard/outboard) quedó con contrato cerrado (CP-03, 3 RCQ) pero cero código.
-- **4 copias huérfanas del build de Concierge F1** existen en directorios hermanos no-git (`dfl-knowledge-f1-integration`, `-cc-render-validator`, `-workunit`), todas de la ventana 23-25 jul 2026 — residuos de sesiones de agente pasadas construyendo/validando F1 sin lugar único de verdad.
-- `concierge/compiler.py::compile_bundle()` acepta `output_root` explícito y lanza `ContractError` si está dentro de `canonical_root` — permite compilar de forma segura a una ruta temporal sin tocar estado versionado (usado para medir el output real: 2,815–2,992 bytes por runtime, estático, sin contenido dinámico de sesión).
-- No hay tiktoken instalado en el entorno — estimaciones de tokens usan heurística chars/4, explícitamente etiquetada como estimación en los entregables.
+**VEREDICTO**: `CANDIDATE_TESTED` — coincide con el nivel superior de la afirmación de CX. Reproduje independientemente: 32 skills SFV5 (criterio correcto, sin omisiones), 2 con scripts, 8 con references, 1 con assets, 0 con schemas, 64 archivos — todo correcto. El fallo del fixture (`normalizeUserName`) se reproduce igual al log guardado. Los 7 tests (`artifacts.test.mjs` + `debugging-skill.test.mjs`) corren en verde de forma independiente. El validador de schemas (`validate_artifacts.mjs`) pasa 6/6.
 
-## Accomplished
-- ✅ Reconstruido el camino vivo completo de `@$go` y `@$fin` con tamaños medidos en cada etapa.
-- ✅ Medido el payload real de `/go` (68,317 B) con desglose por bloque (`knl`=41%, `recent_engram_dfl`=21%, etc.) y comparado contra lo que el hook realmente inyecta (1,730 B) y contra el output aislado de Concierge (2,815 B).
-- ✅ Confirmado, con búsqueda exhaustiva, que Concierge no participa en ningún punto del camino real.
-- ✅ Comparado diseño normativo (DRG-002-R1) vs. observado, incluyendo lectura completa del documento de diseño, su checkpoint receipt (CP-01), y la matriz de cierre de contratos (CP-03 RCQ).
-- ✅ Producidos los 8 entregables completos en `/opt/dfl-knowledge/audits/concierge-live-path-2026-07-26/`: EXECUTIVE-ASSESSMENT, CAPABILITY-MATRIX, LIVE-PATH-MAP, DESIGNED-VS-OBSERVED, OPTIMAL-UTILIZATION, COST-VALUE-ASSESSMENT, DECISION-MATRIX, EVIDENCE.
-- ✅ Veredicto final: **B. HIGH_VALUE / INTEGRATION_FAILURE** — valor estratégico del diseño alto (condicionado a un Future Vertical que aún no existe), calidad de implementación F1 alta para lo construido, integración real nula (0 de 13 capacidades conectadas).
-- ✅ Verificado al cierre que `git status` no muestra ninguna modificación a archivos existentes — solo la carpeta nueva de entregables. Ningún hook, servicio, config o código de producción fue tocado.
+**DESACUERDO CON CX**: "1 skill con tests detectables" es un falso positivo — el único match es `skill-creator/references/SKILL_SPECIFICATION.md` (contiene "spec"), no un test real. El valor correcto es 0. Bug en `tools/generate_sfv5_inventory.mjs` línea 65/79: regex `/test|spec/i` sin distinguir convención real de test.
 
-## Next Steps
-- Si Jorge decide actuar sobre la recomendación "CONNECT parcialmente" (Mission Context Concierge, solo porción estática del contrato), el siguiente PRP debería: (1) resolver primero la duplicación de taxonomía de perfil (marca vs. capacidad) antes de conectar nada, (2) decidir explícitamente retirar el alcance de continuidad/relay de Concierge en favor de `tools/agent-relay/`, (3) escribir el puente real entre `concierge/compiler.py` y `dfl-context-proxy/main.py`.
-- Limpieza de housekeeping (no arquitectónica): los 3 directorios huérfanos de build de Concierge F1 (`dfl-knowledge-f1-integration`, `-cc-render-validator`, `-workunit`) podrían eliminarse si se confirma que no tienen otro propósito activo — no verificado en esta auditoría por estar fuera de su alcance.
-- La misión original de esta sesión (JPI Fase 5 real E2E en /opt/360eventos) fue completada y committeada ANTES del redirect a esta auditoría — ver memoria separada `jpi/fase5-completion-status` para ese trabajo, que sigue vigente y no fue invalidado por esta auditoría (son proyectos distintos, sin relación).
+**HALLAZGO CRÍTICO (C-1)**: el bloqueo de autopromoción NO está mecánicamente implementado en ningún schema (cero uso de if/then/allOf condicional en los 6 `*.schema.json`, cero campos de identidad reviewer/actor/author en cualquiera). El único "check" (`evaluate_debugging_skill.mjs` línea 32) es una relectura post-hoc de un JSON ya escrito por la misma sesión que generó la candidata — trivialmente evadible. La invariante "revisión independiente obligatoria para promover" (SKILL_ENGINEER_CONTRACT.md) hoy depende de convención, no de código.
 
-## Relevant Files
-- /opt/dfl-knowledge/audits/concierge-live-path-2026-07-26/CONCIERGE-EXECUTIVE-ASSESSMENT.md — resumen ejecutivo con las 5 preguntas obligatorias respondidas
-- /opt/dfl-knowledge/audits/concierge-live-path-2026-07-26/CONCIERGE-EVIDENCE.md — 13 bloques de evidencia con comando reproducible cada uno, base de todas las afirmaciones de los otros 7 documentos
-- /opt/dfl-knowledge/architecture/DRG-002-R1-dfl-concierge.md — diseño normativo original de Concierge, fuente de la comparación diseño-vs-observado
-- /opt/dfl-context-proxy/main.py — el componente real que gobierna `/go` (no Concierge)
-- /opt/dfl-knowledge/concierge/compiler.py — compilador determinista de Concierge, funcional pero sin conexión
+**OTROS DEFECTOS**: H-2 bug de extracción de "dependencies" (regex de backtick simple captura bloques de código triple-backtick completos, corrompe 18/32 entradas del inventario con >200 chars de código crudo). H-3 ausencia total de validación relacional entre artefactos (SKILL_REQUEST↔CONTRACT↔CANDIDATE↔EVALUATION↔PROMOTION nunca se contrastan por ID, solo se valida cada JSON aislado contra su propio schema). M-1 política de reintento declarada pero no ejecutable (nada cuenta intentos reales). M-2 3 de 7 tests verifican forma de JSON co-autorado con la candidata, no una re-derivación en vivo — riesgo de circularidad. M-3 cobertura de fixtures angosta (solo 1 tipo de fallo de 3 categorías que el propio playbook nombra).
+
+**ESTADOS FINALES**: SFV5_CORPUS=INVENTORIED (con la corrección de tests), CONTRACTS=PARTIAL, DETERMINISTIC_LAYER=PARTIAL, FIRST_DEBUGGING_SKILL=TESTED, PROMOTION=HOLD (correcto), CANDIDATE_GATE=NEEDS_REDESIGN (construirlo hoy escalaría C-1/H-3 en vez de resolverlos).
+
+**SIGUIENTE ACCIÓN DE MAYOR APALANCAMIENTO**: cerrar C-1 antes que nada — agregar regla condicional al schema PROMOTION_DECISION (si decision==promote, exigir reviewer_id distinto del autor + requires_independent_review==true) antes de construir cualquier candidate gate reutilizable.
 
 ---
 
@@ -557,4 +541,4 @@ Auditoría integral de capacidades, arquitectura, conexión real y utilización 
 
 ---
 
-*Mirror auto-generated 2026-07-27T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-28T00:39:02Z | La Garra → DFLghub/amos-context*
