@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-28T02:19:24Z  
+**Generated:** 2026-07-28T02:23:43Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -392,41 +392,57 @@ Construir el circuito @$go → Graphify → Engram: regenerar el grafo semántic
 
 Ubicación: DFL-ChatGPT/04_Candidate_Vault/. Ciclo de vida de artefactos: pending_review → audited_pass → promoted → hibernated → rejected. Contenido actual: audited_pass/ tiene Gate_Engine_Caso01/02/03_PRP001, Gate_Engine_MVP_Spec_v0.2, Gate_Engine_v0_Checklist_Manual, MEMO_CIERRE_Gate_Engine_v0, PERIMETRO_DECLARADO_v1.0, SDLC_Matriz_Correspondencia. pending_review/ tiene: NBLM2-FISIO-DFL-01_Matriz_de_Fisiologia_Contextual_CANDIDATE.md, agPattern-INGENIERIA-DE-NBLMS-v1_CANDIDATE.pdf, agProtocol-METRICS-REALITY-ROI-v2.5.3.5-C.md. En raíz del vault: agLego-PATTERN-ASYNC_INSPECTION_SPLIT.md/.docx (estado candidate/sealed, sin HI approval), agPattern-ECDA-Topologia_de_Roles-v1.0_CANDIDATE.md (duplicado). Nota verificación ONBOARDING: los archivos agLego-PATTERN-ASYNC_INSPECTION_SPLIT.docx/.md y agPattern-ECDA-Topologia_de_Roles-v1.0_CANDIDATE (1).md están en la raíz del vault (no en root ni en subdirectorios incorrectos) — condición de Zapata3 sobre artefactos stray no se aplica aquí.
 
+### Session summary: dfl-knowledge
+**Type:** session_summary  
+**Project:** dfl-knowledge  
+
+## Goal
+Sesión multi-misión sobre DFL Concierge: reconciliación → recovery → merge a main → preparación de integración viva. Más revisión independiente de DFL Skill Engineer v0.1.
+
+## Instructions
+- Corrección de método de Jorge a mitad de sesión: "NO TOCAR PRODUCCIÓN ≠ NO DEJAR HUELLA". La política read-only previa era excesiva; toda exploración significativa debe terminar con evidencia preservada en rama/commit direccionable.
+- No auto-promoción: el agente que construye una candidata no la certifica.
+- Doble recorrido obligatorio (lineal + gráfico + ejecución) antes de afirmaciones fuertes.
+
+## Discoveries
+- **`git log --all` NO es recorrido completo de la historia.** `git fsck --unreachable` encontró 56 tests adversariales de WorkUnitLedger (705 líneas) y 3 documentos de arquitectura sin ninguna rama que los referenciara. Los 56 pasaron 56/56 al ejecutarlos contra main. Causa raíz del error de la ronda previa: tratar "recorrido por refs" como equivalente a "recorrido de historia".
+- **8 worktrees físicos preexistentes** de Concierge nunca detectados antes (nunca se había corrido `git worktree list`).
+- **agTopólogo: 6 de 140 nodos sobre Concierge**, ninguno posterior al 2026-07-23. El "graph preflight mandatorio" de KNL habría inducido una imagen falsa. IMPORTANTE: el grafo de código (codebase-memory) SÍ estaba fresco y fue el método fiable — no conflacionar ambos grafos.
+- **Bug de provenance vivo en main**: `ERR_CANONICAL_BRANCH_MISMATCH` rompía `concierge.cli compile/validate` en main desde julio. El chequeo por nombre de rama era además MÁS DÉBIL de lo aparente: nunca verificaba alcanzabilidad real del source_commit.
+- **`--json` nunca existió** en el CLI de conformance — propuesta documental de un stash huérfano nunca reconciliada con el código (único commit de `__main__.py` en toda su historia no lo tiene).
+- **`/go` = 68.631 bytes; solo 10.159 (14,8%) son contrato estático** que Concierge podría poseer. Los otros 58KB son Engram/KNL vivo que debe seguir por el camino actual.
+- **DEFAULT_ARTIFACT_ROOT no funciona**: `/opt/dfl-knowledge` está parado en rama vieja sin `concierge/out`; el artefacto solo vive en el worktree de main.
+- **Skill Engineer**: el bloqueo de autopromoción es política escrita sin enforcement mecánico (0 constraints condicionales en los 6 schemas, 0 campos de identidad de revisor). Además "1 skill con tests" es falso positivo de regex; el valor real es 0.
+- **Limitación del harness**: su validador rechaza `git.unreachable` vacío como "missing" — vacío es indistinguible de "no revisado".
+
+## Accomplished
+- ✅ **CONCIERGE_F1A: CLOSED** — merge fast-forward a `main @ 1f415b3`, 248/248 PASS, CLI compile/validate funcionando en main sin `--skip-provenance` por primera vez.
+- ✅ Cadena completa: reconciliación → dual exploration → recovery → integración (5 commits) → fix provenance `797d14c` (ancestry vía `git merge-base --is-ancestor` en vez de nombre de rama) → resolución conformance `aacd073` → fix `--json` `52c0e3c` → docs alcanzables `1f415b3`.
+- ✅ 2 ramas de recuperación pusheadas; rollback `rollback/concierge-pre-f1a-merge-2026-07-27` → `9f364c09` creada ANTES de tocar main.
+- ✅ **F1B candidata**: `dfl-context-proxy`, rama `integration/concierge-live-f1b-candidate` @ `0701a52`, 34/34 tests. Worktree aislado — decisión de seguridad clave porque el servicio corre `main.py` desde `/opt/dfl-context-proxy` con `Restart=on-failure`.
+- ✅ Revisión independiente de Skill Engineer preservada (`715a2ee`).
+- ✅ Harness ejecutado 2x con resultado honesto CONDITIONAL (bloqueador declarado: revisor no independiente).
+- ✅ Producción intacta y verificada byte a byte: `main.py` idéntico, 4 hooks idénticos, servicio activo desde 18-jul sin reiniciar, `/go` con 14 bloques sin clave `concierge`.
+
+## Next Steps
+1. **CX revisa independientemente** el SHA `0701a5248fb71e38a21a766b7794f1692235a1b2` en worktree propio e inmutable.
+2. **Decidir raíz soberana del artefacto.** La propuesta de Jorge (`/opt/dfl-artifacts/concierge/<sha>/` + symlink `current`) es superior a mi recomendación original de env var: da rollback atómico por symlink, inmutabilidad y provenance clara.
+3. Publicar artefacto, aplicar el diff de 14 líneas, activar `DFL_CONCIERGE_MODE=shadow`.
+4. ≥24h de receipts de shadow antes de considerar live.
+5. **Sin resolver**: obs #311 "contested (pending)"; CP-03 §1.4/§1.5 textualmente desactualizado tras el fix de provenance (enmienda = decisión institucional de Jorge); discrepancia de tooling con CX sobre visibilidad del grafo de la candidata.
+
+## Relevant Files
+- `audits/concierge-f1a-reconciliation-2026-07-27/` — 11 documentos + 2 harness bundles + receipt de merge
+- `/opt/dfl-context-proxy-f1b-candidate/concierge_bridge.py` — adapter fail-open que lee el artefacto compilado sin importar el paquete concierge
+- `/opt/dfl-context-proxy-f1b-candidate/docs/CONCIERGE-F1B-*.md` — contract, diff plan, test plan, rollback, preservation receipt
+- `experiments/dfl-skill-engineer-v0.1/first-materialization/CC-CROSS-REVIEW.md`
+- `experiments/dfl-high-certainty-exploration-harness-v0.1/` — construido por sesión concurrente, usado por mí
+
 ### CX final delta gate for Concierge F1B target 1f415b3
 **Type:** fact  
 **Project:** dfl  
 
 2026-07-28. Se ejecutó el cierre de la revisión delta final de Concierge F1B sobre el target inmutable 1f415b3a77eb22a5ac0369ca55ad27bb18d61c34. Verificación exclusiva: commits 52c0e3c y 1f415b3; --json no forma parte del contrato real, documentación y decisiones alcanzables, suite 248/248 PASS previamente confirmada, target limpio e inmutable. Bundle final del High-Certainty Gate con constructor CC y revisor independiente CX, target_hash_manifest con hashes coincidentes, grafo fresco/cobertura suficiente/convergencia confirmada: validate_harness ok=true, decision APPROVED, blockers []. Resultado final: HIGH_CERTAINTY_GATE PASS; READY_TO_MERGE_MAIN YES; no se ejecutó merge ni se modificó camino vivo. Revisión preservada localmente en /tmp/f1b-final-gate-1f415 y reportes previos en commits locales 7a459f6, 994ca79, 0cc757f; push remoto previo bloqueado por DNS.
-
-**Type:** manual  
-**Project:** dfl-knowledge  
-
-**TOPIC**: dfl/concierge/f1b-live-integration-candidate-prepared
-**TYPE**: decision
-**DATE**: 2026-07-28
-**MISSION**: CONCIERGE F1B — LIVE INTEGRATION PREPARATION (preparar sin activar)
-
-**WHAT**: Candidata de integración viva construida y NO activada. Repo `dfl-context-proxy`, rama `integration/concierge-live-f1b-candidate` (base main@205fe3c), HEAD `0701a52`, pusheada. Worktree aislado `/opt/dfl-context-proxy-f1b-candidate`.
-
-**DECISIÓN DE SEGURIDAD CLAVE**: NO hice checkout de la rama en `/opt/dfl-context-proxy`. El servicio systemd ejecuta `main.py` desde esa ruta con `Restart=on-failure` — modificar el archivo en disco habría significado que cualquier reinicio activa código nuevo sin decisión humana. Usé worktree separado. Verificado post-push: `main.py` en disco byte-idéntico al de main, los 4 hooks idénticos, servicio activo desde 2026-07-18 (nunca reiniciado), `/go` sigue con 14 bloques sin clave `concierge`.
-
-**MEDICIÓN QUE DEFINE EL ALCANCE REAL**: `GET /go` = 68.631 bytes en 14 bloques. Solo **10.159 bytes (14,8%)** son contrato estático hardcodeado en `_handle_go()` (8 bloques: identity, validation_gate, access_model, agent_directory, cc_bootstrap, closure_contract, protocol_update_alert, claude_chat_fallback). Los otros 58.472 bytes son Engram/KNL vivo (knl 28KB, recent_engram_dfl 14KB, recent_decisions 7,7KB, pending 7,4KB) que Concierge NO modela y debe seguir por el código actual. Confirma la recomendación de obs #372.
-
-**ADAPTER** (`concierge_bridge.py`): lee el artefacto compilado `concierge/out/<runtime>/` — NO importa el paquete concierge, sin red, sin subprocess (verificado por test). Re-calcula sha256 del documento contra el `rendered_hash` que el propio artefacto declara → detecta stale/manipulado. Fail-open en TODA ruta de error. Flag `DFL_CONCIERGE_MODE` = off (defecto) | shadow | live. En live AÑADE la clave, nunca borra bloques legacy.
-
-**NO RESUELVE PERFIL, deliberadamente**: Concierge indexa por marca de runtime (claude-code/codex/chatgpt-work); DFL asigna EJECUTOR/ORQUESTADOR/CONSULTOR por capacidad observada vía el auto-diagnóstico `agent_directory.step_0` del propio agente. Taxonomías distintas (contradicción ya señalada en la auditoría original). El adapter selecciona artefacto por runtime y deja la selección de perfil donde está.
-
-**TESTS**: 34/34 PASS aislados, incluidos 3 contra el artefacto real de dfl-knowledge main@1f415b3 y un dry-run shadow sobre snapshot real de `/go`. Cubre: runtime válido/desconocido, artefacto ausente/ilegible/stale/manipulado/adapter-cruzado, envelope incompleto, fallback en live, shadow sin mutación (verifica identidad de objeto), divergencia detectada, rollback por env var, y que main.py no importe el bridge.
-
-**HARNESS**: ok=true, decision=CONDITIONAL, 0 errores, 4 bloqueadores declarados por mí: (1) raíz del artefacto sin resolver, (2) equivalencia semántica no probada (solo 5 probes), (3) revisor no independiente, (4) cobertura Engram parcial.
-
-**HALLAZGO OPERATIVO IMPORTANTE**: `DEFAULT_ARTIFACT_ROOT=/opt/dfl-knowledge/concierge/out` NO FUNCIONA — ese checkout está parado en `feat/dfl-high-certainty-harness-v0.1` y no tiene `concierge/out` en absoluto. El artefacto solo existe en `/opt/dfl-knowledge-workunit` (worktree de main). El bridge falla-abierto (seguro pero no funcional). NO lo arreglé hardcodeando la ruta del worktree — eso consolidaría un accidente de layout. Tres opciones evaluadas en el contrato; recomiendo fijar `DFL_CONCIERGE_ARTIFACT_ROOT` en config.env para el test controlado.
-
-**LIMITACIÓN DEL HARNESS DESCUBIERTA**: su validador rechaza una lista `git.unreachable` vacía como "missing" — vacío es indistinguible de "no revisado". Corregido ejecutando git fsck real (0 objetos) y registrándolo como hallazgo explícito. Útil para el próximo agente que use el harness.
-
-**VEREDICTO**: LIVE_PATH_MAPPED=YES, ADAPTER_CANDIDATE=BUILT, SHADOW_MODE=READY, LEGACY_PATH_PRESERVED=YES, TESTS=PASS, ROLLBACK=PROVEN (por 2 tests mecánicos, no por ciclo activar→revertir real), HIGH_CERTAINTY_GATE=CONDITIONAL, READY_FOR_CONTROLLED_LIVE_TEST=YES, LIVE_ACTIVATION_PERFORMED=NO.
-
-**RELACIONADO**: [[dfl/concierge/f1a-merged-to-main]] obs #379.
 
 ---
 
@@ -519,4 +535,4 @@ Ubicación: DFL-ChatGPT/04_Candidate_Vault/. Ciclo de vida de artefactos: pendin
 
 ---
 
-*Mirror auto-generated 2026-07-28T02:19:24Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-28T02:23:43Z | La Garra → DFLghub/amos-context*
