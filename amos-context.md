@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-28T23:42:03Z  
+**Generated:** 2026-07-29T00:51:44Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -396,6 +396,12 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
+### Concierge F1B independent review 0a7e914 — REQUIRES_CHANGES
+**Type:** fact  
+**Project:** dfl  
+
+Cierre de revisión independiente Concierge F1B. Repo /opt/dfl-context-proxy, rama integration/concierge-f1b-remediation. Candidato 0701a5248fb71e38a21a766b7794f1692235a1b2; wiring 9037aaa0dc08dbfd4f006d23a2c843543db56933; SHA final 0a7e91447bd6c170eeb131f38075d738b42baa02; baseline/merge-base 205fe3c1e9780f85e5db7045b02f6bfbe2f2d69e. Artifact source_commit bc5e6d3067fffe3e806ea8f412f53697ba51dae9; built_from_head main@1f415b3; artifact SHA 2682f9d6...; artifact root read-only, current seguro, 9 archivos/12133 bytes, runtime consume 3/4154 bytes. Wiring defensivo en main.py: import concierge_runtime, _handle_go observa después de construir payload y antes de enviar; shadow devuelve mismo payload y fallback legacy; @$fin sin cambios. Tests independientes: 34 originales pass; 68 nuevos pass + 1 skip; suite 102 pass + 1 skip + 3 subtests. Prueba real autorizada: off→shadow→receipt independiente→rollback→off, /go 200, payload_mutated=false, 8 bloques estáticos idénticos, rollback normal/segundo/full PASS; estado final stock/off, sin drop-in/LIVE_ENABLED/live. Bytes: 20944 fixture, 58472 harness histórico, 58174 no trazable, vivo 65828 total/10326 estático/55502 dinámico; ENG​RAM_DYNAMIC_PAYLOAD_SIZE permanece UNRECONCILED. Incidente receipts: archivo smoke conserva 6 receipts test-like (no 5), uno synthetic live in-process; no journal del servicio en esa ventana; log operativo conserva entradas previas de test y dos de la prueba independiente; no evidencia de purga ni registro formal separado. Evidencia MANIFEST quedó inconsistente con varios captures/logs tras la repetición independiente. Veredicto: REQUIRES_CHANGES. Impedimento concreto al siguiente nivel SHADOW_WIRED_VALIDATED: cadena de evidencia/incident receipt no reconciliada y manifest no autoconsistente. No se implementaron correcciones ni promoción institucional.
+
 ### [INSTITUTIONAL_DECISION] Preservación no Equivale a Integración
 **Type:** decision  
 **Project:** dfl  
@@ -416,31 +422,6 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 **Learned**: El test decisivo de integración es siempre el mismo — **¿cambia el comportamiento observable del sistema vivo, y hay un log que lo pruebe?** Si la respuesta necesita un "debería", no está integrado. Aplica a skills (¿el orquestador la descubre sin que le pasen la ruta?), a bridges (¿una request real lo atraviesa?) y a rollbacks (¿se ejecutó alguna vez?).
 
 **PROXIMO_AGENTE_DEBE**: al reportar estado, separar siempre "preservado" de "integrado" en dos líneas distintas. Ver [[dfl/institutional/f1b-gates-evidenciados]] y [[dfl/institutional/snapshot-longitudinal-canonico]].
-
-### [INSTITUTIONAL_DECISION] F1B se Promueve por Gates Evidenciados
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Concierge F1B solo se promueve de estado atravesando **cinco gates con evidencia ejecutable**, en orden. Ningún gate se da por cumplido por documentación, razonamiento o tests aislados.
-
-1. **Revisión lineal** — recorrido del diff real del candidato contra `main`, archivo por archivo, sin depender del grafo. Evidencia: inventario lineal con SHAs.
-2. **Shadow vivo observable** — el bridge integrado en el hook real de `/go`, default `off`, legacy produciendo SIEMPRE la respuesta entregada al usuario, Concierge solo comparando. Evidencia: receipts reales de ejecuciones shadow (timestamp, artifact SHA, source_commit, hashes legacy/Concierge, resultado de los 5 probes, tamaño de cada bloque, divergencias, fallback/error).
-3. **Composición Engram** — la discrepancia `58,174 / 58,472 / 20,944` bytes reproducida y explicada, con identificación de qué cifra corresponde a tabla, receipt y fixture. Evidencia: reproducción determinista.
-4. **Rollback operativo** — script idempotente ejecutado de verdad: restaura modo `off`, reinicia el servicio, verifica `/go`. Evidencia: log de una corrida real off → shadow → receipt → rollback → `/go` legacy confirmado.
-5. **Criterios de salida** — declarados ANTES de ejecutar el gate, no derivados del resultado obtenido.
-
-**Why**: El candidato `0701a52` llegó con 34/34 PASS y aun así el veredicto fue `REQUIRES_CHANGES`. Un harness verde valida la pieza, no la integración; sin gates explícitos la diferencia se vuelve invisible y se promueve por optimismo. Los gates convierten "parece listo" en "demostró esto, en este log, en esta fecha".
-
-**Where**:
-- Addendum (blockers y distinción): `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28-addendum-f1b-review.md`
-- Snapshot: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28.md` — SHA256 `202bcc49f6fe3e7496478c9888719b3d9503171822bb7c40f64f04e024d3f941`
-- Commit: `72ed69b7a2a870d11bfbbb71f218fe6edca34a63`
-- Candidato: `0701a5248fb71e38a21a766b7794f1692235a1b2`, rama `integration/concierge-live-f1b-candidate`, worktree `/opt/dfl-context-proxy-f1b-candidate`
-- Revisión independiente: CX, 2026-07-28, veredicto `REQUIRES_CHANGES`
-
-**Learned**: Veredictos permitidos al cerrar la remediación: `REQUIRES_CHANGES` o `SHADOW_WIRED_READY_FOR_OBSERVATION`. **Prohibidos**: `SHADOW_READY` y `READY_FOR_CONTROLLED_LIVE_TEST` — no hay evidencia que los sostenga y nombrarlos anticipa una promoción no autorizada. `live` exige un gate técnico adicional independiente de `DFL_CONCIERGE_MODE=live`.
-
-**PROXIMO_AGENTE_DEBE**: no saltar gates ni reordenarlos. Ver [[dfl/institutional/preservacion-no-es-integracion]] y [[dfl/institutional/agtopologo-no-autoridad-f1b]].
 
 ---
 
@@ -533,4 +514,4 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 ---
 
-*Mirror auto-generated 2026-07-28T23:42:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-29T00:51:44Z | La Garra → DFLghub/amos-context*
