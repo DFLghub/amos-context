@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-29T03:05:02Z  
+**Generated:** 2026-07-29T03:12:19Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -503,15 +503,15 @@ Cierre de revisión independiente Concierge F1B. Repo /opt/dfl-context-proxy, ra
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.8141  
+**Graph entropy:** 0.7393  
 
-- **Community 11** (96 nodes): MCP Server Behavior, Evaluación de Plantillas HTML, Preguntas para el Desarrollador
-- **Community 0** (4 nodes): Veredicto Modular en DFL
-- **Community 1** (4 nodes): CP-03 y contratos F1, PATTERN_TRANSFER_ENGINE
-- **Community 2** (4 nodes): Garra, Deudas estructurales, Onboarding multi-agente
-- **Community 3** (4 nodes): KDL, Jsonnet
-- **Community 4** (4 nodes): Verificación de Identidad, Auditoría de Capacidades, Gestión de Credenciales
+- **Community 11** (95 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
+- **Community 0** (5 nodes): FutbolWeb, AG10-AUSTERITY-LOCK, Dependencias Externas
+- **Community 1** (4 nodes): Onboarding Capability
+- **Community 2** (4 nodes): Redis como proyecto C, Controladores Apex en Salesforce, Módulos Bicep en Azure
+- **Community 3** (4 nodes): Smithy, SOQL en Apex
+- **Community 4** (4 nodes): KDL
 
 ---
 
-*Mirror auto-generated 2026-07-29T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-29T03:12:19Z | La Garra → DFLghub/amos-context*
