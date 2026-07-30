@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-29T03:12:19Z  
+**Generated:** 2026-07-30T03:05:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -282,33 +282,6 @@ No blockers. No residual risks. Ready for operational deployment.
 - governance/registro-vivo/registro-vivo.json — fuente canónica reconciliada
 - EVIDENCE/reconciliacion-revalidacion.txt, registro-vivo-check-run3-reconciliacion.txt
 
-### Session summary: futbolweb-app
-**Project:** futbolweb-app  
-
-## Goal
-Cierre de incidente P0 de seguridad en 360Eventos: service role key de Supabase comprometida, rotada y verificada en producción.
-
-## Instructions
-Sin cambios de preferencia registrados en esta sesión.
-
-## Discoveries
-- Engram obs #112 fue creado en proyecto `futbolweb-app` por herencia del cwd (`/opt/futbolweb`) aunque el incidente pertenecía a 360Eventos. `mem_update` no soporta reasignación de proyecto — workaround: crear nuevo obs en proyecto correcto + marcar el original como MIGRADO.
-- `mem_delete` no está disponible como herramienta deferred en este entorno.
-
-## Accomplished
-- ✅ Bootstrap @$go completado — contexto DFL activo al 2026-06-30
-- ✅ Incidente P0 360Eventos cerrado: key `sb_secret_qcasL...` eliminada, producción migrada a `sb_secret_5E52V...`, Vercel actualizado, /cotizar verificado
-- ✅ Engram obs #121 creado en proyecto `360eventos` con resolución completa
-- ✅ Engram obs #112 marcado como MIGRADO (apunta a #121)
-
-## Next Steps
-- Pendientes FutbolWeb activos: knockout DB layer wiring, case-sensitivity de realAdvancingTeam, diagnóstico webhook GitHub-Vercel
-- Verificar deploy commit `50316e3` en Vercel
-
-## Relevant Files
-- Supabase proyecto 360Eventos: uvdunupmjrbndistyrwn (key rotada)
-- Vercel env vars 360Eventos: actualizadas con secret_key_2
-
 ### Auditoría Engram 2026-07-08 — sin limpieza programada y sync parcial por proyectos
 **Project:** dfl  
 
@@ -327,6 +300,18 @@ Sin cambios de preferencia registrados en esta sesión.
 **Riesgo**: Engram tiene durabilidad, pero no metabolismo: acumula snapshots/cierres/iteraciones sin ciclo formal de compactación, archivado y promoción a canonical facts.
 
 **Recomendación preliminar**: crear `engram-maintenance` semanal o quincenal: audit-only primero, luego compactación supervisada. No borrar por defecto; archivar/compactar/promover. Ajustar sync cron para cubrir proyectos activos reales (`futbolweb-app`, `360eventos`, `tdf-01`) o normalizar nombres de proyecto.
+
+### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt eliminado de Drive por Jorge (verificado)
+**Project:** futbolweb-app  
+
+TOPIC: dfl/session/2026-07-14-limpieza-1p-reminder
+TYPE: decision
+STATUS: active
+DATE: 2026-07-14
+
+**What**: Sesión CC de limpieza con dos frentes, ambos CERRADOS. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existía entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — sin edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B): ELIMINADO manualmente por Jorge en la UI de Drive el 2026-07-14, tras blocker inicial (el conector MCP de Drive no expone delete). Borrado VERIFICADO por CC: get_file_metadata devuelve "Requested entity was not found". Residual D-5/1Password de la Reconciliación v1 cerrado.
+**Why**: Orden directa de Jorge 2026-07-14: eliminar 1Password.txt (noise backup antiguo, ya revisado por él) y cerrar Reminder 1a por fin de torneo.
+**Learned**: El conector claude.ai Google Drive es read-mostly (sin delete/trash) — limpiezas destructivas en Drive requieren UI manual o rclone tras OAuth institucional (B-1, aún pendiente). Paridad CC/Codex sigue pendiente de ratificación de Jorge.
 
 ---
 
@@ -514,4 +499,4 @@ Cierre de revisión independiente Concierge F1B. Repo /opt/dfl-context-proxy, ra
 
 ---
 
-*Mirror auto-generated 2026-07-29T03:12:19Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-30T03:05:02Z | La Garra → DFLghub/amos-context*
