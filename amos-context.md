@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-30T03:05:02Z  
+**Generated:** 2026-07-30T22:07:09Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -381,32 +381,64 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
-### Concierge F1B independent review 0a7e914 — REQUIRES_CHANGES
+### CX-R1 SFV5 remediation revalidation — checksum/manifest gap remains
 **Type:** fact  
 **Project:** dfl  
 
-Cierre de revisión independiente Concierge F1B. Repo /opt/dfl-context-proxy, rama integration/concierge-f1b-remediation. Candidato 0701a5248fb71e38a21a766b7794f1692235a1b2; wiring 9037aaa0dc08dbfd4f006d23a2c843543db56933; SHA final 0a7e91447bd6c170eeb131f38075d738b42baa02; baseline/merge-base 205fe3c1e9780f85e5db7045b02f6bfbe2f2d69e. Artifact source_commit bc5e6d3067fffe3e806ea8f412f53697ba51dae9; built_from_head main@1f415b3; artifact SHA 2682f9d6...; artifact root read-only, current seguro, 9 archivos/12133 bytes, runtime consume 3/4154 bytes. Wiring defensivo en main.py: import concierge_runtime, _handle_go observa después de construir payload y antes de enviar; shadow devuelve mismo payload y fallback legacy; @$fin sin cambios. Tests independientes: 34 originales pass; 68 nuevos pass + 1 skip; suite 102 pass + 1 skip + 3 subtests. Prueba real autorizada: off→shadow→receipt independiente→rollback→off, /go 200, payload_mutated=false, 8 bloques estáticos idénticos, rollback normal/segundo/full PASS; estado final stock/off, sin drop-in/LIVE_ENABLED/live. Bytes: 20944 fixture, 58472 harness histórico, 58174 no trazable, vivo 65828 total/10326 estático/55502 dinámico; ENG​RAM_DYNAMIC_PAYLOAD_SIZE permanece UNRECONCILED. Incidente receipts: archivo smoke conserva 6 receipts test-like (no 5), uno synthetic live in-process; no journal del servicio en esa ventana; log operativo conserva entradas previas de test y dos de la prueba independiente; no evidencia de purga ni registro formal separado. Evidencia MANIFEST quedó inconsistente con varios captures/logs tras la repetición independiente. Veredicto: REQUIRES_CHANGES. Impedimento concreto al siguiente nivel SHADOW_WIRED_VALIDATED: cadena de evidencia/incident receipt no reconciliada y manifest no autoconsistente. No se implementaron correcciones ni promoción institucional.
+SESSION CLOSURE: @$fin — 2026-07-30
 
-### [INSTITUTIONAL_DECISION] Preservación no Equivale a Integración
-**Type:** decision  
-**Project:** dfl  
+Mission: independent CX-R1 review of CC remediation fa640a5 for SFV5 forensic addendum c074c20, prior CX review bf274f7.
 
-**What**: Regla institucional transversal. **Ninguna de estas acciones promueve el estado de una capacidad**: guardar un archivo en el repo, commitearlo, registrar una observación en Engram, pasar tests aislados, escribir un documento de diseño, o publicar el mirror. Preservar es dejar constancia; integrar es cambiar el comportamiento del sistema vivo y demostrarlo.
+Outcome: SFV5_REMEDIATION_REQUIRES_CHANGES.
 
-**Why**: Es la generalización del "falso integrado" ya identificado en Skill Engineering (declarar una skill integrada por copiar sus archivos, omitiendo el registro real de descubrimiento). El mismo error apareció en Concierge F1B: 34/34 PASS y un artefacto preservado, con el bridge sin cablear al camino vivo. Sin esta regla, la evidencia de preservación se confunde con evidencia de funcionamiento y produce un falso positivo indistinguible del real.
+Evidence commit: 1f84021300f71a4e60a990f7cea43c9f017e9f12.
+Evidence root: /opt/dfl-knowledge/evidence/sfv5-forensic-inspection-2026-07-30-cx-r1/
 
-**Where**: Caso testigo verificado directamente en La Garra el 2026-07-28:
-- `git diff --stat main..0701a52 -- main.py` → vacío (el candidato no toca el entrypoint)
-- `grep -n "concierge" /opt/dfl-context-proxy/main.py` → 0 coincidencias (el proxy vivo no conoce el bridge)
-- `ls /opt/dfl-artifacts` → no existe (la raíz soberana "decidida" nunca se materializó)
-- Snapshot: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28.md` — SHA256 `202bcc49f6fe3e7496478c9888719b3d9503171822bb7c40f64f04e024d3f941`
-- Addendum: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28-addendum-f1b-review.md`
-- Commit: `72ed69b7a2a870d11bfbbb71f218fe6edca34a63`
-- Revisión independiente: CX, 2026-07-28, candidato `0701a52`, veredicto `REQUIRES_CHANGES`
+Confirmed independently:
+- scan_delta_v2 byte-reproducible across two invocation styles after excluding only volatile ISO scanned_at.
+- MODIFIED and REMOVED fixtures pass.
+- ADDED is a known limitation, not functional detection; update mechanism scope is PARTIAL.
+- active graph sfv5-saas-factory is reproducibly 4975 nodes / 5166 edges; duplicate indexes are 4767, 4753, 4633.
+- historical CX value 100 is reproducible as query row truncation with max_rows=100; same dataset returns 4975 with sufficient limit.
+- fa640a5 is exclusive to remediation-r1; original artifacts were not modified.
 
-**Learned**: El test decisivo de integración es siempre el mismo — **¿cambia el comportamiento observable del sistema vivo, y hay un log que lo pruebe?** Si la respuesta necesita un "debería", no está integrado. Aplica a skills (¿el orquestador la descubre sin que le pasen la ruta?), a bridges (¿una request real lo atraviesa?) y a rollbacks (¿se ejecutó alguna vez?).
+Blocking finding:
+- remediation-r1/checksum-after/SHA256SUMS.txt verifies 31/31 but includes SHA256SUMS.txt itself, contradicting the declared self-reference-absent contract.
+- original MANIFEST.json has 28 entries while 30 top-level files exist excluding MANIFEST; FINAL-VERDICT.md and SHA256SUMS.txt are unlisted; no remediation-r1/MANIFEST.json exists.
+- Required handoff: Return to CC-R2 with exact failed claims. Do not start CC-2.
 
-**PROXIMO_AGENTE_DEBE**: al reportar estado, separar siempre "preservado" de "integrado" en dos líneas distintas. Ver [[dfl/institutional/f1b-gates-evidenciados]] y [[dfl/institutional/snapshot-longitudinal-canonico]].
+No Engram archival sweep had been performed before this closure; push_mirror.sh was not run during CX-R1 mission. Protected surfaces and unrelated working-tree changes were preserved.
+
+**Type:** manual  
+**Project:** dfl-knowledge  
+
+**TOPIC**: dfl/saas-factory/forensic-inspection-addendum-2026-07-30
+**TYPE**: decision
+**DATE**: 2026-07-30
+**MISSION**: Addendum obligatorio a la inspección forense SFV5 — censo estructurado, cruce lineal↔grafo, registro persistente y matrices arquitectónicas. Complementa, NO reemplaza ni invalida, la observación #390 (informe original `SFV5-FORENSIC-INSPECTION-REPORT.md`, commit `a4589bf`).
+
+**WHAT**: Convierte los 12 hallazgos narrativos de #390 en un censo estructurado, reconciliado y actualizable. Ruta: `/opt/dfl-knowledge/evidence/sfv5-forensic-inspection-2026-07-30/addendum/` (31 archivos). Commit: `c074c20` en `dfl-knowledge` rama `feat/dfl-high-certainty-harness-v0.1`. Manifest: `MANIFEST.json` + `SHA256SUMS.txt` (31 archivos hasheados). Veredicto: `FINAL-VERDICT.md`, 20/20 gates PASS, estado terminal `AUDIT_COMPLEMENTED_AND_RECONCILED`.
+
+**WHY**: El informe original no permitía demostrar cobertura, conocer la población completa, cuantificar lo que el grafo dejó fuera, ni reutilizar los hallazgos sin repetir la auditoría. Este addendum cierra esas brechas con datasets machine-readable en vez de resumen narrativo.
+
+**Cobertura (resumen)**:
+- Población: 208 archivos relevantes de 417 vistos (209 excluidos con razón explícita).
+- Inventario lineal: 70 componentes (32 skills clasificadas individualmente por origen vía git — 19 `upstream_comunitaria`, 13 `nueva_en_5e42124`, 0 sin resolver — + 38 no-skill).
+- Inventario gráfico: 312 nodos de grafo con `file_path` distinto (índice `sfv5-saas-factory`, 4975 nodos totales).
+- Crosswalk: 30 matched_both, 40 only_linear (todos con causa determinística asignada), 0 only_graph tras resolución, **0 discrepancias sin resolver**.
+- Cobertura de test: 14/70 componentes. Cobertura de camino vivo probado: 16/70 (concentrados en `tools/bridges` y `tools/ddms-validator`; 0/32 skills).
+- Registro persistente: `06-sfv5-component-registry.jsonl` (70 filas, schema completo con `graph_seen`/`promotion_state`/`live_path_status`/`confidence`).
+- Scanner de actualización: `scan_delta.py`, no destructivo, probado en auto-dry-run (detectó y documentó su propia limitación de granularidad en componentes bundle — no un hallazgo falso, un artefacto de medición explicado).
+
+**Learned (hallazgos NUEVOS de este addendum, no presentes en #390)**:
+1. **4 índices de codebase-memory duplicados** para la misma ruta física (`/opt/saas-factory-setup/saas-factory`) con conteos de nodos distintos (4633–4975) pese a declarar el mismo `head_sha` — evidencia de indexación no determinista de la herramienta, no del repo.
+2. Confirmación exacta y exhaustiva (no estimada) de la partición de las 32 skills: 19 upstream (incluye `video-visuals` y `website-3d`) + 13 en el commit único `5e42124` de Jorge Tigreros.
+3. El impacto de la ausencia de `.claude/` y `tools/bridges/` en el grafo se cuantificó como ALTO: son exactamente los conjuntos con (a) el producto declarativo central (32 skills) y (b) el único componente con evidencia de ejecución en vivo probada (el bridge).
+4. Los 203 nodos "huérfanos" del grafo son 100% explicables como cache/snapshots regenerables de Graphify indexados como si fueran código fuente — no huérfanos reales.
+5. Matrices completas Workforce Registry (17 responsabilidades: 2 ALREADY_EXISTS, 9 PARTIAL, 6 ABSENT) y Factory Manager (20 responsabilidades) cruzadas explícitamente contra `/opt/dfl-knowledge/concierge/workunit.py` (mergeado a main, con tests — más maduro que cualquier equivalente en SFV5) y Concierge en `/opt/dfl-context-proxy` (REQUIRES_CHANGES, no cableado a main).
+6. Roadmap de 8 pasos priorizado por ROI real (impacto transversal, desbloqueo, reutilización, riesgo de duplicación, reversibilidad) — no por orden de descubrimiento. Paso #1 (más alto ROI, más bajo costo): registrar `log-tool-usage.sh` en `.claude/settings.json`, trivial y desbloquea evidencia de ejecución de las 32 skills de una sola vez.
+
+**PROXIMO_AGENTE_DEBE**: no repetir esta auditoría desde cero — usar `06-sfv5-component-registry.jsonl` + `scan_delta.py` para detectar deltas. Si se decide avanzar con Factory Manager/Workforce Registry, seguir el roadmap ROI de §20 del addendum (INTEGRATE WorkUnitLedger existente antes que construir uno nuevo). Ver [[dfl/saas-factory/forensic-inspection-2026-07-30]] (obs #390) para el informe narrativo base.
 
 ---
 
@@ -499,4 +531,4 @@ Cierre de revisión independiente Concierge F1B. Repo /opt/dfl-context-proxy, ra
 
 ---
 
-*Mirror auto-generated 2026-07-30T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-30T22:07:09Z | La Garra → DFLghub/amos-context*
