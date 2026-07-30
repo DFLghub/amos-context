@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-30T22:07:09Z  
+**Generated:** 2026-07-30T22:27:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -381,6 +381,32 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
+**Type:** manual  
+**Project:** dfl-knowledge  
+
+**TOPIC**: dfl/saas-factory/cc-r2-checkpoint-2026-07-30
+**TYPE**: manual
+**DATE**: 2026-07-30
+**STATUS**: checkpoint — NO es cierre canónico. La misión CC-R2 sigue abierta; este registro existe para que cualquier agente pueda retomar sin releer ni reinvestigar lo ya resuelto.
+
+**Contexto de la cadena completa (referencias, no sobrescribir):**
+- obs #390 — informe forense original SFV5 (commit `a4589bf`)
+- obs #392 — addendum de censo/registro/crosswalk (commit `c074c20`)
+- CX-1 revisó el addendum → 3 defectos materiales (checksum autocontenido, `scan_delta.py` no reproducible, identidad del grafo activo)
+- CC-R1 (commit `fa640a5`) remedió los 3 — corrigió checksum, produjo `scan_delta_v2.py` reproducible, reconfirmó el grafo en vivo (4975 nodos)
+- CX-R1 (commit `1f84021`) revalidó CC-R1 de forma independiente: confirmó reproducibilidad del scanner y la identidad del grafo (`GRAPH_METRICS_TRUSTWORTHY = YES`), pero rechazó el contrato de checksum/manifest: encontró que el "checksum corregido" de CC-R1 (`remediation-r1/checksum-after/SHA256SUMS.txt`) **todavía tiene autorreferencia** (con un hash obsoleto, no el de sí mismo — bug distinto al original), que `addendum/MANIFEST.json` no lista `FINAL-VERDICT.md` ni `SHA256SUMS.txt`, y que `remediation-r1/` nunca tuvo `MANIFEST.json` propio. También rechazó la afirmación de "20/20 PASS" como agregado.
+
+**CC-R2 (esta misión, EN CURSO):** remedia exclusivamente esos 4 puntos de contrato de evidencia (checksum/manifest/veredicto) — explícitamente NO reaudita el grafo ni repite la reconciliación completa (ya confirmados confiables por CX-R1).
+
+**Progreso real al momento de este checkpoint:**
+- Fase 1 (leer + reproducir hallazgos CX-R1): **completa**. Los 4 defectos fueron re-confirmados hoy con comandos directos (hashes exactos, no solo cita del informe CX-R1). Artefacto: `evidence/sfv5-forensic-inspection-2026-07-30/remediation-r2/CX-R1-FAILED-CLAIMS-MATRIX.md`.
+- Fases 2-7: **pendientes**. Diseño ya decidido y documentado (no requiere nueva investigación): generador Python de dos pasos que escribe `MANIFEST.json` primero (solo archivos de contenido, sin autorreferencia, sin listar `SHA256SUMS.txt`) y luego `SHA256SUMS.txt` (hashea contenido + `MANIFEST.json` ya finalizado, excluyendo su propio nombre desde el listado inicial, nunca por filtro posterior con shell `*`/redirección — esa es la causa raíz de los 2 bugs de autorreferencia ya vistos en esta cadena).
+- Commit de checkpoint: `9085376` (rama `feat/dfl-high-certainty-harness-v0.1`, `dfl-knowledge`).
+
+**Learned (para no repetir el error dos veces más):** el patrón de bug de autorreferencia en checksums tiene AL MENOS 2 variantes distintas ya encontradas en esta misma cadena de auditoría: (1) truncamiento de shell (`sha256sum * > archivo` trunca el archivo de salida antes de leerlo como argumento → hash de cadena vacía), y (2) captura de hash bajo un nombre que luego se reutiliza al copiar/renombrar el archivo (el hash queda correcto para el contenido de origen pero incorrecto para el archivo final que terminó con ese mismo nombre). La única forma robusta de evitarlas ambas es excluir el nombre del archivo de salida de la LISTA DE ENTRADA antes de calcular cualquier hash — nunca por post-filtro, nunca reutilizando un archivo generado bajo un nombre temporal distinto.
+
+**PROXIMO_AGENTE_DEBE**: retomar en "Paso 2: regeneración limpia" de `CHECKPOINT-HANDOFF.md` — el diseño ya está completo, solo falta implementar+verificar+commitear. No se ha ejecutado `push_mirror.sh` en ningún punto de esta cadena (CC-R1, CX-R1, ni este checkpoint) — sigue pendiente hasta que CX-R2 valide el cierre de CC-R2.
+
 ### CX-R1 SFV5 remediation revalidation — checksum/manifest gap remains
 **Type:** fact  
 **Project:** dfl  
@@ -408,37 +434,6 @@ Blocking finding:
 - Required handoff: Return to CC-R2 with exact failed claims. Do not start CC-2.
 
 No Engram archival sweep had been performed before this closure; push_mirror.sh was not run during CX-R1 mission. Protected surfaces and unrelated working-tree changes were preserved.
-
-**Type:** manual  
-**Project:** dfl-knowledge  
-
-**TOPIC**: dfl/saas-factory/forensic-inspection-addendum-2026-07-30
-**TYPE**: decision
-**DATE**: 2026-07-30
-**MISSION**: Addendum obligatorio a la inspección forense SFV5 — censo estructurado, cruce lineal↔grafo, registro persistente y matrices arquitectónicas. Complementa, NO reemplaza ni invalida, la observación #390 (informe original `SFV5-FORENSIC-INSPECTION-REPORT.md`, commit `a4589bf`).
-
-**WHAT**: Convierte los 12 hallazgos narrativos de #390 en un censo estructurado, reconciliado y actualizable. Ruta: `/opt/dfl-knowledge/evidence/sfv5-forensic-inspection-2026-07-30/addendum/` (31 archivos). Commit: `c074c20` en `dfl-knowledge` rama `feat/dfl-high-certainty-harness-v0.1`. Manifest: `MANIFEST.json` + `SHA256SUMS.txt` (31 archivos hasheados). Veredicto: `FINAL-VERDICT.md`, 20/20 gates PASS, estado terminal `AUDIT_COMPLEMENTED_AND_RECONCILED`.
-
-**WHY**: El informe original no permitía demostrar cobertura, conocer la población completa, cuantificar lo que el grafo dejó fuera, ni reutilizar los hallazgos sin repetir la auditoría. Este addendum cierra esas brechas con datasets machine-readable en vez de resumen narrativo.
-
-**Cobertura (resumen)**:
-- Población: 208 archivos relevantes de 417 vistos (209 excluidos con razón explícita).
-- Inventario lineal: 70 componentes (32 skills clasificadas individualmente por origen vía git — 19 `upstream_comunitaria`, 13 `nueva_en_5e42124`, 0 sin resolver — + 38 no-skill).
-- Inventario gráfico: 312 nodos de grafo con `file_path` distinto (índice `sfv5-saas-factory`, 4975 nodos totales).
-- Crosswalk: 30 matched_both, 40 only_linear (todos con causa determinística asignada), 0 only_graph tras resolución, **0 discrepancias sin resolver**.
-- Cobertura de test: 14/70 componentes. Cobertura de camino vivo probado: 16/70 (concentrados en `tools/bridges` y `tools/ddms-validator`; 0/32 skills).
-- Registro persistente: `06-sfv5-component-registry.jsonl` (70 filas, schema completo con `graph_seen`/`promotion_state`/`live_path_status`/`confidence`).
-- Scanner de actualización: `scan_delta.py`, no destructivo, probado en auto-dry-run (detectó y documentó su propia limitación de granularidad en componentes bundle — no un hallazgo falso, un artefacto de medición explicado).
-
-**Learned (hallazgos NUEVOS de este addendum, no presentes en #390)**:
-1. **4 índices de codebase-memory duplicados** para la misma ruta física (`/opt/saas-factory-setup/saas-factory`) con conteos de nodos distintos (4633–4975) pese a declarar el mismo `head_sha` — evidencia de indexación no determinista de la herramienta, no del repo.
-2. Confirmación exacta y exhaustiva (no estimada) de la partición de las 32 skills: 19 upstream (incluye `video-visuals` y `website-3d`) + 13 en el commit único `5e42124` de Jorge Tigreros.
-3. El impacto de la ausencia de `.claude/` y `tools/bridges/` en el grafo se cuantificó como ALTO: son exactamente los conjuntos con (a) el producto declarativo central (32 skills) y (b) el único componente con evidencia de ejecución en vivo probada (el bridge).
-4. Los 203 nodos "huérfanos" del grafo son 100% explicables como cache/snapshots regenerables de Graphify indexados como si fueran código fuente — no huérfanos reales.
-5. Matrices completas Workforce Registry (17 responsabilidades: 2 ALREADY_EXISTS, 9 PARTIAL, 6 ABSENT) y Factory Manager (20 responsabilidades) cruzadas explícitamente contra `/opt/dfl-knowledge/concierge/workunit.py` (mergeado a main, con tests — más maduro que cualquier equivalente en SFV5) y Concierge en `/opt/dfl-context-proxy` (REQUIRES_CHANGES, no cableado a main).
-6. Roadmap de 8 pasos priorizado por ROI real (impacto transversal, desbloqueo, reutilización, riesgo de duplicación, reversibilidad) — no por orden de descubrimiento. Paso #1 (más alto ROI, más bajo costo): registrar `log-tool-usage.sh` en `.claude/settings.json`, trivial y desbloquea evidencia de ejecución de las 32 skills de una sola vez.
-
-**PROXIMO_AGENTE_DEBE**: no repetir esta auditoría desde cero — usar `06-sfv5-component-registry.jsonl` + `scan_delta.py` para detectar deltas. Si se decide avanzar con Factory Manager/Workforce Registry, seguir el roadmap ROI de §20 del addendum (INTEGRATE WorkUnitLedger existente antes que construir uno nuevo). Ver [[dfl/saas-factory/forensic-inspection-2026-07-30]] (obs #390) para el informe narrativo base.
 
 ---
 
@@ -531,4 +526,4 @@ No Engram archival sweep had been performed before this closure; push_mirror.sh 
 
 ---
 
-*Mirror auto-generated 2026-07-30T22:07:09Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-30T22:27:02Z | La Garra → DFLghub/amos-context*
