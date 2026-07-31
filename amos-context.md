@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-31T20:47:21Z  
+**Generated:** 2026-07-31T21:20:09Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,12 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### SESSION CLOSURE: WRU remediation final verification and candidate graph audit
+**Type:** decision  
+**Project:** dfl  
+
+Gate 4B cierre 2026-07-31. Workforce Registry Unit v0.1 remediation independently verified in isolated worktree /opt/wru-worktree-v0.1, branch feat/workforce-registry-unit-v0.1, HEAD 31dcbace506a8b83ca8e16b93cf7ac15f2a07db1. Productive tree /opt/saas-factory-setup remained at d12693998c38c7d5b1f83a74135dd65bb8ab57bf; no merge or shared activation. Full suite 80/80 and remediation suite 6/6 passed. Four defects verified closed: multiprocess optimistic locking, mandatory canonical schema validation, durable/queryable proposal lifecycle including READER, and real installed-copy tamper test. G1-G44 all PASS with current code/tests/evidence. Candidate-only indexes and DOT/JSON graphs generated under /opt/dfl-knowledge/evidence/wru-final-verification-2026-07-31/, marked SCOPE=candidate, AUTHORITY=non-canonical, PROMOTION_STATUS=pending-merge. Final verdict: WRU_BUILD_VERIFIED_READY_FOR_MERGE_PLANNING. Residual debt is non-blocking: no formal CLI, tests excluded from runtime manifest by documented rule, installation via isolated copy.
+
 ### SESSION CLOSURE: CX-MFG-2 WRU PRP submission ready — 2026-07-31
 **Type:** decision  
 **Project:** dfl  
@@ -119,24 +125,6 @@ The copy only adds an explicit /prp submission contract: no /primer assumption, 
 Evidence root: /opt/dfl-knowledge/evidence/sfv5-wru-prp-submission-ready-2026-07-30/
 Evidence commit: 6bbac2193b2ef6e55d1aa1dfe5e6c4f8663ff8fe.
 Hashes passed; manifest exact. /prp was not executed; SFV5, Engram and mirror were not modified/executed during the mission.
-
-### CX-R2 SFV5 independently verified — supersedes operational handoff of #393
-**Type:** decision  
-**Project:** dfl  
-
-SESSION CLOSURE: CX-R2 — 2026-07-31
-
-**Result**: SFV5_AUDIT_INDEPENDENTLY_VERIFIED.
-
-**Inputs**: CC-R2 `0bfc5c93bdcd4968d7c655204c32df234a0e7dce`; CX-R1 `1f84021300f71a4e60a990f7cea43c9f017e9f12`.
-
-**Evidence**: CX-R2 commit `60316d9124f2375aebce848b2893bf4e525d7ef9`, root `/opt/dfl-knowledge/evidence/sfv5-forensic-inspection-2026-07-30-cx-r2/`.
-
-**Independent verdict**: SELF_REFERENCE ABSENT; CIRCULAR_DEPENDENCY ABSENT; CONTENT_FILES_DECLARED 11; CONTENT_FILES_HASHED 11; UNDECLARED_FILES 0; MISSING_FILES 0; CLEAN_VERIFY PASS; TAMPER_TEST PASS; MANIFEST_COMPLETE YES. Scanner is honestly PARTIAL: ADDED NOT_DETECTED, REMOVED PASS, MODIFIED PASS. Gates: 17 PASS, 1 PARTIAL (G13), 0 FAIL, 0 NOT_PROVEN. No positive 20/20 PASS claim.
-
-**Handoff correction**: Historical obs #393 is preserved as the CX-R1 result, but this observation supersedes it operationally for current closure. Mirror `344c5d982e11f4b9d037f9c8aed417edc9750a86` propagated the intermediate stale handoff `Return to CC-R2` after CC-R2 had concluded; history was not rewritten. Next handoff: CC-2 may start.
-
-**Scope**: No product, graph, SFV5 source, Engram history, or protected surface was modified.
 
 ### JPI Fase 5 Real E2E Completion Summary
 **Type:** decision  
@@ -327,6 +315,12 @@ Completar el Diagnóstico Institucional DFL v1 (misión retomada tras corte de c
 - /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/{00-README,01-INVENTARIO-INFRAESTRUCTURA,02-INTERPRETACION,03-HALLAZGOS,04-DIAGNOSTICO-INSTITUCIONAL}.md
 - EVIDENCE/ (19 archivos, incl. git-remotes-redactado.txt y git-dirty-detalle.txt nuevos)
 
+### SESSION CLOSURE: WRU remediation final verification and candidate graph audit
+**Type:** decision  
+**Project:** dfl  
+
+Gate 4B cierre 2026-07-31. Workforce Registry Unit v0.1 remediation independently verified in isolated worktree /opt/wru-worktree-v0.1, branch feat/workforce-registry-unit-v0.1, HEAD 31dcbace506a8b83ca8e16b93cf7ac15f2a07db1. Productive tree /opt/saas-factory-setup remained at d12693998c38c7d5b1f83a74135dd65bb8ab57bf; no merge or shared activation. Full suite 80/80 and remediation suite 6/6 passed. Four defects verified closed: multiprocess optimistic locking, mandatory canonical schema validation, durable/queryable proposal lifecycle including READER, and real installed-copy tamper test. G1-G44 all PASS with current code/tests/evidence. Candidate-only indexes and DOT/JSON graphs generated under /opt/dfl-knowledge/evidence/wru-final-verification-2026-07-31/, marked SCOPE=candidate, AUTHORITY=non-canonical, PROMOTION_STATUS=pending-merge. Final verdict: WRU_BUILD_VERIFIED_READY_FOR_MERGE_PLANNING. Residual debt is non-blocking: no formal CLI, tests excluded from runtime manifest by documented rule, installation via isolated copy.
+
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
 **Project:** dfl-knowledge  
@@ -373,11 +367,6 @@ Sesión larga, multi-misión sobre DFL/SFV5/Workforce Registry Unit (WRU) v0.1: 
 - `/opt/dfl-knowledge/evidence/sfv5-wru-implementation-plan-2026-07-31/` — receipts de generación y corrección del plan.
 - `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/FINAL-VERDICT.md` — matriz completa G1-G44, estado exacto por etapa, veredicto final.
 - `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/HANDOFF-2026-07-31.md` — handoff autosuficiente para continuación por otro agente.
-
-**Type:** manual  
-**Project:** dfl-knowledge  
-
-FABRICACIÓN END-TO-END DE WORKFORCE REGISTRY UNIT v0.1 COMPLETADA. Fase N (validación final/camino vivo) cerrada: 8 casos de blind discovery ejecutados contra el Registry REAL activado (32 skills reales + 1 entrada sintética real de extensibilidad), no fixtures — commit 8539340. 44/44 gates PASS con evidencia individual (matriz completa en FINAL-VERDICT.md). 74/74 tests reales pasan. Snapshot final G22: árbol productivo /opt/saas-factory-setup byte-idéntico al estado previo a todo este build (hash 4af5c00e...), tools/ddms-validator (17 archivos), tools/cognitive-core (9), tools/bridges (3) sin cambio — verificado contra conteos del inicio de esta cadena. Estado exacto: CONSTRUIDO=PASS, INTEGRADO=PASS, INSTALADO=PASS (copia aislada), ACTIVADO=PASS (32/32 real), OPERACIONAL=PASS (6 tipos de operación real), CAMINO_VIVO_PROBADO=PASS (para WRU como producto — explícitamente NO para las 32 skills catalogadas, que permanecen 0/32 sin cambio de promotion_state, verificado por test). Checkpoint 5 (merge/activación compartida) deliberadamente NO ejecutado por mandato del usuario. Deuda residual declarada (no oculta): sin CLI binario formal, instalación probada en copia de directorio no en worktree git, exclusión de tests/ del manifiesto de integridad sin comentario explícito. Evidencia completa: /opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/FINAL-VERDICT.md (matriz G1-G44 completa) + MANIFEST.json/SHA256SUMS.txt consistentes. Veredicto: WRU_V0_1_END_TO_END_BUILT_PENDING_FINAL_INDEPENDENT_VERIFICATION.
 
 ---
 
@@ -470,4 +459,4 @@ FABRICACIÓN END-TO-END DE WORKFORCE REGISTRY UNIT v0.1 COMPLETADA. Fase N (vali
 
 ---
 
-*Mirror auto-generated 2026-07-31T20:47:21Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-31T21:20:09Z | La Garra → DFLghub/amos-context*
