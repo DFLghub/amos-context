@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-31T21:20:09Z  
+**Generated:** 2026-07-31T21:45:32Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,30 +101,37 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### SESSION CLOSURE: WRU v0.1 adopción institucional y relay para reanudación
+**Type:** decision  
+**Project:** dfl  
+
+CIERRE DE SESIÓN — WRU v0.1. No se abrió investigación nueva ni se modificó código, merge, dirty state, índices o grafos.
+
+ESTADO TÉCNICO: WRU v0.1 mergeado en /opt/saas-factory-setup; merge bec766e; HEAD final reportado bc8d6b89e7e4db1ba4b83da8055579c56bc89759; tag wru-v0.1-institutional-final2. Módulo canónico reportado en saas-factory/tools/workforce-registry; interfaces wru.query.v1, wru-refresh.v1 y wru-status.v1. Integrity 23/23; suite WRU 83/83 PASS; G1-G44 reportados PASS.
+
+ESTADO INSTITUCIONAL: Adoption Gate 9/9 PASS; consumidor externo DFL Concierge en /opt/dfl-knowledge-workunit; consumer HEAD reportado 5f01fb29a2bfd8e8422524f616108a8996317488; suite Concierge 258/258 PASS. Camino vivo probado: Concierge solicita capability por wru.query.v1 READER-only → WRU consulta Canonical State → devuelve availability/freshness/provenance → Concierge selecciona sfv5-skill.acquisition → deriva WorkUnit IDs → WorkUnitLedger claim/release → receipt externo.
+
+RECEIPT: /opt/dfl-knowledge/evidence/wru-live-concierge-20260731-r3/wru-receipt.json; digest reportado e5da6697cfedd9a0e0062ab81978e57f79d0488336283d16fd8801669a0c4932; active_claims=[]; resultado WORK_UNIT_CLAIMED_AND_RELEASED. Evidencia principal reportada: /opt/dfl-knowledge/evidence/wru-institutional-adoption-2026-07-31/ADOPTION-GATE.md. El usuario indicó /opt/saas-factory-setup/evidence/wru-institutional-adoption-2026-07-31/ADOPTION-GATE.md; conservar ambas referencias en el relay sin investigar ahora.
+
+FRESHNESS: la respuesta viva fue DEGRADED_STALE porque los records canónicos conservan source_commit histórico distinto del source HEAD observado; el consumidor no lo trató como autoridad plena y registró READER_DEGRADED con provenance/availability explícitos.
+
+DISTINCIÓN OBLIGATORIA: WRU CAMINO_VIVO_INSTITUCIONAL_PROBADO: YES. Capacidades catalogadas: 0/32 PROBADO_EN_CAMINO_VIVO.
+
+DIRTY STATE: el árbol compartido tenía dirty state preexistente ajeno; no se investigó ni limpió en este cierre. Queda pendiente de aclaración factual futura y no debe asumirse como fallo de WRU sin evidencia.
+
+ÍNDICES/GRAFOS: se generaron índices/grafos candidatos y luego se registró un estado canónico post-merge. No afirmar más de lo demostrado. Queda pendiente para una sesión futura verificar rutas exactas, conteos finales canónicos, motor que los sirve, integración real con Codebase Memory/Visualizer/Graphify/agTopólogo, frescura, mecanismo de actualización y promoción al grafo institucional mayor. JSON/DOT en evidence no bastan: debe probarse que forman parte del sistema gráfico vivo y no de otro closet documental.
+
+PRINCIPIO INSTITUCIONAL: todo elemento nuevo DFL debe generar índices, nodos, relaciones, procedencia y frescura como parte de la cultura de fabricación, para que un invento exitoso e integrado sea conocido por el sistema institucional y pueda incorporarse al grafo mayor, sus nodos, relaciones y ramas.
+
+DEUDA RESIDUAL REAL: freshness canónica todavía degradada hasta reconciliación gobernada; verificación de integración con el grafo institucional mayor pendiente; dirty state preexistente pendiente de aclaración factual. Deuda hipotética no se presenta como real.
+
+REANUDACIÓN EXACTA: validar primero la ubicación efectiva de ADOPTION-GATE.md y luego comprobar el registro canónico vivo de índices/grafos y su mecanismo de servicio/actualización, sin reabrir la fabricación WRU. Próxima sesión sugerida: WRU-GRAPH-LIVE-PROMOTION-2026-08-01.
+
 ### SESSION CLOSURE: WRU remediation final verification and candidate graph audit
 **Type:** decision  
 **Project:** dfl  
 
 Gate 4B cierre 2026-07-31. Workforce Registry Unit v0.1 remediation independently verified in isolated worktree /opt/wru-worktree-v0.1, branch feat/workforce-registry-unit-v0.1, HEAD 31dcbace506a8b83ca8e16b93cf7ac15f2a07db1. Productive tree /opt/saas-factory-setup remained at d12693998c38c7d5b1f83a74135dd65bb8ab57bf; no merge or shared activation. Full suite 80/80 and remediation suite 6/6 passed. Four defects verified closed: multiprocess optimistic locking, mandatory canonical schema validation, durable/queryable proposal lifecycle including READER, and real installed-copy tamper test. G1-G44 all PASS with current code/tests/evidence. Candidate-only indexes and DOT/JSON graphs generated under /opt/dfl-knowledge/evidence/wru-final-verification-2026-07-31/, marked SCOPE=candidate, AUTHORITY=non-canonical, PROMOTION_STATUS=pending-merge. Final verdict: WRU_BUILD_VERIFIED_READY_FOR_MERGE_PLANNING. Residual debt is non-blocking: no formal CLI, tests excluded from runtime manifest by documented rule, installation via isolated copy.
-
-### SESSION CLOSURE: CX-MFG-2 WRU PRP submission ready — 2026-07-31
-**Type:** decision  
-**Project:** dfl  
-
-Gate 4B SESSION CLOSURE.
-
-Result: SFV5_WRU_PRP_SUBMISSION_READY.
-
-Prepared isolated copy of the institutional draft without modifying the original:
-- Original: evidence/workforce-registry-unit-v0.1-prp-r1-2026-07-30/wru-draft.md
-- Prepared copy: /opt/dfl-labs/sfv5-wru-submission/.claude/PRPs/wru-draft.md
-- Invocation: /opt/dfl-labs/sfv5-wru-submission/PRP-INVOCATION.txt
-
-The copy only adds an explicit /prp submission contract: no /primer assumption, no Proceed gate dependency, no automatic bucle-agentico, no factory-brain/quality-gates/Supabase/CLAUDE.md assumptions, native PRP via prp-base.md, pending approval, and no implementation during first invocation. Original hash preserved: 360e9dcb09c7e9f90c9be86576fd616f52f944437f7b2e2d142ddde414e54d10.
-
-Evidence root: /opt/dfl-knowledge/evidence/sfv5-wru-prp-submission-ready-2026-07-30/
-Evidence commit: 6bbac2193b2ef6e55d1aa1dfe5e6c4f8663ff8fe.
-Hashes passed; manifest exact. /prp was not executed; SFV5, Engram and mirror were not modified/executed during the mission.
 
 ### JPI Fase 5 Real E2E Completion Summary
 **Type:** decision  
@@ -226,18 +233,6 @@ No blockers. No residual risks. Ready for operational deployment.
 
 ## PENDING
 
-### Limpieza 2026-07-14: Reminder 1a cerrada; 1Password.txt eliminado de Drive por Jorge (verificado)
-**Project:** futbolweb-app  
-
-TOPIC: dfl/session/2026-07-14-limpieza-1p-reminder
-TYPE: decision
-STATUS: active
-DATE: 2026-07-14
-
-**What**: Sesión CC de limpieza con dos frentes, ambos CERRADOS. (1) Reminder Layer Phase 1a CERRADA: Copa del Mundo 2026 finalizada, los 5 partidos KO pendientes de Alejo ya se jugaron — obs #110 marcada [RESOLVED] + LIFECYCLE: archived. Verificado que NO existía entrada Reminder_Layer_1a en registro-vivo.json ni en ningún archivo de /opt/dfl-knowledge (el pendiente vivía solo en Engram) — sin edición ni commit porque no había nada que editar. (2) 1Password.txt en Drive (fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ, 204B): ELIMINADO manualmente por Jorge en la UI de Drive el 2026-07-14, tras blocker inicial (el conector MCP de Drive no expone delete). Borrado VERIFICADO por CC: get_file_metadata devuelve "Requested entity was not found". Residual D-5/1Password de la Reconciliación v1 cerrado.
-**Why**: Orden directa de Jorge 2026-07-14: eliminar 1Password.txt (noise backup antiguo, ya revisado por él) y cerrar Reminder 1a por fin de torneo.
-**Learned**: El conector claude.ai Google Drive es read-mostly (sin delete/trash) — limpiezas destructivas en Drive requieren UI manual o rclone tras OAuth institucional (B-1, aún pendiente). Paridad CC/Codex sigue pendiente de ratificación de Jorge.
-
 ---
 
 ## RECENT ACTIVITY (cross-project)
@@ -315,58 +310,37 @@ Completar el Diagnóstico Institucional DFL v1 (misión retomada tras corte de c
 - /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/{00-README,01-INVENTARIO-INFRAESTRUCTURA,02-INTERPRETACION,03-HALLAZGOS,04-DIAGNOSTICO-INSTITUCIONAL}.md
 - EVIDENCE/ (19 archivos, incl. git-remotes-redactado.txt y git-dirty-detalle.txt nuevos)
 
-### SESSION CLOSURE: WRU remediation final verification and candidate graph audit
+### SESSION CLOSURE: WRU v0.1 adopción institucional y relay para reanudación
 **Type:** decision  
 **Project:** dfl  
 
-Gate 4B cierre 2026-07-31. Workforce Registry Unit v0.1 remediation independently verified in isolated worktree /opt/wru-worktree-v0.1, branch feat/workforce-registry-unit-v0.1, HEAD 31dcbace506a8b83ca8e16b93cf7ac15f2a07db1. Productive tree /opt/saas-factory-setup remained at d12693998c38c7d5b1f83a74135dd65bb8ab57bf; no merge or shared activation. Full suite 80/80 and remediation suite 6/6 passed. Four defects verified closed: multiprocess optimistic locking, mandatory canonical schema validation, durable/queryable proposal lifecycle including READER, and real installed-copy tamper test. G1-G44 all PASS with current code/tests/evidence. Candidate-only indexes and DOT/JSON graphs generated under /opt/dfl-knowledge/evidence/wru-final-verification-2026-07-31/, marked SCOPE=candidate, AUTHORITY=non-canonical, PROMOTION_STATUS=pending-merge. Final verdict: WRU_BUILD_VERIFIED_READY_FOR_MERGE_PLANNING. Residual debt is non-blocking: no formal CLI, tests excluded from runtime manifest by documented rule, installation via isolated copy.
+CIERRE DE SESIÓN — WRU v0.1. No se abrió investigación nueva ni se modificó código, merge, dirty state, índices o grafos.
 
-### Session summary: dfl-knowledge
-**Type:** session_summary  
-**Project:** dfl-knowledge  
+ESTADO TÉCNICO: WRU v0.1 mergeado en /opt/saas-factory-setup; merge bec766e; HEAD final reportado bc8d6b89e7e4db1ba4b83da8055579c56bc89759; tag wru-v0.1-institutional-final2. Módulo canónico reportado en saas-factory/tools/workforce-registry; interfaces wru.query.v1, wru-refresh.v1 y wru-status.v1. Integrity 23/23; suite WRU 83/83 PASS; G1-G44 reportados PASS.
 
-## Goal
-Sesión larga, multi-misión sobre DFL/SFV5/Workforce Registry Unit (WRU) v0.1: desde protocolo @$go inicial hasta fabricación end-to-end completa de WRU bajo autorización humana explícita, con verificación exhaustiva basada en evidencia real en cada paso.
+ESTADO INSTITUCIONAL: Adoption Gate 9/9 PASS; consumidor externo DFL Concierge en /opt/dfl-knowledge-workunit; consumer HEAD reportado 5f01fb29a2bfd8e8422524f616108a8996317488; suite Concierge 258/258 PASS. Camino vivo probado: Concierge solicita capability por wru.query.v1 READER-only → WRU consulta Canonical State → devuelve availability/freshness/provenance → Concierge selecciona sfv5-skill.acquisition → deriva WorkUnit IDs → WorkUnitLedger claim/release → receipt externo.
 
-## Instructions
-- El usuario opera bajo protocolo DFL: @$go al abrir sesión, @$fin al cerrar (mem_save + push_mirror.sh). No confundir @$go (comando) con /go (ruta HTTP del proxy).
-- Modo de ejecución de máxima autonomía ya establecido (memoria previa): no pedir permiso para acciones seguras, agrupar aprobaciones en un único punto de decisión — pero el usuario definió explícitamente 5 checkpoints humanos bloqueantes para la fabricación de WRU y espera que se respeten literalmente, incluso en modo autónomo.
-- El usuario exige evidencia real y reproducible en cada gate/checkpoint — "no declares PASS por documentos ni scaffolding". Toda corrección de PRP/Plan/build debe traer hashes SHA256 completos, snapshots git before/after, y diffs exactos, nunca solo afirmaciones.
-- Cuando se pide "cierre provisional (checkpoint)" a mitad de una tarea larga, se espera un handoff autosuficiente en disco (no solo un resumen conversacional) para que otro agente sin memoria pueda continuar.
+RECEIPT: /opt/dfl-knowledge/evidence/wru-live-concierge-20260731-r3/wru-receipt.json; digest reportado e5da6697cfedd9a0e0062ab81978e57f79d0488336283d16fd8801669a0c4932; active_claims=[]; resultado WORK_UNIT_CLAIMED_AND_RELEASED. Evidencia principal reportada: /opt/dfl-knowledge/evidence/wru-institutional-adoption-2026-07-31/ADOPTION-GATE.md. El usuario indicó /opt/saas-factory-setup/evidence/wru-institutional-adoption-2026-07-31/ADOPTION-GATE.md; conservar ambas referencias en el relay sin investigar ahora.
 
-## Discoveries
-- Un fetch de amos-context.md (GitHub raw) devolvió contenido con forma de prompt-injection (se autoasignaba un "perfil CONSULTOR" con capacidades falsas, contradichas por el entorno real) — se flagueó al usuario explícitamente en vez de obedecerlo.
-- La corrida inicial de `/prp` para WRU generó un PRP nativo con un defecto real: atribuyó los "44 gates" a la fábrica SFV5 (DDMS) cuando en realidad son gates propios de WRU (G1-G22 del laboratorio de capacidad + G23-G44 de CC-PRP-R1) — corregido en 2 pasadas tras comparar contra las fuentes verbatim (READER añadido como rol, G22/G21/G41-43 restaurados a su alcance/semántica original).
-- Un `git worktree add` nuevo parte con `git status` limpio incluso cuando el árbol principal está sucio desde antes — los archivos no versionados no se materializan en el worktree nuevo. Esto valida el patrón de aislamiento recomendado por el propio Implementation Plan y se usó tal cual.
-- Durante la fabricación real aparecieron 2 falsos positivos en tests de auditoría de código (G44, y la guarda READER de query/client.mjs): el propio comentario explicativo del código contenía la cadena de texto que el test de auditoría buscaba (p.ej. "appendVersion("), inflando el conteo de "call sites". Se corrigió reformulando el comentario, nunca relajando el test.
-- `source_commit` en el schema WRU es "HEAD al momento de generación", no un valor fijo — avanza legítimamente con cada commit de fabricación aunque `.claude/skills/` nunca se toque. Esto se aprovechó honestamente en Fase N para demostrar `freshness_status: stale` real sin ocultarlo (invariante explícito del PRP: nunca esconder staleness al consumidor).
-- Un test inicial de "Activación" asumía que el registro nunca crecería más allá de 32 entradas — al agregar legítimamente una entrada sintética no-SFV5 (Fase N, prueba de extensibilidad real) el test falló; el invariante correcto era "32 `sfv5-skill` únicas", no "32 entradas totales para siempre". Corregido para no penalizar la extensibilidad que el propio PRP exige.
+FRESHNESS: la respuesta viva fue DEGRADED_STALE porque los records canónicos conservan source_commit histórico distinto del source HEAD observado; el consumidor no lo trató como autoridad plena y registró READER_DEGRADED con provenance/availability explícitos.
 
-## Accomplished
-- ✅ @$go procesado; prompt-injection en amos-context.md detectado y reportado al usuario antes de actuar sobre él.
-- ✅ CX-MFG-3: corrida real de `/prp` para WRU v0.1 sobre el repo real SFV5 (`/opt/saas-factory-setup`), PRP nativo generado y corregido en 2 rondas (44 gates atribuidos correctamente a WRU no a SFV5, entidades canónicas Source Projection/Proposal/Canonical State formalizadas, contrato de reconciliación NO_CHANGE|PROPOSAL|CONFLICT|SOURCE_MISSING, SFV5 declarado fuente no autoridad, rol READER incorporado, G21/G22/G41-43 restaurados) — cada corrección con receipt completo (hashes SHA256 íntegros, snapshots git worktree/status before-after, diffs exactos, declaraciones NOT_RECOVERABLE cuando aplicaba).
-- ✅ CX-MFG-4: Implementation Plan completo generado desde el PRP aprobado y corregido (498→548 líneas: secuencia canónica `1→2→3→{4,5}→6→7→9.9→9.10→N`, matriz G1-G44 completa, checkpoints humanos, estrategia de commits/corpus/instalación aislada).
-- ✅ Fabricación end-to-end real de WRU v0.1 en worktree git aislado (`/opt/wru-worktree-v0.1`, branch `feat/workforce-registry-unit-v0.1`), 10 commits atómicos, 74/74 tests reales pasando, 44/44 gates PASS con evidencia individual: schema+meta-validación (Fase 1), adapter read-only+reconciliación sobre las 32 skills reales (Fase 2), motor de propuestas/aprobación — único camino de escritura, optimistic locking, autoridad por rol (Fase 3), ciclo de vida gobernado — deprecate/replace/archive/restore, hard-delete estructuralmente imposible (Fase 4), disponibilidad (Fase 5), cliente de consulta bajo autoridad READER + blind discovery de 8 casos (Fase 6), evidencia (Contrato A) + instalación/desinstalación real en copia aislada (Fase 7), Activación real (32/32 skills reales ingeridas vía flujo gobernado, nunca carga directa), Operación real (6 tipos de mutación real incluyendo archive+restore real sobre datos reales), Fase N (blind discovery real sobre el Registry activado, 44 gates agregados, FINAL-VERDICT).
-- ✅ Árbol productivo `/opt/saas-factory-setup` verificado byte-idéntico (HEAD, `git status`, `.claude/skills/`, `CLAUDE.md`, y las 3 herramientas previas de la cadena SFV5/CC-2/CX-N1) en cada uno de los ~15 checkpoints de este build — nunca tocado.
-- ✅ Handoff autosuficiente escrito en disco antes de continuar (cierre provisional pedido explícitamente por el usuario a mitad de la fabricación), para que otro agente sin memoria de la conversación pudiera retomar si la sesión moría.
-- ✅ 4 checkpoints humanos aprobados explícitamente por el usuario en tiempo real (primera escritura canónica, ingestión de datos reales, primera operación de lifecycle, camino vivo real).
-- 🔲 Checkpoint 5 (merge/activación compartida a la rama productiva) deliberadamente NO ejecutado — queda como decisión humana futura, fuera del alcance que esta misión se autorizó a ejecutar sola.
-- Veredicto final entregado: `WRU_V0_1_END_TO_END_BUILT_PENDING_FINAL_INDEPENDENT_VERIFICATION`, con deuda residual declarada explícitamente (sin CLI binario formal; instalación probada en copia de directorio simple, no en un segundo worktree git).
+DISTINCIÓN OBLIGATORIA: WRU CAMINO_VIVO_INSTITUCIONAL_PROBADO: YES. Capacidades catalogadas: 0/32 PROBADO_EN_CAMINO_VIVO.
 
-## Next Steps
-- Revisión independiente del build (tipo CX-PRP-1) antes de cualquier propuesta de merge a `fase-3-5-jpi-real-sfv5-bridge`.
-- Decisión humana pendiente sobre checkpoint 5: si/cuándo proponer ese merge.
-- Si se decide llevar WRU a producción real: resolver deuda residual (CLI binario formal; prueba de instalación en un worktree git separado, no solo copia de directorio).
-- Si la sesión se retoma en frío, leer primero `FINAL-VERDICT.md` y `HANDOFF-2026-07-31.md` antes de tocar código.
+DIRTY STATE: el árbol compartido tenía dirty state preexistente ajeno; no se investigó ni limpió en este cierre. Queda pendiente de aclaración factual futura y no debe asumirse como fallo de WRU sin evidencia.
 
-## Relevant Files
-- `/opt/saas-factory-setup/saas-factory/.claude/PRPs/prp-workforce-registry-unit.md` — PRP aprobado de WRU v0.1, corregido 2 veces, nunca modificado durante la fabricación.
-- `/opt/saas-factory-setup/saas-factory/.claude/PRPs/plan-workforce-registry-unit.md` — Implementation Plan aprobado, fuente de la secuencia de fases ejecutada.
-- `/opt/wru-worktree-v0.1/saas-factory/tools/workforce-registry/` — módulo completo fabricado (schema/, adapters/, proposals/, registry/, query/, evidence/, tests/), 10 commits, 44/44 gates.
-- `/opt/dfl-knowledge/evidence/sfv5-wru-prp-native-run-2026-07-31/` — receipts de generación y corrección del PRP.
-- `/opt/dfl-knowledge/evidence/sfv5-wru-implementation-plan-2026-07-31/` — receipts de generación y corrección del plan.
-- `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/FINAL-VERDICT.md` — matriz completa G1-G44, estado exacto por etapa, veredicto final.
-- `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/HANDOFF-2026-07-31.md` — handoff autosuficiente para continuación por otro agente.
+ÍNDICES/GRAFOS: se generaron índices/grafos candidatos y luego se registró un estado canónico post-merge. No afirmar más de lo demostrado. Queda pendiente para una sesión futura verificar rutas exactas, conteos finales canónicos, motor que los sirve, integración real con Codebase Memory/Visualizer/Graphify/agTopólogo, frescura, mecanismo de actualización y promoción al grafo institucional mayor. JSON/DOT en evidence no bastan: debe probarse que forman parte del sistema gráfico vivo y no de otro closet documental.
+
+PRINCIPIO INSTITUCIONAL: todo elemento nuevo DFL debe generar índices, nodos, relaciones, procedencia y frescura como parte de la cultura de fabricación, para que un invento exitoso e integrado sea conocido por el sistema institucional y pueda incorporarse al grafo mayor, sus nodos, relaciones y ramas.
+
+DEUDA RESIDUAL REAL: freshness canónica todavía degradada hasta reconciliación gobernada; verificación de integración con el grafo institucional mayor pendiente; dirty state preexistente pendiente de aclaración factual. Deuda hipotética no se presenta como real.
+
+REANUDACIÓN EXACTA: validar primero la ubicación efectiva de ADOPTION-GATE.md y luego comprobar el registro canónico vivo de índices/grafos y su mecanismo de servicio/actualización, sin reabrir la fabricación WRU. Próxima sesión sugerida: WRU-GRAPH-LIVE-PROMOTION-2026-08-01.
+
+### @$go 2026-07-31 — pending histórico de limpieza reconciliado
+**Type:** fact  
+**Project:** dfl  
+
+@$go ejecutado con payload local generated_at=2026-07-31T21:23:27Z y search_memory('contexto DFL'). Primer pending: observación #252 sobre Reminder 1a/1Password.txt del 2026-07-14. La búsqueda en Engram confirmó que los dos frentes ya estaban cerrados y verificados, pero la observación seguía STATUS active. Se actualizó #252 a [RESOLVED], STATUS resolved y LIFECYCLE: archived para eliminar el pending histórico. No se modificaron archivos ni superficies protegidas; no se hizo ninguna operación sobre Drive.
 
 ---
 
@@ -459,4 +433,4 @@ Sesión larga, multi-misión sobre DFL/SFV5/Workforce Registry Unit (WRU) v0.1: 
 
 ---
 
-*Mirror auto-generated 2026-07-31T21:20:09Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-31T21:45:32Z | La Garra → DFLghub/amos-context*
