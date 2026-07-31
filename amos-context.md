@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-31T02:44:31Z  
+**Generated:** 2026-07-31T03:05:03Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -499,4 +499,4 @@ Hashes passed; manifest exact. /prp was not executed; SFV5, Engram and mirror we
 
 ---
 
-*Mirror auto-generated 2026-07-31T02:44:31Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-31T03:05:03Z | La Garra → DFLghub/amos-context*
