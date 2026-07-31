@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-31T01:23:15Z  
+**Generated:** 2026-07-31T02:42:36Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,25 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### SESSION CLOSURE: CX-MFG-2 WRU PRP submission ready — 2026-07-31
+**Type:** decision  
+**Project:** dfl  
+
+Gate 4B SESSION CLOSURE.
+
+Result: SFV5_WRU_PRP_SUBMISSION_READY.
+
+Prepared isolated copy of the institutional draft without modifying the original:
+- Original: evidence/workforce-registry-unit-v0.1-prp-r1-2026-07-30/wru-draft.md
+- Prepared copy: /opt/dfl-labs/sfv5-wru-submission/.claude/PRPs/wru-draft.md
+- Invocation: /opt/dfl-labs/sfv5-wru-submission/PRP-INVOCATION.txt
+
+The copy only adds an explicit /prp submission contract: no /primer assumption, no Proceed gate dependency, no automatic bucle-agentico, no factory-brain/quality-gates/Supabase/CLAUDE.md assumptions, native PRP via prp-base.md, pending approval, and no implementation during first invocation. Original hash preserved: 360e9dcb09c7e9f90c9be86576fd616f52f944437f7b2e2d142ddde414e54d10.
+
+Evidence root: /opt/dfl-knowledge/evidence/sfv5-wru-prp-submission-ready-2026-07-30/
+Evidence commit: 6bbac2193b2ef6e55d1aa1dfe5e6c4f8663ff8fe.
+Hashes passed; manifest exact. /prp was not executed; SFV5, Engram and mirror were not modified/executed during the mission.
+
 ### CX-R2 SFV5 independently verified — supersedes operational handoff of #393
 **Type:** decision  
 **Project:** dfl  
@@ -118,27 +137,6 @@ SESSION CLOSURE: CX-R2 — 2026-07-31
 **Handoff correction**: Historical obs #393 is preserved as the CX-R1 result, but this observation supersedes it operationally for current closure. Mirror `344c5d982e11f4b9d037f9c8aed417edc9750a86` propagated the intermediate stale handoff `Return to CC-R2` after CC-R2 had concluded; history was not rewritten. Next handoff: CC-2 may start.
 
 **Scope**: No product, graph, SFV5 source, Engram history, or protected surface was modified.
-
-### [INSTITUTIONAL_DECISION] Preservación no Equivale a Integración
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Regla institucional transversal. **Ninguna de estas acciones promueve el estado de una capacidad**: guardar un archivo en el repo, commitearlo, registrar una observación en Engram, pasar tests aislados, escribir un documento de diseño, o publicar el mirror. Preservar es dejar constancia; integrar es cambiar el comportamiento del sistema vivo y demostrarlo.
-
-**Why**: Es la generalización del "falso integrado" ya identificado en Skill Engineering (declarar una skill integrada por copiar sus archivos, omitiendo el registro real de descubrimiento). El mismo error apareció en Concierge F1B: 34/34 PASS y un artefacto preservado, con el bridge sin cablear al camino vivo. Sin esta regla, la evidencia de preservación se confunde con evidencia de funcionamiento y produce un falso positivo indistinguible del real.
-
-**Where**: Caso testigo verificado directamente en La Garra el 2026-07-28:
-- `git diff --stat main..0701a52 -- main.py` → vacío (el candidato no toca el entrypoint)
-- `grep -n "concierge" /opt/dfl-context-proxy/main.py` → 0 coincidencias (el proxy vivo no conoce el bridge)
-- `ls /opt/dfl-artifacts` → no existe (la raíz soberana "decidida" nunca se materializó)
-- Snapshot: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28.md` — SHA256 `202bcc49f6fe3e7496478c9888719b3d9503171822bb7c40f64f04e024d3f941`
-- Addendum: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28-addendum-f1b-review.md`
-- Commit: `72ed69b7a2a870d11bfbbb71f218fe6edca34a63`
-- Revisión independiente: CX, 2026-07-28, candidato `0701a52`, veredicto `REQUIRES_CHANGES`
-
-**Learned**: El test decisivo de integración es siempre el mismo — **¿cambia el comportamiento observable del sistema vivo, y hay un log que lo pruebe?** Si la respuesta necesita un "debería", no está integrado. Aplica a skills (¿el orquestador la descubre sin que le pasen la ruta?), a bridges (¿una request real lo atraviesa?) y a rollbacks (¿se ejecutó alguna vez?).
-
-**PROXIMO_AGENTE_DEBE**: al reportar estado, separar siempre "preservado" de "integrado" en dos líneas distintas. Ver [[dfl/institutional/f1b-gates-evidenciados]] y [[dfl/institutional/snapshot-longitudinal-canonico]].
 
 ### JPI Fase 5 Real E2E Completion Summary
 **Type:** decision  
@@ -339,6 +337,25 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
+### SESSION CLOSURE: CX-MFG-2 WRU PRP submission ready — 2026-07-31
+**Type:** decision  
+**Project:** dfl  
+
+Gate 4B SESSION CLOSURE.
+
+Result: SFV5_WRU_PRP_SUBMISSION_READY.
+
+Prepared isolated copy of the institutional draft without modifying the original:
+- Original: evidence/workforce-registry-unit-v0.1-prp-r1-2026-07-30/wru-draft.md
+- Prepared copy: /opt/dfl-labs/sfv5-wru-submission/.claude/PRPs/wru-draft.md
+- Invocation: /opt/dfl-labs/sfv5-wru-submission/PRP-INVOCATION.txt
+
+The copy only adds an explicit /prp submission contract: no /primer assumption, no Proceed gate dependency, no automatic bucle-agentico, no factory-brain/quality-gates/Supabase/CLAUDE.md assumptions, native PRP via prp-base.md, pending approval, and no implementation during first invocation. Original hash preserved: 360e9dcb09c7e9f90c9be86576fd616f52f944437f7b2e2d142ddde414e54d10.
+
+Evidence root: /opt/dfl-knowledge/evidence/sfv5-wru-prp-submission-ready-2026-07-30/
+Evidence commit: 6bbac2193b2ef6e55d1aa1dfe5e6c4f8663ff8fe.
+Hashes passed; manifest exact. /prp was not executed; SFV5, Engram and mirror were not modified/executed during the mission.
+
 ### CX-R2 SFV5 independently verified — supersedes operational handoff of #393
 **Type:** decision  
 **Project:** dfl  
@@ -356,12 +373,6 @@ SESSION CLOSURE: CX-R2 — 2026-07-31
 **Handoff correction**: Historical obs #393 is preserved as the CX-R1 result, but this observation supersedes it operationally for current closure. Mirror `344c5d982e11f4b9d037f9c8aed417edc9750a86` propagated the intermediate stale handoff `Return to CC-R2` after CC-R2 had concluded; history was not rewritten. Next handoff: CC-2 may start.
 
 **Scope**: No product, graph, SFV5 source, Engram history, or protected surface was modified.
-
-### @$go 2026-07-31 — reconciliación final verificada y pending histórico archivado
-**Type:** fact  
-**Project:** dfl  
-
-@$go ejecutado con payload local generated_at=2026-07-31T01:12:29Z y search_memory('contexto DFL'). Se retomó el primer pending mediante HANDOFF-CODEX.md. `check_registro_vivo.py` confirmó el estado, pero reportó además 30 hallazgos de infraestructura/dirty state fuera del alcance: no se remediaron. 08-RECONCILIACION-FINAL.md confirma que la misión ya estaba completada (commit 7b77b78, obs #236 archivada, mirror e525b9a). Se archivó Engram obs #239 como [RESOLVED] para evitar que el resumen histórico siguiera apareciendo como pending genérico. No se modificaron archivos ni superficies protegidas; no se tocaron decisiones reservadas a Jorge.
 
 ---
 
@@ -454,4 +465,4 @@ SESSION CLOSURE: CX-R2 — 2026-07-31
 
 ---
 
-*Mirror auto-generated 2026-07-31T01:23:15Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-31T02:42:36Z | La Garra → DFLghub/amos-context*
