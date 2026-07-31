@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-30T22:27:02Z  
+**Generated:** 2026-07-31T01:23:15Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,24 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### CX-R2 SFV5 independently verified — supersedes operational handoff of #393
+**Type:** decision  
+**Project:** dfl  
+
+SESSION CLOSURE: CX-R2 — 2026-07-31
+
+**Result**: SFV5_AUDIT_INDEPENDENTLY_VERIFIED.
+
+**Inputs**: CC-R2 `0bfc5c93bdcd4968d7c655204c32df234a0e7dce`; CX-R1 `1f84021300f71a4e60a990f7cea43c9f017e9f12`.
+
+**Evidence**: CX-R2 commit `60316d9124f2375aebce848b2893bf4e525d7ef9`, root `/opt/dfl-knowledge/evidence/sfv5-forensic-inspection-2026-07-30-cx-r2/`.
+
+**Independent verdict**: SELF_REFERENCE ABSENT; CIRCULAR_DEPENDENCY ABSENT; CONTENT_FILES_DECLARED 11; CONTENT_FILES_HASHED 11; UNDECLARED_FILES 0; MISSING_FILES 0; CLEAN_VERIFY PASS; TAMPER_TEST PASS; MANIFEST_COMPLETE YES. Scanner is honestly PARTIAL: ADDED NOT_DETECTED, REMOVED PASS, MODIFIED PASS. Gates: 17 PASS, 1 PARTIAL (G13), 0 FAIL, 0 NOT_PROVEN. No positive 20/20 PASS claim.
+
+**Handoff correction**: Historical obs #393 is preserved as the CX-R1 result, but this observation supersedes it operationally for current closure. Mirror `344c5d982e11f4b9d037f9c8aed417edc9750a86` propagated the intermediate stale handoff `Return to CC-R2` after CC-R2 had concluded; history was not rewritten. Next handoff: CC-2 may start.
+
+**Scope**: No product, graph, SFV5 source, Engram history, or protected surface was modified.
+
 ### [INSTITUTIONAL_DECISION] Preservación no Equivale a Integración
 **Type:** decision  
 **Project:** dfl  
@@ -121,31 +139,6 @@ Antes de operar, respondé:
 **Learned**: El test decisivo de integración es siempre el mismo — **¿cambia el comportamiento observable del sistema vivo, y hay un log que lo pruebe?** Si la respuesta necesita un "debería", no está integrado. Aplica a skills (¿el orquestador la descubre sin que le pasen la ruta?), a bridges (¿una request real lo atraviesa?) y a rollbacks (¿se ejecutó alguna vez?).
 
 **PROXIMO_AGENTE_DEBE**: al reportar estado, separar siempre "preservado" de "integrado" en dos líneas distintas. Ver [[dfl/institutional/f1b-gates-evidenciados]] y [[dfl/institutional/snapshot-longitudinal-canonico]].
-
-### [INSTITUTIONAL_DECISION] F1B se Promueve por Gates Evidenciados
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Concierge F1B solo se promueve de estado atravesando **cinco gates con evidencia ejecutable**, en orden. Ningún gate se da por cumplido por documentación, razonamiento o tests aislados.
-
-1. **Revisión lineal** — recorrido del diff real del candidato contra `main`, archivo por archivo, sin depender del grafo. Evidencia: inventario lineal con SHAs.
-2. **Shadow vivo observable** — el bridge integrado en el hook real de `/go`, default `off`, legacy produciendo SIEMPRE la respuesta entregada al usuario, Concierge solo comparando. Evidencia: receipts reales de ejecuciones shadow (timestamp, artifact SHA, source_commit, hashes legacy/Concierge, resultado de los 5 probes, tamaño de cada bloque, divergencias, fallback/error).
-3. **Composición Engram** — la discrepancia `58,174 / 58,472 / 20,944` bytes reproducida y explicada, con identificación de qué cifra corresponde a tabla, receipt y fixture. Evidencia: reproducción determinista.
-4. **Rollback operativo** — script idempotente ejecutado de verdad: restaura modo `off`, reinicia el servicio, verifica `/go`. Evidencia: log de una corrida real off → shadow → receipt → rollback → `/go` legacy confirmado.
-5. **Criterios de salida** — declarados ANTES de ejecutar el gate, no derivados del resultado obtenido.
-
-**Why**: El candidato `0701a52` llegó con 34/34 PASS y aun así el veredicto fue `REQUIRES_CHANGES`. Un harness verde valida la pieza, no la integración; sin gates explícitos la diferencia se vuelve invisible y se promueve por optimismo. Los gates convierten "parece listo" en "demostró esto, en este log, en esta fecha".
-
-**Where**:
-- Addendum (blockers y distinción): `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28-addendum-f1b-review.md`
-- Snapshot: `/opt/dfl-knowledge/audits/analisis-longitudinal-2026-07-28.md` — SHA256 `202bcc49f6fe3e7496478c9888719b3d9503171822bb7c40f64f04e024d3f941`
-- Commit: `72ed69b7a2a870d11bfbbb71f218fe6edca34a63`
-- Candidato: `0701a5248fb71e38a21a766b7794f1692235a1b2`, rama `integration/concierge-live-f1b-candidate`, worktree `/opt/dfl-context-proxy-f1b-candidate`
-- Revisión independiente: CX, 2026-07-28, veredicto `REQUIRES_CHANGES`
-
-**Learned**: Veredictos permitidos al cerrar la remediación: `REQUIRES_CHANGES` o `SHADOW_WIRED_READY_FOR_OBSERVATION`. **Prohibidos**: `SHADOW_READY` y `READY_FOR_CONTROLLED_LIVE_TEST` — no hay evidencia que los sostenga y nombrarlos anticipa una promoción no autorizada. `live` exige un gate técnico adicional independiente de `DFL_CONCIERGE_MODE=live`.
-
-**PROXIMO_AGENTE_DEBE**: no saltar gates ni reordenarlos. Ver [[dfl/institutional/preservacion-no-es-integracion]] y [[dfl/institutional/agtopologo-no-autoridad-f1b]].
 
 ### JPI Fase 5 Real E2E Completion Summary
 **Type:** decision  
@@ -247,41 +240,6 @@ No blockers. No residual risks. Ready for operational deployment.
 
 ## PENDING
 
-### Session summary: futbolweb-app
-**Project:** futbolweb-app  
-
-## Goal
-[CHECKPOINT COMPLETO] HLC Reconciliación Final de Consolidación DFL v1: contrastar artefactos contra el estado institucional más reciente (cierre residuales Ola 1), eliminar pendientes obsoletos, verificador con solo residuales reales, commit+Engram+mirror. COMPLETADA.
-
-## Instructions
-- No nuevas remediaciones; no GOBERNAR; no tocar futbolweb (Codex de producto commiteó 5595c24/e55d2c5 durante la sesión); no conservar pendientes solo por aparecer en docs antiguos.
-- Regla de método nueva: antes de declarar pendiente en el registro vivo, contrastar contra el ÚLTIMO doc de cierre Y contra realidad ejecutable.
-
-## Discoveries
-- Causa raíz de contradicciones: consolidación v1 se construyó sobre 06/09/obs#221, ANTERIORES al cierre de residuales Ola 1 (docs 11/12/13).
-- B-2 era FALSA: bundles off-host SÍ están en VM3 bajo /data/dfl-backups/engram/organ-preservation/2026-07-11-wave1/ (prefijo engram/ permitido); SHA-256 revalidados idénticos hoy vía pull rsync.
-- D-1 PAT: revocado (202/401), cero holders revalidado hoy (0 archivos, 0 proc) → retiro prediccion2026 DESBLOQUEADO, sin fecha dura.
-- D-2: DFLghub/saas-factory-setup existe, main=5e42124=local, upstream push DISABLED.
-- HALLAZGO NUEVO Drive: 12_FutbolWeb/backups/1Password.txt (204B, 2026-07-06, fileId 1g4-4BoWbdQ0JRvggnTTFxwnjjXVASczZ) — NO leído, posible credencial → revisión Jorge. ZIP antiguo sigue presente (D-5, CC puede borrarlo a la orden).
-
-## Accomplished
-- ✅ 5 hechos revalidados contra realidad (evidencia: EVIDENCE/reconciliacion-revalidacion.txt).
-- ✅ Artefactos corregidos: 00/01/02/04/05/06; nuevos: 08-RECONCILIACION-FINAL.md, HANDOFF-CODEX.md; registro-vivo.json reconciliado (JSON válido).
-- ✅ Verificador: 5 residuales reales únicamente (SIN-PUSH prediccion2026 + 4 SIN-RESPALDO D-4/B-3); run3 en EVIDENCE.
-- ✅ Commit 7b77b78 pusheado a DFLghub (scan de secretos limpio).
-- ✅ Gate 4B: obs #236 (cierre); #218→[RESOLVED] archivada; #221/#231 marcadas como superadas/corregidas.
-- ✅ Mirror publicado: MIRROR: updated | commit e525b9a3854998b56ff338291b3305c5308ce5a2 | 2026-07-12 20:11:48 +0000.
-
-## Next Steps
-- Jorge decide: retiros B-5 (sf-test, prediccion2026 — desbloqueados), D-4 copias únicas (~2.2GB), D-5 borrar ZIP Drive (CC ejecuta a la orden), revisar 1Password.txt, B-3 crear repos manuales (nq-factory/engram-mcp/fork engram), B-1 Drive-Codex.
-- Codex: retomar con HANDOFF-CODEX.md (audits/consolidacion-institucional-dfl-v1/) — arranque seguro §1, residuales esperados §3, cierre contingente §5.
-
-## Relevant Files
-- audits/consolidacion-institucional-dfl-v1/08-RECONCILIACION-FINAL.md — corte de verdad más reciente
-- audits/consolidacion-institucional-dfl-v1/HANDOFF-CODEX.md — handoff operativo para Codex
-- governance/registro-vivo/registro-vivo.json — fuente canónica reconciliada
-- EVIDENCE/reconciliacion-revalidacion.txt, registro-vivo-check-run3-reconciliacion.txt
-
 ### Auditoría Engram 2026-07-08 — sin limpieza programada y sync parcial por proyectos
 **Project:** dfl  
 
@@ -381,59 +339,29 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
-**Type:** manual  
-**Project:** dfl-knowledge  
+### CX-R2 SFV5 independently verified — supersedes operational handoff of #393
+**Type:** decision  
+**Project:** dfl  
 
-**TOPIC**: dfl/saas-factory/cc-r2-checkpoint-2026-07-30
-**TYPE**: manual
-**DATE**: 2026-07-30
-**STATUS**: checkpoint — NO es cierre canónico. La misión CC-R2 sigue abierta; este registro existe para que cualquier agente pueda retomar sin releer ni reinvestigar lo ya resuelto.
+SESSION CLOSURE: CX-R2 — 2026-07-31
 
-**Contexto de la cadena completa (referencias, no sobrescribir):**
-- obs #390 — informe forense original SFV5 (commit `a4589bf`)
-- obs #392 — addendum de censo/registro/crosswalk (commit `c074c20`)
-- CX-1 revisó el addendum → 3 defectos materiales (checksum autocontenido, `scan_delta.py` no reproducible, identidad del grafo activo)
-- CC-R1 (commit `fa640a5`) remedió los 3 — corrigió checksum, produjo `scan_delta_v2.py` reproducible, reconfirmó el grafo en vivo (4975 nodos)
-- CX-R1 (commit `1f84021`) revalidó CC-R1 de forma independiente: confirmó reproducibilidad del scanner y la identidad del grafo (`GRAPH_METRICS_TRUSTWORTHY = YES`), pero rechazó el contrato de checksum/manifest: encontró que el "checksum corregido" de CC-R1 (`remediation-r1/checksum-after/SHA256SUMS.txt`) **todavía tiene autorreferencia** (con un hash obsoleto, no el de sí mismo — bug distinto al original), que `addendum/MANIFEST.json` no lista `FINAL-VERDICT.md` ni `SHA256SUMS.txt`, y que `remediation-r1/` nunca tuvo `MANIFEST.json` propio. También rechazó la afirmación de "20/20 PASS" como agregado.
+**Result**: SFV5_AUDIT_INDEPENDENTLY_VERIFIED.
 
-**CC-R2 (esta misión, EN CURSO):** remedia exclusivamente esos 4 puntos de contrato de evidencia (checksum/manifest/veredicto) — explícitamente NO reaudita el grafo ni repite la reconciliación completa (ya confirmados confiables por CX-R1).
+**Inputs**: CC-R2 `0bfc5c93bdcd4968d7c655204c32df234a0e7dce`; CX-R1 `1f84021300f71a4e60a990f7cea43c9f017e9f12`.
 
-**Progreso real al momento de este checkpoint:**
-- Fase 1 (leer + reproducir hallazgos CX-R1): **completa**. Los 4 defectos fueron re-confirmados hoy con comandos directos (hashes exactos, no solo cita del informe CX-R1). Artefacto: `evidence/sfv5-forensic-inspection-2026-07-30/remediation-r2/CX-R1-FAILED-CLAIMS-MATRIX.md`.
-- Fases 2-7: **pendientes**. Diseño ya decidido y documentado (no requiere nueva investigación): generador Python de dos pasos que escribe `MANIFEST.json` primero (solo archivos de contenido, sin autorreferencia, sin listar `SHA256SUMS.txt`) y luego `SHA256SUMS.txt` (hashea contenido + `MANIFEST.json` ya finalizado, excluyendo su propio nombre desde el listado inicial, nunca por filtro posterior con shell `*`/redirección — esa es la causa raíz de los 2 bugs de autorreferencia ya vistos en esta cadena).
-- Commit de checkpoint: `9085376` (rama `feat/dfl-high-certainty-harness-v0.1`, `dfl-knowledge`).
+**Evidence**: CX-R2 commit `60316d9124f2375aebce848b2893bf4e525d7ef9`, root `/opt/dfl-knowledge/evidence/sfv5-forensic-inspection-2026-07-30-cx-r2/`.
 
-**Learned (para no repetir el error dos veces más):** el patrón de bug de autorreferencia en checksums tiene AL MENOS 2 variantes distintas ya encontradas en esta misma cadena de auditoría: (1) truncamiento de shell (`sha256sum * > archivo` trunca el archivo de salida antes de leerlo como argumento → hash de cadena vacía), y (2) captura de hash bajo un nombre que luego se reutiliza al copiar/renombrar el archivo (el hash queda correcto para el contenido de origen pero incorrecto para el archivo final que terminó con ese mismo nombre). La única forma robusta de evitarlas ambas es excluir el nombre del archivo de salida de la LISTA DE ENTRADA antes de calcular cualquier hash — nunca por post-filtro, nunca reutilizando un archivo generado bajo un nombre temporal distinto.
+**Independent verdict**: SELF_REFERENCE ABSENT; CIRCULAR_DEPENDENCY ABSENT; CONTENT_FILES_DECLARED 11; CONTENT_FILES_HASHED 11; UNDECLARED_FILES 0; MISSING_FILES 0; CLEAN_VERIFY PASS; TAMPER_TEST PASS; MANIFEST_COMPLETE YES. Scanner is honestly PARTIAL: ADDED NOT_DETECTED, REMOVED PASS, MODIFIED PASS. Gates: 17 PASS, 1 PARTIAL (G13), 0 FAIL, 0 NOT_PROVEN. No positive 20/20 PASS claim.
 
-**PROXIMO_AGENTE_DEBE**: retomar en "Paso 2: regeneración limpia" de `CHECKPOINT-HANDOFF.md` — el diseño ya está completo, solo falta implementar+verificar+commitear. No se ha ejecutado `push_mirror.sh` en ningún punto de esta cadena (CC-R1, CX-R1, ni este checkpoint) — sigue pendiente hasta que CX-R2 valide el cierre de CC-R2.
+**Handoff correction**: Historical obs #393 is preserved as the CX-R1 result, but this observation supersedes it operationally for current closure. Mirror `344c5d982e11f4b9d037f9c8aed417edc9750a86` propagated the intermediate stale handoff `Return to CC-R2` after CC-R2 had concluded; history was not rewritten. Next handoff: CC-2 may start.
 
-### CX-R1 SFV5 remediation revalidation — checksum/manifest gap remains
+**Scope**: No product, graph, SFV5 source, Engram history, or protected surface was modified.
+
+### @$go 2026-07-31 — reconciliación final verificada y pending histórico archivado
 **Type:** fact  
 **Project:** dfl  
 
-SESSION CLOSURE: @$fin — 2026-07-30
-
-Mission: independent CX-R1 review of CC remediation fa640a5 for SFV5 forensic addendum c074c20, prior CX review bf274f7.
-
-Outcome: SFV5_REMEDIATION_REQUIRES_CHANGES.
-
-Evidence commit: 1f84021300f71a4e60a990f7cea43c9f017e9f12.
-Evidence root: /opt/dfl-knowledge/evidence/sfv5-forensic-inspection-2026-07-30-cx-r1/
-
-Confirmed independently:
-- scan_delta_v2 byte-reproducible across two invocation styles after excluding only volatile ISO scanned_at.
-- MODIFIED and REMOVED fixtures pass.
-- ADDED is a known limitation, not functional detection; update mechanism scope is PARTIAL.
-- active graph sfv5-saas-factory is reproducibly 4975 nodes / 5166 edges; duplicate indexes are 4767, 4753, 4633.
-- historical CX value 100 is reproducible as query row truncation with max_rows=100; same dataset returns 4975 with sufficient limit.
-- fa640a5 is exclusive to remediation-r1; original artifacts were not modified.
-
-Blocking finding:
-- remediation-r1/checksum-after/SHA256SUMS.txt verifies 31/31 but includes SHA256SUMS.txt itself, contradicting the declared self-reference-absent contract.
-- original MANIFEST.json has 28 entries while 30 top-level files exist excluding MANIFEST; FINAL-VERDICT.md and SHA256SUMS.txt are unlisted; no remediation-r1/MANIFEST.json exists.
-- Required handoff: Return to CC-R2 with exact failed claims. Do not start CC-2.
-
-No Engram archival sweep had been performed before this closure; push_mirror.sh was not run during CX-R1 mission. Protected surfaces and unrelated working-tree changes were preserved.
+@$go ejecutado con payload local generated_at=2026-07-31T01:12:29Z y search_memory('contexto DFL'). Se retomó el primer pending mediante HANDOFF-CODEX.md. `check_registro_vivo.py` confirmó el estado, pero reportó además 30 hallazgos de infraestructura/dirty state fuera del alcance: no se remediaron. 08-RECONCILIACION-FINAL.md confirma que la misión ya estaba completada (commit 7b77b78, obs #236 archivada, mirror e525b9a). Se archivó Engram obs #239 como [RESOLVED] para evitar que el resumen histórico siguiera apareciendo como pending genérico. No se modificaron archivos ni superficies protegidas; no se tocaron decisiones reservadas a Jorge.
 
 ---
 
@@ -526,4 +454,4 @@ No Engram archival sweep had been performed before this closure; push_mirror.sh 
 
 ---
 
-*Mirror auto-generated 2026-07-30T22:27:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-31T01:23:15Z | La Garra → DFLghub/amos-context*
