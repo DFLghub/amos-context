@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-31T21:45:32Z  
+**Generated:** 2026-07-31T22:10:16Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,31 +101,23 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### SESSION CLOSURE: WRU v0.1 adopción institucional y relay para reanudación
+### DFL New Element Institutionalization System v0.1 operational
 **Type:** decision  
 **Project:** dfl  
 
-CIERRE DE SESIÓN — WRU v0.1. No se abrió investigación nueva ni se modificó código, merge, dirty state, índices o grafos.
+VEREDICTO: DFL_NEW_ELEMENT_INSTITUTIONALIZATION_SYSTEM_OPERATIONAL
 
-ESTADO TÉCNICO: WRU v0.1 mergeado en /opt/saas-factory-setup; merge bec766e; HEAD final reportado bc8d6b89e7e4db1ba4b83da8055579c56bc89759; tag wru-v0.1-institutional-final2. Módulo canónico reportado en saas-factory/tools/workforce-registry; interfaces wru.query.v1, wru-refresh.v1 y wru-status.v1. Integrity 23/23; suite WRU 83/83 PASS; G1-G44 reportados PASS.
+Misión ejecutada en /opt/dfl-knowledge, branch feat/dfl-high-certainty-harness-v0.1. Sistema entregado: versioned schema dfl.new-element.v0.1; executable DFL_NEW_ELEMENT_ADOPTION_GATE; DFL_ANTI_CLOSET_GATE; recurrent refresh connected to scripts/daily_check.sh; live graph source architecture/institutional-graph/NEW-ELEMENTS-LIVE.md; existing agTopologo -> graphify-out -> KNL/context proxy reused; PRP Golden Path overlay in /opt/saas-factory-setup/saas-factory/.claude/PRPs/prp-base.md.
 
-ESTADO INSTITUCIONAL: Adoption Gate 9/9 PASS; consumidor externo DFL Concierge en /opt/dfl-knowledge-workunit; consumer HEAD reportado 5f01fb29a2bfd8e8422524f616108a8996317488; suite Concierge 258/258 PASS. Camino vivo probado: Concierge solicita capability por wru.query.v1 READER-only → WRU consulta Canonical State → devuelve availability/freshness/provenance → Concierge selecciona sfv5-skill.acquisition → deriva WorkUnit IDs → WorkUnitLedger claim/release → receipt externo.
+Commits: 47d96d2 add executable new element institutionalization gates; 5d9ccfb product PRP overlay; final verification commits 26d5913 and 3c48f55. Tag: dfl-new-element-institutionalization-v0.1 at 47d96d2. Final DFL knowledge HEAD: 3c48f558940d10574c9ba01521124f2493fce549.
 
-RECEIPT: /opt/dfl-knowledge/evidence/wru-live-concierge-20260731-r3/wru-receipt.json; digest reportado e5da6697cfedd9a0e0062ab81978e57f79d0488336283d16fd8801669a0c4932; active_claims=[]; resultado WORK_UNIT_CLAIMED_AND_RELEASED. Evidencia principal reportada: /opt/dfl-knowledge/evidence/wru-institutional-adoption-2026-07-31/ADOPTION-GATE.md. El usuario indicó /opt/saas-factory-setup/evidence/wru-institutional-adoption-2026-07-31/ADOPTION-GATE.md; conservar ambas referencias en el relay sin investigar ahora.
+Evidence: /opt/dfl-knowledge/evidence/dfl-new-element-institutionalization-v0.1-2026-07-31/ with FINAL-REPORT.md, CURRENT-STATE.json, PILOT-RESULTS.json, CHECKPOINTS.jsonl, COMMANDS.jsonl, DECISIONS.md, BLOCKERS.md, ARTIFACT-MANIFEST.json, SHA256SUMS. Hash validation PASS. New system tests 9/9 PASS; DFL health 14/14 PASS; WRU 83/83 PASS; Concierge 258/258 PASS; graph regenerated with 140 semantic nodes, 560 edges, 10285 structural nodes; live queries WRU and Business OS FRESH/CANONICAL.
 
-FRESHNESS: la respuesta viva fue DEGRADED_STALE porque los records canónicos conservan source_commit histórico distinto del source HEAD observado; el consumidor no lo trató como autoridad plena y registró READER_DEGRADED con provenance/availability explícitos.
+Pilots: WRU real manifest PASS/ACTIVE, external DFL Concierge consumer and live path DFL Concierge -> wru.query.v1 -> WRU Canonical State -> WorkUnitLedger, receipt and freshness present. Preserve distinction: WRU institutional live path proven YES; 32 catalogued capabilities proven in live path 0/32. Real adversarial /opt/experiments/business-os-new-audit is FAIL/IN_CLOSET with 12 missing invariants, including rollback proof; this is intentional detection evidence, not a closure failure.
 
-DISTINCIÓN OBLIGATORIA: WRU CAMINO_VIVO_INSTITUCIONAL_PROBADO: YES. Capacidades catalogadas: 0/32 PROBADO_EN_CAMINO_VIVO.
+Fix: gate.py now rejects blank proof paths, so rollback evidence cannot pass by resolving the repository root. Graph freshness was reconciled to repository HEAD 5d9ccfb (artifact WRU commit remains bc8d6b); consumer HEAD 5f01fb.
 
-DIRTY STATE: el árbol compartido tenía dirty state preexistente ajeno; no se investigó ni limpió en este cierre. Queda pendiente de aclaración factual futura y no debe asumirse como fallo de WRU sin evidencia.
-
-ÍNDICES/GRAFOS: se generaron índices/grafos candidatos y luego se registró un estado canónico post-merge. No afirmar más de lo demostrado. Queda pendiente para una sesión futura verificar rutas exactas, conteos finales canónicos, motor que los sirve, integración real con Codebase Memory/Visualizer/Graphify/agTopólogo, frescura, mecanismo de actualización y promoción al grafo institucional mayor. JSON/DOT en evidence no bastan: debe probarse que forman parte del sistema gráfico vivo y no de otro closet documental.
-
-PRINCIPIO INSTITUCIONAL: todo elemento nuevo DFL debe generar índices, nodos, relaciones, procedencia y frescura como parte de la cultura de fabricación, para que un invento exitoso e integrado sea conocido por el sistema institucional y pueda incorporarse al grafo mayor, sus nodos, relaciones y ramas.
-
-DEUDA RESIDUAL REAL: freshness canónica todavía degradada hasta reconciliación gobernada; verificación de integración con el grafo institucional mayor pendiente; dirty state preexistente pendiente de aclaración factual. Deuda hipotética no se presenta como real.
-
-REANUDACIÓN EXACTA: validar primero la ubicación efectiva de ADOPTION-GATE.md y luego comprobar el registro canónico vivo de índices/grafos y su mecanismo de servicio/actualización, sin reabrir la fabricación WRU. Próxima sesión sugerida: WRU-GRAPH-LIVE-PROMOTION-2026-08-01.
+Residual debt: automatic manifest creation/lint at PRP creation time is not yet wired; protected 03:05 UTC cron was untouched. Pre-existing untracked dirty state remains untouched and must not be treated as a system failure without factual attribution. NO_TOUCH surfaces untouched.
 
 ### SESSION CLOSURE: WRU remediation final verification and candidate graph audit
 **Type:** decision  
@@ -237,104 +229,56 @@ No blockers. No residual risks. Ready for operational deployment.
 
 ## RECENT ACTIVITY (cross-project)
 
-### ag_topologo v0.1 — LLM mode implementado y operativo 2026-06-27
+### engram-mcp — MCP server Python para agentes externos
 **Type:** decision  
 **Project:** dfl  
 
-OBS_ID: DFL-OBS-20260627-001
-TIPO: decision
-PROYECTO: dfl
-PLATFORM: vm2
-SUBSISTEMA: graphify/ag_topologo
-PRECEDENCIA: D
-AUTHORITY: operational
-LIFECYCLE: active
-CONFIDENCE: high
-LAST_VERIFIED: 2026-06-27
-SOURCE: session
-SOURCE_REF: MPGE_2026-06-27
+MCP server desplegado en /opt/engram-mcp/server.py el 2026-06-24. Expone search_memory(query, project) y save_memory(title, content, type, project). Transportes: stdio (default, para mismo servidor) y HTTP --http 8092 (para agentes remotos). Systemd unit: engram-mcp.service en puerto 8092. Config en /opt/engram-mcp/CONFIG.md. Para activar acceso remoto: agregar DNS A record mcp.deepfeelingslabs.com → 67.205.166.199 y Caddy block. Protocolos: MCP 2024-11-05. Compatible con Claude Code, Codex CLI, GPT, Gemini.
 
-## Qué
-ag_topologo.py en /opt/dfl-knowledge/scripts/ ahora soporta --llm, --target-concepts N, --max-llm-calls N.
-
-## Implementación
-- LLMExtractor class: llama endpoint OpenAI-compatible via urllib (stdlib), budget tracking
-- Env vars: AG_TOPOLOGO_LLM_PROVIDER, AG_TOPOLOGO_LLM_ENDPOINT, AG_TOPOLOGO_LLM_MODEL, AG_TOPOLOGO_LLM_API_KEY
-- Secretos en /etc/dfl-secrets (permisos 600). Cargar con: set -a && source /etc/dfl-secrets && set +a
-- ag_topologo ahora escribe graph_context_light.json (además de graph_context.json) — formato que lee /go endpoint
-
-## Resultado del primer run --llm
-- Modelo: gpt-4o-mini (OpenAI)
-- 3261 nodos, 7804 aristas, 12 comunidades, 80 LLM calls (budget agotado)
-- God nodes: FutbolWeb, estado, IAIM, MERCADER, Función
-- /go endpoint: top_nodes=['FutbolWeb','estado','IAIM'], key_surprise='IAIM ↔ Apps Factory'
-
-## Comando de ejecución
-set -a && source /etc/dfl-secrets && set +a && python3 /opt/dfl-knowledge/scripts/ag_topologo.py --full --llm --source /opt/dfl-knowledge --out /opt/dfl-knowledge/graphify-out --target-concepts 140 --max-llm-calls 80
-
-## Nota de compatibilidad
-ag_topologo escribe schema "agTopologo-DFL-v0.1". gen_summary.py (usa graphify API) no puede leer este formato. Para futuros runs con ag_topologo --llm, el GRAPH_SUMMARY.md lo genera ag_topologo directamente — no necesitar gen_summary.py.
-
-### AgMaster_amOS_3 — vocabulario y reglas IAIM
-**Type:** fact  
-**Project:** dfl  
-
-AgMaster_amOS_3 es el documento maestro v3 del ecosistema (USAR ESTA, versiones 1 y 2 obsoletas). Vocabulario mínimo para IA invitada: amOS=sistema operativo conceptual/metodológico para absorber/metabolizar información manteniendo soberanía; IAIM=Invisible Augmented Intelligence Mesh, red invisible de IAs aliadas sin nodos fijos, orquestada por HI; HI=Jorge, decisión final soberana; ag10=ChatGPT como router/integrador/destilador/última yarda (no oráculo ni jefe); agPregunta=pregunta aumentada con propósito/dominio/límite/criterio; agLego=pieza conceptual candidata modular trazable; Candado Soberano=restricciones no negociables: no-exec, candidate_only, human-review-first. Prefijo 'ag'=augmented+governed+generative-but-contained. AG10-AUSTERITY-LOCK para fases de cierre/patch/gate. Origin Chain obligatorio para todo agLego. Frase núcleo v3: 'La red ilumina. La HI orquesta. ag10 destila. El candado audita. amOS asimila la cicatriz, no la herida.' Paralelo permitido: máximo 2 nodos, candidate_only, revisión HI.
-
-### Session summary: futbolweb-app
-**Type:** session_summary  
-**Project:** futbolweb-app  
-
-## Goal
-Completar el Diagnóstico Institucional DFL v1 (misión retomada tras corte de conexión): auditoría solo-lectura de La Garra con separación evidencia/inventario/interpretación/diagnóstico y clasificación explícita de certeza. Cierre con estado de la casa y orden institucional, NO propuesta tecnológica.
-
-## Accomplished
-- Verificado estado persistido tras el corte: 17 archivos de evidencia en EVIDENCE/ sobrevivieron; ningún artefacto de análisis existía; Engram sin registro de la misión (murió antes del Gate 4B).
-- Cerrados 2 huecos de evidencia (solo lectura): git-remotes-redactado.txt (PAT detectado por prefijo, valor jamás registrado) y git-dirty-detalle.txt.
-- Escritos los 5 artefactos en /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/: 00-README (método + taxonomía [V]/[I]/[NV]/[D]), 01-INVENTARIO-INFRAESTRUCTURA, 02-INTERPRETACION, 03-HALLAZGOS (18 hallazgos: 1 crítico, 6 altos, 5 medios, 6 bajos), 04-DIAGNOSTICO-INSTITUCIONAL (orden: ACLARAR → VERIFICAR → CONSOLIDAR → GOBERNAR → RETIRAR).
-
-## Discoveries (clave)
-- H-01 CRÍTICO: PAT GitHub en remote de prediccion2026 (obs #218) — registrado sin rotar por mandato.
-- H-02 ALTO: backups off-host de Engram NO verificables desde La Garra (ssh denegado + receptor rechaza inspección) — durabilidad es hipótesis, no hecho.
-- H-03 ALTO: engram-backup-offhost.sh y engram-sync-cron.sh corren desde working tree sin commit — crons ejecutan código que git no declara.
-- H-04 ALTO: producto público (360eventos demo a Rubén, futbolweb) servido por next dev servers NODE_ENV=development en puertos públicos; explica swap 1.4Gi/2.0Gi.
-- H-05 ALTO: saas-factory-setup V5 (5e42124) local con remote apuntando a org externa saas-factory-community — push reflejo filtraría IP de fábrica.
-- H-06/H-07: n8n público dormido desde 2026-05-17; futbolweb-env-backup.zip en Drive sin verificar.
-- Organismo intacto: cero correcciones, reinicios, limpiezas o actualizaciones.
-
-## Next Steps
-- Bloques 1º-2º del diagnóstico antes de cualquier evolución: aclarar alcance del PAT, registro vivo/muerto de órganos /opt, rol n8n, dry-run metabolismo, destino V5; verificar backups desde VM3, auth n8n/8080, vigencia PAT.
-- Commitear el expediente de auditoría en dfl-knowledge (C-2) cuando Jorge autorice.
-
-## Relevant Files
-- /opt/dfl-knowledge/audits/diagnostico-institucional-dfl-v1/{00-README,01-INVENTARIO-INFRAESTRUCTURA,02-INTERPRETACION,03-HALLAZGOS,04-DIAGNOSTICO-INSTITUCIONAL}.md
-- EVIDENCE/ (19 archivos, incl. git-remotes-redactado.txt y git-dirty-detalle.txt nuevos)
-
-### SESSION CLOSURE: WRU v0.1 adopción institucional y relay para reanudación
+### engram-mcp desplegado en La Garra
 **Type:** decision  
 **Project:** dfl  
 
-CIERRE DE SESIÓN — WRU v0.1. No se abrió investigación nueva ni se modificó código, merge, dirty state, índices o grafos.
+MCP server Python stdlib en /opt/engram-mcp/server.py. Expone search_memory y save_memory. Transporte stdio (default) y HTTP (--http 8092). Permite acceso a Engram desde cualquier agente con soporte MCP: Codex CLI, Claude Code, Gemini. Config en /opt/engram-mcp/CONFIG.md.
 
-ESTADO TÉCNICO: WRU v0.1 mergeado en /opt/saas-factory-setup; merge bec766e; HEAD final reportado bc8d6b89e7e4db1ba4b83da8055579c56bc89759; tag wru-v0.1-institutional-final2. Módulo canónico reportado en saas-factory/tools/workforce-registry; interfaces wru.query.v1, wru-refresh.v1 y wru-status.v1. Integrity 23/23; suite WRU 83/83 PASS; G1-G44 reportados PASS.
+### [RESOLVED] Cierre documental --json — revisado por CX y fusionado a main
+**Type:** manual  
+**Project:** dfl-knowledge  
 
-ESTADO INSTITUCIONAL: Adoption Gate 9/9 PASS; consumidor externo DFL Concierge en /opt/dfl-knowledge-workunit; consumer HEAD reportado 5f01fb29a2bfd8e8422524f616108a8996317488; suite Concierge 258/258 PASS. Camino vivo probado: Concierge solicita capability por wru.query.v1 READER-only → WRU consulta Canonical State → devuelve availability/freshness/provenance → Concierge selecciona sfv5-skill.acquisition → deriva WorkUnit IDs → WorkUnitLedger claim/release → receipt externo.
+**LIFECYCLE: resolved** — 2026-07-28. Ver obs #379.
 
-RECEIPT: /opt/dfl-knowledge/evidence/wru-live-concierge-20260731-r3/wru-receipt.json; digest reportado e5da6697cfedd9a0e0062ab81978e57f79d0488336283d16fd8801669a0c4932; active_claims=[]; resultado WORK_UNIT_CLAIMED_AND_RELEASED. Evidencia principal reportada: /opt/dfl-knowledge/evidence/wru-institutional-adoption-2026-07-31/ADOPTION-GATE.md. El usuario indicó /opt/saas-factory-setup/evidence/wru-institutional-adoption-2026-07-31/ADOPTION-GATE.md; conservar ambas referencias en el relay sin investigar ahora.
+Su `READY_FOR_FINAL_DELTA_REVIEW: YES` se cumplió: la revisión delta independiente de CX pasó y el merge a `main @ 1f415b3` se ejecutó.
 
-FRESHNESS: la respuesta viva fue DEGRADED_STALE porque los records canónicos conservan source_commit histórico distinto del source HEAD observado; el consumidor no lo trató como autoridad plena y registró READER_DEGRADED con provenance/availability explícitos.
+**Sigue siendo la referencia canónica** de por qué `--json` NO existe en el CLI de conformance, y los 2 tests de regresión que lo impiden reintroducir (`test_json_flag_is_not_part_of_the_real_cli_contract`, `test_conformance_docs_do_not_advertise_a_json_flag`) están vivos en main. Si alguien vuelve a proponer ese flag, la respuesta está aquí: nunca existió en la historia de `__main__.py` (commit único `a33a772`), y el JSON ya se emite siempre e incondicionalmente, así que un toggle sería un modo sin diferencia de comportamiento.
 
-DISTINCIÓN OBLIGATORIA: WRU CAMINO_VIVO_INSTITUCIONAL_PROBADO: YES. Capacidades catalogadas: 0/32 PROBADO_EN_CAMINO_VIVO.
+---
+(contenido original abajo)
 
-DIRTY STATE: el árbol compartido tenía dirty state preexistente ajeno; no se investigó ni limpió en este cierre. Queda pendiente de aclaración factual futura y no debe asumirse como fallo de WRU sin evidencia.
+**TOPIC**: dfl/concierge/f1b-json-documentation-closure
+**DATE**: 2026-07-28
+**MISSION**: CONCIERGE F1B — FINAL CONFORMANCE DOCUMENTATION CLOSURE
 
-ÍNDICES/GRAFOS: se generaron índices/grafos candidatos y luego se registró un estado canónico post-merge. No afirmar más de lo demostrado. Queda pendiente para una sesión futura verificar rutas exactas, conteos finales canónicos, motor que los sirve, integración real con Codebase Memory/Visualizer/Graphify/agTopólogo, frescura, mecanismo de actualización y promoción al grafo institucional mayor. JSON/DOT en evidence no bastan: debe probarse que forman parte del sistema gráfico vivo y no de otro closet documental.
+`--json` fue propuesta histórica nunca adoptada, documentada en un stash huérfano (`34b6a7d3`) nunca reconciliado contra el código. Corregidos `F1-COMPILER-CONFORMANCE-KIT.md` y `CP-F1-CONFORMANCE-KIT.md`; 2 tests de regresión añadidos. Commit `52c0e3c`. Además `1f415b3`: copiados los 3 docs de decisión a `architecture/decisions/` dentro de la propia rama candidata, cerrando el hallazgo de CX de que no eran alcanzables desde el target.
 
-PRINCIPIO INSTITUCIONAL: todo elemento nuevo DFL debe generar índices, nodos, relaciones, procedencia y frescura como parte de la cultura de fabricación, para que un invento exitoso e integrado sea conocido por el sistema institucional y pueda incorporarse al grafo mayor, sus nodos, relaciones y ramas.
+Suite 246→248 PASS. Veredicto: JSON_CLI_CONTRACT=NOT_PART_OF_CONTRACT, CONFORMANCE=RESOLVED.
 
-DEUDA RESIDUAL REAL: freshness canónica todavía degradada hasta reconciliación gobernada; verificación de integración con el grafo institucional mayor pendiente; dirty state preexistente pendiente de aclaración factual. Deuda hipotética no se presenta como real.
+### DFL New Element Institutionalization System v0.1 operational
+**Type:** decision  
+**Project:** dfl  
 
-REANUDACIÓN EXACTA: validar primero la ubicación efectiva de ADOPTION-GATE.md y luego comprobar el registro canónico vivo de índices/grafos y su mecanismo de servicio/actualización, sin reabrir la fabricación WRU. Próxima sesión sugerida: WRU-GRAPH-LIVE-PROMOTION-2026-08-01.
+VEREDICTO: DFL_NEW_ELEMENT_INSTITUTIONALIZATION_SYSTEM_OPERATIONAL
+
+Misión ejecutada en /opt/dfl-knowledge, branch feat/dfl-high-certainty-harness-v0.1. Sistema entregado: versioned schema dfl.new-element.v0.1; executable DFL_NEW_ELEMENT_ADOPTION_GATE; DFL_ANTI_CLOSET_GATE; recurrent refresh connected to scripts/daily_check.sh; live graph source architecture/institutional-graph/NEW-ELEMENTS-LIVE.md; existing agTopologo -> graphify-out -> KNL/context proxy reused; PRP Golden Path overlay in /opt/saas-factory-setup/saas-factory/.claude/PRPs/prp-base.md.
+
+Commits: 47d96d2 add executable new element institutionalization gates; 5d9ccfb product PRP overlay; final verification commits 26d5913 and 3c48f55. Tag: dfl-new-element-institutionalization-v0.1 at 47d96d2. Final DFL knowledge HEAD: 3c48f558940d10574c9ba01521124f2493fce549.
+
+Evidence: /opt/dfl-knowledge/evidence/dfl-new-element-institutionalization-v0.1-2026-07-31/ with FINAL-REPORT.md, CURRENT-STATE.json, PILOT-RESULTS.json, CHECKPOINTS.jsonl, COMMANDS.jsonl, DECISIONS.md, BLOCKERS.md, ARTIFACT-MANIFEST.json, SHA256SUMS. Hash validation PASS. New system tests 9/9 PASS; DFL health 14/14 PASS; WRU 83/83 PASS; Concierge 258/258 PASS; graph regenerated with 140 semantic nodes, 560 edges, 10285 structural nodes; live queries WRU and Business OS FRESH/CANONICAL.
+
+Pilots: WRU real manifest PASS/ACTIVE, external DFL Concierge consumer and live path DFL Concierge -> wru.query.v1 -> WRU Canonical State -> WorkUnitLedger, receipt and freshness present. Preserve distinction: WRU institutional live path proven YES; 32 catalogued capabilities proven in live path 0/32. Real adversarial /opt/experiments/business-os-new-audit is FAIL/IN_CLOSET with 12 missing invariants, including rollback proof; this is intentional detection evidence, not a closure failure.
+
+Fix: gate.py now rejects blank proof paths, so rollback evidence cannot pass by resolving the repository root. Graph freshness was reconciled to repository HEAD 5d9ccfb (artifact WRU commit remains bc8d6b); consumer HEAD 5f01fb.
+
+Residual debt: automatic manifest creation/lint at PRP creation time is not yet wired; protected 03:05 UTC cron was untouched. Pre-existing untracked dirty state remains untouched and must not be treated as a system failure without factual attribution. NO_TOUCH surfaces untouched.
 
 ### @$go 2026-07-31 — pending histórico de limpieza reconciliado
 **Type:** fact  
@@ -418,19 +362,37 @@ REANUDACIÓN EXACTA: validar primero la ubicación efectiva de ADOPTION-GATE.md 
 - `GET /go` — Agent bootstrap.
 - `Consult knl.navigation before find/grep/ls` — Avoid blind exploration.
 
+### WRU
+**Root:** `/opt/saas-factory-setup`  
+**Restriction:** Do not treat evidence JSON/DOT as graph authority.  
+**Restriction:** Stale graph authority must be degraded.  
+**Restriction:** Do not claim 32 skills are live-tested.  
+
+**Key files:**
+- `/opt/dfl-knowledge/architecture/institutional-graph/WRU-LIVE-NODE.md` — Canonical institutional graph source for WRU identity, provenance and cross-repo relations.
+- `/opt/saas-factory-setup/saas-factory/tools/workforce-registry` — Installed WRU module and stable interfaces.
+- `/opt/dfl-knowledge-workunit/concierge/wru_consumer.py` — External Concierge consumer contract.
+- `/opt/dfl-knowledge-workunit/evidence/wru-live-concierge-20260731-r3/wru-receipt.json` — Live institutional usage receipt.
+- `/opt/dfl-knowledge/scripts/query_institutional_graph.py` — Read-only query interface over the live graph.
+- `/opt/dfl-knowledge/scripts/wru_graph_refresh.py` — Detects source HEAD drift before the existing graph refresh pipeline.
+
+**Entrypoints:**
+- `python3 /opt/dfl-knowledge/scripts/query_institutional_graph.py --term "DFL Concierge"` — Discover the external consumer and its relations.
+- `bash /opt/dfl-knowledge/scripts/regen_graph.sh` — Existing circuit-breaker-protected graph refresh, when the scheduled daily check detects source changes.
+
 ---
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 1.0588  
+**Graph entropy:** 4.3012  
 
-- **Community 11** (93 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
-- **Community 0** (7 nodes): Capacidades Comunes Reutilizables, Reconciliación F1A
-- **Community 1** (4 nodes): Consistencia de Iteraciones, Evaluación de Repositorios, Veredicto Modular
-- **Community 2** (4 nodes): agLego-PTE-001
-- **Community 3** (4 nodes): Smithy
-- **Community 4** (4 nodes): mission-control, release preparation
+- **Community 11** (25 nodes): validateclosureevidence rechaza, tmp jpi-phase3-independent-review, goal inválido
+- **Community 1** (24 nodes): FutbolWeb, CC, UTC
+- **Community 0** (24 nodes): VALIDATION, CREATE, NOT
+- **Community 2** (24 nodes): API, HTTP, UI
+- **Community 3** (11 nodes): DFL, ID, FISIO-DFL
+- **Community 4** (10 nodes): FMD, OS, GET
 
 ---
 
-*Mirror auto-generated 2026-07-31T21:45:32Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-07-31T22:10:16Z | La Garra → DFLghub/amos-context*
