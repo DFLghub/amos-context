@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-01T14:15:01Z  
+**Generated:** 2026-08-01T19:53:30Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,6 +101,29 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+**Type:** decision  
+**Project:** dfl-knowledge  
+
+## PATCH_RISK canonical policy preregistered (2026-08-01)
+
+**What**: Created `evidence/patch-risk-policy-preregistration-2026-08-01/` — PATCH-RISK-POLICY.md + .json, two JSON Schemas (policy shape + touchpoint record), a pure `classify()`/`redTriggers()` node lib, 14/14 green `node --test` tests, SHA256SUMS, and a preregistration receipt. Committed exclusively as `6f71e5e` on `feat/dfl-high-certainty-harness-v0.1`, baseline `d79fffdf4ab1739e45049bae9c3933794788c1df`.
+
+**Policy content**: 5 canonical touchpoint classes (INSTITUTIONAL_EXTERNAL, ADDITIVE_EXTRA, BOUNDARY_ADAPTER, INTERNAL_PATCH, UPSTREAM_CANDIDATE) classifying coupling between SF upstream, Factory Extras and the future Docking System. 8 mandatory per-touchpoint factors (DEPTH, VERSION_SENSITIVITY, CRITICALITY, REAPPLY_EFFORT, AUTOMATION_RISK, AUTO_ATTACH_FEASIBLE, AUTO_DETACH_FEASIBLE, ABORT_ON_DRIFT) + 4 derived fields (requires_exact_preconditions, has_stable_hook, rollback_byte_identical, manual_intervention_permanent). GREEN/YELLOW/RED verdict per user-specified rules, with 5 single-factor RED triggers (R1 critical patch w/o stable hook, R2 >2 internal patches, R3 permanent manual intervention, R4 can't abort on drift, R5 rollback not byte-identical) plus a conservative RED-by-default fallback for anything not explicitly GREEN/YELLOW (e.g. a GOLDEN_PATH_CRITICAL internal patch with a stable hook still fails YELLOW's explicit exclusion of orchestration/golden-path criticality).
+
+**Why**: User explicitly required this preregistered *before* any probe (DOCK_OBSERVATION_RUN, JPI, DCSA, Docking System) so future touchpoint classification is deterministic and auditable rather than judged ad hoc during a live run.
+
+**Scope discipline**: Did NOT execute DOCK_OBSERVATION_RUN/JPI/DCSA/Docking System, did NOT modify the sfv5-headless-profile-candidate-2026-08-01 candidate, did NOT promote anything — matches user's explicit non-goals.
+
+**Convention confirmed**: This repo's JSON-schema-validated artifacts (schemas/*.schema.json, draft 2020-12) are validated by hand-rolled JS logic, not ajv (no package.json/npm deps in repo) — tests do manual required-key/enum checks instead of a schema-validation library. Node test convention is `node --test tests/*.test.mjs`, `.mjs` ESM files, evidence dirs named `evidence/<slug>-<date>/` with SHA256SUMS at the root and a receipts/ subfolder for gate receipts.
+
+VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
+
+### SFV5 headless profile final clean review PASS — d79fffd
+**Type:** decision  
+**Project:** dfl  
+
+Revisión independiente final desde archive limpio de d79fffdf4ab1739e45049bae9c3933794788c1df, parent 4b0a6715d770bcacfa4ae5dba470f848cd89a6ea. sha256sum -c SHA256SUMS PASS; 37/37 tests PASS; PRODUCT-EVIDENCE-RECORD, RESULTS y 13 receipts validan schemas; cross-path relocation determinista con RESULTS y 13 receipts byte-idénticos; rollback independiente byte-idéntico PASS. Lifecycle máximo BUILT, review REVIEW_REQUIRED, promotion PROMOTION_BLOCKED; SELF_BUILT != SELF_PROMOTED; installed/live path false, integration/publication/consumer/promotion no iniciados y sin claims falsos. Veredicto: D_SFV5_HEADLESS_PROFILE_CLEAN_REVIEW_PASS. No se modificó el candidato.
+
 ### Canonical promotion and Business OS anti-closet remediation closure
 **Type:** decision  
 **Project:** dfl  
@@ -116,12 +139,6 @@ Canonical verification: institutionalization tests 9/9 PASS; WRU 83/83 PASS; Con
 Business OS canonical re-evaluation: before FAIL/IN_CLOSET with 12 gaps; local remediation corrected DISCOVERABLE and OBSERVABLE; after FAIL/IN_CLOSET with 10 gaps: ACCESSIBLE, OWNER_ASSIGNED, CONSUMER_ASSIGNED, CONTRACT_DEFINED, LIVE_PATH_CONNECTED, ACTUALLY_USED, RECEIPT_PRODUCED, REFRESH_CONNECTED, MAINTENANCE_DEFINED, ROLLBACK_PROVEN. Codebase Memory health WARN: indexed HEAD matches, 3724 nodes/10241 edges, coverage unknown, 4 parser skips. No external DFL consumer or compatible contract/live path is proven; no consumer was invented. A mission-created duplicate engine project was detected and removed; historical index preserved.
 
 Dirty state: pre-existing untracked state in /opt/dfl-knowledge remains untouched; Business OS untracked audit artifacts remain untouched. NO_TOUCH surfaces untouched. Next exact step requires architectural decision or evidence of a real existing Business OS consumer before any further remediation.
-
-### SESSION CLOSURE: WRU remediation final verification and candidate graph audit
-**Type:** decision  
-**Project:** dfl  
-
-Gate 4B cierre 2026-07-31. Workforce Registry Unit v0.1 remediation independently verified in isolated worktree /opt/wru-worktree-v0.1, branch feat/workforce-registry-unit-v0.1, HEAD 31dcbace506a8b83ca8e16b93cf7ac15f2a07db1. Productive tree /opt/saas-factory-setup remained at d12693998c38c7d5b1f83a74135dd65bb8ab57bf; no merge or shared activation. Full suite 80/80 and remediation suite 6/6 passed. Four defects verified closed: multiprocess optimistic locking, mandatory canonical schema validation, durable/queryable proposal lifecycle including READER, and real installed-copy tamper test. G1-G44 all PASS with current code/tests/evidence. Candidate-only indexes and DOT/JSON graphs generated under /opt/dfl-knowledge/evidence/wru-final-verification-2026-07-31/, marked SCOPE=candidate, AUTHORITY=non-canonical, PROMOTION_STATUS=pending-merge. Final verdict: WRU_BUILD_VERIFIED_READY_FOR_MERGE_PLANNING. Residual debt is non-blocking: no formal CLI, tests excluded from runtime manifest by documented rule, installation via isolated copy.
 
 ### JPI Fase 5 Real E2E Completion Summary
 **Type:** decision  
@@ -181,40 +198,6 @@ Gate 4B cierre 2026-07-31. Workforce Registry Unit v0.1 remediation independentl
 - Domain model clarified
 - Preconditions documented and validated
 
-### JPI Phase 4 Post-Merge Closure Final — PASS / PHASE_CLOSED
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-**What**: Independent post-merge verification of JPI Phase 4 completed. Verdict: PASS / PHASE_CLOSED. All institutional closure criteria verified end-to-end.
-
-**Why**: Final checkpoint before operational deployment. Requires verification that merge was clean, all tests pass from post-merge main, E2E executes real, and all guarantees are preserved.
-
-**Where**:
-- SFV5 origin/main: 9b18947fab2c0874caba729fdb464025dfdde8f0 (tag: sfv5-bos-fmd-automation-v0.1)
-- JPI origin/main: 2a1efe243e564a30e273b9ccf0e7077032e65d33 (tag: jpi-phase-4-closed)
-- Evidence: /opt/dfl-knowledge/evidence/jpi-synthetic-company-pilot/phase-4/08-INDEPENDENT-POST-MERGE-REVIEW-CC.md
-
-**Learned**:
-
-Critical verifications completed:
-- Both SHAs verified via git ls-remote and clean clone
-- Tags published and dereferenced to correct commits
-- SFV5 bridge tests: 8/8 PASS (post-merge main, clean checkout)
-- JPI regression: 247/247 PASS (post-merge main, clean checkout)
-- E2E from empty job root with post-merge mains: 8/8 PASS
-- producer_sha exact: 9b18947fab2c0874caba729fdb464025dfdde8f0
-- mission_fingerprint consistent across 5 outputs
-- All state transitions verified (REQUESTED→DISPATCHED→RUNNING→READY→VALIDATED→CONSUMED→CLOSED)
-- Artifact freshness: all +60ms after Mission Packet
-- Validation enforced before consumption
-- Closure enforced after consumption confirmed
-- No mocks, no fallback, no manual relay
-- Factory root fail-closed validation
-- Merge scope clean (no foreign changes)
-- Idempotency verified
-
-No blockers. No residual risks. Ready for operational deployment.
-
 ---
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
@@ -260,17 +243,28 @@ Su `READY_FOR_FINAL_DELTA_REVIEW: YES` se cumplió: la revisión delta independi
 
 Suite 246→248 PASS. Veredicto: JSON_CLI_CONTRACT=NOT_PART_OF_CONTRACT, CONFORMANCE=RESOLVED.
 
-### @$go 2026-08-01 — first pending requires architectural decision
+### @$fin — cierre revisión final SFV5 headless profile
 **Type:** fact  
 **Project:** dfl  
 
-@$go ejecutado con DFL_BOOTSTRAP local ya inyectado; VALIDATION GATE cerrado. Se consultó Engram search_memory('contexto DFL') y se verificó que el grafo de /opt/dfl-knowledge está indexado (28,884 nodos; 97,292 aristas). El primer pending operativo corresponde al cierre parcial de Business OS anti-closet: no existe consumidor externo ni contrato/live path compatible probado. La siguiente acción exacta requiere decisión arquitectónica o evidencia de un consumidor real; no se inventó consumidor ni se tocaron archivos, producto ni superficies NO_TOUCH. Sesión queda lista para continuar cuando exista esa decisión/evidencia.
+Cierre de sesión: revisión independiente final completada sobre archive limpio de d79fffdf4ab1739e45049bae9c3933794788c1df (parent 4b0a6715d770bcacfa4ae5dba470f848cd89a6ea). Evidencia: sha256sum -c PASS; 37/37 tests PASS; PRODUCT-EVIDENCE-RECORD, RESULTS y 13 receipts validan schemas; cross-path determinism PASS; rollback byte-idéntico PASS. Lifecycle máximo BUILT, REVIEW_REQUIRED, PROMOTION_BLOCKED; SELF_BUILT != SELF_PROMOTED; sin integración, instalación, publicación, consumo ni promoción falsos. Veredicto: D_SFV5_HEADLESS_PROFILE_CLEAN_REVIEW_PASS. No se modificó el candidato ni el dirty state ajeno.
 
-### @$fin closure — AgencyOS and thumbnail factory verification
-**Type:** fact  
-**Project:** dfl  
+**Type:** decision  
+**Project:** dfl-knowledge  
 
-Cierre de sesión 2026-08-01. Se verificaron sin reclonar ni ejecutar los mirrors patrimoniales: AgencyOS en /opt/dfl-knowledge/evidence/saas-factory-gifts-ingestion-2026-08-01/raw/repositories/agencyos.git, remote https://github.com/daniel-carreon/agencyos.git, branch main, SHA adf1cb347d95a7597de3b5682dd5dfc967376f08, fsck PASS; y fabrica-de-miniaturas en raw/repositories/fabrica-de-miniaturas.git, remote https://github.com/daniel-carreon/fabrica-de-miniaturas.git, branch fabrica-de-miniaturas, SHA d200f61ed5105ddb1fdd4b0c35b52b84b947272d, fsck PASS. Addendum: evidence/saas-factory-gifts-ingestion-2026-08-01/ASSET-VERIFICATION-AGENCYOS-THUMBNAIL-FACTORY.md. Commit: 2d1d3d6ecfc3a5c7922bb03e924463d49117140b. SHA256SUMS cubre addendum, manifest y archivos de ambos mirrors. No se instalaron, construyeron, probaron, ejecutaron ni conectaron servicios; no se expusieron valores sensibles. AgencyOS: README declara Private - All rights reserved, sin LICENSE; aplicación-level RBAC y features presentes, migraciones/RLS declaradas pero ausentes. Thumbnail factory: sin licencia declarada; frontend/backend/supabase/docs/migrations presentes, FastAPI/Next15/Supabase/n8n/batch/tests presentes, start.sh/MCP/WebSocket dedicado no demostrados; divergencias documentadas. Cierre Gate 4B completado; siguiente sesión: solo revisión gobernada/security review o instalación explícitamente autorizada.
+## PATCH_RISK canonical policy preregistered (2026-08-01)
+
+**What**: Created `evidence/patch-risk-policy-preregistration-2026-08-01/` — PATCH-RISK-POLICY.md + .json, two JSON Schemas (policy shape + touchpoint record), a pure `classify()`/`redTriggers()` node lib, 14/14 green `node --test` tests, SHA256SUMS, and a preregistration receipt. Committed exclusively as `6f71e5e` on `feat/dfl-high-certainty-harness-v0.1`, baseline `d79fffdf4ab1739e45049bae9c3933794788c1df`.
+
+**Policy content**: 5 canonical touchpoint classes (INSTITUTIONAL_EXTERNAL, ADDITIVE_EXTRA, BOUNDARY_ADAPTER, INTERNAL_PATCH, UPSTREAM_CANDIDATE) classifying coupling between SF upstream, Factory Extras and the future Docking System. 8 mandatory per-touchpoint factors (DEPTH, VERSION_SENSITIVITY, CRITICALITY, REAPPLY_EFFORT, AUTOMATION_RISK, AUTO_ATTACH_FEASIBLE, AUTO_DETACH_FEASIBLE, ABORT_ON_DRIFT) + 4 derived fields (requires_exact_preconditions, has_stable_hook, rollback_byte_identical, manual_intervention_permanent). GREEN/YELLOW/RED verdict per user-specified rules, with 5 single-factor RED triggers (R1 critical patch w/o stable hook, R2 >2 internal patches, R3 permanent manual intervention, R4 can't abort on drift, R5 rollback not byte-identical) plus a conservative RED-by-default fallback for anything not explicitly GREEN/YELLOW (e.g. a GOLDEN_PATH_CRITICAL internal patch with a stable hook still fails YELLOW's explicit exclusion of orchestration/golden-path criticality).
+
+**Why**: User explicitly required this preregistered *before* any probe (DOCK_OBSERVATION_RUN, JPI, DCSA, Docking System) so future touchpoint classification is deterministic and auditable rather than judged ad hoc during a live run.
+
+**Scope discipline**: Did NOT execute DOCK_OBSERVATION_RUN/JPI/DCSA/Docking System, did NOT modify the sfv5-headless-profile-candidate-2026-08-01 candidate, did NOT promote anything — matches user's explicit non-goals.
+
+**Convention confirmed**: This repo's JSON-schema-validated artifacts (schemas/*.schema.json, draft 2020-12) are validated by hand-rolled JS logic, not ajv (no package.json/npm deps in repo) — tests do manual required-key/enum checks instead of a schema-validation library. Node test convention is `node --test tests/*.test.mjs`, `.mjs` ESM files, evidence dirs named `evidence/<slug>-<date>/` with SHA256SUMS at the root and a receipts/ subfolder for gate receipts.
+
+VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
 
 ---
 
@@ -381,4 +375,4 @@ Cierre de sesión 2026-08-01. Se verificaron sin reclonar ni ejecutar los mirror
 
 ---
 
-*Mirror auto-generated 2026-08-01T14:15:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-01T19:53:30Z | La Garra → DFLghub/amos-context*
