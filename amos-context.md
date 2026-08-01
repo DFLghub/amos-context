@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-07-31T22:10:16Z  
+**Generated:** 2026-08-01T03:03:51Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -229,38 +229,46 @@ No blockers. No residual risks. Ready for operational deployment.
 
 ## RECENT ACTIVITY (cross-project)
 
-### engram-mcp — MCP server Python para agentes externos
+### Engram Cloud — instalación en DFL (2026-06-24)
 **Type:** decision  
 **Project:** dfl  
 
-MCP server desplegado en /opt/engram-mcp/server.py el 2026-06-24. Expone search_memory(query, project) y save_memory(title, content, type, project). Transportes: stdio (default, para mismo servidor) y HTTP --http 8092 (para agentes remotos). Systemd unit: engram-mcp.service en puerto 8092. Config en /opt/engram-mcp/CONFIG.md. Para activar acceso remoto: agregar DNS A record mcp.deepfeelingslabs.com → 67.205.166.199 y Caddy block. Protocolos: MCP 2024-11-05. Compatible con Claude Code, Codex CLI, GPT, Gemini.
+Engram Cloud instalado en La Garra el 2026-06-24. Stack: engram-prod-cloud (Go) + engram-prod-postgres (PostgreSQL 16) via docker-compose.prod.yml en /opt/engram. Puerto interno: 8090 (Caddy reverse proxy). URL pública: https://engram.deepfeelingslabs.com. Tokens en /opt/engram/.env. Binario cliente en /usr/local/bin/engram (copiado del container). MCP configurado para Claude Code en ~/.claude/mcp/engram.json (herramientas: agent profile). Proyectos enrolados: futbolweb, dfl. Propósito: memoria institucional persistente del ecosistema DFL — sobrevive cambios de terminal, modelo y proveedor.
 
-### engram-mcp desplegado en La Garra
-**Type:** decision  
+### Rotación ENGRAM_CLOUD_TOKEN + migración secretos crontab → /etc/dfl-secrets
+**Type:** bugfix  
 **Project:** dfl  
 
-MCP server Python stdlib en /opt/engram-mcp/server.py. Expone search_memory y save_memory. Transporte stdio (default) y HTTP (--http 8092). Permite acceso a Engram desde cualquier agente con soporte MCP: Codex CLI, Claude Code, Gemini. Config en /opt/engram-mcp/CONFIG.md.
+TOPIC: crontab-secrets-migration
+TYPE: security-fix (DFL Writing Convention v0.3)
+STATUS: completed
+DATE: 2026-07-02
+PLATFORM: vm2 (La Garra)
 
-### [RESOLVED] Cierre documental --json — revisado por CX y fusionado a main
-**Type:** manual  
-**Project:** dfl-knowledge  
+**What**: Token ENGRAM_CLOUD_TOKEN comprometido (expuesto en output de crontab en sesión de chat) rotado y todos los secretos inline del crontab migrados al patrón canónico /etc/dfl-secrets.
 
-**LIFECYCLE: resolved** — 2026-07-28. Ver obs #379.
+**Why**: El crontab contenía ENGRAM_CLOUD_TOKEN hardcodeado en dos entradas de engram sync (*/5). El token quedó visible en transcript de sesión. Compromiso confirmado → rotación obligatoria.
 
-Su `READY_FOR_FINAL_DELTA_REVIEW: YES` se cumplió: la revisión delta independiente de CX pasó y el merge a `main @ 1f415b3` se ejecutó.
+**Where**:
+- `/opt/engram/.env` — ENGRAM_CLOUD_TOKEN actualizado con nuevo token (openssl rand -hex 32)
+- `/etc/dfl-secrets` — añadidos: ENGRAM_CLOUD_TOKEN, ENGRAM_CLOUD_SERVER, ENGRAM_DATA_DIR (chmod 600)
+- `/opt/dfl-context-proxy/engram-sync-cron.sh` — wrapper nuevo: source /etc/dfl-secrets + engram sync dfl + engram sync futbolweb
+- `crontab` — dos entradas inline reemplazadas por una sola: `*/5 * * * * /opt/dfl-context-proxy/engram-sync-cron.sh`
+- `/opt/engram/docker-compose.prod.yml` — contenedor recreado con nuevo token (docker-compose v1 bug: stop+rm manual, luego up)
 
-**Sigue siendo la referencia canónica** de por qué `--json` NO existe en el CLI de conformance, y los 2 tests de regresión que lo impiden reintroducir (`test_json_flag_is_not_part_of_the_real_cli_contract`, `test_conformance_docs_do_not_advertise_a_json_flag`) están vivos en main. Si alguien vuelve a proponer ese flag, la respuesta está aquí: nunca existió en la historia de `__main__.py` (commit único `a33a772`), y el JSON ya se emite siempre e incondicionalmente, así que un toggle sería un modo sin diferencia de comportamiento.
+**Learned**:
+- docker-compose v1.29.2 tiene bug 'ContainerConfig' al recrear contenedores con Docker engine moderno → workaround: docker stop + docker rm manual, luego docker-compose up
+- Engram Cloud auth endpoint: GET /sync/pull (no /api/... ni /v1/...)
+- Token viejo confirmado rechazado HTTP 401; token nuevo HTTP 200 en GET /sync/pull?project=dfl
+- sync manual exitoso: "Nothing new to sync" para dfl y futbolweb
+- /root/.engram/cloud.json tiene token vacío — el token de sync viene exclusivamente de ENGRAM_CLOUD_TOKEN env var
+- Alerta secundaria detectada: AG_TOPOLOGO_LLM_API_KEY (OpenAI) también quedó expuesta en la misma sesión al hacer cat /etc/dfl-secrets — requiere rotación independiente
 
----
-(contenido original abajo)
+### Engram Cloud instalado en La Garra
+**Type:** decision  
+**Project:** futbolweb-app  
 
-**TOPIC**: dfl/concierge/f1b-json-documentation-closure
-**DATE**: 2026-07-28
-**MISSION**: CONCIERGE F1B — FINAL CONFORMANCE DOCUMENTATION CLOSURE
-
-`--json` fue propuesta histórica nunca adoptada, documentada en un stash huérfano (`34b6a7d3`) nunca reconciliado contra el código. Corregidos `F1-COMPILER-CONFORMANCE-KIT.md` y `CP-F1-CONFORMANCE-KIT.md`; 2 tests de regresión añadidos. Commit `52c0e3c`. Además `1f415b3`: copiados los 3 docs de decisión a `architecture/decisions/` dentro de la propia rama candidata, cerrando el hallazgo de CX de que no eran alcanzables desde el target.
-
-Suite 246→248 PASS. Veredicto: JSON_CLI_CONTRACT=NOT_PART_OF_CONTRACT, CONFORMANCE=RESOLVED.
+Engram Cloud v1.17.0 desplegado en /opt/engram via docker-compose.prod.yml. Backend Go + Postgres en puertos internos 8090/5434. Caddy reverse proxy en engram.deepfeelingslabs.com con TLS automático. Token de acceso en /opt/engram/.env.
 
 ### DFL New Element Institutionalization System v0.1 operational
 **Type:** decision  
@@ -384,15 +392,15 @@ Residual debt: automatic manifest creation/lint at PRP creation time is not yet 
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 4.3012  
+**Graph entropy:** 0.8246  
 
-- **Community 11** (25 nodes): validateclosureevidence rechaza, tmp jpi-phase3-independent-review, goal inválido
-- **Community 1** (24 nodes): FutbolWeb, CC, UTC
-- **Community 0** (24 nodes): VALIDATION, CREATE, NOT
-- **Community 2** (24 nodes): API, HTTP, UI
-- **Community 3** (11 nodes): DFL, ID, FISIO-DFL
-- **Community 4** (10 nodes): FMD, OS, GET
+- **Community 11** (95 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
+- **Community 0** (5 nodes): Cierre de Goal, Componentes Heredables
+- **Community 1** (4 nodes): Certainty Gate
+- **Community 2** (4 nodes): DFL_Agent_Onboarding_Config, ProductController
+- **Community 3** (4 nodes): Módulos Bicep, Interfaz HTTP para Gestión de Objetivos
+- **Community 4** (4 nodes): RON, Versioning and lifecycle
 
 ---
 
-*Mirror auto-generated 2026-07-31T22:10:16Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-01T03:03:51Z | La Garra → DFLghub/amos-context*
