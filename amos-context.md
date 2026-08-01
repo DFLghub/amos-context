@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-01T03:05:02Z  
+**Generated:** 2026-08-01T03:20:34Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -101,23 +101,21 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### DFL New Element Institutionalization System v0.1 operational
+### Canonical promotion and Business OS anti-closet remediation closure
 **Type:** decision  
 **Project:** dfl  
 
-VEREDICTO: DFL_NEW_ELEMENT_INSTITUTIONALIZATION_SYSTEM_OPERATIONAL
+VEREDICTOS:
+- DFL_NEW_ELEMENT_SYSTEM_CANONICALLY_PROMOTED
+- BUSINESS_OS_ANTI_CLOSET_REMEDIATION_PARTIAL
 
-Misión ejecutada en /opt/dfl-knowledge, branch feat/dfl-high-certainty-harness-v0.1. Sistema entregado: versioned schema dfl.new-element.v0.1; executable DFL_NEW_ELEMENT_ADOPTION_GATE; DFL_ANTI_CLOSET_GATE; recurrent refresh connected to scripts/daily_check.sh; live graph source architecture/institutional-graph/NEW-ELEMENTS-LIVE.md; existing agTopologo -> graphify-out -> KNL/context proxy reused; PRP Golden Path overlay in /opt/saas-factory-setup/saas-factory/.claude/PRPs/prp-base.md.
+Canonical DFL runtime line is /opt/dfl-knowledge, branch feat/dfl-high-certainty-harness-v0.1, final HEAD 53af3a0d20b9e6106a4f2d2d9108aa7c4e165de3. Canonical tag: dfl-new-element-institutionalization-v0.1-canonical-final2. Historical tag dfl-new-element-institutionalization-v0.1 remains at 47d96d2. The separate /opt/dfl-knowledge-workunit worktree is the Concierge consumer line, branch main, restored exactly to HEAD 5f01fb29a2bfd8e8422524f616108a8996317488 after a mission-created temporary cross-line promotion was reverted with explicit git reverts and git reset --mixed only (never reset --hard). Business OS repo remains /opt/experiments/business-os-new-audit @ 4428a6dba1df56afe0759f3248c8955a927cfd7c, source untouched.
 
-Commits: 47d96d2 add executable new element institutionalization gates; 5d9ccfb product PRP overlay; final verification commits 26d5913 and 3c48f55. Tag: dfl-new-element-institutionalization-v0.1 at 47d96d2. Final DFL knowledge HEAD: 3c48f558940d10574c9ba01521124f2493fce549.
+Canonical verification: institutionalization tests 9/9 PASS; WRU 83/83 PASS; Concierge prior/current suite 267/267 PASS; DFL health 14/14 PASS; refresh second run UNCHANGED; live graph query WRU and Business OS FRESH/CANONICAL. Graph in active DFL runtime: 140 semantic nodes, 561 edges, 10296 structural nodes. Clean install and rollback were proven in /tmp/dfl-nei-clean. Evidence: /opt/dfl-knowledge/evidence/dfl-new-element-canonical-promotion-2026-07-31/ and /opt/dfl-knowledge/evidence/business-os-anti-closet-remediation-2026-07-31/.
 
-Evidence: /opt/dfl-knowledge/evidence/dfl-new-element-institutionalization-v0.1-2026-07-31/ with FINAL-REPORT.md, CURRENT-STATE.json, PILOT-RESULTS.json, CHECKPOINTS.jsonl, COMMANDS.jsonl, DECISIONS.md, BLOCKERS.md, ARTIFACT-MANIFEST.json, SHA256SUMS. Hash validation PASS. New system tests 9/9 PASS; DFL health 14/14 PASS; WRU 83/83 PASS; Concierge 258/258 PASS; graph regenerated with 140 semantic nodes, 560 edges, 10285 structural nodes; live queries WRU and Business OS FRESH/CANONICAL.
+Business OS canonical re-evaluation: before FAIL/IN_CLOSET with 12 gaps; local remediation corrected DISCOVERABLE and OBSERVABLE; after FAIL/IN_CLOSET with 10 gaps: ACCESSIBLE, OWNER_ASSIGNED, CONSUMER_ASSIGNED, CONTRACT_DEFINED, LIVE_PATH_CONNECTED, ACTUALLY_USED, RECEIPT_PRODUCED, REFRESH_CONNECTED, MAINTENANCE_DEFINED, ROLLBACK_PROVEN. Codebase Memory health WARN: indexed HEAD matches, 3724 nodes/10241 edges, coverage unknown, 4 parser skips. No external DFL consumer or compatible contract/live path is proven; no consumer was invented. A mission-created duplicate engine project was detected and removed; historical index preserved.
 
-Pilots: WRU real manifest PASS/ACTIVE, external DFL Concierge consumer and live path DFL Concierge -> wru.query.v1 -> WRU Canonical State -> WorkUnitLedger, receipt and freshness present. Preserve distinction: WRU institutional live path proven YES; 32 catalogued capabilities proven in live path 0/32. Real adversarial /opt/experiments/business-os-new-audit is FAIL/IN_CLOSET with 12 missing invariants, including rollback proof; this is intentional detection evidence, not a closure failure.
-
-Fix: gate.py now rejects blank proof paths, so rollback evidence cannot pass by resolving the repository root. Graph freshness was reconciled to repository HEAD 5d9ccfb (artifact WRU commit remains bc8d6b); consumer HEAD 5f01fb.
-
-Residual debt: automatic manifest creation/lint at PRP creation time is not yet wired; protected 03:05 UTC cron was untouched. Pre-existing untracked dirty state remains untouched and must not be treated as a system failure without factual attribution. NO_TOUCH surfaces untouched.
+Dirty state: pre-existing untracked state in /opt/dfl-knowledge remains untouched; Business OS untracked audit artifacts remain untouched. NO_TOUCH surfaces untouched. Next exact step requires architectural decision or evidence of a real existing Business OS consumer before any further remediation.
 
 ### SESSION CLOSURE: WRU remediation final verification and candidate graph audit
 **Type:** decision  
@@ -229,64 +227,54 @@ No blockers. No residual risks. Ready for operational deployment.
 
 ## RECENT ACTIVITY (cross-project)
 
-### Engram Cloud — instalación en DFL (2026-06-24)
+### engram-mcp — MCP server Python para agentes externos
 **Type:** decision  
 **Project:** dfl  
 
-Engram Cloud instalado en La Garra el 2026-06-24. Stack: engram-prod-cloud (Go) + engram-prod-postgres (PostgreSQL 16) via docker-compose.prod.yml en /opt/engram. Puerto interno: 8090 (Caddy reverse proxy). URL pública: https://engram.deepfeelingslabs.com. Tokens en /opt/engram/.env. Binario cliente en /usr/local/bin/engram (copiado del container). MCP configurado para Claude Code en ~/.claude/mcp/engram.json (herramientas: agent profile). Proyectos enrolados: futbolweb, dfl. Propósito: memoria institucional persistente del ecosistema DFL — sobrevive cambios de terminal, modelo y proveedor.
+MCP server desplegado en /opt/engram-mcp/server.py el 2026-06-24. Expone search_memory(query, project) y save_memory(title, content, type, project). Transportes: stdio (default, para mismo servidor) y HTTP --http 8092 (para agentes remotos). Systemd unit: engram-mcp.service en puerto 8092. Config en /opt/engram-mcp/CONFIG.md. Para activar acceso remoto: agregar DNS A record mcp.deepfeelingslabs.com → 67.205.166.199 y Caddy block. Protocolos: MCP 2024-11-05. Compatible con Claude Code, Codex CLI, GPT, Gemini.
 
-### Rotación ENGRAM_CLOUD_TOKEN + migración secretos crontab → /etc/dfl-secrets
-**Type:** bugfix  
-**Project:** dfl  
-
-TOPIC: crontab-secrets-migration
-TYPE: security-fix (DFL Writing Convention v0.3)
-STATUS: completed
-DATE: 2026-07-02
-PLATFORM: vm2 (La Garra)
-
-**What**: Token ENGRAM_CLOUD_TOKEN comprometido (expuesto en output de crontab en sesión de chat) rotado y todos los secretos inline del crontab migrados al patrón canónico /etc/dfl-secrets.
-
-**Why**: El crontab contenía ENGRAM_CLOUD_TOKEN hardcodeado en dos entradas de engram sync (*/5). El token quedó visible en transcript de sesión. Compromiso confirmado → rotación obligatoria.
-
-**Where**:
-- `/opt/engram/.env` — ENGRAM_CLOUD_TOKEN actualizado con nuevo token (openssl rand -hex 32)
-- `/etc/dfl-secrets` — añadidos: ENGRAM_CLOUD_TOKEN, ENGRAM_CLOUD_SERVER, ENGRAM_DATA_DIR (chmod 600)
-- `/opt/dfl-context-proxy/engram-sync-cron.sh` — wrapper nuevo: source /etc/dfl-secrets + engram sync dfl + engram sync futbolweb
-- `crontab` — dos entradas inline reemplazadas por una sola: `*/5 * * * * /opt/dfl-context-proxy/engram-sync-cron.sh`
-- `/opt/engram/docker-compose.prod.yml` — contenedor recreado con nuevo token (docker-compose v1 bug: stop+rm manual, luego up)
-
-**Learned**:
-- docker-compose v1.29.2 tiene bug 'ContainerConfig' al recrear contenedores con Docker engine moderno → workaround: docker stop + docker rm manual, luego docker-compose up
-- Engram Cloud auth endpoint: GET /sync/pull (no /api/... ni /v1/...)
-- Token viejo confirmado rechazado HTTP 401; token nuevo HTTP 200 en GET /sync/pull?project=dfl
-- sync manual exitoso: "Nothing new to sync" para dfl y futbolweb
-- /root/.engram/cloud.json tiene token vacío — el token de sync viene exclusivamente de ENGRAM_CLOUD_TOKEN env var
-- Alerta secundaria detectada: AG_TOPOLOGO_LLM_API_KEY (OpenAI) también quedó expuesta en la misma sesión al hacer cat /etc/dfl-secrets — requiere rotación independiente
-
-### Engram Cloud instalado en La Garra
-**Type:** decision  
-**Project:** futbolweb-app  
-
-Engram Cloud v1.17.0 desplegado en /opt/engram via docker-compose.prod.yml. Backend Go + Postgres en puertos internos 8090/5434. Caddy reverse proxy en engram.deepfeelingslabs.com con TLS automático. Token de acceso en /opt/engram/.env.
-
-### DFL New Element Institutionalization System v0.1 operational
+### engram-mcp desplegado en La Garra
 **Type:** decision  
 **Project:** dfl  
 
-VEREDICTO: DFL_NEW_ELEMENT_INSTITUTIONALIZATION_SYSTEM_OPERATIONAL
+MCP server Python stdlib en /opt/engram-mcp/server.py. Expone search_memory y save_memory. Transporte stdio (default) y HTTP (--http 8092). Permite acceso a Engram desde cualquier agente con soporte MCP: Codex CLI, Claude Code, Gemini. Config en /opt/engram-mcp/CONFIG.md.
 
-Misión ejecutada en /opt/dfl-knowledge, branch feat/dfl-high-certainty-harness-v0.1. Sistema entregado: versioned schema dfl.new-element.v0.1; executable DFL_NEW_ELEMENT_ADOPTION_GATE; DFL_ANTI_CLOSET_GATE; recurrent refresh connected to scripts/daily_check.sh; live graph source architecture/institutional-graph/NEW-ELEMENTS-LIVE.md; existing agTopologo -> graphify-out -> KNL/context proxy reused; PRP Golden Path overlay in /opt/saas-factory-setup/saas-factory/.claude/PRPs/prp-base.md.
+### [RESOLVED] Cierre documental --json — revisado por CX y fusionado a main
+**Type:** manual  
+**Project:** dfl-knowledge  
 
-Commits: 47d96d2 add executable new element institutionalization gates; 5d9ccfb product PRP overlay; final verification commits 26d5913 and 3c48f55. Tag: dfl-new-element-institutionalization-v0.1 at 47d96d2. Final DFL knowledge HEAD: 3c48f558940d10574c9ba01521124f2493fce549.
+**LIFECYCLE: resolved** — 2026-07-28. Ver obs #379.
 
-Evidence: /opt/dfl-knowledge/evidence/dfl-new-element-institutionalization-v0.1-2026-07-31/ with FINAL-REPORT.md, CURRENT-STATE.json, PILOT-RESULTS.json, CHECKPOINTS.jsonl, COMMANDS.jsonl, DECISIONS.md, BLOCKERS.md, ARTIFACT-MANIFEST.json, SHA256SUMS. Hash validation PASS. New system tests 9/9 PASS; DFL health 14/14 PASS; WRU 83/83 PASS; Concierge 258/258 PASS; graph regenerated with 140 semantic nodes, 560 edges, 10285 structural nodes; live queries WRU and Business OS FRESH/CANONICAL.
+Su `READY_FOR_FINAL_DELTA_REVIEW: YES` se cumplió: la revisión delta independiente de CX pasó y el merge a `main @ 1f415b3` se ejecutó.
 
-Pilots: WRU real manifest PASS/ACTIVE, external DFL Concierge consumer and live path DFL Concierge -> wru.query.v1 -> WRU Canonical State -> WorkUnitLedger, receipt and freshness present. Preserve distinction: WRU institutional live path proven YES; 32 catalogued capabilities proven in live path 0/32. Real adversarial /opt/experiments/business-os-new-audit is FAIL/IN_CLOSET with 12 missing invariants, including rollback proof; this is intentional detection evidence, not a closure failure.
+**Sigue siendo la referencia canónica** de por qué `--json` NO existe en el CLI de conformance, y los 2 tests de regresión que lo impiden reintroducir (`test_json_flag_is_not_part_of_the_real_cli_contract`, `test_conformance_docs_do_not_advertise_a_json_flag`) están vivos en main. Si alguien vuelve a proponer ese flag, la respuesta está aquí: nunca existió en la historia de `__main__.py` (commit único `a33a772`), y el JSON ya se emite siempre e incondicionalmente, así que un toggle sería un modo sin diferencia de comportamiento.
 
-Fix: gate.py now rejects blank proof paths, so rollback evidence cannot pass by resolving the repository root. Graph freshness was reconciled to repository HEAD 5d9ccfb (artifact WRU commit remains bc8d6b); consumer HEAD 5f01fb.
+---
+(contenido original abajo)
 
-Residual debt: automatic manifest creation/lint at PRP creation time is not yet wired; protected 03:05 UTC cron was untouched. Pre-existing untracked dirty state remains untouched and must not be treated as a system failure without factual attribution. NO_TOUCH surfaces untouched.
+**TOPIC**: dfl/concierge/f1b-json-documentation-closure
+**DATE**: 2026-07-28
+**MISSION**: CONCIERGE F1B — FINAL CONFORMANCE DOCUMENTATION CLOSURE
+
+`--json` fue propuesta histórica nunca adoptada, documentada en un stash huérfano (`34b6a7d3`) nunca reconciliado contra el código. Corregidos `F1-COMPILER-CONFORMANCE-KIT.md` y `CP-F1-CONFORMANCE-KIT.md`; 2 tests de regresión añadidos. Commit `52c0e3c`. Además `1f415b3`: copiados los 3 docs de decisión a `architecture/decisions/` dentro de la propia rama candidata, cerrando el hallazgo de CX de que no eran alcanzables desde el target.
+
+Suite 246→248 PASS. Veredicto: JSON_CLI_CONTRACT=NOT_PART_OF_CONTRACT, CONFORMANCE=RESOLVED.
+
+### Canonical promotion and Business OS anti-closet remediation closure
+**Type:** decision  
+**Project:** dfl  
+
+VEREDICTOS:
+- DFL_NEW_ELEMENT_SYSTEM_CANONICALLY_PROMOTED
+- BUSINESS_OS_ANTI_CLOSET_REMEDIATION_PARTIAL
+
+Canonical DFL runtime line is /opt/dfl-knowledge, branch feat/dfl-high-certainty-harness-v0.1, final HEAD 53af3a0d20b9e6106a4f2d2d9108aa7c4e165de3. Canonical tag: dfl-new-element-institutionalization-v0.1-canonical-final2. Historical tag dfl-new-element-institutionalization-v0.1 remains at 47d96d2. The separate /opt/dfl-knowledge-workunit worktree is the Concierge consumer line, branch main, restored exactly to HEAD 5f01fb29a2bfd8e8422524f616108a8996317488 after a mission-created temporary cross-line promotion was reverted with explicit git reverts and git reset --mixed only (never reset --hard). Business OS repo remains /opt/experiments/business-os-new-audit @ 4428a6dba1df56afe0759f3248c8955a927cfd7c, source untouched.
+
+Canonical verification: institutionalization tests 9/9 PASS; WRU 83/83 PASS; Concierge prior/current suite 267/267 PASS; DFL health 14/14 PASS; refresh second run UNCHANGED; live graph query WRU and Business OS FRESH/CANONICAL. Graph in active DFL runtime: 140 semantic nodes, 561 edges, 10296 structural nodes. Clean install and rollback were proven in /tmp/dfl-nei-clean. Evidence: /opt/dfl-knowledge/evidence/dfl-new-element-canonical-promotion-2026-07-31/ and /opt/dfl-knowledge/evidence/business-os-anti-closet-remediation-2026-07-31/.
+
+Business OS canonical re-evaluation: before FAIL/IN_CLOSET with 12 gaps; local remediation corrected DISCOVERABLE and OBSERVABLE; after FAIL/IN_CLOSET with 10 gaps: ACCESSIBLE, OWNER_ASSIGNED, CONSUMER_ASSIGNED, CONTRACT_DEFINED, LIVE_PATH_CONNECTED, ACTUALLY_USED, RECEIPT_PRODUCED, REFRESH_CONNECTED, MAINTENANCE_DEFINED, ROLLBACK_PROVEN. Codebase Memory health WARN: indexed HEAD matches, 3724 nodes/10241 edges, coverage unknown, 4 parser skips. No external DFL consumer or compatible contract/live path is proven; no consumer was invented. A mission-created duplicate engine project was detected and removed; historical index preserved.
+
+Dirty state: pre-existing untracked state in /opt/dfl-knowledge remains untouched; Business OS untracked audit artifacts remain untouched. NO_TOUCH surfaces untouched. Next exact step requires architectural decision or evidence of a real existing Business OS consumer before any further remediation.
 
 ### @$go 2026-07-31 — pending histórico de limpieza reconciliado
 **Type:** fact  
@@ -392,15 +380,15 @@ Residual debt: automatic manifest creation/lint at PRP creation time is not yet 
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.8246  
+**Graph entropy:** 4.2657  
 
-- **Community 11** (95 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
-- **Community 0** (5 nodes): Cierre de Goal, Componentes Heredables
-- **Community 1** (4 nodes): Certainty Gate
-- **Community 2** (4 nodes): DFL_Agent_Onboarding_Config, ProductController
-- **Community 3** (4 nodes): Módulos Bicep, Interfaz HTTP para Gestión de Objetivos
-- **Community 4** (4 nodes): RON, Versioning and lifecycle
+- **Community 11** (25 nodes): validateclosureevidence rechaza, tmp jpi-phase3-independent-review, goal inválido
+- **Community 1** (24 nodes): FutbolWeb, CC, UTC
+- **Community 0** (24 nodes): VALIDATION, CREATE, NOT
+- **Community 2** (24 nodes): API, HTTP, UI
+- **Community 3** (11 nodes): DFL, ID, FISIO-DFL
+- **Community 4** (10 nodes): FMD, OS, GET
 
 ---
 
-*Mirror auto-generated 2026-08-01T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-01T03:20:34Z | La Garra → DFLghub/amos-context*
