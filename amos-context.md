@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-01T03:20:34Z  
+**Generated:** 2026-08-01T03:38:59Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -260,6 +260,12 @@ Su `READY_FOR_FINAL_DELTA_REVIEW: YES` se cumplió: la revisión delta independi
 
 Suite 246→248 PASS. Veredicto: JSON_CLI_CONTRACT=NOT_PART_OF_CONTRACT, CONFORMANCE=RESOLVED.
 
+### SaaS Factory gifts heritage ingestion — public GitHub population preserved 2026-08-01
+**Type:** fact  
+**Project:** dfl  
+
+Mission: preservation-only ingestion of SaaS Factory gifts. Evidence root: /opt/dfl-knowledge/evidence/saas-factory-gifts-ingestion-2026-08-01/. Captured public Daniel GitHub HTML/API/user/repos/events; REST enumerated 71 public repositories (rendered profile cache showed 70, discrepancy preserved). Preserved 70 new bare Git mirrors under raw/repositories/ and reused exact existing remote match business-os-new at /opt/experiments/business-os-new-audit HEAD 4428a6dba1df56afe0759f3248c8955a927cfd7c. 0 download failures; 7 upstream empty/unborn repositories; 71/71 git fsck PASS. Tree counts: 273 SKILL.md files across 9 repos; 11 PRP paths across 10 repos; 5 ZIP/TAR/GZ across 5 repos; 1,591 documentation-like files across 63 repos; 80 license-like paths across 23 repos. Mandatory local/web exact-title sources Skills & Sistemas and Mis Aplicaciones Gratuitas! were not found and remain NOT_FOUND / PRIVATE_UNRESOLVED; requested profile screenshot not found, public HTML/API preserved as bounded substitute. No install/build/test/migration/runtime execution performed. Existing dirty worktrees were not cleaned or absorbed. Handoff: review HANDOFF.md; future session must obtain missing module exports/URLs and screenshot, then governed review; do not reclone or execute mirrors.
+
 ### Canonical promotion and Business OS anti-closet remediation closure
 **Type:** decision  
 **Project:** dfl  
@@ -275,12 +281,6 @@ Canonical verification: institutionalization tests 9/9 PASS; WRU 83/83 PASS; Con
 Business OS canonical re-evaluation: before FAIL/IN_CLOSET with 12 gaps; local remediation corrected DISCOVERABLE and OBSERVABLE; after FAIL/IN_CLOSET with 10 gaps: ACCESSIBLE, OWNER_ASSIGNED, CONSUMER_ASSIGNED, CONTRACT_DEFINED, LIVE_PATH_CONNECTED, ACTUALLY_USED, RECEIPT_PRODUCED, REFRESH_CONNECTED, MAINTENANCE_DEFINED, ROLLBACK_PROVEN. Codebase Memory health WARN: indexed HEAD matches, 3724 nodes/10241 edges, coverage unknown, 4 parser skips. No external DFL consumer or compatible contract/live path is proven; no consumer was invented. A mission-created duplicate engine project was detected and removed; historical index preserved.
 
 Dirty state: pre-existing untracked state in /opt/dfl-knowledge remains untouched; Business OS untracked audit artifacts remain untouched. NO_TOUCH surfaces untouched. Next exact step requires architectural decision or evidence of a real existing Business OS consumer before any further remediation.
-
-### @$go 2026-07-31 — pending histórico de limpieza reconciliado
-**Type:** fact  
-**Project:** dfl  
-
-@$go ejecutado con payload local generated_at=2026-07-31T21:23:27Z y search_memory('contexto DFL'). Primer pending: observación #252 sobre Reminder 1a/1Password.txt del 2026-07-14. La búsqueda en Engram confirmó que los dos frentes ya estaban cerrados y verificados, pero la observación seguía STATUS active. Se actualizó #252 a [RESOLVED], STATUS resolved y LIFECYCLE: archived para eliminar el pending histórico. No se modificaron archivos ni superficies protegidas; no se hizo ninguna operación sobre Drive.
 
 ---
 
@@ -391,4 +391,4 @@ Dirty state: pre-existing untracked state in /opt/dfl-knowledge remains untouche
 
 ---
 
-*Mirror auto-generated 2026-08-01T03:20:34Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-01T03:38:59Z | La Garra → DFLghub/amos-context*
