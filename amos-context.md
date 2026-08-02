@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-02T03:30:17Z  
+**Generated:** 2026-08-02T05:10:57Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -122,19 +122,17 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### @$go corrected — DOCK_OBSERVATION_RUN pending
+### Cierre DOCK_OBSERVATION_RUN — harness 801ecc4 verificado
 **Type:** decision  
 **Project:** dfl  
 
-ONBOARDING COMPLETE
-CURRENT MISSION: DOCK_OBSERVATION_RUN
-TARGET: headless candidate d79fffdf4ab1739e45049bae9c3933794788c1df
-BASELINE: clean SFV5
-POLICY: PATCH_RISK 6f71e5e
-ROLE: independent reviewer after CC delivery
-STATUS: PENDIENTE_NO_ENVIADO
-NO OTHER MISSION ACTIVATED.
-La derivación previa a Business OS anti-closet fue incorrecta y quedó archivada como observación #424.
+CIERRE DE SESIÓN @$fin. Misión DOCK_OBSERVATION_RUN revisada independientemente desde checkout limpio del commit 801ecc4. Se ejecutó exactamente bash evidence/dock-observation-delta-2026-08-02/harness/run-all.sh <run_root> desde clon independiente. Resultado real: exit 0; delta3 14/14 PASS; delta2 13/13 PASS (12 PASS + 1 OBSERVED, sin FAIL/SKIPPED/SETUP_ERROR); delta1 15/15 PASS; TOTAL 42/42; receipt generado desde el run con DOCK_OBSERVATION_RUN_PASS. Se verificó además fallo controlado non-zero + DOCK_OBSERVATION_RUN_NOT_PROVEN y setup inválido non-zero sin PASS. No se modificó implementación ni se abrió otra misión. Los worktrees/temporales fueron eliminados. LIFECYCLE: archived al cierre.
+
+### ONBOARDING_PROVISIONAL_ROUTING_HARDENED — live CC/CX
+**Type:** decision  
+**Project:** dfl  
+
+Se implementó y cableó el routing provisional fail-closed. La misión solo se lee de DFL_BOOTSTRAP.pending; Engram queda como contexto. Campos y SHA validados mecánicamente; pending/backlog/observations/history/superseded separados; ausencia, contradicción, duplicidad, stale, superseded o inferencia producen FAIL_CLOSED, PENDIENTE_NO_ENVIADO y ALL_ACTIONS bloqueadas. Integrado en /opt/dfl-context-proxy/main.py, provisional_routing.py, cc-atgo-hook.sh y publish-amos-context.sh. 11/11 adversarial tests PASS. Live local CC PASS y endpoint público CX PASS con misión DOCK_OBSERVATION_RUN, target d79fffdf4ab1739e45049bae9c3933794788c1df, baseline clean SFV5, policy PATCH_RISK 6f71e5e, state_sha 5d58ba...; live ambiguous pending FAIL_CLOSED; restore PASS. No se ejecutó la misión ni autopromoción. Commits proxy 53fcfc5, knowledge 06ac177 y receipt 57b737e. Evidence: evidence/onboarding-routing-hardening-2026-08-02/ROUTING-HARDENING-RECEIPT.json.
 
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -152,12 +150,6 @@ La derivación previa a Business OS anti-closet fue incorrecta y quedó archivad
 **Convention confirmed**: This repo's JSON-schema-validated artifacts (schemas/*.schema.json, draft 2020-12) are validated by hand-rolled JS logic, not ajv (no package.json/npm deps in repo) — tests do manual required-key/enum checks instead of a schema-validation library. Node test convention is `node --test tests/*.test.mjs`, `.mjs` ESM files, evidence dirs named `evidence/<slug>-<date>/` with SHA256SUMS at the root and a receipts/ subfolder for gate receipts.
 
 VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
-
-### SFV5 headless profile final clean review PASS — d79fffd
-**Type:** decision  
-**Project:** dfl  
-
-Revisión independiente final desde archive limpio de d79fffdf4ab1739e45049bae9c3933794788c1df, parent 4b0a6715d770bcacfa4ae5dba470f848cd89a6ea. sha256sum -c SHA256SUMS PASS; 37/37 tests PASS; PRODUCT-EVIDENCE-RECORD, RESULTS y 13 receipts validan schemas; cross-path relocation determinista con RESULTS y 13 receipts byte-idénticos; rollback independiente byte-idéntico PASS. Lifecycle máximo BUILT, review REVIEW_REQUIRED, promotion PROMOTION_BLOCKED; SELF_BUILT != SELF_PROMOTED; installed/live path false, integration/publication/consumer/promotion no iniciados y sin claims falsos. Veredicto: D_SFV5_HEADLESS_PROFILE_CLEAN_REVIEW_PASS. No se modificó el candidato.
 
 ### JPI Fase 5 Real E2E Completion Summary
 **Type:** decision  
@@ -311,26 +303,35 @@ PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o con
 
 MERCADER es un proyecto en incubación dentro de DFL. Basado en el patrón Business OS de 5 capas extraído de SaaS Factory (Daniel Carreón). Artefacto clave: MERCADER BOS (Business Operating System) con Context Pack v0.1 e Implementation Plan v0.1 en Drive/08_SaaS_Factory/03_MERCADER_BOS/. PainRadar fue evaluado como fuente de descubrimiento de dolores de mercado para Mercader/Bazar (Reddit, G2, App Store, Trustpilot, ProductHunt). Estado: modo incubación. Próximo paso: construir versión operacional usando MERCADER BOS como guía. No mezclar con SaaS Factory V5 de Daniel Carreón — ese es una referencia, no la base técnica.
 
-### @$go corrected — DOCK_OBSERVATION_RUN pending
+### Cierre DOCK_OBSERVATION_RUN — harness 801ecc4 verificado
 **Type:** decision  
 **Project:** dfl  
 
-ONBOARDING COMPLETE
-CURRENT MISSION: DOCK_OBSERVATION_RUN
-TARGET: headless candidate d79fffdf4ab1739e45049bae9c3933794788c1df
-BASELINE: clean SFV5
-POLICY: PATCH_RISK 6f71e5e
-ROLE: independent reviewer after CC delivery
-STATUS: PENDIENTE_NO_ENVIADO
-NO OTHER MISSION ACTIVATED.
-La derivación previa a Business OS anti-closet fue incorrecta y quedó archivada como observación #424.
+CIERRE DE SESIÓN @$fin. Misión DOCK_OBSERVATION_RUN revisada independientemente desde checkout limpio del commit 801ecc4. Se ejecutó exactamente bash evidence/dock-observation-delta-2026-08-02/harness/run-all.sh <run_root> desde clon independiente. Resultado real: exit 0; delta3 14/14 PASS; delta2 13/13 PASS (12 PASS + 1 OBSERVED, sin FAIL/SKIPPED/SETUP_ERROR); delta1 15/15 PASS; TOTAL 42/42; receipt generado desde el run con DOCK_OBSERVATION_RUN_PASS. Se verificó además fallo controlado non-zero + DOCK_OBSERVATION_RUN_NOT_PROVEN y setup inválido non-zero sin PASS. No se modificó implementación ni se abrió otra misión. Los worktrees/temporales fueron eliminados. LIFECYCLE: archived al cierre.
 
-### [RESOLVED] Incorrect @$go routing to historical Business OS pending
-**Type:** bugfix  
+### HEADLESS_REAL_FIXTURE_RUN — PASS (1c3f647)
+**Type:** fact  
 **Project:** dfl  
 
-La sesión @$go derivó incorrectamente al pendiente histórico Business OS anti-closet. Corrección: ese pendiente no era la misión activa de esta sesión. LIFECYCLE: archived
-RESOLVED: reemplazado por DOCK_OBSERVATION_RUN sobre el candidato SFV5 headless d79fffdf4ab1739e45049bae9c3933794788c1df, con baseline clean SFV5 y política PATCH_RISK 6f71e5e.
+**Veredicto**: HEADLESS_REAL_FIXTURE_RUN_PASS, calculado por el agregador. G1..G12 todos PASS. Commits: ec0d8ee (preregistro), 26e36be (implementación), cefd28e (fix de huella), 1c3f647 (evidencia). Directorio: evidence/headless-real-fixture-2026-08-02/.
+
+**Fixture**: dfl.fixture.evidence_integrity_verifier.v0.1 — verificador de integridad (directorio + SHA256SUMS) que detecta mismatch, missing Y extra. Elegido porque tiene criterio externo de verdad genuinamente independiente: GNU coreutils sha256sum -c. Preregistrado ANTES de construir, con el límite declarado por adelantado de que coreutils no cubre archivos extra.
+
+**Comandos reproducibles**: bash <checkout>/evidence/headless-real-fixture-2026-08-02/harness/run-fixture.sh <run> (exit 0) y compare-runs.sh <run> (exit 0).
+
+**Resultados**: G3 attach con CERO bytes upstream tocados e idempotencia verificada. G4 fabricación real probada por conteo de artefactos (0 antes, 6 después) — manifiesto generado por find|sha256sum, tests por node --test 9/9, auto-verificación por el CLI recién construido. G5 el perfil headless acoplado evaluó el record del fixture con claim_within_evidence=true y promotion_status=PROMOTION_BLOCKED; el caso negativo coincide con el oráculo externo. G7 consumidor externo real en positivo (OK) y negativo (INTEGRITY_FAILED), CONSUMED_OK ambos. G9 rollback byte-idéntico por cinco vías en cero. G10 REPRODUCIBLE: huella e16368d1 idéntica desde dos checkouts independientes. G12 el fixture se aplica a sí mismo: 42/42 archivos OK.
+
+**El camino vivo se llenó por primera vez**: los diez elementos de live_path que el candidate headless tenía vacíos por diseño ahora tienen nombres concretos, porque el consumidor NO importa la librería del fixture — lo descubre por ruta, lo ejecuta como proceso externo y parsea su stdout.
+
+**Cinco defectos propios corregidos**: (1) el manifiesto aparecía como archivo extra de su propio directorio — auto-exclusión resuelta en la librería, no en cada llamador; (2) claves del record equivocadas (claims.max_state_claimed y los 8 roles de ownership que exige el perfil); (3) el record se escribía después del manifiesto y quedaba como extra de su propio producto; (4) los receipts se resuelven relativos al directorio del record, no al workspace; (5) ROLLBACK_GATE declaraba PASS antes de ejecutarse el rollback — reclamo por encima de la evidencia, exactamente lo que el perfil existe para impedir; corregido a NOT_STARTED.
+
+**Reproducibilidad**: la primera comparación dio NOT_REPRODUCIBLE. Medido en vez de supuesto: UN SOLO archivo difería, PRODUCT-EVIDENCE-RECORD.json, por la ruta absoluta en factory_registry.path. Todo el resto byte-idéntico. La huella ahora NORMALIZA el record (rutas absolutas a tokens) en vez de excluirlo — excluirlo habría escondido regresiones futuras de contenido.
+
+**Invariantes verificados con git diff**: candidate d79fffd intacto, PATCH_RISK 6f71e5e intacta, adapter/Docking System 801ecc4 sin modificar. Sin DCSA, sin tocar BOS/JPI/Process OS, sin integrar ni instalar permanentemente, sin publicar ni promover, sin otra misión.
+
+**Limitaciones**: TP-08 sin suavizar (VERIFIED_LOCAL_ONLY, sin SSH al remoto canónico); el oráculo externo no cubre archivos extra; INTEGRATION/INSTALLATION/PUBLICATION/DISCOVERY siguen NOT_STARTED por alcance; CLEAN_CHECKOUT_REVIEW_GATE pendiente de CX.
+
+Lifecycle final REVIEW_REQUIRED / PROMOTION_BLOCKED. A la espera de revisión independiente de CX.
 
 ---
 
@@ -441,4 +442,4 @@ RESOLVED: reemplazado por DOCK_OBSERVATION_RUN sobre el candidato SFV5 headless 
 
 ---
 
-*Mirror auto-generated 2026-08-02T03:30:17Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-02T05:10:57Z | La Garra → DFLghub/amos-context*
