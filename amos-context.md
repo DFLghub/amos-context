@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-01T19:53:38Z  
+**Generated:** 2026-08-02T03:04:32Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -210,38 +210,86 @@ Dirty state: pre-existing untracked state in /opt/dfl-knowledge remains untouche
 
 ## RECENT ACTIVITY (cross-project)
 
-### engram-mcp — MCP server Python para agentes externos
+### SaaS Factory V5 consolidada en commit local 5e42124
 **Type:** decision  
 **Project:** dfl  
 
-MCP server desplegado en /opt/engram-mcp/server.py el 2026-06-24. Expone search_memory(query, project) y save_memory(title, content, type, project). Transportes: stdio (default, para mismo servidor) y HTTP --http 8092 (para agentes remotos). Systemd unit: engram-mcp.service en puerto 8092. Config en /opt/engram-mcp/CONFIG.md. Para activar acceso remoto: agregar DNS A record mcp.deepfeelingslabs.com → 67.205.166.199 y Caddy block. Protocolos: MCP 2024-11-05. Compatible con Claude Code, Codex CLI, GPT, Gemini.
+TOPIC: dfl/saas-factory/v5-local-commit
+TYPE: decision
+STATUS: active
+DATE: 2026-07-11
+SUMMARY: Con autorización explícita de Jorge, se consolidó la capa operativa SaaS Factory V5 existente sobre la base Git V4 del repositorio /opt/saas-factory-setup. Commit local: 5e42124aa0a070701f0a400b714d2a133b361a86, mensaje `feat: establish SaaS Factory V5 operational layer`, rama main, base previa 99f51b3. Alcance: 67 archivos, incluyendo CHANGELOG 5.0.0, CLAUDE/GEMINI y nuevos skills V5 con referencias. Validación: 32 SKILL.md físicos con frontmatter mínimo válido; escaneo de patrones conocidos sin secretos; commit verificado. Exclusión intencional: saas-factory/graphify-out/ permanece untracked por ser salida diagnóstica generada. No se hizo push.
+PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o confirmar autorización explícita de push; no incluir graphify-out salvo orden específica.
 
-### engram-mcp desplegado en La Garra
+### SFV5 CLAUDE.md Documentation Fix — Independent Mission (NOT part of obs-347 piloto)
 **Type:** decision  
-**Project:** dfl  
-
-MCP server Python stdlib en /opt/engram-mcp/server.py. Expone search_memory y save_memory. Transporte stdio (default) y HTTP (--http 8092). Permite acceso a Engram desde cualquier agente con soporte MCP: Codex CLI, Claude Code, Gemini. Config en /opt/engram-mcp/CONFIG.md.
-
-### [RESOLVED] Cierre documental --json — revisado por CX y fusionado a main
-**Type:** manual  
 **Project:** dfl-knowledge  
 
-**LIFECYCLE: resolved** — 2026-07-28. Ver obs #379.
+**INDEPENDENT MISSION: SFV5 Documentation Fix**  
+**Status:** ✅ ANALYSIS COMPLETE, PROPOSAL READY  
+**Timestamp:** 2026-07-25 05:35Z  
+**Scope:** `/opt/saas-factory-setup/saas-factory` ONLY (not BOS-JPI)
 
-Su `READY_FOR_FINAL_DELTA_REVIEW: YES` se cumplió: la revisión delta independiente de CX pasó y el merge a `main @ 1f415b3` se ejecutó.
+## Executive Summary
 
-**Sigue siendo la referencia canónica** de por qué `--json` NO existe en el CLI de conformance, y los 2 tests de regresión que lo impiden reintroducir (`test_json_flag_is_not_part_of_the_real_cli_contract`, `test_conformance_docs_do_not_advertise_a_json_flag`) están vivos en main. Si alguien vuelve a proponer ese flag, la respuesta está aquí: nunca existió en la historia de `__main__.py` (commit único `a33a772`), y el JSON ya se emite siempre e incondicionalmente, así que un toggle sería un modo sin diferencia de comportamiento.
+**Problem:** CLAUDE.md claims "30 Herramientas" but `.claude/skills/` has 32 real, committed skills  
+**Missing:** Exactly 2 skills not in documentation:
+- `pack-cold-email` (B2B cold email automation, Pillar: Adquisición)
+- `video-visuals` (Sketchnote narrative visuals, Pillar: Distribución)
 
----
-(contenido original abajo)
+**Source:** Both exist in DFL `origin/main @ 5e42124` ("feat: establish SaaS Factory V5 operational layer")
 
-**TOPIC**: dfl/concierge/f1b-json-documentation-closure
-**DATE**: 2026-07-28
-**MISSION**: CONCIERGE F1B — FINAL CONFORMANCE DOCUMENTATION CLOSURE
+## Separación de Misiones Confirmada
 
-`--json` fue propuesta histórica nunca adoptada, documentada en un stash huérfano (`34b6a7d3`) nunca reconciliado contra el código. Corregidos `F1-COMPILER-CONFORMANCE-KIT.md` y `CP-F1-CONFORMANCE-KIT.md`; 2 tests de regresión añadidos. Commit `52c0e3c`. Además `1f415b3`: copiados los 3 docs de decisión a `architecture/decisions/` dentro de la propia rama candidata, cerrando el hallazgo de CX de que no eran alcanzables desde el target.
+**obs-347 (Piloto BOS-JPI):**
+- Modifica: `/opt/360eventos/business-os/`
+- Fases: 1–6, ~9.5 agentes-días
+- Roadmap: `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md`
 
-Suite 246→248 PASS. Veredicto: JSON_CLI_CONTRACT=NOT_PART_OF_CONTRACT, CONFORMANCE=RESOLVED.
+**SFV5 Doc Fix (INDEPENDENT):**
+- Modifica: `/opt/saas-factory-setup/saas-factory/CLAUDE.md`
+- Scope: Add 2 rows to skills table + update decision tree + update header
+- Duration: ~15 minutos
+- Proposal: `/opt/dfl-knowledge/evidence/SFV5-DOCUMENTATION-FIX-PROPOSAL.md`
+
+**Zero conflicts.** Can proceed in parallel or sequentially.
+
+## Exact Changes Needed (from proposal)
+
+1. Line 140: "30 Herramientas" → "32 Herramientas (18 V4 + 14 V5)"
+2. Add row #31: `pack-cold-email` (Adquisición pillar)
+3. Add row #32: `video-visuals` (Distribución pillar)
+4. Update "Que Cambia en V5" table: link Distribución to both acquisition + video-visuals
+5. Add 2 branches to Decision Tree (~lines 134–136)
+
+## Verification Evidence
+
+**Skills confirmed real:**
+- `./.claude/skills/pack-cold-email/SKILL.md` (3.6 KB, valid)
+- `./.claude/skills/video-visuals/SKILL.md` (8.9 KB, valid)
+- Git commit: 5e42124 "feat: establish SaaS Factory V5 operational layer"
+
+**Analysis:** `/opt/dfl-knowledge/evidence/SFV5-DOCUMENTATION-FIX-PROPOSAL.md`
+- Complete enumeration (32 skills listed)
+- Git history traced
+- Branch status verified
+- Exact line-by-line changes specified
+- Acceptance criteria defined
+
+## Next Steps
+
+1. ✅ Analysis + proposal: DONE
+2. ⏳ Decision: Proceed? (YES/NO from Jorge or delegated)
+3. ⏳ Implementation: Edit CLAUDE.md + PR
+4. ⏳ Merge: After verification
+
+**Can be started immediately after obs-347 piloto approval (orthogonal work).**
+
+### MERCADER — contexto e incubación
+**Type:** fact  
+**Project:** dfl  
+
+MERCADER es un proyecto en incubación dentro de DFL. Basado en el patrón Business OS de 5 capas extraído de SaaS Factory (Daniel Carreón). Artefacto clave: MERCADER BOS (Business Operating System) con Context Pack v0.1 e Implementation Plan v0.1 en Drive/08_SaaS_Factory/03_MERCADER_BOS/. PainRadar fue evaluado como fuente de descubrimiento de dolores de mercado para Mercader/Bazar (Reddit, G2, App Store, Trustpilot, ProductHunt). Estado: modo incubación. Próximo paso: construir versión operacional usando MERCADER BOS como guía. No mezclar con SaaS Factory V5 de Daniel Carreón — ese es una referencia, no la base técnica.
 
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
@@ -381,15 +429,15 @@ Cierre de sesión: revisión independiente final completada sobre archive limpio
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 4.2657  
+**Graph entropy:** 0.885  
 
-- **Community 11** (25 nodes): validateclosureevidence rechaza, tmp jpi-phase3-independent-review, goal inválido
-- **Community 1** (24 nodes): FutbolWeb, CC, UTC
-- **Community 0** (24 nodes): VALIDATION, CREATE, NOT
-- **Community 2** (24 nodes): API, HTTP, UI
-- **Community 3** (11 nodes): DFL, ID, FISIO-DFL
-- **Community 4** (10 nodes): FMD, OS, GET
+- **Community 11** (90 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
+- **Community 0** (7 nodes): SaaS Factory V5, Pack Cold Email, Visuales Narrativos
+- **Community 1** (7 nodes): PAT clásico, Rollback, Goal Closure Gate
+- **Community 2** (4 nodes): CP-03 y contratos constitutivos F1, Soberanía de SaaS Factory V5, Matriz de reconciliación A1
+- **Community 3** (4 nodes): Patrones de Validación
+- **Community 4** (4 nodes): FutbolWeb - Reality Sync, FutbolWeb - Ranking Summary, Graph and Refresh Contract
 
 ---
 
-*Mirror auto-generated 2026-08-01T19:53:38Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-02T03:04:32Z | La Garra → DFLghub/amos-context*
