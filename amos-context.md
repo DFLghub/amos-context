@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-02T05:12:01Z  
+**Generated:** 2026-08-02T05:30:17Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -213,6 +213,12 @@ VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
 
+### @$fin 2026-08-02 — HEADLESS_REAL_FIXTURE_RUN verificado PASS
+**Type:** fact  
+**Project:** dfl  
+
+Cierre Gate 4B. Revisión mecánica independiente ejecutada desde checkout limpio sobre 20953ce, ae58480 y f4f3909. Se corrió la suite desde una ruta con espacios fuera de la restricción EPERM del sandbox: exit 0, 11 PASS, 0 FAIL, 0 SKIPPED, 0 SETUP_ERROR, G10 OBSERVED por diseño de corrida individual. G2 fabricación PASS; G3 consumo PASS con stdout JSON no vacío, exit/stderr separados, checked=12 y contract_honored=true en positivo, negativo INTEGRITY_FAILED exit 1; G8 reproducibilidad PASS mediante dos checkouts limpios, ambos exit 0, fingerprints idénticos 4be987320560c92ea1551d945dab74e041be001401a99f7203a3edfcb0bed27b y REPRODUCIBLE. Verificados refs ec0d8ee, d79fffdf4ab1739e45049bae9c3933794788c1df, 801ecc4 y 6f71e5e; lifecycle REVIEW_REQUIRED/PROMOTION_BLOCKED, sin integración/instalación/publicación/promoción/DCSA. No se modificó el workspace ni se abrió otra misión.
+
 ---
 
 ## PENDING
@@ -303,35 +309,31 @@ PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o con
 
 MERCADER es un proyecto en incubación dentro de DFL. Basado en el patrón Business OS de 5 capas extraído de SaaS Factory (Daniel Carreón). Artefacto clave: MERCADER BOS (Business Operating System) con Context Pack v0.1 e Implementation Plan v0.1 en Drive/08_SaaS_Factory/03_MERCADER_BOS/. PainRadar fue evaluado como fuente de descubrimiento de dolores de mercado para Mercader/Bazar (Reddit, G2, App Store, Trustpilot, ProductHunt). Estado: modo incubación. Próximo paso: construir versión operacional usando MERCADER BOS como guía. No mezclar con SaaS Factory V5 de Daniel Carreón — ese es una referencia, no la base técnica.
 
-### Cierre DOCK_OBSERVATION_RUN — harness 801ecc4 verificado
-**Type:** decision  
-**Project:** dfl  
-
-CIERRE DE SESIÓN @$fin. Misión DOCK_OBSERVATION_RUN revisada independientemente desde checkout limpio del commit 801ecc4. Se ejecutó exactamente bash evidence/dock-observation-delta-2026-08-02/harness/run-all.sh <run_root> desde clon independiente. Resultado real: exit 0; delta3 14/14 PASS; delta2 13/13 PASS (12 PASS + 1 OBSERVED, sin FAIL/SKIPPED/SETUP_ERROR); delta1 15/15 PASS; TOTAL 42/42; receipt generado desde el run con DOCK_OBSERVATION_RUN_PASS. Se verificó además fallo controlado non-zero + DOCK_OBSERVATION_RUN_NOT_PROVEN y setup inválido non-zero sin PASS. No se modificó implementación ni se abrió otra misión. Los worktrees/temporales fueron eliminados. LIFECYCLE: archived al cierre.
-
-### HEADLESS_REAL_FIXTURE_RUN — PASS (1c3f647)
+### @$fin 2026-08-02 — HEADLESS_REAL_FIXTURE_RUN verificado PASS
 **Type:** fact  
 **Project:** dfl  
 
-**Veredicto**: HEADLESS_REAL_FIXTURE_RUN_PASS, calculado por el agregador. G1..G12 todos PASS. Commits: ec0d8ee (preregistro), 26e36be (implementación), cefd28e (fix de huella), 1c3f647 (evidencia). Directorio: evidence/headless-real-fixture-2026-08-02/.
+Cierre Gate 4B. Revisión mecánica independiente ejecutada desde checkout limpio sobre 20953ce, ae58480 y f4f3909. Se corrió la suite desde una ruta con espacios fuera de la restricción EPERM del sandbox: exit 0, 11 PASS, 0 FAIL, 0 SKIPPED, 0 SETUP_ERROR, G10 OBSERVED por diseño de corrida individual. G2 fabricación PASS; G3 consumo PASS con stdout JSON no vacío, exit/stderr separados, checked=12 y contract_honored=true en positivo, negativo INTEGRITY_FAILED exit 1; G8 reproducibilidad PASS mediante dos checkouts limpios, ambos exit 0, fingerprints idénticos 4be987320560c92ea1551d945dab74e041be001401a99f7203a3edfcb0bed27b y REPRODUCIBLE. Verificados refs ec0d8ee, d79fffdf4ab1739e45049bae9c3933794788c1df, 801ecc4 y 6f71e5e; lifecycle REVIEW_REQUIRED/PROMOTION_BLOCKED, sin integración/instalación/publicación/promoción/DCSA. No se modificó el workspace ni se abrió otra misión.
 
-**Fixture**: dfl.fixture.evidence_integrity_verifier.v0.1 — verificador de integridad (directorio + SHA256SUMS) que detecta mismatch, missing Y extra. Elegido porque tiene criterio externo de verdad genuinamente independiente: GNU coreutils sha256sum -c. Preregistrado ANTES de construir, con el límite declarado por adelantado de que coreutils no cubre archivos extra.
+### DELTA convergencia HEADLESS_REAL_FIXTURE_RUN — PASS (f4f3909)
+**Type:** fact  
+**Project:** dfl  
 
-**Comandos reproducibles**: bash <checkout>/evidence/headless-real-fixture-2026-08-02/harness/run-fixture.sh <run> (exit 0) y compare-runs.sh <run> (exit 0).
+**Veredicto**: HEADLESS_REAL_FIXTURE_RUN_PASS, calculado por el agregador. Gate 2, Gate 3 y Gate 8 en PASS. Commits: 20953ce, ae58480, f4f3909. Entrada: 1c3f647 + revisión CX (FAIL en gates 2 y 3).
 
-**Resultados**: G3 attach con CERO bytes upstream tocados e idempotencia verificada. G4 fabricación real probada por conteo de artefactos (0 antes, 6 después) — manifiesto generado por find|sha256sum, tests por node --test 9/9, auto-verificación por el CLI recién construido. G5 el perfil headless acoplado evaluó el record del fixture con claim_within_evidence=true y promotion_status=PROMOTION_BLOCKED; el caso negativo coincide con el oráculo externo. G7 consumidor externo real en positivo (OK) y negativo (INTEGRITY_FAILED), CONSUMED_OK ambos. G9 rollback byte-idéntico por cinco vías en cero. G10 REPRODUCIBLE: huella e16368d1 idéntica desde dos checkouts independientes. G12 el fixture se aplica a sí mismo: 42/42 archivos OK.
+**BLOCKER 1 (gate 2) REPRODUCIDO**: la suite del fixture falla cuando la ruta del checkout contiene un espacio — 2 pass / 7 fail. No era locale ni versión de node. Dos causas, ambas de cableado mío: (1) new URL(...).pathname devuelve la ruta percent-encodeada (/tmp/cx%20probe/...) y node no encuentra el CLI; (2) las rutas se interpolaban sin comillas dentro de bash -c, que las parte en espacios ('cd: too many arguments'). Corregida la IMPLEMENTACIÓN, no la expectativa: fileURLToPath() y eliminación total del shell — el manifiesto de prueba se calcula en node y el oráculo coreutils se invoca con execFileSync + cwd. Verificado: 9/9 exit 0, y el ciclo completo G1..G12 corre exit 0 desde una ruta con espacio.
 
-**El camino vivo se llenó por primera vez**: los diez elementos de live_path que el candidate headless tenía vacíos por diseño ahora tienen nombres concretos, porque el consumidor NO importa la librería del fixture — lo descubre por ruta, lo ejecuta como proceso externo y parsea su stdout.
+**BLOCKER 2 (gate 3)**: el receipt guardaba stdout_sha256 pero nunca el stdout, y JAMÁS capturaba stderr; además contract_honored no ataba el veredicto al artefacto de la corrida. Receipt v2 captura stdout/stderr/exit por separado (verbatim + sha256 + bytes), parsea estricto (rechaza vacío, {}, no-objeto), valida campos/tipos/valores, exige exit code esperado y coherente con el veredicto, y exige correspondencia: checked debe igualar las entradas del manifiesto real. Positivo: exit 0, stdout 112B, checked 12 = 12 entradas, contract_honored true, cero checks fallidos. Negativo: exit 1, INTEGRITY_FAILED, receipt honesto.
 
-**Cinco defectos propios corregidos**: (1) el manifiesto aparecía como archivo extra de su propio directorio — auto-exclusión resuelta en la librería, no en cada llamador; (2) claves del record equivocadas (claims.max_state_claimed y los 8 roles de ownership que exige el perfil); (3) el record se escribía después del manifiesto y quedaba como extra de su propio producto; (4) los receipts se resuelven relativos al directorio del record, no al workspace; (5) ROLLBACK_GATE declaraba PASS antes de ejecutarse el rollback — reclamo por encima de la evidencia, exactamente lo que el perfil existe para impedir; corregido a NOT_STARTED.
+**Probado que no puede dar falso positivo**: CLI que crashea (CONSUMPTION_FAILED, stdout 0B, stderr 617B capturado), CLI que devuelve {} (parse_error explícito), manifiesto que no corresponde. Los tres exit 1.
 
-**Reproducibilidad**: la primera comparación dio NOT_REPRODUCIBLE. Medido en vez de supuesto: UN SOLO archivo difería, PRODUCT-EVIDENCE-RECORD.json, por la ruta absoluta en factory_registry.path. Todo el resto byte-idéntico. La huella ahora NORMALIZA el record (rutas absolutas a tokens) en vez de excluirlo — excluirlo habría escondido regresiones futuras de contenido.
+**Defecto propio encontrado por la reproducibilidad**: tras el receipt v2, el cálculo de la huella determinista seguía leyendo claves de v1 (expected_verdict, verdict_matches_expectation). El KeyError se perdía en silencio: DET_SHA vacío, G10 registrado OBSERVED con huella en blanco, y el run salía 0. Es EL MISMO PATRÓN que CX marcó en el Gate 5 del delta anterior — un fallo real que no llega al veredicto. Corregido: huella vacía es FAIL, y compare-runs no declara REPRODUCIBLE con huellas ausentes.
 
-**Invariantes verificados con git diff**: candidate d79fffd intacto, PATCH_RISK 6f71e5e intacta, adapter/Docking System 801ecc4 sin modificar. Sin DCSA, sin tocar BOS/JPI/Process OS, sin integrar ni instalar permanentemente, sin publicar ni promover, sin otra misión.
+**Reproducibilidad**: dos checkouts limpios, ambos exit 0, huella 4be98732 idéntica. Única normalización: la ruta absoluta ya preregistrada.
 
-**Limitaciones**: TP-08 sin suavizar (VERIFIED_LOCAL_ONLY, sin SSH al remoto canónico); el oráculo externo no cubre archivos extra; INTEGRATION/INSTALLATION/PUBLICATION/DISCOVERY siguen NOT_STARTED por alcance; CLEAN_CHECKOUT_REVIEW_GATE pendiente de CX.
+**Invariantes verificados con git diff**: preregistro del fixture (ec0d8ee), candidate d79fffd, adapter 801ecc4 y PATCH_RISK 6f71e5e — los cuatro intactos. Sin capacidades nuevas, sin DCSA, sin integrar/instalar/publicar/promover, sin otra misión.
 
-Lifecycle final REVIEW_REQUIRED / PROMOTION_BLOCKED. A la espera de revisión independiente de CX.
+Lifecycle BUILT / REVIEW_REQUIRED / PROMOTION_BLOCKED. A la espera de comprobación mecánica de CX.
 
 ---
 
@@ -442,4 +444,4 @@ Lifecycle final REVIEW_REQUIRED / PROMOTION_BLOCKED. A la espera de revisión in
 
 ---
 
-*Mirror auto-generated 2026-08-02T05:12:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-02T05:30:17Z | La Garra → DFLghub/amos-context*
