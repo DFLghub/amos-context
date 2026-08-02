@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-02T19:29:17Z  
+**Generated:** 2026-08-02T19:29:19Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -514,4 +514,4 @@ PROXIMO_AGENTE_DEBE: no promover DCSA, no emitir despacho. La re-revision de CX 
 
 ---
 
-*Mirror auto-generated 2026-08-02T19:29:17Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-02T19:29:19Z | La Garra → DFLghub/amos-context*
