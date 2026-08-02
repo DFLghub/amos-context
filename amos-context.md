@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-02T14:42:44Z  
+**Generated:** 2026-08-02T18:05:16Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -104,35 +104,80 @@ Antes de operar, respondé:
 **Authority:** `DFL_BOOTSTRAP.pending`  
 **Decision:** `PASS`  
 **State version:** `dfl.onboarding.provisional-routing.v1`  
-**State SHA:** `286baef5b0441d1fa68f9c1b9b1d2de12e44732e7ed550098de02e32db1224fa`  
+**State SHA:** `b2bcfa79c24950fb0e130a67f66375a61893afe3a5914cd7dcff51f0743cf5cc`  
 **Freshness:** `FRESH`  
 **Contradictions:** `[]`  
-**Authorized actions:** `['READ_BOOTSTRAP', 'PRODUCE_RECEIPT']`  
-**Blocked actions:** `['EXECUTE_MISSION', 'AUTOPROMOTE']`  
+**Authorized actions:** `['READ_BOOTSTRAP', 'PRODUCE_RECEIPT', 'EXECUTE_MISSION']`  
+**Blocked actions:** `['AUTOPROMOTE']`  
 
 ### Active mission loaded from `pending`
-- **mission_id:** DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION
-- **target:** f4f3909c319bd2de4714e1c27679d31f812047a6
-- **baseline:** clean SFV5
+- **mission_id:** DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02
+- **target:** 02e06c9a9e8bf594f2e2954f4c17b60405f89aaa
+- **baseline:** clean DFL control plane
 - **policy:** PATCH_RISK 6f71e5e
-- **role:** CC manufactures DCSA v0.1; CX reviews independently after delivery
-- **status:** PENDIENTE_NO_ENVIADO
+- **role:** CX autonomous orchestrator/executor of the authorized DFL roadmap batch
+- **status:** IN_EXECUTION
 
 ---
 
 ## RECENT DECISIONS
 
-### Cierre DOCK_OBSERVATION_RUN — harness 801ecc4 verificado
+### [CHECKPOINT] Batch roadmap activado; WP0 PASS; WP1 parcialmente aplicado
 **Type:** decision  
 **Project:** dfl  
 
-CIERRE DE SESIÓN @$fin. Misión DOCK_OBSERVATION_RUN revisada independientemente desde checkout limpio del commit 801ecc4. Se ejecutó exactamente bash evidence/dock-observation-delta-2026-08-02/harness/run-all.sh <run_root> desde clon independiente. Resultado real: exit 0; delta3 14/14 PASS; delta2 13/13 PASS (12 PASS + 1 OBSERVED, sin FAIL/SKIPPED/SETUP_ERROR); delta1 15/15 PASS; TOTAL 42/42; receipt generado desde el run con DOCK_OBSERVATION_RUN_PASS. Se verificó además fallo controlado non-zero + DOCK_OBSERVATION_RUN_NOT_PROVEN y setup inválido non-zero sin PASS. No se modificó implementación ni se abrió otra misión. Los worktrees/temporales fueron eliminados. LIFECYCLE: archived al cierre.
+SESSION CLOSE / @$fin 2026-08-02.
+MISSION: DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02.
+ACTIVATION: real DCSA authorization emitted and consumed. dispatch_id disp-79e74fe0c8b7606f; issuer Jorge; executor CX; allowed_action EXECUTE_MISSION; authorization_sha 92ef25b37884ab287825e8ed189094c6ecfa74377e9dd21409a4ed369f7b6482; state authority SHA 7bef023eea7b6be5b007ce2b71c84487cad415f624cf6223d6ef152eb742ee1c; live projection mission SHA b2bcfa79c24950fb0e130a67f66375a61893afe3a5914cd7dcff51f0743cf5cc; ledger 2 entries verified; dispatch IN_EXECUTION; HTTP local PASS; EXECUTE_MISSION PERMITTED; contradictions [].
+COMMITS: activation 02e06c9; projection work_packages delta 2ddff6d; WP0 canonical GCP record defbd35.
+WP0: PASS aggregator exit 0, DFL_GCP_ACTIVE_INFRASTRUCTURE_ZERO based on direct Jorge confirmation, no GCP API audit, no gcloud/credentials. Historical GCP inventory sections marked SUPERSEDED. Negative control mutated VM count and aggregator exited 1.
+WP1: install/rollback artifacts prepared and install.sh applied root; CABO_7_INSTALL PASS; group dfl created, dflagent added, /run/dfl lock, ownership changes, proxy restarted. Publication/concurrency probe was interrupted by user during execution; do not claim Cabo_7 PASS. Evidence lives in evidence/dfl-control-plane-roadmap-batch-2026-08-02/wp1-publication-chain-ownership/ in /tmp/dfl-batch-control-review and was not yet committed. Production was not rolled back; batch remains IN_EXECUTION. Next eligible WP1 verification completion, then WP2. User issued @$fin, so session closes here.
+NO_TOUCH respected: puntajeTigreKnockout, Supabase, Vercel config, env vars, HLC templates, cron 3:05, /etc/dfl-secrets untouched.
 
-### ONBOARDING_PROVISIONAL_ROUTING_HARDENED — live CC/CX
+### @$fin 2026-08-02 — cierre de sesión CC (evidence only, NOT routing authority)
 **Type:** decision  
 **Project:** dfl  
 
-Se implementó y cableó el routing provisional fail-closed. La misión solo se lee de DFL_BOOTSTRAP.pending; Engram queda como contexto. Campos y SHA validados mecánicamente; pending/backlog/observations/history/superseded separados; ausencia, contradicción, duplicidad, stale, superseded o inferencia producen FAIL_CLOSED, PENDIENTE_NO_ENVIADO y ALL_ACTIONS bloqueadas. Integrado en /opt/dfl-context-proxy/main.py, provisional_routing.py, cc-atgo-hook.sh y publish-amos-context.sh. 11/11 adversarial tests PASS. Live local CC PASS y endpoint público CX PASS con misión DOCK_OBSERVATION_RUN, target d79fffdf4ab1739e45049bae9c3933794788c1df, baseline clean SFV5, policy PATCH_RISK 6f71e5e, state_sha 5d58ba...; live ambiguous pending FAIL_CLOSED; restore PASS. No se ejecutó la misión ni autopromoción. Commits proxy 53fcfc5, knowledge 06ac177 y receipt 57b737e. Evidence: evidence/onboarding-routing-hardening-2026-08-02/ROUTING-HARDENING-RECEIPT.json.
+TOPIC: dfl/session/cierre-2026-08-02
+TYPE: decision
+STATUS: closed
+DATE: 2026-08-02
+
+ROUTING AUTHORITY: none. EVIDENCE ONLY. Engram no gobierna routing ni despacho.
+
+CIERRE @$fin de la sesion CC del 2026-08-02. Rama feat/dfl-high-certainty-harness-v0.1, HEAD 9cf99aadf29f747ac374c8dab9c1b23716fedace.
+
+ARCO DE LA SESION — ocho commits propios:
+1. 3730500 BOOTSTRAP_PENDING_REFRESH_AND_PUBLICATION -> PASS (revisado por CX)
+2. 22df0ba DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION -> PASS (revisado por CX en 8a37603)
+3. 2abaf97 DCSA_DISPATCH_AUTHORIZATION_WIRING -> entregado BLOCKED
+4. 70c3635 handoff a CX
+5. 18a2b22 verificacion de la instalacion root -> PASS
+6. 07ba190 estado de routing instalado, versionado
+7. 4c05c70 cierre de los dos blockers de CX (63de73c) mas dos propios
+8. 9cf99aa estado GCP -> UNVERIFIED
+
+ESTADO FINAL DE PRODUCCION: /go local y publico sirven DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION con status PENDIENTE_NO_ENVIADO, dispatch_state PENDIENTE_NO_ENVIADO, execute_mission PROHIBITED, gate TRANSPORT_AND_VERIFY_ONLY con decision PASS, sin autorizacion activa, ledger en genesis, store de despacho vacio, state_sha 0a02e254. DCSA NO promovida, ningun despacho emitido.
+
+QUE QUEDO CONSTRUIDO: (a) el plano de control provisional dejo de publicar una mision ya cerrada; (b) DCSA v0.1, primer consumidor institucional real de la fabrica headless, con CLOSED como estado de primera clase; (c) el cableado de la autorizacion de despacho, instalado en produccion, con PENDIENTE_NO_ENVIADO no ejecutable y EXECUTE_MISSION habilitado solo con autorizacion integra, registrada en ledger encadenado, no expirada, no reutilizable y atada al state_sha vigente.
+
+PATRON QUE SE REPITIO TODA LA SESION, y que conviene recordar: un fallo real que no llega al veredicto, y su primo, una medicion que mide lo que no es. Ejemplos: el router provisional no tenia nocion de mision cerrada y por eso servia una mision cerrada como pendiente; el criterio dcsa_no_promovida medía 'produccion sin bloque dispatch' y confundia instalar con promover, fallando justo cuando el cableado aterrizaba (mismo error repetido en el agregador y en el gate W13); la autorizacion se sellaba con hora fija mientras el gate del proxy usa el reloj real, asi que pasaba solo por suerte dentro de la ventana. La contramedida que funciono siempre: que el veredicto lo calcule un agregador desde artefactos del run, que la ausencia de dato sea FAIL y no observacion benigna, y que exista control negativo real en producto, harness y agregador.
+
+DEFECTOS PROPIOS ENCONTRADOS POR LAS PRUEBAS, todos corregidos en origen: lock huerfano por process.exit() dentro del finally; re-autorizacion posible sobre una mision ya IN_EXECUTION; tokenizador de origenes que dejaba pasar chat_message y agent_inference; sed sin /g en el comparador; umbral magico en G4; G7 validando contra reloj de pared en corrida de instante fijo; replay por CLI devolviendo E_ILLEGAL_TRANSITION en vez de E_AUTH_REPLAYED; parcheadores no idempotentes que impedian reverificar post-install.
+
+RE-REVISION DE CX RECIBIDA ANTES DE CERRAR (obs #452, 17:17): PASS. CX review commit fe697e41608d1acfba68831f2ee40a149f279f6c, evidencia evidence/cx-delta-review-2026-08-02/. 13/13 gates en dos clones limpios independientes, huella bd038a86 coincidente con la de CC, segundo consume con E_AUTH_REPLAYED exacto, las transiciones ilegales legitimas siguen dando E_ILLEGAL_TRANSITION (era el quinto punto de escrutinio que CC habia señalado, y quedo comprobado), parcheadores idempotentes y byte-convergentes, TTL real expirado ejercido, controles negativos de producto y harness con exit non-zero, y W13 distinguiendo instalacion de promocion. Produccion verificada activa y segura por CX.
+
+DEUDAS ABIERTAS AL CIERRE:
+1. DISPATCH_GAP: el cableado quedo WIRED, instalado y con re-revision independiente PASS. Sigue en REVIEW_REQUIRED / PROMOTION_BLOCKED por lifecycle: declararlo CLOSED es decision de Jorge, no de CC ni de una sola revision.
+2. CABO_7 OPEN — la cadena de publicacion sigue root-only: lock /tmp/dfl-push-mirror.lock root:root 0644, .last-mirror-hash, el log y /opt/amos-context-mirror sin escritura para dflagent. Por eso este @$fin no pudo correr push_mirror.sh. Recomendacion: grupo compartido dfl y mover el lock a /run/dfl/, porque systemd-tmpfiles-clean puede borrar un lock en /tmp y resetear cualquier arreglo de propiedad.
+3. ENGRAM_DUAL_STORE OPEN — el CLI engram escribe en ~/.engram/engram.db (serie #1x) que el servicio NO lee; solo HTTP a 127.0.0.1:7437 llega al store canonico (serie #44x). Mordio a CC y a CX.
+4. GCP UNVERIFIED — ver #451. No hay constancia de que este en cero; falta correr verify-gcp.sh con credenciales.
+5. TP-08 OPEN — identidad del baseline en VERIFIED_LOCAL_ONLY, sin credencial SSH al remoto canonico.
+6. Integridad del ledger de despacho es tamper-evident, no tamper-proof: quien pueda escribir el store puede reescribir cadena y autorizacion de forma coherente. Decision pendiente de CX sobre si debe vivir en superficie root-only.
+
+MIRROR: NO PUBLICADO en este cierre. push_mirror.sh no puede correr como dflagent por cabo #7. El estado semantico quedo en Engram por el Gate 4B incremental; la mitad mecanica queda pendiente de root o del watchdog.
+
+PROXIMO_AGENTE_DEBE: no promover DCSA, no emitir despacho. La re-revision de CX ya esta hecha y dio PASS (#452). Si alguien tiene root: correr push_mirror.sh para publicar el mirror y, si se decide, cerrar cabo #7.
 
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -309,67 +354,62 @@ PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o con
 
 MERCADER es un proyecto en incubación dentro de DFL. Basado en el patrón Business OS de 5 capas extraído de SaaS Factory (Daniel Carreón). Artefacto clave: MERCADER BOS (Business Operating System) con Context Pack v0.1 e Implementation Plan v0.1 en Drive/08_SaaS_Factory/03_MERCADER_BOS/. PainRadar fue evaluado como fuente de descubrimiento de dolores de mercado para Mercader/Bazar (Reddit, G2, App Store, Trustpilot, ProductHunt). Estado: modo incubación. Próximo paso: construir versión operacional usando MERCADER BOS como guía. No mezclar con SaaS Factory V5 de Daniel Carreón — ese es una referencia, no la base técnica.
 
-### BOOTSTRAP_PENDING_REFRESH_AND_PUBLICATION — BLOCKED (evidence only, NOT routing authority)
-**Type:** checkpoint  
+### [CHECKPOINT] Batch roadmap activado; WP0 PASS; WP1 parcialmente aplicado
+**Type:** decision  
 **Project:** dfl  
 
-TOPIC: dfl/onboarding/bootstrap-pending-refresh
-TYPE: checkpoint
-STATUS: blocked
+SESSION CLOSE / @$fin 2026-08-02.
+MISSION: DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02.
+ACTIVATION: real DCSA authorization emitted and consumed. dispatch_id disp-79e74fe0c8b7606f; issuer Jorge; executor CX; allowed_action EXECUTE_MISSION; authorization_sha 92ef25b37884ab287825e8ed189094c6ecfa74377e9dd21409a4ed369f7b6482; state authority SHA 7bef023eea7b6be5b007ce2b71c84487cad415f624cf6223d6ef152eb742ee1c; live projection mission SHA b2bcfa79c24950fb0e130a67f66375a61893afe3a5914cd7dcff51f0743cf5cc; ledger 2 entries verified; dispatch IN_EXECUTION; HTTP local PASS; EXECUTE_MISSION PERMITTED; contradictions [].
+COMMITS: activation 02e06c9; projection work_packages delta 2ddff6d; WP0 canonical GCP record defbd35.
+WP0: PASS aggregator exit 0, DFL_GCP_ACTIVE_INFRASTRUCTURE_ZERO based on direct Jorge confirmation, no GCP API audit, no gcloud/credentials. Historical GCP inventory sections marked SUPERSEDED. Negative control mutated VM count and aggregator exited 1.
+WP1: install/rollback artifacts prepared and install.sh applied root; CABO_7_INSTALL PASS; group dfl created, dflagent added, /run/dfl lock, ownership changes, proxy restarted. Publication/concurrency probe was interrupted by user during execution; do not claim Cabo_7 PASS. Evidence lives in evidence/dfl-control-plane-roadmap-batch-2026-08-02/wp1-publication-chain-ownership/ in /tmp/dfl-batch-control-review and was not yet committed. Production was not rolled back; batch remains IN_EXECUTION. Next eligible WP1 verification completion, then WP2. User issued @$fin, so session closes here.
+NO_TOUCH respected: puntajeTigreKnockout, Supabase, Vercel config, env vars, HLC templates, cron 3:05, /etc/dfl-secrets untouched.
+
+### @$fin 2026-08-02 — cierre de sesión CC (evidence only, NOT routing authority)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/session/cierre-2026-08-02
+TYPE: decision
+STATUS: closed
 DATE: 2026-08-02
 
-ROUTING AUTHORITY: none. This observation is EVIDENCE ONLY. Engram does not govern routing. The sole routing authority remains DFL_BOOTSTRAP.pending (/opt/dfl-knowledge/governance/onboarding/provisional-routing-state.json). No agent may select or activate a mission from this record.
+ROUTING AUTHORITY: none. EVIDENCE ONLY. Engram no gobierna routing ni despacho.
 
-VEREDICTO: BOOTSTRAP_PENDING_REFRESH_AND_PUBLICATION_BLOCKED (computed by aggregator, exit 1).
+CIERRE @$fin de la sesion CC del 2026-08-02. Rama feat/dfl-high-certainty-harness-v0.1, HEAD 9cf99aadf29f747ac374c8dab9c1b23716fedace.
 
-GATES: G1-G8 PASS, G9/G10/G11 BLOCKED.
-- G5 adversarial 25/25 PASS; G6 pre-existing regression 11/11 PASS; G7 rollback byte-identical PASS.
-- G9 install BLOCKED: routing state is root:root 0644, session runs as dflagent uid 1000, sudo requires password.
-- G10 public verification BLOCKED: depends on G9.
-- G11 push_mirror.sh as dflagent BLOCKED: lock, .last-mirror-hash, publish log and /opt/amos-context-mirror are ALL root-owned.
+ARCO DE LA SESION — ocho commits propios:
+1. 3730500 BOOTSTRAP_PENDING_REFRESH_AND_PUBLICATION -> PASS (revisado por CX)
+2. 22df0ba DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION -> PASS (revisado por CX en 8a37603)
+3. 2abaf97 DCSA_DISPATCH_AUTHORIZATION_WIRING -> entregado BLOCKED
+4. 70c3635 handoff a CX
+5. 18a2b22 verificacion de la instalacion root -> PASS
+6. 07ba190 estado de routing instalado, versionado
+7. 4c05c70 cierre de los dos blockers de CX (63de73c) mas dos propios
+8. 9cf99aa estado GCP -> UNVERIFIED
 
-ESTADO VIVO SIN CAMBIOS: local y publico /go siguen sirviendo DOCK_OBSERVATION_RUN con state_sha 5d58ba63... y decision PASS. No se instalo nada. No se publico nada.
+ESTADO FINAL DE PRODUCCION: /go local y publico sirven DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION con status PENDIENTE_NO_ENVIADO, dispatch_state PENDIENTE_NO_ENVIADO, execute_mission PROHIBITED, gate TRANSPORT_AND_VERIFY_ONLY con decision PASS, sin autorizacion activa, ledger en genesis, store de despacho vacio, state_sha 0a02e254. DCSA NO promovida, ningun despacho emitido.
 
-CANDIDATO PREPARADO Y VALIDADO (no instalado): DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION, target f4f3909c319bd2de4714e1c27679d31f812047a6, baseline clean SFV5, policy PATCH_RISK 6f71e5e, executor CC, reviewer CX_AFTER_DELIVERY, status PENDIENTE_NO_ENVIADO, allowed READ_BOOTSTRAP/PRODUCE_RECEIPT, prohibited EXECUTE_MISSION/AUTOPROMOTE. Valida PASS contra el validador real. state_sha se recalcula en install.sh con generated_at fresco.
+QUE QUEDO CONSTRUIDO: (a) el plano de control provisional dejo de publicar una mision ya cerrada; (b) DCSA v0.1, primer consumidor institucional real de la fabrica headless, con CLOSED como estado de primera clase; (c) el cableado de la autorizacion de despacho, instalado en produccion, con PENDIENTE_NO_ENVIADO no ejecutable y EXECUTE_MISSION habilitado solo con autorizacion integra, registrada en ledger encadenado, no expirada, no reutilizable y atada al state_sha vigente.
 
-CAUSA RAIZ: provisional_routing.py no tiene nocion de mision cerrada. El registro DOCK de 03:20Z tenia ~12h (dentro de la ventana 86400s), era internamente consistente y con history/superseded vacios, asi que ningun check pudo disparar: el router devolvio PASS para una mision cerrada a las 05:10Z. La frescura no puede atrapar esta clase — el registro era joven, y ser joven es justamente el problema. El unico check que muerde es active_mission_duplicated_in_history, y solo si los cierres se registran.
+PATRON QUE SE REPITIO TODA LA SESION, y que conviene recordar: un fallo real que no llega al veredicto, y su primo, una medicion que mide lo que no es. Ejemplos: el router provisional no tenia nocion de mision cerrada y por eso servia una mision cerrada como pendiente; el criterio dcsa_no_promovida medía 'produccion sin bloque dispatch' y confundia instalar con promover, fallando justo cuando el cableado aterrizaba (mismo error repetido en el agregador y en el gate W13); la autorizacion se sellaba con hora fija mientras el gate del proxy usa el reloj real, asi que pasaba solo por suerte dentro de la ventana. La contramedida que funciono siempre: que el veredicto lo calcule un agregador desde artefactos del run, que la ausencia de dato sea FAIL y no observacion benigna, y que exista control negativo real en producto, harness y agregador.
 
-DECISION DE DISENO: mission.supersedes queda [] porque el validador falla cerrado ante supersedes no vacio (test_superseded). La supersesion se registra a nivel de estado en superseded[], preservando intacto el cierre historico de DOCK (outcome CLOSED_PASS, closed_by 801ecc4).
+DEFECTOS PROPIOS ENCONTRADOS POR LAS PRUEBAS, todos corregidos en origen: lock huerfano por process.exit() dentro del finally; re-autorizacion posible sobre una mision ya IN_EXECUTION; tokenizador de origenes que dejaba pasar chat_message y agent_inference; sed sin /g en el comparador; umbral magico en G4; G7 validando contra reloj de pared en corrida de instante fijo; replay por CLI devolviendo E_ILLEGAL_TRANSITION en vez de E_AUTH_REPLAYED; parcheadores no idempotentes que impedian reverificar post-install.
 
-LOCKFILE: diagnosticado, NO tocado. root:root 0644, size 0, sin holders (lsof y fuser vacios), mtime 2026-08-02T05:33:01Z, huerfano. El log muestra 'publish-amos-context DONE' a las 05:33:02Z: es residuo normal de una corrida limpia, no un lock trabado. Borrarlo no resolveria nada.
+RE-REVISION DE CX RECIBIDA ANTES DE CERRAR (obs #452, 17:17): PASS. CX review commit fe697e41608d1acfba68831f2ee40a149f279f6c, evidencia evidence/cx-delta-review-2026-08-02/. 13/13 gates en dos clones limpios independientes, huella bd038a86 coincidente con la de CC, segundo consume con E_AUTH_REPLAYED exacto, las transiciones ilegales legitimas siguen dando E_ILLEGAL_TRANSITION (era el quinto punto de escrutinio que CC habia señalado, y quedo comprobado), parcheadores idempotentes y byte-convergentes, TTL real expirado ejercido, controles negativos de producto y harness con exit non-zero, y W13 distinguiendo instalacion de promocion. Produccion verificada activa y segura por CX.
 
-EVIDENCIA: evidence/bootstrap-pending-refresh-2026-08-02/ con SHA256SUMS verificado, receipts/BOOTSTRAP-PENDING-REFRESH-RECEIPT.json y REMEDIATION.md.
+DEUDAS ABIERTAS AL CIERRE:
+1. DISPATCH_GAP: el cableado quedo WIRED, instalado y con re-revision independiente PASS. Sigue en REVIEW_REQUIRED / PROMOTION_BLOCKED por lifecycle: declararlo CLOSED es decision de Jorge, no de CC ni de una sola revision.
+2. CABO_7 OPEN — la cadena de publicacion sigue root-only: lock /tmp/dfl-push-mirror.lock root:root 0644, .last-mirror-hash, el log y /opt/amos-context-mirror sin escritura para dflagent. Por eso este @$fin no pudo correr push_mirror.sh. Recomendacion: grupo compartido dfl y mover el lock a /run/dfl/, porque systemd-tmpfiles-clean puede borrar un lock en /tmp y resetear cualquier arreglo de propiedad.
+3. ENGRAM_DUAL_STORE OPEN — el CLI engram escribe en ~/.engram/engram.db (serie #1x) que el servicio NO lee; solo HTTP a 127.0.0.1:7437 llega al store canonico (serie #44x). Mordio a CC y a CX.
+4. GCP UNVERIFIED — ver #451. No hay constancia de que este en cero; falta correr verify-gcp.sh con credenciales.
+5. TP-08 OPEN — identidad del baseline en VERIFIED_LOCAL_ONLY, sin credencial SSH al remoto canonico.
+6. Integridad del ledger de despacho es tamper-evident, no tamper-proof: quien pueda escribir el store puede reescribir cadena y autorizacion de forma coherente. Decision pendiente de CX sobre si debe vivir en superficie root-only.
 
-NOTA DE ALMACENAMIENTO: esta observacion se escribio via HTTP contra el store canonico (serie #44x). Un intento previo con el CLI 'engram save' escribio en /home/dflagent/.engram/engram.db (serie #10), que el servicio NO lee — es el cabo #6 de observaciones huerfanas. Ver observacion duplicada #10 en el store local de dflagent.
+MIRROR: NO PUBLICADO en este cierre. push_mirror.sh no puede correr como dflagent por cabo #7. El estado semantico quedo en Engram por el Gate 4B incremental; la mitad mecanica queda pendiente de root o del watchdog.
 
-PROXIMO_AGENTE_DEBE: no ejecutar DCSA. Requiere root para correr install.sh + push_mirror.sh y luego re-correr gen_receipt.py para que G9/G10/G11 pasen. Jorge debe decidir quien es dueño de la cadena de publicacion (recomendacion: grupo compartido dfl + mover el lock a /run/dfl/). DCSA v0.1 debe tratar 'closed' como estado de primera clase.
-
-### @$fin final sesión 2026-08-02 — cierre tras el delta de convergencia del fixture
-**Type:** checkpoint  
-**Project:** dfl  
-
-**Cierre definitivo de la sesión CC del 2026-08-02.** Supersede al cierre parcial de la obs #437, que quedó desactualizado: después de aquel @$fin llegó la revisión de CX con FAIL en gates 2 y 3, y la sesión siguió un delta más.
-
-**Estado final de la rama feat/dfl-high-certainty-harness-v0.1**: último commit f4f3909. Arco completo de la sesión, doce commits propios:
-- DOCK_OBSERVATION_RUN: cf31819 (REQUIRES_DELTA) → 12f8a45 → 84c3af7 → 4a8bb69 → 801ecc4 (PASS), cuatro deltas, cada uno disparado por un blocker real de CX.
-- HEADLESS_REAL_FIXTURE_RUN: ec0d8ee (preregistro) → 26e36be → cefd28e → 1c3f647 (PASS) → 20953ce → ae58480 → f4f3909 (PASS tras el delta de convergencia).
-
-**Último delta**: blocker 1 era que la suite del fixture fallaba si la ruta del checkout contenía un espacio (URL.pathname percent-encodeando + interpolación sin comillas en bash -c). Blocker 2 era que el receipt del consumidor no capturaba stderr ni ataba el veredicto al artefacto de la corrida. Ambos cerrados; detalle completo en la obs #438.
-
-**Patrón que se repitió tres veces en la sesión y conviene recordar**: un fallo real que no llega al veredicto. Primero el harness que siempre salía exit 0 con el 14/14 escrito a mano (Gate 5, cerrado en 801ecc4); después el cálculo de la huella determinista que crasheaba en silencio y dejaba G10 en OBSERVED con huella vacía mientras el run salía 0 (cerrado en ae58480). La contramedida que funcionó las dos veces: que el veredicto lo emita un agregador desde artefactos del run, y que la ausencia de un dato sea FAIL y no una observación benigna.
-
-**Cabos abiertos que hereda quien siga**:
-1. TP-08 — identidad del baseline en VERIFIED_LOCAL_ONLY, sin credencial SSH al remoto canónico. Sin suavizar.
-2. El detach exige source anclado: un overlay no puede desacoplarse si la fuente canónica no está disponible. Registrado sin resolver, para decisión de CX.
-3. ABORT_DIFFERENT_OVERLAY_PRESENT quedó prácticamente inalcanzable bajo el manifiesto v2.
-4. Sobredisparo de ABORT_ON_DRIFT en PATCH_RISK v0.1, con propuesta de v0.2 documentada y NO aplicada.
-5. Dos cabos de onboarding de CX: cc_bootstrap.step_2 todavía habilita que Engram seleccione misión vía recent_decisions, y el bootstrap provisional vence a las 24h sin nada que lo renueve.
-6. Nueve observaciones huérfanas en /home/dflagent/.engram/engram.db sin reconciliar, pendientes de decisión de Jorge.
-7. El lockfile /tmp/dfl-push-mirror.lock es root-owned, así que push_mirror.sh no puede correr como dflagent y ningún agente no-root puede completar la mitad mecánica de @$fin.
-
-**Invariantes al cierre**: candidate d79fffd, adapter 801ecc4, PATCH_RISK 6f71e5e y el preregistro del fixture ec0d8ee, los cuatro intactos y verificados con git diff. Lifecycle BUILT / REVIEW_REQUIRED / PROMOTION_BLOCKED. Sin promoción, sin DCSA, sin Docking System general, sin otra misión abierta.
-
-A la espera de la comprobación mecánica de CX sobre f4f3909.
+PROXIMO_AGENTE_DEBE: no promover DCSA, no emitir despacho. La re-revision de CX ya esta hecha y dio PASS (#452). Si alguien tiene root: correr push_mirror.sh para publicar el mirror y, si se decide, cerrar cabo #7.
 
 ---
 
@@ -480,4 +520,4 @@ A la espera de la comprobación mecánica de CX sobre f4f3909.
 
 ---
 
-*Mirror auto-generated 2026-08-02T14:42:44Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-02T18:05:16Z | La Garra → DFLghub/amos-context*
