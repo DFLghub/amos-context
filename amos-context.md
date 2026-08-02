@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-02T03:05:01Z  
+**Generated:** 2026-08-02T03:30:17Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -99,7 +99,42 @@ Antes de operar, respondé:
 
 ---
 
+## PROVISIONAL ROUTING GATE
+
+**Authority:** `DFL_BOOTSTRAP.pending`  
+**Decision:** `PASS`  
+**State version:** `dfl.onboarding.provisional-routing.v1`  
+**State SHA:** `5d58ba63e5b302832960b4a344072b29d5a054499c40113834f39a809ff5630c`  
+**Freshness:** `FRESH`  
+**Contradictions:** `[]`  
+**Authorized actions:** `['READ_BOOTSTRAP', 'PRODUCE_RECEIPT']`  
+**Blocked actions:** `['EXECUTE_MISSION', 'AUTOPROMOTE']`  
+
+### Active mission loaded from `pending`
+- **mission_id:** DOCK_OBSERVATION_RUN
+- **target:** d79fffdf4ab1739e45049bae9c3933794788c1df
+- **baseline:** clean SFV5
+- **policy:** PATCH_RISK 6f71e5e
+- **role:** independent reviewer after CC delivery
+- **status:** PENDIENTE_NO_ENVIADO
+
+---
+
 ## RECENT DECISIONS
+
+### @$go corrected — DOCK_OBSERVATION_RUN pending
+**Type:** decision  
+**Project:** dfl  
+
+ONBOARDING COMPLETE
+CURRENT MISSION: DOCK_OBSERVATION_RUN
+TARGET: headless candidate d79fffdf4ab1739e45049bae9c3933794788c1df
+BASELINE: clean SFV5
+POLICY: PATCH_RISK 6f71e5e
+ROLE: independent reviewer after CC delivery
+STATUS: PENDIENTE_NO_ENVIADO
+NO OTHER MISSION ACTIVATED.
+La derivación previa a Business OS anti-closet fue incorrecta y quedó archivada como observación #424.
 
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -123,22 +158,6 @@ VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
 **Project:** dfl  
 
 Revisión independiente final desde archive limpio de d79fffdf4ab1739e45049bae9c3933794788c1df, parent 4b0a6715d770bcacfa4ae5dba470f848cd89a6ea. sha256sum -c SHA256SUMS PASS; 37/37 tests PASS; PRODUCT-EVIDENCE-RECORD, RESULTS y 13 receipts validan schemas; cross-path relocation determinista con RESULTS y 13 receipts byte-idénticos; rollback independiente byte-idéntico PASS. Lifecycle máximo BUILT, review REVIEW_REQUIRED, promotion PROMOTION_BLOCKED; SELF_BUILT != SELF_PROMOTED; installed/live path false, integration/publication/consumer/promotion no iniciados y sin claims falsos. Veredicto: D_SFV5_HEADLESS_PROFILE_CLEAN_REVIEW_PASS. No se modificó el candidato.
-
-### Canonical promotion and Business OS anti-closet remediation closure
-**Type:** decision  
-**Project:** dfl  
-
-VEREDICTOS:
-- DFL_NEW_ELEMENT_SYSTEM_CANONICALLY_PROMOTED
-- BUSINESS_OS_ANTI_CLOSET_REMEDIATION_PARTIAL
-
-Canonical DFL runtime line is /opt/dfl-knowledge, branch feat/dfl-high-certainty-harness-v0.1, final HEAD 53af3a0d20b9e6106a4f2d2d9108aa7c4e165de3. Canonical tag: dfl-new-element-institutionalization-v0.1-canonical-final2. Historical tag dfl-new-element-institutionalization-v0.1 remains at 47d96d2. The separate /opt/dfl-knowledge-workunit worktree is the Concierge consumer line, branch main, restored exactly to HEAD 5f01fb29a2bfd8e8422524f616108a8996317488 after a mission-created temporary cross-line promotion was reverted with explicit git reverts and git reset --mixed only (never reset --hard). Business OS repo remains /opt/experiments/business-os-new-audit @ 4428a6dba1df56afe0759f3248c8955a927cfd7c, source untouched.
-
-Canonical verification: institutionalization tests 9/9 PASS; WRU 83/83 PASS; Concierge prior/current suite 267/267 PASS; DFL health 14/14 PASS; refresh second run UNCHANGED; live graph query WRU and Business OS FRESH/CANONICAL. Graph in active DFL runtime: 140 semantic nodes, 561 edges, 10296 structural nodes. Clean install and rollback were proven in /tmp/dfl-nei-clean. Evidence: /opt/dfl-knowledge/evidence/dfl-new-element-canonical-promotion-2026-07-31/ and /opt/dfl-knowledge/evidence/business-os-anti-closet-remediation-2026-07-31/.
-
-Business OS canonical re-evaluation: before FAIL/IN_CLOSET with 12 gaps; local remediation corrected DISCOVERABLE and OBSERVABLE; after FAIL/IN_CLOSET with 10 gaps: ACCESSIBLE, OWNER_ASSIGNED, CONSUMER_ASSIGNED, CONTRACT_DEFINED, LIVE_PATH_CONNECTED, ACTUALLY_USED, RECEIPT_PRODUCED, REFRESH_CONNECTED, MAINTENANCE_DEFINED, ROLLBACK_PROVEN. Codebase Memory health WARN: indexed HEAD matches, 3724 nodes/10241 edges, coverage unknown, 4 parser skips. No external DFL consumer or compatible contract/live path is proven; no consumer was invented. A mission-created duplicate engine project was detected and removed; historical index preserved.
-
-Dirty state: pre-existing untracked state in /opt/dfl-knowledge remains untouched; Business OS untracked audit artifacts remain untouched. NO_TOUCH surfaces untouched. Next exact step requires architectural decision or evidence of a real existing Business OS consumer before any further remediation.
 
 ### JPI Fase 5 Real E2E Completion Summary
 **Type:** decision  
@@ -205,6 +224,7 @@ Dirty state: pre-existing untracked state in /opt/dfl-knowledge remains untouche
 ---
 
 ## PENDING
+
 
 ---
 
@@ -291,45 +311,26 @@ PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o con
 
 MERCADER es un proyecto en incubación dentro de DFL. Basado en el patrón Business OS de 5 capas extraído de SaaS Factory (Daniel Carreón). Artefacto clave: MERCADER BOS (Business Operating System) con Context Pack v0.1 e Implementation Plan v0.1 en Drive/08_SaaS_Factory/03_MERCADER_BOS/. PainRadar fue evaluado como fuente de descubrimiento de dolores de mercado para Mercader/Bazar (Reddit, G2, App Store, Trustpilot, ProductHunt). Estado: modo incubación. Próximo paso: construir versión operacional usando MERCADER BOS como guía. No mezclar con SaaS Factory V5 de Daniel Carreón — ese es una referencia, no la base técnica.
 
-### Session summary: dfl-knowledge
-**Type:** session_summary  
-**Project:** dfl-knowledge  
-
-## Goal
-Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factory Extras / future Docking System coupling touchpoints, before any probe (DOCK_OBSERVATION_RUN, JPI, DCSA, Docking System) runs against real touchpoints.
-
-## Instructions
-- MODO: YOLO — proceed autonomously without per-step confirmation.
-- Create ONLY: PATCH-RISK-POLICY.md, PATCH-RISK-POLICY.json, schema(s), minimal tests, preregistration receipt. Explicitly forbidden: running DOCK_OBSERVATION_RUN/JPI/DCSA/Docking System, modifying the sfv5 headless candidate, promoting anything.
-- Version the work in one exclusive git commit.
-
-## Discoveries
-- Repo has no package.json/npm deps anywhere — JSON Schema files (draft 2020-12) exist as documented contracts but are validated by hand-rolled JS logic in tests, not ajv. Node test convention is `node --test tests/*.test.mjs` with plain `.mjs` ESM.
-- Evidence-dir convention: `evidence/<slug>-<date>/` with a root `SHA256SUMS`, a `receipts/` subfolder, and receipts shaped like `{schema, receipt_id, gate, status, reason, producer, product, baseline{sha}, declared_at, evidence[]{declared_path,exists,sha256}, receipt_sha256-style provenance}`.
-- The user's stated GREEN/YELLOW/RED rules leave one case implicit: an INTERNAL_PATCH with GOLDEN_PATH_CRITICAL/ORCHESTRATION_CRITICAL criticality that DOES have a stable hook doesn't trip any of the five named RED triggers, but YELLOW explicitly excludes orchestration/golden-path criticality — resolved by falling through to a conservative RED-by-default (documented explicitly in the policy, flagged to the user for confirmation, not yet confirmed).
-
-## Accomplished
-- ✅ Created `evidence/patch-risk-policy-preregistration-2026-08-01/` with PATCH-RISK-POLICY.md, PATCH-RISK-POLICY.json (5 classes, 8 mandatory factors, 4 derived fields, rule engine spec), schemas/patch-risk-policy.schema.json, schemas/patch-risk-touchpoint.schema.json, lib/patch-risk-classify.mjs (pure `classify()`/`redTriggers()`), tests/patch-risk-policy.test.mjs (14/14 PASS), receipts/preregistration-receipt.json, SHA256SUMS.
-- ✅ Verified no other repo state touched (candidate untouched, only new evidence dir staged) and committed exclusively as `6f71e5e` on branch `feat/dfl-high-certainty-harness-v0.1`, baseline `d79fffdf4ab1739e45049bae9c3933794788c1df`.
-- ✅ Incremental Gate 4B mem_save done mid-session (obs id 421) at commit time.
-- 🔲 User has not yet confirmed the RED-default interpretation for the golden-path/stable-hook edge case — surfaced but unresolved.
-
-## Next Steps
-- If user confirms or amends the golden-path/stable-hook RED-default interpretation, update PATCH-RISK-POLICY.md/.json + tests accordingly (would be a policy_version bump, e.g. 0.1.1).
-- Actual DOCK_OBSERVATION_RUN / JPI / DCSA / Docking System work is explicitly NOT started — this session only preregistered the classification contract they must conform to.
-
-## Relevant Files
-- evidence/patch-risk-policy-preregistration-2026-08-01/PATCH-RISK-POLICY.md — canonical policy prose
-- evidence/patch-risk-policy-preregistration-2026-08-01/PATCH-RISK-POLICY.json — machine-checkable source of truth
-- evidence/patch-risk-policy-preregistration-2026-08-01/lib/patch-risk-classify.mjs — verdict algorithm
-- evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
-- evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
-
-### @$fin — cierre revisión final SFV5 headless profile
-**Type:** fact  
+### @$go corrected — DOCK_OBSERVATION_RUN pending
+**Type:** decision  
 **Project:** dfl  
 
-Cierre de sesión: revisión independiente final completada sobre archive limpio de d79fffdf4ab1739e45049bae9c3933794788c1df (parent 4b0a6715d770bcacfa4ae5dba470f848cd89a6ea). Evidencia: sha256sum -c PASS; 37/37 tests PASS; PRODUCT-EVIDENCE-RECORD, RESULTS y 13 receipts validan schemas; cross-path determinism PASS; rollback byte-idéntico PASS. Lifecycle máximo BUILT, REVIEW_REQUIRED, PROMOTION_BLOCKED; SELF_BUILT != SELF_PROMOTED; sin integración, instalación, publicación, consumo ni promoción falsos. Veredicto: D_SFV5_HEADLESS_PROFILE_CLEAN_REVIEW_PASS. No se modificó el candidato ni el dirty state ajeno.
+ONBOARDING COMPLETE
+CURRENT MISSION: DOCK_OBSERVATION_RUN
+TARGET: headless candidate d79fffdf4ab1739e45049bae9c3933794788c1df
+BASELINE: clean SFV5
+POLICY: PATCH_RISK 6f71e5e
+ROLE: independent reviewer after CC delivery
+STATUS: PENDIENTE_NO_ENVIADO
+NO OTHER MISSION ACTIVATED.
+La derivación previa a Business OS anti-closet fue incorrecta y quedó archivada como observación #424.
+
+### [RESOLVED] Incorrect @$go routing to historical Business OS pending
+**Type:** bugfix  
+**Project:** dfl  
+
+La sesión @$go derivó incorrectamente al pendiente histórico Business OS anti-closet. Corrección: ese pendiente no era la misión activa de esta sesión. LIFECYCLE: archived
+RESOLVED: reemplazado por DOCK_OBSERVATION_RUN sobre el candidato SFV5 headless d79fffdf4ab1739e45049bae9c3933794788c1df, con baseline clean SFV5 y política PATCH_RISK 6f71e5e.
 
 ---
 
@@ -440,4 +441,4 @@ Cierre de sesión: revisión independiente final completada sobre archive limpio
 
 ---
 
-*Mirror auto-generated 2026-08-02T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-02T03:30:17Z | La Garra → DFLghub/amos-context*
