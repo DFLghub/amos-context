@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-02T05:30:17Z  
+**Generated:** 2026-08-02T05:33:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -309,31 +309,38 @@ PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o con
 
 MERCADER es un proyecto en incubación dentro de DFL. Basado en el patrón Business OS de 5 capas extraído de SaaS Factory (Daniel Carreón). Artefacto clave: MERCADER BOS (Business Operating System) con Context Pack v0.1 e Implementation Plan v0.1 en Drive/08_SaaS_Factory/03_MERCADER_BOS/. PainRadar fue evaluado como fuente de descubrimiento de dolores de mercado para Mercader/Bazar (Reddit, G2, App Store, Trustpilot, ProductHunt). Estado: modo incubación. Próximo paso: construir versión operacional usando MERCADER BOS como guía. No mezclar con SaaS Factory V5 de Daniel Carreón — ese es una referencia, no la base técnica.
 
+### @$fin final sesión 2026-08-02 — cierre tras el delta de convergencia del fixture
+**Type:** checkpoint  
+**Project:** dfl  
+
+**Cierre definitivo de la sesión CC del 2026-08-02.** Supersede al cierre parcial de la obs #437, que quedó desactualizado: después de aquel @$fin llegó la revisión de CX con FAIL en gates 2 y 3, y la sesión siguió un delta más.
+
+**Estado final de la rama feat/dfl-high-certainty-harness-v0.1**: último commit f4f3909. Arco completo de la sesión, doce commits propios:
+- DOCK_OBSERVATION_RUN: cf31819 (REQUIRES_DELTA) → 12f8a45 → 84c3af7 → 4a8bb69 → 801ecc4 (PASS), cuatro deltas, cada uno disparado por un blocker real de CX.
+- HEADLESS_REAL_FIXTURE_RUN: ec0d8ee (preregistro) → 26e36be → cefd28e → 1c3f647 (PASS) → 20953ce → ae58480 → f4f3909 (PASS tras el delta de convergencia).
+
+**Último delta**: blocker 1 era que la suite del fixture fallaba si la ruta del checkout contenía un espacio (URL.pathname percent-encodeando + interpolación sin comillas en bash -c). Blocker 2 era que el receipt del consumidor no capturaba stderr ni ataba el veredicto al artefacto de la corrida. Ambos cerrados; detalle completo en la obs #438.
+
+**Patrón que se repitió tres veces en la sesión y conviene recordar**: un fallo real que no llega al veredicto. Primero el harness que siempre salía exit 0 con el 14/14 escrito a mano (Gate 5, cerrado en 801ecc4); después el cálculo de la huella determinista que crasheaba en silencio y dejaba G10 en OBSERVED con huella vacía mientras el run salía 0 (cerrado en ae58480). La contramedida que funcionó las dos veces: que el veredicto lo emita un agregador desde artefactos del run, y que la ausencia de un dato sea FAIL y no una observación benigna.
+
+**Cabos abiertos que hereda quien siga**:
+1. TP-08 — identidad del baseline en VERIFIED_LOCAL_ONLY, sin credencial SSH al remoto canónico. Sin suavizar.
+2. El detach exige source anclado: un overlay no puede desacoplarse si la fuente canónica no está disponible. Registrado sin resolver, para decisión de CX.
+3. ABORT_DIFFERENT_OVERLAY_PRESENT quedó prácticamente inalcanzable bajo el manifiesto v2.
+4. Sobredisparo de ABORT_ON_DRIFT en PATCH_RISK v0.1, con propuesta de v0.2 documentada y NO aplicada.
+5. Dos cabos de onboarding de CX: cc_bootstrap.step_2 todavía habilita que Engram seleccione misión vía recent_decisions, y el bootstrap provisional vence a las 24h sin nada que lo renueve.
+6. Nueve observaciones huérfanas en /home/dflagent/.engram/engram.db sin reconciliar, pendientes de decisión de Jorge.
+7. El lockfile /tmp/dfl-push-mirror.lock es root-owned, así que push_mirror.sh no puede correr como dflagent y ningún agente no-root puede completar la mitad mecánica de @$fin.
+
+**Invariantes al cierre**: candidate d79fffd, adapter 801ecc4, PATCH_RISK 6f71e5e y el preregistro del fixture ec0d8ee, los cuatro intactos y verificados con git diff. Lifecycle BUILT / REVIEW_REQUIRED / PROMOTION_BLOCKED. Sin promoción, sin DCSA, sin Docking System general, sin otra misión abierta.
+
+A la espera de la comprobación mecánica de CX sobre f4f3909.
+
 ### @$fin 2026-08-02 — HEADLESS_REAL_FIXTURE_RUN verificado PASS
 **Type:** fact  
 **Project:** dfl  
 
 Cierre Gate 4B. Revisión mecánica independiente ejecutada desde checkout limpio sobre 20953ce, ae58480 y f4f3909. Se corrió la suite desde una ruta con espacios fuera de la restricción EPERM del sandbox: exit 0, 11 PASS, 0 FAIL, 0 SKIPPED, 0 SETUP_ERROR, G10 OBSERVED por diseño de corrida individual. G2 fabricación PASS; G3 consumo PASS con stdout JSON no vacío, exit/stderr separados, checked=12 y contract_honored=true en positivo, negativo INTEGRITY_FAILED exit 1; G8 reproducibilidad PASS mediante dos checkouts limpios, ambos exit 0, fingerprints idénticos 4be987320560c92ea1551d945dab74e041be001401a99f7203a3edfcb0bed27b y REPRODUCIBLE. Verificados refs ec0d8ee, d79fffdf4ab1739e45049bae9c3933794788c1df, 801ecc4 y 6f71e5e; lifecycle REVIEW_REQUIRED/PROMOTION_BLOCKED, sin integración/instalación/publicación/promoción/DCSA. No se modificó el workspace ni se abrió otra misión.
-
-### DELTA convergencia HEADLESS_REAL_FIXTURE_RUN — PASS (f4f3909)
-**Type:** fact  
-**Project:** dfl  
-
-**Veredicto**: HEADLESS_REAL_FIXTURE_RUN_PASS, calculado por el agregador. Gate 2, Gate 3 y Gate 8 en PASS. Commits: 20953ce, ae58480, f4f3909. Entrada: 1c3f647 + revisión CX (FAIL en gates 2 y 3).
-
-**BLOCKER 1 (gate 2) REPRODUCIDO**: la suite del fixture falla cuando la ruta del checkout contiene un espacio — 2 pass / 7 fail. No era locale ni versión de node. Dos causas, ambas de cableado mío: (1) new URL(...).pathname devuelve la ruta percent-encodeada (/tmp/cx%20probe/...) y node no encuentra el CLI; (2) las rutas se interpolaban sin comillas dentro de bash -c, que las parte en espacios ('cd: too many arguments'). Corregida la IMPLEMENTACIÓN, no la expectativa: fileURLToPath() y eliminación total del shell — el manifiesto de prueba se calcula en node y el oráculo coreutils se invoca con execFileSync + cwd. Verificado: 9/9 exit 0, y el ciclo completo G1..G12 corre exit 0 desde una ruta con espacio.
-
-**BLOCKER 2 (gate 3)**: el receipt guardaba stdout_sha256 pero nunca el stdout, y JAMÁS capturaba stderr; además contract_honored no ataba el veredicto al artefacto de la corrida. Receipt v2 captura stdout/stderr/exit por separado (verbatim + sha256 + bytes), parsea estricto (rechaza vacío, {}, no-objeto), valida campos/tipos/valores, exige exit code esperado y coherente con el veredicto, y exige correspondencia: checked debe igualar las entradas del manifiesto real. Positivo: exit 0, stdout 112B, checked 12 = 12 entradas, contract_honored true, cero checks fallidos. Negativo: exit 1, INTEGRITY_FAILED, receipt honesto.
-
-**Probado que no puede dar falso positivo**: CLI que crashea (CONSUMPTION_FAILED, stdout 0B, stderr 617B capturado), CLI que devuelve {} (parse_error explícito), manifiesto que no corresponde. Los tres exit 1.
-
-**Defecto propio encontrado por la reproducibilidad**: tras el receipt v2, el cálculo de la huella determinista seguía leyendo claves de v1 (expected_verdict, verdict_matches_expectation). El KeyError se perdía en silencio: DET_SHA vacío, G10 registrado OBSERVED con huella en blanco, y el run salía 0. Es EL MISMO PATRÓN que CX marcó en el Gate 5 del delta anterior — un fallo real que no llega al veredicto. Corregido: huella vacía es FAIL, y compare-runs no declara REPRODUCIBLE con huellas ausentes.
-
-**Reproducibilidad**: dos checkouts limpios, ambos exit 0, huella 4be98732 idéntica. Única normalización: la ruta absoluta ya preregistrada.
-
-**Invariantes verificados con git diff**: preregistro del fixture (ec0d8ee), candidate d79fffd, adapter 801ecc4 y PATCH_RISK 6f71e5e — los cuatro intactos. Sin capacidades nuevas, sin DCSA, sin integrar/instalar/publicar/promover, sin otra misión.
-
-Lifecycle BUILT / REVIEW_REQUIRED / PROMOTION_BLOCKED. A la espera de comprobación mecánica de CX.
 
 ---
 
@@ -444,4 +451,4 @@ Lifecycle BUILT / REVIEW_REQUIRED / PROMOTION_BLOCKED. A la espera de comprobaci
 
 ---
 
-*Mirror auto-generated 2026-08-02T05:30:17Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-02T05:33:01Z | La Garra → DFLghub/amos-context*
