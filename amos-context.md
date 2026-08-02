@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-02T05:33:01Z  
+**Generated:** 2026-08-02T14:42:44Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -104,18 +104,18 @@ Antes de operar, respondé:
 **Authority:** `DFL_BOOTSTRAP.pending`  
 **Decision:** `PASS`  
 **State version:** `dfl.onboarding.provisional-routing.v1`  
-**State SHA:** `5d58ba63e5b302832960b4a344072b29d5a054499c40113834f39a809ff5630c`  
+**State SHA:** `286baef5b0441d1fa68f9c1b9b1d2de12e44732e7ed550098de02e32db1224fa`  
 **Freshness:** `FRESH`  
 **Contradictions:** `[]`  
 **Authorized actions:** `['READ_BOOTSTRAP', 'PRODUCE_RECEIPT']`  
 **Blocked actions:** `['EXECUTE_MISSION', 'AUTOPROMOTE']`  
 
 ### Active mission loaded from `pending`
-- **mission_id:** DOCK_OBSERVATION_RUN
-- **target:** d79fffdf4ab1739e45049bae9c3933794788c1df
+- **mission_id:** DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION
+- **target:** f4f3909c319bd2de4714e1c27679d31f812047a6
 - **baseline:** clean SFV5
 - **policy:** PATCH_RISK 6f71e5e
-- **role:** independent reviewer after CC delivery
+- **role:** CC manufactures DCSA v0.1; CX reviews independently after delivery
 - **status:** PENDIENTE_NO_ENVIADO
 
 ---
@@ -309,6 +309,41 @@ PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o con
 
 MERCADER es un proyecto en incubación dentro de DFL. Basado en el patrón Business OS de 5 capas extraído de SaaS Factory (Daniel Carreón). Artefacto clave: MERCADER BOS (Business Operating System) con Context Pack v0.1 e Implementation Plan v0.1 en Drive/08_SaaS_Factory/03_MERCADER_BOS/. PainRadar fue evaluado como fuente de descubrimiento de dolores de mercado para Mercader/Bazar (Reddit, G2, App Store, Trustpilot, ProductHunt). Estado: modo incubación. Próximo paso: construir versión operacional usando MERCADER BOS como guía. No mezclar con SaaS Factory V5 de Daniel Carreón — ese es una referencia, no la base técnica.
 
+### BOOTSTRAP_PENDING_REFRESH_AND_PUBLICATION — BLOCKED (evidence only, NOT routing authority)
+**Type:** checkpoint  
+**Project:** dfl  
+
+TOPIC: dfl/onboarding/bootstrap-pending-refresh
+TYPE: checkpoint
+STATUS: blocked
+DATE: 2026-08-02
+
+ROUTING AUTHORITY: none. This observation is EVIDENCE ONLY. Engram does not govern routing. The sole routing authority remains DFL_BOOTSTRAP.pending (/opt/dfl-knowledge/governance/onboarding/provisional-routing-state.json). No agent may select or activate a mission from this record.
+
+VEREDICTO: BOOTSTRAP_PENDING_REFRESH_AND_PUBLICATION_BLOCKED (computed by aggregator, exit 1).
+
+GATES: G1-G8 PASS, G9/G10/G11 BLOCKED.
+- G5 adversarial 25/25 PASS; G6 pre-existing regression 11/11 PASS; G7 rollback byte-identical PASS.
+- G9 install BLOCKED: routing state is root:root 0644, session runs as dflagent uid 1000, sudo requires password.
+- G10 public verification BLOCKED: depends on G9.
+- G11 push_mirror.sh as dflagent BLOCKED: lock, .last-mirror-hash, publish log and /opt/amos-context-mirror are ALL root-owned.
+
+ESTADO VIVO SIN CAMBIOS: local y publico /go siguen sirviendo DOCK_OBSERVATION_RUN con state_sha 5d58ba63... y decision PASS. No se instalo nada. No se publico nada.
+
+CANDIDATO PREPARADO Y VALIDADO (no instalado): DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION, target f4f3909c319bd2de4714e1c27679d31f812047a6, baseline clean SFV5, policy PATCH_RISK 6f71e5e, executor CC, reviewer CX_AFTER_DELIVERY, status PENDIENTE_NO_ENVIADO, allowed READ_BOOTSTRAP/PRODUCE_RECEIPT, prohibited EXECUTE_MISSION/AUTOPROMOTE. Valida PASS contra el validador real. state_sha se recalcula en install.sh con generated_at fresco.
+
+CAUSA RAIZ: provisional_routing.py no tiene nocion de mision cerrada. El registro DOCK de 03:20Z tenia ~12h (dentro de la ventana 86400s), era internamente consistente y con history/superseded vacios, asi que ningun check pudo disparar: el router devolvio PASS para una mision cerrada a las 05:10Z. La frescura no puede atrapar esta clase — el registro era joven, y ser joven es justamente el problema. El unico check que muerde es active_mission_duplicated_in_history, y solo si los cierres se registran.
+
+DECISION DE DISENO: mission.supersedes queda [] porque el validador falla cerrado ante supersedes no vacio (test_superseded). La supersesion se registra a nivel de estado en superseded[], preservando intacto el cierre historico de DOCK (outcome CLOSED_PASS, closed_by 801ecc4).
+
+LOCKFILE: diagnosticado, NO tocado. root:root 0644, size 0, sin holders (lsof y fuser vacios), mtime 2026-08-02T05:33:01Z, huerfano. El log muestra 'publish-amos-context DONE' a las 05:33:02Z: es residuo normal de una corrida limpia, no un lock trabado. Borrarlo no resolveria nada.
+
+EVIDENCIA: evidence/bootstrap-pending-refresh-2026-08-02/ con SHA256SUMS verificado, receipts/BOOTSTRAP-PENDING-REFRESH-RECEIPT.json y REMEDIATION.md.
+
+NOTA DE ALMACENAMIENTO: esta observacion se escribio via HTTP contra el store canonico (serie #44x). Un intento previo con el CLI 'engram save' escribio en /home/dflagent/.engram/engram.db (serie #10), que el servicio NO lee — es el cabo #6 de observaciones huerfanas. Ver observacion duplicada #10 en el store local de dflagent.
+
+PROXIMO_AGENTE_DEBE: no ejecutar DCSA. Requiere root para correr install.sh + push_mirror.sh y luego re-correr gen_receipt.py para que G9/G10/G11 pasen. Jorge debe decidir quien es dueño de la cadena de publicacion (recomendacion: grupo compartido dfl + mover el lock a /run/dfl/). DCSA v0.1 debe tratar 'closed' como estado de primera clase.
+
 ### @$fin final sesión 2026-08-02 — cierre tras el delta de convergencia del fixture
 **Type:** checkpoint  
 **Project:** dfl  
@@ -335,12 +370,6 @@ MERCADER es un proyecto en incubación dentro de DFL. Basado en el patrón Busin
 **Invariantes al cierre**: candidate d79fffd, adapter 801ecc4, PATCH_RISK 6f71e5e y el preregistro del fixture ec0d8ee, los cuatro intactos y verificados con git diff. Lifecycle BUILT / REVIEW_REQUIRED / PROMOTION_BLOCKED. Sin promoción, sin DCSA, sin Docking System general, sin otra misión abierta.
 
 A la espera de la comprobación mecánica de CX sobre f4f3909.
-
-### @$fin 2026-08-02 — HEADLESS_REAL_FIXTURE_RUN verificado PASS
-**Type:** fact  
-**Project:** dfl  
-
-Cierre Gate 4B. Revisión mecánica independiente ejecutada desde checkout limpio sobre 20953ce, ae58480 y f4f3909. Se corrió la suite desde una ruta con espacios fuera de la restricción EPERM del sandbox: exit 0, 11 PASS, 0 FAIL, 0 SKIPPED, 0 SETUP_ERROR, G10 OBSERVED por diseño de corrida individual. G2 fabricación PASS; G3 consumo PASS con stdout JSON no vacío, exit/stderr separados, checked=12 y contract_honored=true en positivo, negativo INTEGRITY_FAILED exit 1; G8 reproducibilidad PASS mediante dos checkouts limpios, ambos exit 0, fingerprints idénticos 4be987320560c92ea1551d945dab74e041be001401a99f7203a3edfcb0bed27b y REPRODUCIBLE. Verificados refs ec0d8ee, d79fffdf4ab1739e45049bae9c3933794788c1df, 801ecc4 y 6f71e5e; lifecycle REVIEW_REQUIRED/PROMOTION_BLOCKED, sin integración/instalación/publicación/promoción/DCSA. No se modificó el workspace ni se abrió otra misión.
 
 ---
 
@@ -451,4 +480,4 @@ Cierre Gate 4B. Revisión mecánica independiente ejecutada desde checkout limpi
 
 ---
 
-*Mirror auto-generated 2026-08-02T05:33:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-02T14:42:44Z | La Garra → DFLghub/amos-context*
