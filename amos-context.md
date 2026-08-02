@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-02T18:18:02Z  
+**Generated:** 2026-08-02T19:26:07Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -102,21 +102,15 @@ Antes de operar, respondé:
 ## PROVISIONAL ROUTING GATE
 
 **Authority:** `DFL_BOOTSTRAP.pending`  
-**Decision:** `PASS`  
+**Decision:** `FAIL_CLOSED`  
 **State version:** `dfl.onboarding.provisional-routing.v1`  
 **State SHA:** `b2bcfa79c24950fb0e130a67f66375a61893afe3a5914cd7dcff51f0743cf5cc`  
 **Freshness:** `FRESH`  
-**Contradictions:** `[]`  
-**Authorized actions:** `['READ_BOOTSTRAP', 'PRODUCE_RECEIPT', 'EXECUTE_MISSION']`  
-**Blocked actions:** `['AUTOPROMOTE']`  
+**Contradictions:** `['E_AUTH_EXPIRED']`  
+**Authorized actions:** `[]`  
+**Blocked actions:** `['ALL_ACTIONS']`  
 
-### Active mission loaded from `pending`
-- **mission_id:** DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02
-- **target:** 02e06c9a9e8bf594f2e2954f4c17b60405f89aaa
-- **baseline:** clean DFL control plane
-- **policy:** PATCH_RISK 6f71e5e
-- **role:** CX autonomous orchestrator/executor of the authorized DFL roadmap batch
-- **status:** IN_EXECUTION
+**FAIL_CLOSED:** no mission selection or operational action is authorized.
 
 ---
 
@@ -520,4 +514,4 @@ PROXIMO_AGENTE_DEBE: no promover DCSA, no emitir despacho. La re-revision de CX 
 
 ---
 
-*Mirror auto-generated 2026-08-02T18:18:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-02T19:26:07Z | La Garra → DFLghub/amos-context*
