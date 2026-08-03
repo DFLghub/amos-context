@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-03T01:57:01Z  
+**Generated:** 2026-08-03T02:19:52Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -252,6 +252,49 @@ VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
 
+### [AUDIT] Cabo 7 — auditoria independiente de cierre 2026-08-03: CLOSED_WITH_NONBLOCKING_SECURITY_DEBT
+**Type:** fact  
+**Project:** dfl  
+
+TOPIC: dfl/infra/cabo-7-independent-closure-audit
+TYPE: fact
+STATUS: closed
+DATE: 2026-08-03
+PRECEDENCIA: D
+AUTHORITY: evidence only — no gobierna routing ni despacho
+LIFECYCLE: active
+CONFIDENCE: high
+
+MISION: DFL_CABO_7_INDEPENDENT_CLOSURE_AUDIT (modo YOLO, verificador independiente, read-only).
+
+VEREDICTO: CABO_7_CLOSED_WITH_NONBLOCKING_SECURITY_DEBT.
+
+SINCRONIA: /opt/dfl-knowledge-workunit rama main, working tree limpio. main = origin/main = 878f09ae596b1067314925ac02b29cd122642bf9, ahead/behind 0/0, confirmado contra GitHub con git ls-remote (no solo ref local). a8269d9f44d4050568edd1a77122b2d16d7d8170 y 878f09a ambos ancestros-o-iguales de origin/main; a8269d9 es el segundo padre del merge. Ninguno firmado (%G? = N).
+
+CHECKSUMS: sha256sum -c SHA256SUMS 19/19 OK exit 0.
+
+GATES (independiente): reproducidos por mi con exit 0 — test_fixture.sh FIXTURE_PASS (G02 G03 G04 G05 G06 G09-fixture G12), test_endpoint.sh ENDPOINT_REGRESSION_PASS, aggregate.sh sobre final-reverify.receipt AGGREGATE=PASS, aggregate.sh sobre final.receipt AGGREGATE=FAIL exit 1 (G13 real). Vivo verificado por mi: G14 systemctl active + GET 127.0.0.1:8091/go http 200 69498 bytes; G11 local=publico=965d06fdd157a206d17c0af2d41ec2f3b56c799d550222e61096ab8641f63cc2; G02 /run/dfl root:dfl 2770; G07/G08 corroborados read-only (2770/0660, other sin acceso); G10 corroborado por amos-context.md = dflagent:dfl y log 01:44 con identidad git dflagent y PUSH OK.
+
+G11 RESPALDADO: log g11-resolution.log con TIMEOUT_S=90 POLL_S=5 y 19 muestras. Primer poll discrepante 01:44:52, coincidencia 01:46:19 = 87s exactos. Commit publicado d8ddc31282d5ac3eaaa81df6d63b44be111cf326, SHA de convergencia 5987ef1290944a508a222c7fd0be3810a3fbd06890b136d78337465ec751ac48. Causa raiz confirmada en log de produccion: fatal unable to auto-detect email address (dflagent@ubuntu-s-1vcpu-1gb-nyc1) — repo mirror sin identidad de commit, no consistencia eventual. Reparacion: user.name La Garra Bot local al repo mirror. Confirmacion fresca: mirror ya en 2543ded 01:57:02 y local=publico sigue coincidiendo.
+
+DEUDAS NO BLOQUEANTES:
+1. LLAVE SSH — /home/dflagent/.ssh/id_ed25519 sin passphrase (ssh-keygen -y -P '' la abre), comentario said-vm2-la-garra (identidad de host preexistente, no dflagent), sin .pub, birth 2026-08-02 18:58:21 en plena remediacion. ssh -T git@github.com responde Hi DFLghub: es llave DE CUENTA, no deploy key con scope a amos-context — dflagent tiene escritura sobre toda la organizacion. Fingerprint SHA256:UHF2r33fb2kMeEKvz7SxinRZ4212U/08fVYOvQEzBZ0. Clasificacion: no bloqueante con remediacion posterior OBLIGATORIA (deploy key con scope + rotacion). No contradice G11-RESOLUTION.md, cuyo "no SSH keys copied/rotated" cubre solo la reparacion de las 01:44.
+2. REPRODUCIBILIDAD — .gitignore excluye receipts/root-live.receipt y receipts/*.log, asi que G04..G10 NO son reproducibles desde el paquete commiteado. Demostrado: verify_live.sh sobre contenido limpio de origin/main da 7 FAIL y AGGREGATE=FAIL. Unica copia en /tmp/dfl-cx-yolo-20260802 (efimera). Remediacion posterior: commitear receipt + log.
+3. G03 SIN COMMITEAR — el fix de scripts/regen_graph.sh no esta en origin/main ni en a8269d9; ambos siguen llamando publish-amos-context.sh directo. Vive solo como modificacion sucia en /opt/dfl-knowledge rama feat/dfl-high-certainty-harness-v0.1. install.sh lo re-aplica por sed idempotente, asi que el estado vivo es correcto, pero un git restore reintroduce silenciosamente la causa raiz (CRON 2 evadiendo el lock).
+4. push_mirror.sh hace chmod 0664 sobre last-mirror-hash en cada publicacion mientras install.sh lo deja 0660; la asercion de G08 (other<2) solo se cumple post-install. Contenido es un SHA-256 no secreto. Drift cosmetico.
+5. Residuo /var/lib/dfl-publication/test-write.txt dflagent:dfl 0644 del 2026-08-02 19:13.
+6. /opt/dfl-knowledge-workunit es root:root; dflagent no puede git fetch ahi y necesita -c safe.directory para leer. Incoherente con que el principal de publicacion sea dflagent.
+7. verify_live.sh emite G01 y G12 como echo incondicional; G12 si se computa de verdad en test_fixture.sh y G13 se valida con el bad_receipt previo. Hallazgo no confirmado como defecto.
+
+CONTRADICCIONES:
+a. El 14/14 es cierto para la corrida viva pero NO reproducible desde la evidencia commiteada (demostrado, no inferido).
+b. ROOT-ACTION.md instruye correr root-live-test.sh, cuyo G10_LIVE_DFLAGENT es un pass emitido tras ejecutar push_mirror.sh COMO ROOT — no prueba el gate que nombra. El que si lo prueba es root-live-test-fixed.sh (runuser -u dflagent). El receipt no registra cual corrio. El gate igual es verdadero por via independiente. Contradiccion de procedimiento documentado, no de resultado.
+c. INVENTORY.md registra el mirror como 2775; vivo es 2770 (endurecimiento posterior).
+
+RESTRICCIONES RESPETADAS: DCSA no promovido. No se modificaron llaves, permisos, historial git ni produccion. Unicas escrituras: git fetch (refs) y fixtures hermeticos en scratchpad. NO_TOUCH intacto (puntajeTigreKnockout, Supabase, Vercel, env vars, HLC-T01/T02/T03, CRON 3:05, /etc/dfl-secrets).
+
+PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scope a DFLghub/amos-context; (2) commitear receipts/root-live.receipt y g11-resolution.log al paquete de evidencia; (3) commitear el fix de scripts/regen_graph.sh a main antes de que un git restore lo revierta.
+
 ### @$fin 2026-08-02 — HEADLESS_REAL_FIXTURE_RUN verificado PASS
 **Type:** fact  
 **Project:** dfl  
@@ -348,62 +391,67 @@ PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o con
 
 MERCADER es un proyecto en incubación dentro de DFL. Basado en el patrón Business OS de 5 capas extraído de SaaS Factory (Daniel Carreón). Artefacto clave: MERCADER BOS (Business Operating System) con Context Pack v0.1 e Implementation Plan v0.1 en Drive/08_SaaS_Factory/03_MERCADER_BOS/. PainRadar fue evaluado como fuente de descubrimiento de dolores de mercado para Mercader/Bazar (Reddit, G2, App Store, Trustpilot, ProductHunt). Estado: modo incubación. Próximo paso: construir versión operacional usando MERCADER BOS como guía. No mezclar con SaaS Factory V5 de Daniel Carreón — ese es una referencia, no la base técnica.
 
-### [CHECKPOINT] Batch roadmap activado; WP0 PASS; WP1 parcialmente aplicado
-**Type:** decision  
+### [SUPERSEDE] Cabo 7: la cláusula 'do not claim Cabo_7 PASS' de #454 queda superada por la auditoría #455
+**Type:** fact  
 **Project:** dfl  
 
-SESSION CLOSE / @$fin 2026-08-02.
-MISSION: DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02.
-ACTIVATION: real DCSA authorization emitted and consumed. dispatch_id disp-79e74fe0c8b7606f; issuer Jorge; executor CX; allowed_action EXECUTE_MISSION; authorization_sha 92ef25b37884ab287825e8ed189094c6ecfa74377e9dd21409a4ed369f7b6482; state authority SHA 7bef023eea7b6be5b007ce2b71c84487cad415f624cf6223d6ef152eb742ee1c; live projection mission SHA b2bcfa79c24950fb0e130a67f66375a61893afe3a5914cd7dcff51f0743cf5cc; ledger 2 entries verified; dispatch IN_EXECUTION; HTTP local PASS; EXECUTE_MISSION PERMITTED; contradictions [].
-COMMITS: activation 02e06c9; projection work_packages delta 2ddff6d; WP0 canonical GCP record defbd35.
-WP0: PASS aggregator exit 0, DFL_GCP_ACTIVE_INFRASTRUCTURE_ZERO based on direct Jorge confirmation, no GCP API audit, no gcloud/credentials. Historical GCP inventory sections marked SUPERSEDED. Negative control mutated VM count and aggregator exited 1.
-WP1: install/rollback artifacts prepared and install.sh applied root; CABO_7_INSTALL PASS; group dfl created, dflagent added, /run/dfl lock, ownership changes, proxy restarted. Publication/concurrency probe was interrupted by user during execution; do not claim Cabo_7 PASS. Evidence lives in evidence/dfl-control-plane-roadmap-batch-2026-08-02/wp1-publication-chain-ownership/ in /tmp/dfl-batch-control-review and was not yet committed. Production was not rolled back; batch remains IN_EXECUTION. Next eligible WP1 verification completion, then WP2. User issued @$fin, so session closes here.
-NO_TOUCH respected: puntajeTigreKnockout, Supabase, Vercel config, env vars, HLC templates, cron 3:05, /etc/dfl-secrets untouched.
+TOPIC: dfl/infra/cabo-7-supersession
+TYPE: fact
+DATE: 2026-08-03
+AUTHORITY: evidence only
 
-### @$fin 2026-08-02 — cierre de sesión CC (evidence only, NOT routing authority)
-**Type:** decision  
+La observación #454 ([CHECKPOINT] Batch roadmap activado; WP0 PASS; WP1 parcialmente aplicado, 2026-08-02 18:04:56) contiene la cláusula: 'Publication/concurrency probe was interrupted by user during execution; do not claim Cabo_7 PASS'.
+
+Esa cláusula específica queda SUPERADA por la auditoría independiente #455 del 2026-08-03: el probe se completó, el merge 878f09a está publicado en origin/main sin divergencia, y el veredicto independiente es CABO_7_CLOSED_WITH_NONBLOCKING_SECURITY_DEBT.
+
+ALCANCE DE LA SUPERSESIÓN: solo la cláusula sobre Cabo_7. El resto de #454 sigue vigente — la misión DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02 continúa IN_EXECUTION con WP2..WP11 pendientes, y la autorización DCSA disp-79e74fe0c8b7606f expiró el 2026-08-02T18:43:55Z: cualquier ejecución nueva de WP requiere autorización fresca de Jorge.
+
+NOTA OPERATIVA: engram-dfl (search|save|context|stats) no expone update; no pude reescribir #454 in situ. Esta observación cumple el paso 2 de Gate 4B por vía append-only.
+
+PROXIMO_AGENTE_DEBE: leer #454 junto con #455 y esta nota; no tratar la cláusula 'do not claim Cabo_7 PASS' como vigente.
+
+### [AUDIT] Cabo 7 — auditoria independiente de cierre 2026-08-03: CLOSED_WITH_NONBLOCKING_SECURITY_DEBT
+**Type:** fact  
 **Project:** dfl  
 
-TOPIC: dfl/session/cierre-2026-08-02
-TYPE: decision
+TOPIC: dfl/infra/cabo-7-independent-closure-audit
+TYPE: fact
 STATUS: closed
-DATE: 2026-08-02
+DATE: 2026-08-03
+PRECEDENCIA: D
+AUTHORITY: evidence only — no gobierna routing ni despacho
+LIFECYCLE: active
+CONFIDENCE: high
 
-ROUTING AUTHORITY: none. EVIDENCE ONLY. Engram no gobierna routing ni despacho.
+MISION: DFL_CABO_7_INDEPENDENT_CLOSURE_AUDIT (modo YOLO, verificador independiente, read-only).
 
-CIERRE @$fin de la sesion CC del 2026-08-02. Rama feat/dfl-high-certainty-harness-v0.1, HEAD 9cf99aadf29f747ac374c8dab9c1b23716fedace.
+VEREDICTO: CABO_7_CLOSED_WITH_NONBLOCKING_SECURITY_DEBT.
 
-ARCO DE LA SESION — ocho commits propios:
-1. 3730500 BOOTSTRAP_PENDING_REFRESH_AND_PUBLICATION -> PASS (revisado por CX)
-2. 22df0ba DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION -> PASS (revisado por CX en 8a37603)
-3. 2abaf97 DCSA_DISPATCH_AUTHORIZATION_WIRING -> entregado BLOCKED
-4. 70c3635 handoff a CX
-5. 18a2b22 verificacion de la instalacion root -> PASS
-6. 07ba190 estado de routing instalado, versionado
-7. 4c05c70 cierre de los dos blockers de CX (63de73c) mas dos propios
-8. 9cf99aa estado GCP -> UNVERIFIED
+SINCRONIA: /opt/dfl-knowledge-workunit rama main, working tree limpio. main = origin/main = 878f09ae596b1067314925ac02b29cd122642bf9, ahead/behind 0/0, confirmado contra GitHub con git ls-remote (no solo ref local). a8269d9f44d4050568edd1a77122b2d16d7d8170 y 878f09a ambos ancestros-o-iguales de origin/main; a8269d9 es el segundo padre del merge. Ninguno firmado (%G? = N).
 
-ESTADO FINAL DE PRODUCCION: /go local y publico sirven DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION con status PENDIENTE_NO_ENVIADO, dispatch_state PENDIENTE_NO_ENVIADO, execute_mission PROHIBITED, gate TRANSPORT_AND_VERIFY_ONLY con decision PASS, sin autorizacion activa, ledger en genesis, store de despacho vacio, state_sha 0a02e254. DCSA NO promovida, ningun despacho emitido.
+CHECKSUMS: sha256sum -c SHA256SUMS 19/19 OK exit 0.
 
-QUE QUEDO CONSTRUIDO: (a) el plano de control provisional dejo de publicar una mision ya cerrada; (b) DCSA v0.1, primer consumidor institucional real de la fabrica headless, con CLOSED como estado de primera clase; (c) el cableado de la autorizacion de despacho, instalado en produccion, con PENDIENTE_NO_ENVIADO no ejecutable y EXECUTE_MISSION habilitado solo con autorizacion integra, registrada en ledger encadenado, no expirada, no reutilizable y atada al state_sha vigente.
+GATES (independiente): reproducidos por mi con exit 0 — test_fixture.sh FIXTURE_PASS (G02 G03 G04 G05 G06 G09-fixture G12), test_endpoint.sh ENDPOINT_REGRESSION_PASS, aggregate.sh sobre final-reverify.receipt AGGREGATE=PASS, aggregate.sh sobre final.receipt AGGREGATE=FAIL exit 1 (G13 real). Vivo verificado por mi: G14 systemctl active + GET 127.0.0.1:8091/go http 200 69498 bytes; G11 local=publico=965d06fdd157a206d17c0af2d41ec2f3b56c799d550222e61096ab8641f63cc2; G02 /run/dfl root:dfl 2770; G07/G08 corroborados read-only (2770/0660, other sin acceso); G10 corroborado por amos-context.md = dflagent:dfl y log 01:44 con identidad git dflagent y PUSH OK.
 
-PATRON QUE SE REPITIO TODA LA SESION, y que conviene recordar: un fallo real que no llega al veredicto, y su primo, una medicion que mide lo que no es. Ejemplos: el router provisional no tenia nocion de mision cerrada y por eso servia una mision cerrada como pendiente; el criterio dcsa_no_promovida medía 'produccion sin bloque dispatch' y confundia instalar con promover, fallando justo cuando el cableado aterrizaba (mismo error repetido en el agregador y en el gate W13); la autorizacion se sellaba con hora fija mientras el gate del proxy usa el reloj real, asi que pasaba solo por suerte dentro de la ventana. La contramedida que funciono siempre: que el veredicto lo calcule un agregador desde artefactos del run, que la ausencia de dato sea FAIL y no observacion benigna, y que exista control negativo real en producto, harness y agregador.
+G11 RESPALDADO: log g11-resolution.log con TIMEOUT_S=90 POLL_S=5 y 19 muestras. Primer poll discrepante 01:44:52, coincidencia 01:46:19 = 87s exactos. Commit publicado d8ddc31282d5ac3eaaa81df6d63b44be111cf326, SHA de convergencia 5987ef1290944a508a222c7fd0be3810a3fbd06890b136d78337465ec751ac48. Causa raiz confirmada en log de produccion: fatal unable to auto-detect email address (dflagent@ubuntu-s-1vcpu-1gb-nyc1) — repo mirror sin identidad de commit, no consistencia eventual. Reparacion: user.name La Garra Bot local al repo mirror. Confirmacion fresca: mirror ya en 2543ded 01:57:02 y local=publico sigue coincidiendo.
 
-DEFECTOS PROPIOS ENCONTRADOS POR LAS PRUEBAS, todos corregidos en origen: lock huerfano por process.exit() dentro del finally; re-autorizacion posible sobre una mision ya IN_EXECUTION; tokenizador de origenes que dejaba pasar chat_message y agent_inference; sed sin /g en el comparador; umbral magico en G4; G7 validando contra reloj de pared en corrida de instante fijo; replay por CLI devolviendo E_ILLEGAL_TRANSITION en vez de E_AUTH_REPLAYED; parcheadores no idempotentes que impedian reverificar post-install.
+DEUDAS NO BLOQUEANTES:
+1. LLAVE SSH — /home/dflagent/.ssh/id_ed25519 sin passphrase (ssh-keygen -y -P '' la abre), comentario said-vm2-la-garra (identidad de host preexistente, no dflagent), sin .pub, birth 2026-08-02 18:58:21 en plena remediacion. ssh -T git@github.com responde Hi DFLghub: es llave DE CUENTA, no deploy key con scope a amos-context — dflagent tiene escritura sobre toda la organizacion. Fingerprint SHA256:UHF2r33fb2kMeEKvz7SxinRZ4212U/08fVYOvQEzBZ0. Clasificacion: no bloqueante con remediacion posterior OBLIGATORIA (deploy key con scope + rotacion). No contradice G11-RESOLUTION.md, cuyo "no SSH keys copied/rotated" cubre solo la reparacion de las 01:44.
+2. REPRODUCIBILIDAD — .gitignore excluye receipts/root-live.receipt y receipts/*.log, asi que G04..G10 NO son reproducibles desde el paquete commiteado. Demostrado: verify_live.sh sobre contenido limpio de origin/main da 7 FAIL y AGGREGATE=FAIL. Unica copia en /tmp/dfl-cx-yolo-20260802 (efimera). Remediacion posterior: commitear receipt + log.
+3. G03 SIN COMMITEAR — el fix de scripts/regen_graph.sh no esta en origin/main ni en a8269d9; ambos siguen llamando publish-amos-context.sh directo. Vive solo como modificacion sucia en /opt/dfl-knowledge rama feat/dfl-high-certainty-harness-v0.1. install.sh lo re-aplica por sed idempotente, asi que el estado vivo es correcto, pero un git restore reintroduce silenciosamente la causa raiz (CRON 2 evadiendo el lock).
+4. push_mirror.sh hace chmod 0664 sobre last-mirror-hash en cada publicacion mientras install.sh lo deja 0660; la asercion de G08 (other<2) solo se cumple post-install. Contenido es un SHA-256 no secreto. Drift cosmetico.
+5. Residuo /var/lib/dfl-publication/test-write.txt dflagent:dfl 0644 del 2026-08-02 19:13.
+6. /opt/dfl-knowledge-workunit es root:root; dflagent no puede git fetch ahi y necesita -c safe.directory para leer. Incoherente con que el principal de publicacion sea dflagent.
+7. verify_live.sh emite G01 y G12 como echo incondicional; G12 si se computa de verdad en test_fixture.sh y G13 se valida con el bad_receipt previo. Hallazgo no confirmado como defecto.
 
-RE-REVISION DE CX RECIBIDA ANTES DE CERRAR (obs #452, 17:17): PASS. CX review commit fe697e41608d1acfba68831f2ee40a149f279f6c, evidencia evidence/cx-delta-review-2026-08-02/. 13/13 gates en dos clones limpios independientes, huella bd038a86 coincidente con la de CC, segundo consume con E_AUTH_REPLAYED exacto, las transiciones ilegales legitimas siguen dando E_ILLEGAL_TRANSITION (era el quinto punto de escrutinio que CC habia señalado, y quedo comprobado), parcheadores idempotentes y byte-convergentes, TTL real expirado ejercido, controles negativos de producto y harness con exit non-zero, y W13 distinguiendo instalacion de promocion. Produccion verificada activa y segura por CX.
+CONTRADICCIONES:
+a. El 14/14 es cierto para la corrida viva pero NO reproducible desde la evidencia commiteada (demostrado, no inferido).
+b. ROOT-ACTION.md instruye correr root-live-test.sh, cuyo G10_LIVE_DFLAGENT es un pass emitido tras ejecutar push_mirror.sh COMO ROOT — no prueba el gate que nombra. El que si lo prueba es root-live-test-fixed.sh (runuser -u dflagent). El receipt no registra cual corrio. El gate igual es verdadero por via independiente. Contradiccion de procedimiento documentado, no de resultado.
+c. INVENTORY.md registra el mirror como 2775; vivo es 2770 (endurecimiento posterior).
 
-DEUDAS ABIERTAS AL CIERRE:
-1. DISPATCH_GAP: el cableado quedo WIRED, instalado y con re-revision independiente PASS. Sigue en REVIEW_REQUIRED / PROMOTION_BLOCKED por lifecycle: declararlo CLOSED es decision de Jorge, no de CC ni de una sola revision.
-2. CABO_7 OPEN — la cadena de publicacion sigue root-only: lock /tmp/dfl-push-mirror.lock root:root 0644, .last-mirror-hash, el log y /opt/amos-context-mirror sin escritura para dflagent. Por eso este @$fin no pudo correr push_mirror.sh. Recomendacion: grupo compartido dfl y mover el lock a /run/dfl/, porque systemd-tmpfiles-clean puede borrar un lock en /tmp y resetear cualquier arreglo de propiedad.
-3. ENGRAM_DUAL_STORE OPEN — el CLI engram escribe en ~/.engram/engram.db (serie #1x) que el servicio NO lee; solo HTTP a 127.0.0.1:7437 llega al store canonico (serie #44x). Mordio a CC y a CX.
-4. GCP UNVERIFIED — ver #451. No hay constancia de que este en cero; falta correr verify-gcp.sh con credenciales.
-5. TP-08 OPEN — identidad del baseline en VERIFIED_LOCAL_ONLY, sin credencial SSH al remoto canonico.
-6. Integridad del ledger de despacho es tamper-evident, no tamper-proof: quien pueda escribir el store puede reescribir cadena y autorizacion de forma coherente. Decision pendiente de CX sobre si debe vivir en superficie root-only.
+RESTRICCIONES RESPETADAS: DCSA no promovido. No se modificaron llaves, permisos, historial git ni produccion. Unicas escrituras: git fetch (refs) y fixtures hermeticos en scratchpad. NO_TOUCH intacto (puntajeTigreKnockout, Supabase, Vercel, env vars, HLC-T01/T02/T03, CRON 3:05, /etc/dfl-secrets).
 
-MIRROR: NO PUBLICADO en este cierre. push_mirror.sh no puede correr como dflagent por cabo #7. El estado semantico quedo en Engram por el Gate 4B incremental; la mitad mecanica queda pendiente de root o del watchdog.
-
-PROXIMO_AGENTE_DEBE: no promover DCSA, no emitir despacho. La re-revision de CX ya esta hecha y dio PASS (#452). Si alguien tiene root: correr push_mirror.sh para publicar el mirror y, si se decide, cerrar cabo #7.
+PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scope a DFLghub/amos-context; (2) commitear receipts/root-live.receipt y g11-resolution.log al paquete de evidencia; (3) commitear el fix de scripts/regen_graph.sh a main antes de que un git restore lo revierta.
 
 ---
 
@@ -514,4 +562,4 @@ PROXIMO_AGENTE_DEBE: no promover DCSA, no emitir despacho. La re-revision de CX 
 
 ---
 
-*Mirror auto-generated 2026-08-03T01:57:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-03T02:19:52Z | La Garra → DFLghub/amos-context*
