@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-03T03:05:01Z  
+**Generated:** 2026-08-03T03:06:29Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -310,86 +310,49 @@ Cierre Gate 4B. Revisión mecánica independiente ejecutada desde checkout limpi
 
 ## RECENT ACTIVITY (cross-project)
 
-### SaaS Factory V5 consolidada en commit local 5e42124
+### amOS Event Model — veredicto auditoría 2026-06-23
 **Type:** decision  
 **Project:** dfl  
 
-TOPIC: dfl/saas-factory/v5-local-commit
-TYPE: decision
-STATUS: active
-DATE: 2026-07-11
-SUMMARY: Con autorización explícita de Jorge, se consolidó la capa operativa SaaS Factory V5 existente sobre la base Git V4 del repositorio /opt/saas-factory-setup. Commit local: 5e42124aa0a070701f0a400b714d2a133b361a86, mensaje `feat: establish SaaS Factory V5 operational layer`, rama main, base previa 99f51b3. Alcance: 67 archivos, incluyendo CHANGELOG 5.0.0, CLAUDE/GEMINI y nuevos skills V5 con referencias. Validación: 32 SKILL.md físicos con frontmatter mínimo válido; escaneo de patrones conocidos sin secretos; commit verificado. Exclusión intencional: saas-factory/graphify-out/ permanece untracked por ser salida diagnóstica generada. No se hizo push.
-PROXIMO_AGENTE_DEBE: antes de publicar, revisar remoto/destino y solicitar o confirmar autorización explícita de push; no incluir graphify-out salvo orden específica.
+Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (AgMaster_amOS_3, AI_amOS_Acta_Fundacional v1.1, Protocolo MS→amOS). Veredicto: B — Existe parcialmente pero disperso. Cobertura: Peso/costo metabólico→confidence+value en tabla events (Parcial, consolidar); Persistencia→status Origin Chain+estados Candidate Vault (Parcial, consolidar); Intención→scope+forbidden_uses agLego+Layer3 VALUE (Implícita, nombrar); Propagación→C-009+G-002 Protocol Taxonomy (Incompleta, GAP REAL); Relación con estado→Layer6+tabla asset_states (Existe, conservar). Conclusión: NO hace falta constructo nuevo tipo 'Light Signals'. Hace falta unificar y nombrar lo disperso. Gap real confirmado: G-002 Protocol Taxonomy (propagación, marcado como no cerrado en el Acta Fundacional). Próximo paso: cerrar G-002 dentro del Libro 1 amOS o como PRP independiente. Prerequisito: localizar RFC-DFL-001 (puede contener Event Model más completo).
 
-### SFV5 CLAUDE.md Documentation Fix — Independent Mission (NOT part of obs-347 piloto)
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-**INDEPENDENT MISSION: SFV5 Documentation Fix**  
-**Status:** ✅ ANALYSIS COMPLETE, PROPOSAL READY  
-**Timestamp:** 2026-07-25 05:35Z  
-**Scope:** `/opt/saas-factory-setup/saas-factory` ONLY (not BOS-JPI)
-
-## Executive Summary
-
-**Problem:** CLAUDE.md claims "30 Herramientas" but `.claude/skills/` has 32 real, committed skills  
-**Missing:** Exactly 2 skills not in documentation:
-- `pack-cold-email` (B2B cold email automation, Pillar: Adquisición)
-- `video-visuals` (Sketchnote narrative visuals, Pillar: Distribución)
-
-**Source:** Both exist in DFL `origin/main @ 5e42124` ("feat: establish SaaS Factory V5 operational layer")
-
-## Separación de Misiones Confirmada
-
-**obs-347 (Piloto BOS-JPI):**
-- Modifica: `/opt/360eventos/business-os/`
-- Fases: 1–6, ~9.5 agentes-días
-- Roadmap: `/opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md`
-
-**SFV5 Doc Fix (INDEPENDENT):**
-- Modifica: `/opt/saas-factory-setup/saas-factory/CLAUDE.md`
-- Scope: Add 2 rows to skills table + update decision tree + update header
-- Duration: ~15 minutos
-- Proposal: `/opt/dfl-knowledge/evidence/SFV5-DOCUMENTATION-FIX-PROPOSAL.md`
-
-**Zero conflicts.** Can proceed in parallel or sequentially.
-
-## Exact Changes Needed (from proposal)
-
-1. Line 140: "30 Herramientas" → "32 Herramientas (18 V4 + 14 V5)"
-2. Add row #31: `pack-cold-email` (Adquisición pillar)
-3. Add row #32: `video-visuals` (Distribución pillar)
-4. Update "Que Cambia en V5" table: link Distribución to both acquisition + video-visuals
-5. Add 2 branches to Decision Tree (~lines 134–136)
-
-## Verification Evidence
-
-**Skills confirmed real:**
-- `./.claude/skills/pack-cold-email/SKILL.md` (3.6 KB, valid)
-- `./.claude/skills/video-visuals/SKILL.md` (8.9 KB, valid)
-- Git commit: 5e42124 "feat: establish SaaS Factory V5 operational layer"
-
-**Analysis:** `/opt/dfl-knowledge/evidence/SFV5-DOCUMENTATION-FIX-PROPOSAL.md`
-- Complete enumeration (32 skills listed)
-- Git history traced
-- Branch status verified
-- Exact line-by-line changes specified
-- Acceptance criteria defined
-
-## Next Steps
-
-1. ✅ Analysis + proposal: DONE
-2. ⏳ Decision: Proceed? (YES/NO from Jorge or delegated)
-3. ⏳ Implementation: Edit CLAUDE.md + PR
-4. ⏳ Merge: After verification
-
-**Can be started immediately after obs-347 piloto approval (orthogonal work).**
-
-### MERCADER — contexto e incubación
+### amOS — ontología activa 13 capas (Acta Fundacional v1.1)
 **Type:** fact  
 **Project:** dfl  
 
-MERCADER es un proyecto en incubación dentro de DFL. Basado en el patrón Business OS de 5 capas extraído de SaaS Factory (Daniel Carreón). Artefacto clave: MERCADER BOS (Business Operating System) con Context Pack v0.1 e Implementation Plan v0.1 en Drive/08_SaaS_Factory/03_MERCADER_BOS/. PainRadar fue evaluado como fuente de descubrimiento de dolores de mercado para Mercader/Bazar (Reddit, G2, App Store, Trustpilot, ProductHunt). Estado: modo incubación. Próximo paso: construir versión operacional usando MERCADER BOS como guía. No mezclar con SaaS Factory V5 de Daniel Carreón — ese es una referencia, no la base técnica.
+13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
+
+### Session summary: futbolweb-app
+**Type:** session_summary  
+**Project:** futbolweb-app  
+
+## Cierre DFL/KNL/FutbolWeb — 2026-06-27
+
+### Goal
+Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar FutbolWeb limpio de dirty files y factory artifacts.
+
+### Accomplished
+- Engram #101: payload /go slim — graph_context eliminado, knl canónico único en payload
+- cc-atgo-hook.sh: header @go → @$go corregido
+- dfl-nav fmt_brief: mensaje no-match → "sin god_node — intenta la raíz del concepto"
+- FutbolWeb repo limpio: Blueprint audit movido a /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Auditorias/, graphify-out/ eliminado, .gitignore actualizado, commit 3fd5801
+- Engram #102: higiene FutbolWeb documentada
+- Bitácora creada: /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+
+### Discoveries
+- graph_context era alias redundante del payload /go — eliminado sin romper consumidores
+- agProtocol_ATP-D_ROJA_v0.1-1: 3 archivos con MD5 idéntico en corpus (duplicados de indexación)
+- "estado" como nombre de god_node produce colisión léxica en español con el grafo
+- Blueprint_v0.6 audit era inconclusa (Blueprint no disponible en VM2) — conservada en Auditorias/
+
+### Next Steps
+1. FutbolWeb producto — runtime estable, knockout scoring deployado (91a4531)
+2. KNL próximo ciclo — nota stale graph_context en knl_builder.py, health test local, evaluar renombrar estado → context-proxy
+3. MERCADER — agregar a KNL si se activa como área de trabajo
+4. Corpus — eliminar agProtocol duplicados (-1 variants)
+
+### Relevant Files
+/opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
 ### [SUPERSEDE] Cabo 7: la cláusula 'do not claim Cabo_7 PASS' de #454 queda superada por la auditoría #455
 **Type:** fact  
@@ -551,15 +514,15 @@ PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scop
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.885  
+**Graph entropy:** 0.9366  
 
-- **Community 11** (90 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
-- **Community 0** (7 nodes): SaaS Factory V5, Pack Cold Email, Visuales Narrativos
-- **Community 1** (7 nodes): PAT clásico, Rollback, Goal Closure Gate
-- **Community 2** (4 nodes): CP-03 y contratos constitutivos F1, Soberanía de SaaS Factory V5, Matriz de reconciliación A1
-- **Community 3** (4 nodes): Patrones de Validación
-- **Community 4** (4 nodes): FutbolWeb - Reality Sync, FutbolWeb - Ranking Summary, Graph and Refresh Contract
+- **Community 11** (94 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
+- **Community 0** (5 nodes): Modelo de Ejecución Secuencial, Protocolo de Contexto de Modelo (MCP), Regla de Importación en Grafo
+- **Community 1** (5 nodes): amOS, IAIM, Activo
+- **Community 2** (4 nodes): Schema Versionado, Interfaz HTTP de Goals, Políticas de Seguridad en RLS
+- **Community 3** (4 nodes): Devicetree, Preflight Algorithm
+- **Community 4** (4 nodes): Registro de disponibilidad
 
 ---
 
-*Mirror auto-generated 2026-08-03T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-03T03:06:29Z | La Garra → DFLghub/amos-context*
