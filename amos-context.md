@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-03T02:45:02Z  
+**Generated:** 2026-08-03T03:05:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -562,4 +562,4 @@ PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scop
 
 ---
 
-*Mirror auto-generated 2026-08-03T02:45:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-03T03:05:01Z | La Garra → DFLghub/amos-context*
