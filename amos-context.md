@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-03T03:06:29Z  
+**Generated:** 2026-08-04T02:39:11Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -105,8 +105,8 @@ Antes de operar, respondé:
 **Decision:** `FAIL_CLOSED`  
 **State version:** `dfl.onboarding.provisional-routing.v1`  
 **State SHA:** `b2bcfa79c24950fb0e130a67f66375a61893afe3a5914cd7dcff51f0743cf5cc`  
-**Freshness:** `FRESH`  
-**Contradictions:** `['E_AUTH_EXPIRED']`  
+**Freshness:** `UNKNOWN`  
+**Contradictions:** `['bootstrap_stale', 'E_AUTH_EXPIRED', 'E_DISPATCH_STALE']`  
 **Authorized actions:** `[]`  
 **Blocked actions:** `['ALL_ACTIONS']`  
 
@@ -116,62 +116,88 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### [CHECKPOINT] Batch roadmap activado; WP0 PASS; WP1 parcialmente aplicado
+### [DISCOVERY] SFV5 fabrica de verdad pero solo por via agentica; el bridge programatico devuelve ok:true constante y su artefacto es invariante al pedido
 **Type:** decision  
 **Project:** dfl  
 
-SESSION CLOSE / @$fin 2026-08-02.
-MISSION: DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02.
-ACTIVATION: real DCSA authorization emitted and consumed. dispatch_id disp-79e74fe0c8b7606f; issuer Jorge; executor CX; allowed_action EXECUTE_MISSION; authorization_sha 92ef25b37884ab287825e8ed189094c6ecfa74377e9dd21409a4ed369f7b6482; state authority SHA 7bef023eea7b6be5b007ce2b71c84487cad415f624cf6223d6ef152eb742ee1c; live projection mission SHA b2bcfa79c24950fb0e130a67f66375a61893afe3a5914cd7dcff51f0743cf5cc; ledger 2 entries verified; dispatch IN_EXECUTION; HTTP local PASS; EXECUTE_MISSION PERMITTED; contradictions [].
-COMMITS: activation 02e06c9; projection work_packages delta 2ddff6d; WP0 canonical GCP record defbd35.
-WP0: PASS aggregator exit 0, DFL_GCP_ACTIVE_INFRASTRUCTURE_ZERO based on direct Jorge confirmation, no GCP API audit, no gcloud/credentials. Historical GCP inventory sections marked SUPERSEDED. Negative control mutated VM count and aggregator exited 1.
-WP1: install/rollback artifacts prepared and install.sh applied root; CABO_7_INSTALL PASS; group dfl created, dflagent added, /run/dfl lock, ownership changes, proxy restarted. Publication/concurrency probe was interrupted by user during execution; do not claim Cabo_7 PASS. Evidence lives in evidence/dfl-control-plane-roadmap-batch-2026-08-02/wp1-publication-chain-ownership/ in /tmp/dfl-batch-control-review and was not yet committed. Production was not rolled back; batch remains IN_EXECUTION. Next eligible WP1 verification completion, then WP2. User issued @$fin, so session closes here.
-NO_TOUCH respected: puntajeTigreKnockout, Supabase, Vercel config, env vars, HLC templates, cron 3:05, /etc/dfl-secrets untouched.
-
-### @$fin 2026-08-02 — cierre de sesión CC (evidence only, NOT routing authority)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/session/cierre-2026-08-02
+TOPIC: dfl/saas-factory/internal-factory-reality-discovery
 TYPE: decision
 STATUS: closed
-DATE: 2026-08-02
+DATE: 2026-08-04
+PRECEDENCIA: D
+AUTHORITY: evidence only
+LIFECYCLE: active
+CONFIDENCE: high
 
-ROUTING AUTHORITY: none. EVIDENCE ONLY. Engram no gobierna routing ni despacho.
+MISION SFV5_INTERNAL_FACTORY_REALITY_DISCOVERY, modo YOLO read-only. Commit 3b2a8c9, evidence/sfv5-internal-factory-reality-2026-08-04/ (23 archivos, SHA256SUMS sin self-reference).
 
-CIERRE @$fin de la sesion CC del 2026-08-02. Rama feat/dfl-high-certainty-harness-v0.1, HEAD 9cf99aadf29f747ac374c8dab9c1b23716fedace.
+VEREDICTO: SFV5_AGENTIC_FACTORY_LIVE_PROGRAMMATIC_ENTRY_GAP.
 
-ARCO DE LA SESION — ocho commits propios:
-1. 3730500 BOOTSTRAP_PENDING_REFRESH_AND_PUBLICATION -> PASS (revisado por CX)
-2. 22df0ba DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION -> PASS (revisado por CX en 8a37603)
-3. 2abaf97 DCSA_DISPATCH_AUTHORIZATION_WIRING -> entregado BLOCKED
-4. 70c3635 handoff a CX
-5. 18a2b22 verificacion de la instalacion root -> PASS
-6. 07ba190 estado de routing instalado, versionado
-7. 4c05c70 cierre de los dos blockers de CX (63de73c) mas dos propios
-8. 9cf99aa estado GCP -> UNVERIFIED
+SFV5 SI FABRICA SOFTWARE, y hay producto que lo prueba: roof-issues-mini (2026-06-13), via prp -> bucle-agentico, seis fases, con la seccion Self-Annealing del PRP LLENA con 3 errores reales y sus fixes (Zod v4 pipe con z.coerce, @import tailwindcss v4 con Tailwind v3 instalado, next lint eliminado en Next 16). Es el unico lugar del sistema donde la fabricacion institucionaliza aprendizaje. LIVE_PROVEN.
 
-ESTADO FINAL DE PRODUCCION: /go local y publico sirven DCSA_V0_1_MANUFACTURE_AND_LIVE_CONSUMPTION con status PENDIENTE_NO_ENVIADO, dispatch_state PENDIENTE_NO_ENVIADO, execute_mission PROHIBITED, gate TRANSPORT_AND_VERIFY_ONLY con decision PASS, sin autorizacion activa, ledger en genesis, store de despacho vacio, state_sha 0a02e254. DCSA NO promovida, ningun despacho emitido.
+PERO SOLO POR UNA RUTA: sesion interactiva de Claude Code leyendo prosa. Busqueda exhaustiva sobre 11 superficies (CI workflows, .claude/commands, .claude/agents, settings.json, Dockerfile/Makefile, claude -p, claude --print, spawn, execSync, SDK @anthropic-ai, MCP): CERO entradas headless. El unico child_process del canonico 9b18947 es git rev-parse HEAD dentro del bridge. package.json canonico: 4 scripts, todos Next.js, cero de fabrica. Solo 7 ejecutables fuera de src/.
 
-QUE QUEDO CONSTRUIDO: (a) el plano de control provisional dejo de publicar una mision ya cerrada; (b) DCSA v0.1, primer consumidor institucional real de la fabrica headless, con CLOSED como estado de primera clase; (c) el cableado de la autorizacion de despacho, instalado en produccion, con PENDIENTE_NO_ENVIADO no ejecutable y EXECUTE_MISSION habilitado solo con autorizacion integra, registrada en ledger encadenado, no expirada, no reutilizable y atada al state_sha vigente.
+EL BRIDGE NO FABRICA Y SU ok:true ES CONSTANTE. buildArtifact() (-lib.mjs:169) es un objeto literal. `objective` se copia como metadato y NUNCA se lee. `requirements` ni siquiera llega al artefacto: usa [...REQUIRED_RULES], la constante del modulo. Las 4 assertions de buildTestReport() comparan constantes contra constantes y evaluan passInput/failInput hardcodeados en la propia funcion. NINGUNA toca la mision. ok:true es matematicamente true para toda mision estructuralmente valida.
 
-PATRON QUE SE REPITIO TODA LA SESION, y que conviene recordar: un fallo real que no llega al veredicto, y su primo, una medicion que mide lo que no es. Ejemplos: el router provisional no tenia nocion de mision cerrada y por eso servia una mision cerrada como pendiente; el criterio dcsa_no_promovida medía 'produccion sin bloque dispatch' y confundia instalar con promover, fallando justo cuando el cableado aterrizaba (mismo error repetido en el agregador y en el gate W13); la autorizacion se sellaba con hora fija mientras el gate del proxy usa el reloj real, asi que pasaba solo por suerte dentro de la ventana. La contramedida que funciono siempre: que el veredicto lo calcule un agregador desde artefactos del run, que la ausencia de dato sea FAIL y no observacion benigna, y que exista control negativo real en producto, harness y agregador.
+PRUEBA EMPIRICA: dos misiones identicas salvo objective — "webapp de heladeria con botones de chocolate, fresa y pistacho" vs "compilador de Rust a WebAssembly con macros procedurales". Ambas status=ready, ok=true, 4/4 assertions. Artefactos normalizados BYTE-IDENTICOS: diff exit 0, 0 bytes. Cero archivos HTML/CSS/JS. La palabra heladeria aparece una vez, dentro del campo objective, como metadato.
 
-DEFECTOS PROPIOS ENCONTRADOS POR LAS PRUEBAS, todos corregidos en origen: lock huerfano por process.exit() dentro del finally; re-autorizacion posible sobre una mision ya IN_EXECUTION; tokenizador de origenes que dejaba pasar chat_message y agent_inference; sed sin /g en el comparador; umbral magico en G4; G7 validando contra reloj de pared en corrida de instante fijo; replay por CLI devolviendo E_ILLEGAL_TRANSITION en vez de E_AUTH_REPLAYED; parcheadores no idempotentes que impedian reverificar post-install.
+SKILLS, correccion de la afirmacion previa: 0/32 con tests CONFIRMADO. Pero "0/32 con camino vivo" era demasiado fuerte. Exacto: 0/32 tests, 3/32 camino vivo evidenciado (prp y bucle-agentico por PRP-001; skill-creator TESTED con quick_validate 32/32), 29/32 sin ninguna evidencia de haberse ejecutado. 20/32 son solo SKILL.md. 2/32 con scripts propios.
 
-RE-REVISION DE CX RECIBIDA ANTES DE CERRAR (obs #452, 17:17): PASS. CX review commit fe697e41608d1acfba68831f2ee40a149f279f6c, evidencia evidence/cx-delta-review-2026-08-02/. 13/13 gates en dos clones limpios independientes, huella bd038a86 coincidente con la de CC, segundo consume con E_AUTH_REPLAYED exacto, las transiciones ilegales legitimas siguen dando E_ILLEGAL_TRANSITION (era el quinto punto de escrutinio que CC habia señalado, y quedo comprobado), parcheadores idempotentes y byte-convergentes, TTL real expirado ejercido, controles negativos de producto y harness con exit non-zero, y W13 distinguiendo instalacion de promocion. Produccion verificada activa y segura por CX.
+NO HAY ORQUESTADOR. Las mas referenciadas del grafo de menciones son hojas: outcomes(7), add-login(7), supabase(7), factory-brain(6). Ninguna coordina el pipeline. El routing es razonamiento libre del modelo sobre description+triggers, mecanismo del HOST, no de SFV5. Las skills se referencian en prosa, no se invocan; solo autoresearch declara Agent en allowed-tools y parallel-build menciona Workflow, ambos del host.
 
-DEUDAS ABIERTAS AL CIERRE:
-1. DISPATCH_GAP: el cableado quedo WIRED, instalado y con re-revision independiente PASS. Sigue en REVIEW_REQUIRED / PROMOTION_BLOCKED por lifecycle: declararlo CLOSED es decision de Jorge, no de CC ni de una sola revision.
-2. CABO_7 OPEN — la cadena de publicacion sigue root-only: lock /tmp/dfl-push-mirror.lock root:root 0644, .last-mirror-hash, el log y /opt/amos-context-mirror sin escritura para dflagent. Por eso este @$fin no pudo correr push_mirror.sh. Recomendacion: grupo compartido dfl y mover el lock a /run/dfl/, porque systemd-tmpfiles-clean puede borrar un lock en /tmp y resetear cualquier arreglo de propiedad.
-3. ENGRAM_DUAL_STORE OPEN — el CLI engram escribe en ~/.engram/engram.db (serie #1x) que el servicio NO lee; solo HTTP a 127.0.0.1:7437 llega al store canonico (serie #44x). Mordio a CC y a CX.
-4. GCP UNVERIFIED — ver #451. No hay constancia de que este en cero; falta correr verify-gcp.sh con credenciales.
-5. TP-08 OPEN — identidad del baseline en VERIFIED_LOCAL_ONLY, sin credencial SSH al remoto canonico.
-6. Integridad del ledger de despacho es tamper-evident, no tamper-proof: quien pueda escribir el store puede reescribir cadena y autorizacion de forma coherente. Decision pendiente de CX sobre si debe vivir en superficie root-only.
+WRU es la superficie headless mas cercana que EXISTE: wru.query.v1 por stdin/stdout con autoridad tipada (consumer_id + authority=READER), lee el frontmatter de las 32 skills. Es el paso 3 del roadmap por ROI de la auditoria del 2026-07-30, la unica recomendacion que llego a construirse. Pero CATALOGA, NO INVOCA. Probado en vivo hoy: 33/33 entradas stale, 20 propuestas y 4 conflictos pendientes, y una excepcion no capturada en query/client.mjs:20 (TypeError toLowerCase) que rompe su propio contrato escribiendo stack trace donde promete JSON.
 
-MIRROR: NO PUBLICADO en este cierre. push_mirror.sh no puede correr como dflagent por cabo #7. El estado semantico quedo en Engram por el Gate 4B incremental; la mitad mecanica queda pendiente de root o del watchdog.
+GAP EXACTO: falta (a) superficie de invocacion no interactiva del runtime existente y (b) verificador de correspondencia pedido->producto. La (b) NO TIENE NINGUN PRECEDENTE en el sistema: ningun mecanismo compara producto contra pedido. Clase de gap: adaptador + instrumentacion. NO requiere modificar skills ni capacidad nueva de fabricacion; SI requiere capacidad nueva de verificacion semantica.
 
-PROXIMO_AGENTE_DEBE: no promover DCSA, no emitir despacho. La re-revision de CX ya esta hecha y dio PASS (#452). Si alguien tiene root: correr push_mirror.sh para publicar el mirror y, si se decide, cerrar cabo #7.
+REUTILIZABLE INTACTO: las 32 skills, la plantilla PRP, el contrato de evidencia del bridge (status/artifact/test-report/producer-evidence + SHA), el patron mission_fingerprint + idempotencia, wru.query.v1 como descubrimiento.
+
+EXPERIMENTO MINIMO PROPUESTO: SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF. Reproducir roof-issues-mini por via no interactiva usando su PRP-001 respaldado, con los 6 criterios de exito convertidos en aserciones ejecutables. Criterio: >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio explicito: falla si reporta PASS solo porque la ejecucion termino sin error.
+
+RIESGO PRINCIPAL: JPI consume este bridge via business-os/adapters/factory/. Si el flujo de negocio trata ready como "producto correcto", el defecto se propaga a decisiones operativas reales.
+
+Sin uso de root: los bloqueos por ownership (.git de saas-factory-setup root, 38 rutas de skills V5 root, /opt root) quedan documentados, no ocultados. Sin grafo como autoridad: cero consultas a Graphify/agTopologo/codebase-memory.
+
+### [RESOLVED] [CASA LIMPIA] SFV4 EOL, JPI conservado por contradiccion detectada a tiempo, borrado bloqueado por deuda root, y el 6/6 de JPI hoy es 0/6
+**Type:** decision  
+**Project:** dfl  
+
+[RESOLVED] 2026-08-04: Jorge revoco las API keys, borro el proyecto Supabase eonuwvoosoicairultlc, y ejecuto como root el mv de /opt/360eventos a /opt/jpi mas el rm de /opt/mercader-comisiones y /opt/roof-issues-mini. El bloqueo por deuda root descrito abajo QUEDO SUPERADO en lo operativo. Persisten: /opt/sf-test, 511 archivos root en /opt/jpi, 41 docs sin commitear y 6 rutas hardcodeadas a /opt/360eventos. Ver obs #460 para el estado real de la fabrica.
+
+---
+TOPIC: dfl/infra/casa-limpia-2026-08-04
+TYPE: decision
+STATUS: partial
+DATE: 2026-08-04
+PRECEDENCIA: D
+AUTHORITY: evidence only
+LIFECYCLE: active
+CONFIDENCE: high
+
+MISION CASA LIMPIA, autorizacion ejecutiva directa de Jorge. Commit 5c64a3b, evidence/casa-limpia-2026-08-04/.
+
+CONTRADICCION DETECTADA Y RESUELTA ANTES DE BORRAR: la orden pedia eliminar 360eventos y conservar JPI. Verificado que JPI NO existe fuera de /opt/360eventos (src/features/jpi, rama feat/jpi-fase-5-real-runtime-v0.1, y toda evidence/jpi-synthetic-company-pilot apunta a /opt/360eventos/business-os). Ejecutar el punto 2 destruia el punto 5. Se habria perdido el unico mission-packet formal del patrimonio: goal-1/request-1/mission-packet.json con objective, quote_request, gap, required_outputs y validator_scope, mas artifact/test-report/producer-evidence. Decision de Jorge: conservar directorio como patrimonio JPI, cerrar la mision comercial 360eventos (agMVP demo a Ruben) como CUMPLIDA Y ARCHIVADA.
+
+SFV4 = END_OF_LIFE 2026-08-04. upstream/main @99f51b3 se CONSERVA como linaje de la comunidad con membresia paga y ancestro del fork, marcado NO OPERABLE. Fabrica autorizada unica: SFV5 origin/main @9b18947 tag sfv5-bos-fmd-automation-v0.1. El EOL se emitio como documento nuevo que supersede operativamente a PARALLEL-VERSIONS-AND-AMBIGUITIES.md SIN modificarlo: no se reescribe evidencia historica commiteada con checksums.
+
+RESPALDO COMPLETO Y VERIFICADO en /home/dflagent/dfl-backups/casa-limpia-2026-08-04: los 3 experimentos mas PRP-001, sha256sum -c exit 0. Fuente real irreemplazable = 5.5 MB, no 1.4 GB; el 99% del peso era node_modules regenerable. Correccion util al Registro Vivo, que marcaba riesgo ALTO por 595M/790M.
+
+BORRADO BLOQUEADO POR DEUDA ROOT: /opt/sf-test, /opt/roof-issues-mini y /opt/mercader-comisiones son root:root 755. Como dflagent el rm elimino solo lo de mi propiedad. Nada se perdio: src/ intacto (39/51/39) y todo respaldado. Misma deuda que cerro Cabo 7 en la cadena de publicacion, viva ahora en la capa de fabrica y de evidencia.
+
+PENDIENTE DE JORGE, SEGURIDAD: revocar SUPABASE_SERVICE_ROLE_KEY del proyecto eonuwvoosoicairultlc (exclusivo de mercader-comisiones). Borrar el .env.local NO revoca la llave y no hay git donde reescribir historial. Precedente directo: obs #122, incidente P0 por service role key comprometida en 360eventos.
+
+JPI, ESTADO REAL. Limpieza: reparado npm run typecheck, que fallaba por un .next del 2026-07-18 con referencia fantasma a src/app/(main)/dashboard/solicitudes/[id]/page, ruta inexistente. Ahora pasa limpio. Suite completa: 261 tests en 27 archivos, 243 PASS, 18 FAIL.
+
+INVERSION DE ESTADO, hallazgo central: DELIVERY-JPI-FASE5-REAL-E2E.md del 2026-07-26 declaro 6/6 PASS en el E2E y 7 tests de bridge FALLANDO, clasificados "pre-existing, not in Caso Cero scope". Hoy es exactamente al reves: bridge runtime-integration 13/13 PASS, fmd-jpi-fase5-e2e 0/6 FAIL. Aquellos 7 nunca estuvieron fuera de alcance: eran los cimientos del E2E. Mismo patron institucional ya documentado, una medicion que mide lo que no es.
+
+CAUSA RAIZ UNICA de los 18 fallos, reproducida en aislamiento: httpStatus 500, "factory artifact validation failed", detail "status=failed, artifact=false". El poll de fabrica termina en failed y jpi-fase5.js:574 rechaza el artefacto antes del consumo. El dominio JPI puro pasa (test:jpi 3/3 + entry-model PASS, fmd-runtime-e2e 1/1); falla todo lo que toca el adaptador de fabrica.
+
+AUTOMATISMO CRITICO AUSENTE: business-os/adapters/sfv5/process-adapter.js linea 8 hardcodea /opt/saas-factory-setup/saas-factory, que hoy esta en la rama NO canonica fase-3-5-jpi-real-sfv5-bridge (5d9ccfb, listada en deprecated_refs), no en main@9b18947. "Una sola fabrica viva" es falso en el codigo de JPI aunque sea cierto en el disco. Otros automatismos faltantes: retry/timeout sobre estado terminal, gate de frescura de build, presupuesto y autoridad.
+
+TRAMPA QUE SIGUE EN PIE: main local de /opt/saas-factory-setup = 5e42124, origin/main = 9b18947. git checkout main entrega hoy la fabrica equivocada sin aviso. El fix requiere root porque .git es root:root.
+
+NO ELIMINADO DELIBERADAMENTE: las 41 copias efimeras de /tmp (14 GB). Al menos dos contienen la unica copia de evidencia real: /tmp/dfl-cx-yolo-20260802 con los receipts G04-G10 de Cabo 7 (gitignored, declarados unica copia) y /tmp/dfl-batch-control-review con evidencia WP1 sin commitear. Requieren commit previo y politica de retencion, no barrido.
+
+NO_TOUCH respetado: puntajeTigreKnockout, Supabase de FutbolWeb, Vercel config, env vars de produccion, templates HLC, cron 3:05am UTC, /etc/dfl-secrets, /opt/futbolweb.
 
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -354,67 +380,78 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### [SUPERSEDE] Cabo 7: la cláusula 'do not claim Cabo_7 PASS' de #454 queda superada por la auditoría #455
-**Type:** fact  
+### @$fin 2026-08-04 — cierre CC: recuperacion de auditoria, casa limpia y descubrimiento de la fabrica real
+**Type:** session_summary  
 **Project:** dfl  
 
-TOPIC: dfl/infra/cabo-7-supersession
-TYPE: fact
-DATE: 2026-08-03
-AUTHORITY: evidence only
-
-La observación #454 ([CHECKPOINT] Batch roadmap activado; WP0 PASS; WP1 parcialmente aplicado, 2026-08-02 18:04:56) contiene la cláusula: 'Publication/concurrency probe was interrupted by user during execution; do not claim Cabo_7 PASS'.
-
-Esa cláusula específica queda SUPERADA por la auditoría independiente #455 del 2026-08-03: el probe se completó, el merge 878f09a está publicado en origin/main sin divergencia, y el veredicto independiente es CABO_7_CLOSED_WITH_NONBLOCKING_SECURITY_DEBT.
-
-ALCANCE DE LA SUPERSESIÓN: solo la cláusula sobre Cabo_7. El resto de #454 sigue vigente — la misión DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02 continúa IN_EXECUTION con WP2..WP11 pendientes, y la autorización DCSA disp-79e74fe0c8b7606f expiró el 2026-08-02T18:43:55Z: cualquier ejecución nueva de WP requiere autorización fresca de Jorge.
-
-NOTA OPERATIVA: engram-dfl (search|save|context|stats) no expone update; no pude reescribir #454 in situ. Esta observación cumple el paso 2 de Gate 4B por vía append-only.
-
-PROXIMO_AGENTE_DEBE: leer #454 junto con #455 y esta nota; no tratar la cláusula 'do not claim Cabo_7 PASS' como vigente.
-
-### [AUDIT] Cabo 7 — auditoria independiente de cierre 2026-08-03: CLOSED_WITH_NONBLOCKING_SECURITY_DEBT
-**Type:** fact  
-**Project:** dfl  
-
-TOPIC: dfl/infra/cabo-7-independent-closure-audit
-TYPE: fact
+TOPIC: dfl/session/cierre-2026-08-04
+TYPE: session_summary
 STATUS: closed
-DATE: 2026-08-03
+DATE: 2026-08-04
 PRECEDENCIA: D
 AUTHORITY: evidence only — no gobierna routing ni despacho
 LIFECYCLE: active
+
+CIERRE @$fin de la sesion CC del 2026-08-03/04. Rama feat/dfl-high-certainty-harness-v0.1. Cuatro commits propios: ce81152, 5c64a3b, a5d390e, 3b2a8c9 (mas 462f085 de Jorge).
+
+ARCO DE LA SESION — tres misiones encadenadas, cada una nacida del hallazgo de la anterior:
+
+1. RECUPERACION DE LA AUDITORIA LINEAL+GRAFICA (ce81152, obs #457). Veredicto MULTIPLE_AUDITS_FOUND_RECONCILIATION_REQUIRED. Son DOS misiones, no una: la inspeccion forense SFV5 del 2026-07-30 (9 commits a4589bf..60316d9, cerrada SFV5_AUDIT_INDEPENDENTLY_VERIFIED, 17 gates PASS) uso lineal + codebase-memory-mcp; el doble recorrido con agTopologo es el Dual Exploration Addendum de Concierge F1A del 2026-07-28. agTopologo NUNCA toco SFV5. Ademas KNL declara agTopologo productor y Graphify consumidor del mismo graph.json: no son metodos independientes. Hallazgo nuevo medido en vivo: los 140 nodos de agTopologo son --target-concepts default=140 sobre 10987 estructurales, y entre dos corridas consecutivas se reemplazo el 89.3% de los nodos mientras el comparador reporta delta.nodes=0; circuit_ok() solo mira cardinalidad, asi que con target fijo no puede dispararse nunca.
+
+2. CASA LIMPIA (5c64a3b, a5d390e, obs #458 y #459, ambas ahora RESOLVED). Censo real: 51 copias de fabrica, no 2. Dos generaciones vivas: 19 skills = SFV4 en tres productos, 32 = SFV5. Detectada y resuelta a tiempo una contradiccion en la orden de Jorge: pedia eliminar 360eventos y conservar JPI, pero JPI no existe fuera de /opt/360eventos; ejecutarlo literal habria destruido el unico mission-packet formal del patrimonio. Jorge decidio conservar el directorio y cerrar la mision comercial. SFV4 declarado EOL en documento nuevo que supersede a PARALLEL-VERSIONS-AND-AMBIGUITIES.md sin modificarlo. Jorge revoco las llaves, borro el proyecto Supabase y ejecuto como root el mv y los rm.
+
+3. SFV5_INTERNAL_FACTORY_REALITY_DISCOVERY (3b2a8c9, obs #460). Veredicto SFV5_AGENTIC_FACTORY_LIVE_PROGRAMMATIC_ENTRY_GAP. SFV5 SI fabrica software — roof-issues-mini lo prueba con PRP-001 y Self-Annealing lleno de 3 errores reales — pero solo por sesion interactiva de Claude Code. Cero entradas headless sobre 11 superficies buscadas. El bridge programatico no fabrica: buildArtifact() es un objeto literal, objective se copia y nunca se lee, y las 4 assertions comparan constantes. Probado empiricamente: heladeria vs compilador de Rust producen artefactos BYTE-IDENTICOS, ambos ok:true.
+
+PATRON QUE SE REPITIO TRES VECES, y que es el hilo de toda la sesion: una medicion que mide lo que no es. El circuit breaker de agTopologo mide cardinalidad y reporta estabilidad. El delivery de JPI declaro 6/6 PASS mientras 7 tests de bridge fallaban "out of scope" — hoy es al reves, 0/6 y 13/13, porque esos 7 eran los cimientos. Y el bridge de SFV5 certifica con SHA y tests un producto que no tiene relacion con el pedido. En los tres casos el instrumento verifica que produjo lo que sabe producir, nunca que produjo lo pedido.
+
+CORRECCION QUE ME HIZO JORGE: ofrecerle "dame root de otra forma y lo ejecuto yo" fue una opcion inejecutable. Guardado en memoria como feedback: verificar que un camino es ejecutable antes de ofrecerlo; para comandos que debe correr el, el mecanismo real es el prefijo ! en el prompt.
+
+ESTADO FINAL: /opt/jpi existe, /opt/360eventos no. mercader-comisiones y roof-issues-mini eliminados, respaldo verificado de 5.5 MB en /home/dflagent/dfl-backups/casa-limpia-2026-08-04. Pendientes concretos: /opt/sf-test sigue vivo; 511 archivos root en /opt/jpi; 41 docs de discovery con Ruben sin commitear; 6 rutas hardcodeadas a /opt/360eventos; main local de SFV5 en 5e42124 en vez del canonico 9b18947; WRU con 33/33 entradas stale y un TypeError no capturado en query/client.mjs:20.
+
+PROXIMO PASO PROPUESTO Y NO EJECUTADO: SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF — reproducir roof-issues-mini por via no interactiva usando su PRP-001 respaldado, con los 6 criterios de exito como aserciones ejecutables. Criterio >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio: falla si reporta PASS solo porque la ejecucion termino sin error.
+
+NO_TOUCH respetado toda la sesion: puntajeTigreKnockout, Supabase de FutbolWeb, Vercel config, env vars, templates HLC, cron 3:05am UTC, /etc/dfl-secrets, /opt/futbolweb. Sin uso de root en ningun momento: los bloqueos por ownership quedaron documentados, no ocultados.
+
+### [DISCOVERY] SFV5 fabrica de verdad pero solo por via agentica; el bridge programatico devuelve ok:true constante y su artefacto es invariante al pedido
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/saas-factory/internal-factory-reality-discovery
+TYPE: decision
+STATUS: closed
+DATE: 2026-08-04
+PRECEDENCIA: D
+AUTHORITY: evidence only
+LIFECYCLE: active
 CONFIDENCE: high
 
-MISION: DFL_CABO_7_INDEPENDENT_CLOSURE_AUDIT (modo YOLO, verificador independiente, read-only).
+MISION SFV5_INTERNAL_FACTORY_REALITY_DISCOVERY, modo YOLO read-only. Commit 3b2a8c9, evidence/sfv5-internal-factory-reality-2026-08-04/ (23 archivos, SHA256SUMS sin self-reference).
 
-VEREDICTO: CABO_7_CLOSED_WITH_NONBLOCKING_SECURITY_DEBT.
+VEREDICTO: SFV5_AGENTIC_FACTORY_LIVE_PROGRAMMATIC_ENTRY_GAP.
 
-SINCRONIA: /opt/dfl-knowledge-workunit rama main, working tree limpio. main = origin/main = 878f09ae596b1067314925ac02b29cd122642bf9, ahead/behind 0/0, confirmado contra GitHub con git ls-remote (no solo ref local). a8269d9f44d4050568edd1a77122b2d16d7d8170 y 878f09a ambos ancestros-o-iguales de origin/main; a8269d9 es el segundo padre del merge. Ninguno firmado (%G? = N).
+SFV5 SI FABRICA SOFTWARE, y hay producto que lo prueba: roof-issues-mini (2026-06-13), via prp -> bucle-agentico, seis fases, con la seccion Self-Annealing del PRP LLENA con 3 errores reales y sus fixes (Zod v4 pipe con z.coerce, @import tailwindcss v4 con Tailwind v3 instalado, next lint eliminado en Next 16). Es el unico lugar del sistema donde la fabricacion institucionaliza aprendizaje. LIVE_PROVEN.
 
-CHECKSUMS: sha256sum -c SHA256SUMS 19/19 OK exit 0.
+PERO SOLO POR UNA RUTA: sesion interactiva de Claude Code leyendo prosa. Busqueda exhaustiva sobre 11 superficies (CI workflows, .claude/commands, .claude/agents, settings.json, Dockerfile/Makefile, claude -p, claude --print, spawn, execSync, SDK @anthropic-ai, MCP): CERO entradas headless. El unico child_process del canonico 9b18947 es git rev-parse HEAD dentro del bridge. package.json canonico: 4 scripts, todos Next.js, cero de fabrica. Solo 7 ejecutables fuera de src/.
 
-GATES (independiente): reproducidos por mi con exit 0 — test_fixture.sh FIXTURE_PASS (G02 G03 G04 G05 G06 G09-fixture G12), test_endpoint.sh ENDPOINT_REGRESSION_PASS, aggregate.sh sobre final-reverify.receipt AGGREGATE=PASS, aggregate.sh sobre final.receipt AGGREGATE=FAIL exit 1 (G13 real). Vivo verificado por mi: G14 systemctl active + GET 127.0.0.1:8091/go http 200 69498 bytes; G11 local=publico=965d06fdd157a206d17c0af2d41ec2f3b56c799d550222e61096ab8641f63cc2; G02 /run/dfl root:dfl 2770; G07/G08 corroborados read-only (2770/0660, other sin acceso); G10 corroborado por amos-context.md = dflagent:dfl y log 01:44 con identidad git dflagent y PUSH OK.
+EL BRIDGE NO FABRICA Y SU ok:true ES CONSTANTE. buildArtifact() (-lib.mjs:169) es un objeto literal. `objective` se copia como metadato y NUNCA se lee. `requirements` ni siquiera llega al artefacto: usa [...REQUIRED_RULES], la constante del modulo. Las 4 assertions de buildTestReport() comparan constantes contra constantes y evaluan passInput/failInput hardcodeados en la propia funcion. NINGUNA toca la mision. ok:true es matematicamente true para toda mision estructuralmente valida.
 
-G11 RESPALDADO: log g11-resolution.log con TIMEOUT_S=90 POLL_S=5 y 19 muestras. Primer poll discrepante 01:44:52, coincidencia 01:46:19 = 87s exactos. Commit publicado d8ddc31282d5ac3eaaa81df6d63b44be111cf326, SHA de convergencia 5987ef1290944a508a222c7fd0be3810a3fbd06890b136d78337465ec751ac48. Causa raiz confirmada en log de produccion: fatal unable to auto-detect email address (dflagent@ubuntu-s-1vcpu-1gb-nyc1) — repo mirror sin identidad de commit, no consistencia eventual. Reparacion: user.name La Garra Bot local al repo mirror. Confirmacion fresca: mirror ya en 2543ded 01:57:02 y local=publico sigue coincidiendo.
+PRUEBA EMPIRICA: dos misiones identicas salvo objective — "webapp de heladeria con botones de chocolate, fresa y pistacho" vs "compilador de Rust a WebAssembly con macros procedurales". Ambas status=ready, ok=true, 4/4 assertions. Artefactos normalizados BYTE-IDENTICOS: diff exit 0, 0 bytes. Cero archivos HTML/CSS/JS. La palabra heladeria aparece una vez, dentro del campo objective, como metadato.
 
-DEUDAS NO BLOQUEANTES:
-1. LLAVE SSH — /home/dflagent/.ssh/id_ed25519 sin passphrase (ssh-keygen -y -P '' la abre), comentario said-vm2-la-garra (identidad de host preexistente, no dflagent), sin .pub, birth 2026-08-02 18:58:21 en plena remediacion. ssh -T git@github.com responde Hi DFLghub: es llave DE CUENTA, no deploy key con scope a amos-context — dflagent tiene escritura sobre toda la organizacion. Fingerprint SHA256:UHF2r33fb2kMeEKvz7SxinRZ4212U/08fVYOvQEzBZ0. Clasificacion: no bloqueante con remediacion posterior OBLIGATORIA (deploy key con scope + rotacion). No contradice G11-RESOLUTION.md, cuyo "no SSH keys copied/rotated" cubre solo la reparacion de las 01:44.
-2. REPRODUCIBILIDAD — .gitignore excluye receipts/root-live.receipt y receipts/*.log, asi que G04..G10 NO son reproducibles desde el paquete commiteado. Demostrado: verify_live.sh sobre contenido limpio de origin/main da 7 FAIL y AGGREGATE=FAIL. Unica copia en /tmp/dfl-cx-yolo-20260802 (efimera). Remediacion posterior: commitear receipt + log.
-3. G03 SIN COMMITEAR — el fix de scripts/regen_graph.sh no esta en origin/main ni en a8269d9; ambos siguen llamando publish-amos-context.sh directo. Vive solo como modificacion sucia en /opt/dfl-knowledge rama feat/dfl-high-certainty-harness-v0.1. install.sh lo re-aplica por sed idempotente, asi que el estado vivo es correcto, pero un git restore reintroduce silenciosamente la causa raiz (CRON 2 evadiendo el lock).
-4. push_mirror.sh hace chmod 0664 sobre last-mirror-hash en cada publicacion mientras install.sh lo deja 0660; la asercion de G08 (other<2) solo se cumple post-install. Contenido es un SHA-256 no secreto. Drift cosmetico.
-5. Residuo /var/lib/dfl-publication/test-write.txt dflagent:dfl 0644 del 2026-08-02 19:13.
-6. /opt/dfl-knowledge-workunit es root:root; dflagent no puede git fetch ahi y necesita -c safe.directory para leer. Incoherente con que el principal de publicacion sea dflagent.
-7. verify_live.sh emite G01 y G12 como echo incondicional; G12 si se computa de verdad en test_fixture.sh y G13 se valida con el bad_receipt previo. Hallazgo no confirmado como defecto.
+SKILLS, correccion de la afirmacion previa: 0/32 con tests CONFIRMADO. Pero "0/32 con camino vivo" era demasiado fuerte. Exacto: 0/32 tests, 3/32 camino vivo evidenciado (prp y bucle-agentico por PRP-001; skill-creator TESTED con quick_validate 32/32), 29/32 sin ninguna evidencia de haberse ejecutado. 20/32 son solo SKILL.md. 2/32 con scripts propios.
 
-CONTRADICCIONES:
-a. El 14/14 es cierto para la corrida viva pero NO reproducible desde la evidencia commiteada (demostrado, no inferido).
-b. ROOT-ACTION.md instruye correr root-live-test.sh, cuyo G10_LIVE_DFLAGENT es un pass emitido tras ejecutar push_mirror.sh COMO ROOT — no prueba el gate que nombra. El que si lo prueba es root-live-test-fixed.sh (runuser -u dflagent). El receipt no registra cual corrio. El gate igual es verdadero por via independiente. Contradiccion de procedimiento documentado, no de resultado.
-c. INVENTORY.md registra el mirror como 2775; vivo es 2770 (endurecimiento posterior).
+NO HAY ORQUESTADOR. Las mas referenciadas del grafo de menciones son hojas: outcomes(7), add-login(7), supabase(7), factory-brain(6). Ninguna coordina el pipeline. El routing es razonamiento libre del modelo sobre description+triggers, mecanismo del HOST, no de SFV5. Las skills se referencian en prosa, no se invocan; solo autoresearch declara Agent en allowed-tools y parallel-build menciona Workflow, ambos del host.
 
-RESTRICCIONES RESPETADAS: DCSA no promovido. No se modificaron llaves, permisos, historial git ni produccion. Unicas escrituras: git fetch (refs) y fixtures hermeticos en scratchpad. NO_TOUCH intacto (puntajeTigreKnockout, Supabase, Vercel, env vars, HLC-T01/T02/T03, CRON 3:05, /etc/dfl-secrets).
+WRU es la superficie headless mas cercana que EXISTE: wru.query.v1 por stdin/stdout con autoridad tipada (consumer_id + authority=READER), lee el frontmatter de las 32 skills. Es el paso 3 del roadmap por ROI de la auditoria del 2026-07-30, la unica recomendacion que llego a construirse. Pero CATALOGA, NO INVOCA. Probado en vivo hoy: 33/33 entradas stale, 20 propuestas y 4 conflictos pendientes, y una excepcion no capturada en query/client.mjs:20 (TypeError toLowerCase) que rompe su propio contrato escribiendo stack trace donde promete JSON.
 
-PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scope a DFLghub/amos-context; (2) commitear receipts/root-live.receipt y g11-resolution.log al paquete de evidencia; (3) commitear el fix de scripts/regen_graph.sh a main antes de que un git restore lo revierta.
+GAP EXACTO: falta (a) superficie de invocacion no interactiva del runtime existente y (b) verificador de correspondencia pedido->producto. La (b) NO TIENE NINGUN PRECEDENTE en el sistema: ningun mecanismo compara producto contra pedido. Clase de gap: adaptador + instrumentacion. NO requiere modificar skills ni capacidad nueva de fabricacion; SI requiere capacidad nueva de verificacion semantica.
+
+REUTILIZABLE INTACTO: las 32 skills, la plantilla PRP, el contrato de evidencia del bridge (status/artifact/test-report/producer-evidence + SHA), el patron mission_fingerprint + idempotencia, wru.query.v1 como descubrimiento.
+
+EXPERIMENTO MINIMO PROPUESTO: SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF. Reproducir roof-issues-mini por via no interactiva usando su PRP-001 respaldado, con los 6 criterios de exito convertidos en aserciones ejecutables. Criterio: >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio explicito: falla si reporta PASS solo porque la ejecucion termino sin error.
+
+RIESGO PRINCIPAL: JPI consume este bridge via business-os/adapters/factory/. Si el flujo de negocio trata ready como "producto correcto", el defecto se propaga a decisiones operativas reales.
+
+Sin uso de root: los bloqueos por ownership (.git de saas-factory-setup root, 38 rutas de skills V5 root, /opt root) quedan documentados, no ocultados. Sin grafo como autoridad: cero consultas a Graphify/agTopologo/codebase-memory.
 
 ---
 
@@ -525,4 +562,4 @@ PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scop
 
 ---
 
-*Mirror auto-generated 2026-08-03T03:06:29Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-04T02:39:11Z | La Garra → DFLghub/amos-context*
