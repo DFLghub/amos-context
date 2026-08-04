@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-04T03:05:02Z  
+**Generated:** 2026-08-04T10:28:41Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,7 +116,39 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### [DISCOVERY] SFV5 fabrica de verdad pero solo por via agentica; el bridge programatico devuelve ok:true constante y su artefacto es invariante al pedido
+### [CONVERGENCIA] El Gerente de Fabrica (FMD, #280) ya nombro los dos gaps del discovery SFV5 14 dias antes; el discovery no lo cito nunca
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/saas-factory/gap-convergence-fmd-sfv5
+TYPE: decision
+STATUS: open
+DATE: 2026-08-04
+PRECEDENCIA: D
+AUTHORITY: evidence only
+LIFECYCLE: active
+CONFIDENCE: high
+
+ENCUADRE DECLARADO POR JORGE: Claude Code y Codex son quienes RECIBEN los pedidos de fabricacion y los gestionan con el "gerente de la fabrica". No somos auditores externos de SFV5: somos su runtime. El discovery #460/#462 ya lo habia probado tecnicamente sin sacar la consecuencia: la fabricacion general de SFV5 ES una sesion de Claude Code leyendo prosa.
+
+HALLAZGO: EL DISCOVERY TUVO UN PUNTO CIEGO REAL. Auditó SFV5 en aislamiento y nunca pregunto si DFL ya tenia disenado el orquestador faltante. Lo tenia, desde hacia 14 dias. Verificado por grep: evidence/sfv5-internal-factory-reality-2026-08-04/ tiene CERO menciones de "gerente", "first-operable", "factory_manager" o "management_daemon". El enlace es de una sola direccion: el diseno del Gerente SI conocia SFV5 (7 menciones en MANAGEMENT_DAEMON_SPEC, 6 en EVIDENCE_BASE, 6 en FACTORY_BUILD_MISSION_PACKET); el discovery no conocia el Gerente.
+
+EL GERENTE EXISTE COMO DISENO FORMAL: obs #280, 2026-07-21, /opt/dfl-knowledge/architecture/first-operable-factory-v01/, 12 documentos, 788 lineas, diseno puro sin codigo. Piezas: FACTORY_MANAGER_CONTRACT_V0.1.md (management loop de 10 pasos interpretar->planificar->asignar->ejecutar->observar->detectar desvio->replanificar->validar->cerrar->aprender; tabla de autoridad de 4 niveles; politica de excepcion graduada N0-N3 que extiende SILENT_CRON_JOBS) y MANAGEMENT_DAEMON_SPEC_V0.1.md (FMD = factory-manager-daemon, se sienta sobre el contrato AGENT-SERVER.md de BOS v2 sin reemplazarlo).
+
+CONVERGENCIA, EL HALLAZGO CENTRAL: dos misiones independientes, con 14 dias de diferencia y por caminos distintos, derivaron EL MISMO PAR DE GAPS.
+- FMD 2026-07-21, MANAGEMENT_DAEMON_SPEC linea 45: "Adaptador hacia SFV5 - AUSENTE hoy (EVIDENCE_BASE #34), debe construirse". Y linea 127, fuera de alcance explicito: "Validacion semantica de calidad del entregable (no solo verificacion de estado)".
+- Discovery 2026-08-04: falta (a) superficie de invocacion no interactiva y (b) verificador de correspondencia pedido->producto.
+Son el mismo par. El gap deja de ser hipotesis de una sola mision.
+
+ASIMETRIA IMPORTANTE ENTRE (a) Y (b): la (a) YA TIENE CONTRATO ESCRITO — el FMD especifica que debe hacer el invocador, con autoridad y excepciones. La (b) SIGUE SIN DUENO EN AMBOS DISENOS: el FMD la declaro fuera de alcance y SFV5 no tiene ningun precedente de comparar producto contra pedido. Es la unica pieza sin ancestro en el sistema.
+
+LA RECURSION QUE NADIE HABIA NOMBRADO: MANAGEMENT_DAEMON_SPEC linea 21 dice que el FMD "No escribe codigo de producto - invoca a SFV5 (u otra capacidad productiva) para eso". Pero el discovery probo que la capacidad productiva de SFV5 no es un binario: es una sesion interactiva de Claude Code. Por lo tanto el "Adaptador hacia SFV5" es, literalmente, un adaptador hacia una sesion como la mia. El FMD no invoca una fabrica: invoca un agente que sabe leer 32 manuales.
+
+CORRECCION AL "REUTILIZABLE INTACTO" DE #460/#462: faltaba el activo mas grande. Sumar first-operable-factory-v01/ completo — contrato de autoridad, politica de excepcion N0-N3, management loop de 10 pasos y el modelo goals/plans/success_criteria. El adaptador headless NO es pieza nueva: es la implementacion del "Adaptador hacia SFV5" ya especificado. No inventar otro contrato de autoridad.
+
+PROXIMO_AGENTE_DEBE: antes de abrir cualquier mision sobre SFV5, el headless gap o la fabrica, leer first-operable-factory-v01/ — sobre todo EVIDENCE_BASE.md (#34 adaptador ausente, #13 goals ausente, #11 tasks.status sin gate, #15 replanificacion ausente, #17 plasticidad aspiracional) y MANAGEMENT_DAEMON_SPEC_V0.1.md. Y buscar diseno previo en architecture/ y en Engram ANTES de declarar que algo no existe: el discovery no lo hizo y por eso le falto el activo principal.
+
+### [ADDENDUM] SFV5 discovery respondido pregunta-por-pregunta: existe routing y pipeline DOCUMENTADOS (27/32 y 16 pasos), falta el motor
 **Type:** decision  
 **Project:** dfl  
 
@@ -129,75 +161,35 @@ AUTHORITY: evidence only
 LIFECYCLE: active
 CONFIDENCE: high
 
-MISION SFV5_INTERNAL_FACTORY_REALITY_DISCOVERY, modo YOLO read-only. Commit 3b2a8c9, evidence/sfv5-internal-factory-reality-2026-08-04/ (23 archivos, SHA256SUMS sin self-reference).
+AMPLIA obs #460 (mismo TOPIC). Commit ceec81f, evidence/sfv5-internal-factory-reality-2026-08-04/ADDENDUM-RESPUESTAS-PREGUNTA-POR-PREGUNTA.md, sha256sum -c 24/24 OK. Read-only, cero modificaciones a SFV5, sin uso de root.
 
-VEREDICTO: SFV5_AGENTIC_FACTORY_LIVE_PROGRAMMATIC_ENTRY_GAP.
+MOTIVO: el informe de #460 respondia por tema, no por numero. Jorge reenvio el prompt senalando que faltaban respuestas. Faltaban de verdad: seccion A enumerada, inventario Q11 renderizado, seccion C completa (Q22-Q30, AUSENTE ENTERA) y tabla por arista de I (Q83-Q86). Ahora estan las 87 numeradas + las 14 de J.
 
-SFV5 SI FABRICA SOFTWARE, y hay producto que lo prueba: roof-issues-mini (2026-06-13), via prp -> bucle-agentico, seis fases, con la seccion Self-Annealing del PRP LLENA con 3 errores reales y sus fixes (Zod v4 pipe con z.coerce, @import tailwindcss v4 con Tailwind v3 instalado, next lint eliminado en Next 16). Es el unico lugar del sistema donde la fabricacion institucionaliza aprendizaje. LIVE_PROVEN.
+TRES CORRECCIONES A #460, todas en la misma direccion: el informe SUBESTIMO lo que SFV5 tiene escrito.
 
-PERO SOLO POR UNA RUTA: sesion interactiva de Claude Code leyendo prosa. Busqueda exhaustiva sobre 11 superficies (CI workflows, .claude/commands, .claude/agents, settings.json, Dockerfile/Makefile, claude -p, claude --print, spawn, execSync, SDK @anthropic-ai, MCP): CERO entradas headless. El unico child_process del canonico 9b18947 es git rev-parse HEAD dentro del bridge. package.json canonico: 4 scripts, todos Next.js, cero de fabrica. Solo 7 ejecutables fuera de src/.
+C1. "cero tabla de routing" es FALSO. saas-factory/CLAUDE.md:48-140 contiene un Decision Tree explicito de 27 ramas frase-gatillo -> skill. Medido: 26 por regex 'Ejecutar skill X' + bucle-agentico como segundo paso de la rama PRP en CLAUDE.md:72. 27/32 ruteadas; 5 FUERA del arbol, invisibles al routing documentado: pack-cold-email, primer, skill-creator, update-sf, video-visuals. Rama terminal: "No encaja en nada -> Usar tu juicio." Formulacion correcta: existe tabla de routing DOCUMENTED y casi completa; lo que no existe es un router IMPLEMENTED. Nada la parsea, nada la impone, nada falla si se la ignora.
 
-EL BRIDGE NO FABRICA Y SU ok:true ES CONSTANTE. buildArtifact() (-lib.mjs:169) es un objeto literal. `objective` se copia como metadato y NUNCA se lee. `requirements` ni siquiera llega al artefacto: usa [...REQUIRED_RULES], la constante del modulo. Las 4 assertions de buildTestReport() comparan constantes contra constantes y evaluan passInput/failInput hardcodeados en la propia funcion. NINGUNA toca la mision. ok:true es matematicamente true para toda mision estructuralmente valida.
+C2. "no existe maquina de estados/pipeline explicito" es FALSO. CLAUDE.md:184-260 define 5 flujos numerados; Flujo 1 tiene 16 pasos ordenados (0 factory-brain, 1 new-app, 3 i18n, 4 add-login ... 10 quality-gates, 12 deploy, 13 outcomes, 16 factory-brain). Es una maquina de estados DE PAPEL: sin estado persistido, sin gate bloqueante, sin ejecutor. Prueba empirica: roof-issues-mini, el unico producto real, NO siguio Flujo 1 sino Flujo 2 (prp -> bucle-agentico), y su src/ no tiene i18n, compliance, onboarding ni outcomes.
 
-PRUEBA EMPIRICA: dos misiones identicas salvo objective — "webapp de heladeria con botones de chocolate, fresa y pistacho" vs "compilador de Rust a WebAssembly con macros procedurales". Ambas status=ready, ok=true, 4/4 assertions. Artefactos normalizados BYTE-IDENTICOS: diff exit 0, 0 bytes. Cero archivos HTML/CSS/JS. La palabra heladeria aparece una vez, dentro del campo objective, como metadato.
+C3. CLAUDE.md:140 declara "30 Herramientas Especializadas"; el filesystem canonico tiene 32.
 
-SKILLS, correccion de la afirmacion previa: 0/32 con tests CONFIRMADO. Pero "0/32 con camino vivo" era demasiado fuerte. Exacto: 0/32 tests, 3/32 camino vivo evidenciado (prp y bucle-agentico por PRP-001; skill-creator TESTED con quick_validate 32/32), 29/32 sin ninguna evidencia de haberse ejecutado. 20/32 son solo SKILL.md. 2/32 con scripts propios.
+HALLAZGOS NUEVOS DEL RESPALDO DE ROOF-ISSUES-MINI (roof-issues-mini-source.tar.gz, 212 archivos, NO desempaquetado en la pasada previa):
+a) roof-issues-mini/.claude/settings.local.json declara los permisos que hicieron funcionar la fabrica: Bash(npm install *), Bash(npm run *), Bash(npx next *), Bash(npx eslint *) + enabledMcpjsonServers [next-devtools, playwright, supabase]. NO ESTA EN CANONICO. La configuracion que hizo funcionar la fabrica vive en un archivo por-maquina, no versionado.
+b) roof-issues-mini/.claude/logs/ NO EXISTE. El hook log-tool-usage.sh no solo carece de settings.json en canonico: tampoco corrio en el unico producto real. Es la causa mecanica probada de que 29/32 skills no tengan ninguna evidencia de ejecucion.
+c) Los 6 criterios de exito de PRP-001:25-31 quedan verbatim como ground truth del experimento minimo.
+d) 12 archivos de dominio en src/, correspondientes 1:1 con las 6 fases del Blueprint.
 
-NO HAY ORQUESTADOR. Las mas referenciadas del grafo de menciones son hojas: outcomes(7), add-login(7), supabase(7), factory-brain(6). Ninguna coordina el pipeline. El routing es razonamiento libre del modelo sobre description+triggers, mecanismo del HOST, no de SFV5. Las skills se referencian en prosa, no se invocan; solo autoresearch declara Agent en allowed-tools y parallel-build menciona Workflow, ambos del host.
+SECCION C, RUNTIME REAL, respondida por primera vez. Q23, lo que ejecuta Claude Code y ningun binario: seleccion de skill, la entrevista adaptativa, la DESCOMPOSICION JIT EN SUBTAREAS (bucle-agentico: "Solo se definen FASES. Las subtareas se generan al entrar a cada fase"), la generacion de codigo y el juicio de los 6 gates sin runner. Q27: cero pins de modelo; las menciones a anthropic son nombres de paquete MCP. Q28: no hay contrato cross-agente, y la evidencia decisiva es que GEMINI.md, unico archivo nominalmente para otro agente, esta stale en V3, referencia .claude/prompts/ y .claude/commands/ inexistentes, y su pie dice "Este archivo es para que Claude Code entienda el repositorio". Q30: siete suposiciones ocultas verificadas (cwd raiz Next.js, alias shell saas-factory, estructura feature-first obligatoria, settings.local.json no versionado, env vars, placeholders MCP sin completar, ownership root que hace irreproducible quick_validate 32/32 como dflagent).
 
-WRU es la superficie headless mas cercana que EXISTE: wru.query.v1 por stdin/stdout con autoridad tipada (consumer_id + authority=READER), lee el frontmatter de las 32 skills. Es el paso 3 del roadmap por ROI de la auditoria del 2026-07-30, la unica recomendacion que llego a construirse. Pero CATALOGA, NO INVOCA. Probado en vivo hoy: 33/33 entradas stale, 20 propuestas y 4 conflictos pendientes, y una excepcion no capturada en query/client.mjs:20 (TypeError toLowerCase) que rompe su propio contrato escribiendo stack trace donde promete JSON.
+NEGATIVOS HEADLESS RE-VERIFICADOS sobre 9b18947 con falsos positivos descartados uno por uno: los 2 hits de 'headless' son "UI headless" (diseno de UI) en skills/ai/references/; los 2 de @anthropic-ai son nombres de paquete MCP en CHANGELOG y example.mcp.json; el unico child_process es git rev-parse HEAD en el bridge. Cero .claude/commands, .claude/agents, CI, Dockerfile, Makefile, settings.json.
 
-GAP EXACTO: falta (a) superficie de invocacion no interactiva del runtime existente y (b) verificador de correspondencia pedido->producto. La (b) NO TIENE NINGUN PRECEDENTE en el sistema: ningun mecanismo compara producto contra pedido. Clase de gap: adaptador + instrumentacion. NO requiere modificar skills ni capacidad nueva de fabricacion; SI requiere capacidad nueva de verificacion semantica.
+Q21 queda con cifra final: 0/32 tests, 3/32 camino vivo evidenciado (prp, bucle-agentico, skill-creator), 29/32 sin ninguna evidencia de ejecucion.
 
-REUTILIZABLE INTACTO: las 32 skills, la plantilla PRP, el contrato de evidencia del bridge (status/artifact/test-report/producer-evidence + SHA), el patron mission_fingerprint + idempotencia, wru.query.v1 como descubrimiento.
+VEREDICTO SOSTENIDO Y REFORZADO: SFV5_AGENTIC_FACTORY_LIVE_PROGRAMMATIC_ENTRY_GAP. Las correcciones no lo debilitan, lo afilan: al existir routing documentado (27/32) y pipeline documentado (16 pasos), el gap toma su forma exacta. SFV5 TIENE EL MAPA DE ORQUESTACION ESCRITO Y NO TIENE EL MOTOR QUE LO RECORRA. Lo que falta no es disenar el flujo, ya esta disenado en CLAUDE.md; falta la puerta de invocacion y el verificador semantico.
 
-EXPERIMENTO MINIMO PROPUESTO: SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF. Reproducir roof-issues-mini por via no interactiva usando su PRP-001 respaldado, con los 6 criterios de exito convertidos en aserciones ejecutables. Criterio: >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio explicito: falla si reporta PASS solo porque la ejecucion termino sin error.
+REUTILIZABLE QUE #460 NO LISTABA: el decision tree de CLAUDE.md como especificacion de routing YA ESCRITA, insumo directo del adaptador headless.
 
-RIESGO PRINCIPAL: JPI consume este bridge via business-os/adapters/factory/. Si el flujo de negocio trata ready como "producto correcto", el defecto se propaga a decisiones operativas reales.
-
-Sin uso de root: los bloqueos por ownership (.git de saas-factory-setup root, 38 rutas de skills V5 root, /opt root) quedan documentados, no ocultados. Sin grafo como autoridad: cero consultas a Graphify/agTopologo/codebase-memory.
-
-### [RESOLVED] [CASA LIMPIA] SFV4 EOL, JPI conservado por contradiccion detectada a tiempo, borrado bloqueado por deuda root, y el 6/6 de JPI hoy es 0/6
-**Type:** decision  
-**Project:** dfl  
-
-[RESOLVED] 2026-08-04: Jorge revoco las API keys, borro el proyecto Supabase eonuwvoosoicairultlc, y ejecuto como root el mv de /opt/360eventos a /opt/jpi mas el rm de /opt/mercader-comisiones y /opt/roof-issues-mini. El bloqueo por deuda root descrito abajo QUEDO SUPERADO en lo operativo. Persisten: /opt/sf-test, 511 archivos root en /opt/jpi, 41 docs sin commitear y 6 rutas hardcodeadas a /opt/360eventos. Ver obs #460 para el estado real de la fabrica.
-
----
-TOPIC: dfl/infra/casa-limpia-2026-08-04
-TYPE: decision
-STATUS: partial
-DATE: 2026-08-04
-PRECEDENCIA: D
-AUTHORITY: evidence only
-LIFECYCLE: active
-CONFIDENCE: high
-
-MISION CASA LIMPIA, autorizacion ejecutiva directa de Jorge. Commit 5c64a3b, evidence/casa-limpia-2026-08-04/.
-
-CONTRADICCION DETECTADA Y RESUELTA ANTES DE BORRAR: la orden pedia eliminar 360eventos y conservar JPI. Verificado que JPI NO existe fuera de /opt/360eventos (src/features/jpi, rama feat/jpi-fase-5-real-runtime-v0.1, y toda evidence/jpi-synthetic-company-pilot apunta a /opt/360eventos/business-os). Ejecutar el punto 2 destruia el punto 5. Se habria perdido el unico mission-packet formal del patrimonio: goal-1/request-1/mission-packet.json con objective, quote_request, gap, required_outputs y validator_scope, mas artifact/test-report/producer-evidence. Decision de Jorge: conservar directorio como patrimonio JPI, cerrar la mision comercial 360eventos (agMVP demo a Ruben) como CUMPLIDA Y ARCHIVADA.
-
-SFV4 = END_OF_LIFE 2026-08-04. upstream/main @99f51b3 se CONSERVA como linaje de la comunidad con membresia paga y ancestro del fork, marcado NO OPERABLE. Fabrica autorizada unica: SFV5 origin/main @9b18947 tag sfv5-bos-fmd-automation-v0.1. El EOL se emitio como documento nuevo que supersede operativamente a PARALLEL-VERSIONS-AND-AMBIGUITIES.md SIN modificarlo: no se reescribe evidencia historica commiteada con checksums.
-
-RESPALDO COMPLETO Y VERIFICADO en /home/dflagent/dfl-backups/casa-limpia-2026-08-04: los 3 experimentos mas PRP-001, sha256sum -c exit 0. Fuente real irreemplazable = 5.5 MB, no 1.4 GB; el 99% del peso era node_modules regenerable. Correccion util al Registro Vivo, que marcaba riesgo ALTO por 595M/790M.
-
-BORRADO BLOQUEADO POR DEUDA ROOT: /opt/sf-test, /opt/roof-issues-mini y /opt/mercader-comisiones son root:root 755. Como dflagent el rm elimino solo lo de mi propiedad. Nada se perdio: src/ intacto (39/51/39) y todo respaldado. Misma deuda que cerro Cabo 7 en la cadena de publicacion, viva ahora en la capa de fabrica y de evidencia.
-
-PENDIENTE DE JORGE, SEGURIDAD: revocar SUPABASE_SERVICE_ROLE_KEY del proyecto eonuwvoosoicairultlc (exclusivo de mercader-comisiones). Borrar el .env.local NO revoca la llave y no hay git donde reescribir historial. Precedente directo: obs #122, incidente P0 por service role key comprometida en 360eventos.
-
-JPI, ESTADO REAL. Limpieza: reparado npm run typecheck, que fallaba por un .next del 2026-07-18 con referencia fantasma a src/app/(main)/dashboard/solicitudes/[id]/page, ruta inexistente. Ahora pasa limpio. Suite completa: 261 tests en 27 archivos, 243 PASS, 18 FAIL.
-
-INVERSION DE ESTADO, hallazgo central: DELIVERY-JPI-FASE5-REAL-E2E.md del 2026-07-26 declaro 6/6 PASS en el E2E y 7 tests de bridge FALLANDO, clasificados "pre-existing, not in Caso Cero scope". Hoy es exactamente al reves: bridge runtime-integration 13/13 PASS, fmd-jpi-fase5-e2e 0/6 FAIL. Aquellos 7 nunca estuvieron fuera de alcance: eran los cimientos del E2E. Mismo patron institucional ya documentado, una medicion que mide lo que no es.
-
-CAUSA RAIZ UNICA de los 18 fallos, reproducida en aislamiento: httpStatus 500, "factory artifact validation failed", detail "status=failed, artifact=false". El poll de fabrica termina en failed y jpi-fase5.js:574 rechaza el artefacto antes del consumo. El dominio JPI puro pasa (test:jpi 3/3 + entry-model PASS, fmd-runtime-e2e 1/1); falla todo lo que toca el adaptador de fabrica.
-
-AUTOMATISMO CRITICO AUSENTE: business-os/adapters/sfv5/process-adapter.js linea 8 hardcodea /opt/saas-factory-setup/saas-factory, que hoy esta en la rama NO canonica fase-3-5-jpi-real-sfv5-bridge (5d9ccfb, listada en deprecated_refs), no en main@9b18947. "Una sola fabrica viva" es falso en el codigo de JPI aunque sea cierto en el disco. Otros automatismos faltantes: retry/timeout sobre estado terminal, gate de frescura de build, presupuesto y autoridad.
-
-TRAMPA QUE SIGUE EN PIE: main local de /opt/saas-factory-setup = 5e42124, origin/main = 9b18947. git checkout main entrega hoy la fabrica equivocada sin aviso. El fix requiere root porque .git es root:root.
-
-NO ELIMINADO DELIBERADAMENTE: las 41 copias efimeras de /tmp (14 GB). Al menos dos contienen la unica copia de evidencia real: /tmp/dfl-cx-yolo-20260802 con los receipts G04-G10 de Cabo 7 (gitignored, declarados unica copia) y /tmp/dfl-batch-control-review con evidencia WP1 sin commitear. Requieren commit previo y politica de retencion, no barrido.
-
-NO_TOUCH respetado: puntajeTigreKnockout, Supabase de FutbolWeb, Vercel config, env vars de produccion, templates HLC, cron 3:05am UTC, /etc/dfl-secrets, /opt/futbolweb.
+PROXIMO_AGENTE_DEBE: ejecutar SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF con los 6 criterios de PRP-001 como aserciones ejecutables. Criterio >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio explicito: falla si reporta PASS solo porque la ejecucion termino sin error.
 
 **Type:** decision  
 **Project:** dfl-knowledge  
@@ -380,44 +372,12 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### @$fin 2026-08-04 — cierre CC: recuperacion de auditoria, casa limpia y descubrimiento de la fabrica real
-**Type:** session_summary  
+### @$fin 2026-08-04 — addendum SFV5 pregunta-por-pregunta, 3 correcciones y convergencia con el Gerente de Fabrica
+**Type:** fact  
 **Project:** dfl  
 
-TOPIC: dfl/session/cierre-2026-08-04
-TYPE: session_summary
-STATUS: closed
-DATE: 2026-08-04
-PRECEDENCIA: D
-AUTHORITY: evidence only — no gobierna routing ni despacho
-LIFECYCLE: active
-
-CIERRE @$fin de la sesion CC del 2026-08-03/04. Rama feat/dfl-high-certainty-harness-v0.1. Cuatro commits propios: ce81152, 5c64a3b, a5d390e, 3b2a8c9 (mas 462f085 de Jorge).
-
-ARCO DE LA SESION — tres misiones encadenadas, cada una nacida del hallazgo de la anterior:
-
-1. RECUPERACION DE LA AUDITORIA LINEAL+GRAFICA (ce81152, obs #457). Veredicto MULTIPLE_AUDITS_FOUND_RECONCILIATION_REQUIRED. Son DOS misiones, no una: la inspeccion forense SFV5 del 2026-07-30 (9 commits a4589bf..60316d9, cerrada SFV5_AUDIT_INDEPENDENTLY_VERIFIED, 17 gates PASS) uso lineal + codebase-memory-mcp; el doble recorrido con agTopologo es el Dual Exploration Addendum de Concierge F1A del 2026-07-28. agTopologo NUNCA toco SFV5. Ademas KNL declara agTopologo productor y Graphify consumidor del mismo graph.json: no son metodos independientes. Hallazgo nuevo medido en vivo: los 140 nodos de agTopologo son --target-concepts default=140 sobre 10987 estructurales, y entre dos corridas consecutivas se reemplazo el 89.3% de los nodos mientras el comparador reporta delta.nodes=0; circuit_ok() solo mira cardinalidad, asi que con target fijo no puede dispararse nunca.
-
-2. CASA LIMPIA (5c64a3b, a5d390e, obs #458 y #459, ambas ahora RESOLVED). Censo real: 51 copias de fabrica, no 2. Dos generaciones vivas: 19 skills = SFV4 en tres productos, 32 = SFV5. Detectada y resuelta a tiempo una contradiccion en la orden de Jorge: pedia eliminar 360eventos y conservar JPI, pero JPI no existe fuera de /opt/360eventos; ejecutarlo literal habria destruido el unico mission-packet formal del patrimonio. Jorge decidio conservar el directorio y cerrar la mision comercial. SFV4 declarado EOL en documento nuevo que supersede a PARALLEL-VERSIONS-AND-AMBIGUITIES.md sin modificarlo. Jorge revoco las llaves, borro el proyecto Supabase y ejecuto como root el mv y los rm.
-
-3. SFV5_INTERNAL_FACTORY_REALITY_DISCOVERY (3b2a8c9, obs #460). Veredicto SFV5_AGENTIC_FACTORY_LIVE_PROGRAMMATIC_ENTRY_GAP. SFV5 SI fabrica software — roof-issues-mini lo prueba con PRP-001 y Self-Annealing lleno de 3 errores reales — pero solo por sesion interactiva de Claude Code. Cero entradas headless sobre 11 superficies buscadas. El bridge programatico no fabrica: buildArtifact() es un objeto literal, objective se copia y nunca se lee, y las 4 assertions comparan constantes. Probado empiricamente: heladeria vs compilador de Rust producen artefactos BYTE-IDENTICOS, ambos ok:true.
-
-PATRON QUE SE REPITIO TRES VECES, y que es el hilo de toda la sesion: una medicion que mide lo que no es. El circuit breaker de agTopologo mide cardinalidad y reporta estabilidad. El delivery de JPI declaro 6/6 PASS mientras 7 tests de bridge fallaban "out of scope" — hoy es al reves, 0/6 y 13/13, porque esos 7 eran los cimientos. Y el bridge de SFV5 certifica con SHA y tests un producto que no tiene relacion con el pedido. En los tres casos el instrumento verifica que produjo lo que sabe producir, nunca que produjo lo pedido.
-
-CORRECCION QUE ME HIZO JORGE: ofrecerle "dame root de otra forma y lo ejecuto yo" fue una opcion inejecutable. Guardado en memoria como feedback: verificar que un camino es ejecutable antes de ofrecerlo; para comandos que debe correr el, el mecanismo real es el prefijo ! en el prompt.
-
-ESTADO FINAL: /opt/jpi existe, /opt/360eventos no. mercader-comisiones y roof-issues-mini eliminados, respaldo verificado de 5.5 MB en /home/dflagent/dfl-backups/casa-limpia-2026-08-04. Pendientes concretos: /opt/sf-test sigue vivo; 511 archivos root en /opt/jpi; 41 docs de discovery con Ruben sin commitear; 6 rutas hardcodeadas a /opt/360eventos; main local de SFV5 en 5e42124 en vez del canonico 9b18947; WRU con 33/33 entradas stale y un TypeError no capturado en query/client.mjs:20.
-
-PROXIMO PASO PROPUESTO Y NO EJECUTADO: SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF — reproducir roof-issues-mini por via no interactiva usando su PRP-001 respaldado, con los 6 criterios de exito como aserciones ejecutables. Criterio >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio: falla si reporta PASS solo porque la ejecucion termino sin error.
-
-NO_TOUCH respetado toda la sesion: puntajeTigreKnockout, Supabase de FutbolWeb, Vercel config, env vars, templates HLC, cron 3:05am UTC, /etc/dfl-secrets, /opt/futbolweb. Sin uso de root en ningun momento: los bloqueos por ownership quedaron documentados, no ocultados.
-
-### [DISCOVERY] SFV5 fabrica de verdad pero solo por via agentica; el bridge programatico devuelve ok:true constante y su artefacto es invariante al pedido
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/internal-factory-reality-discovery
-TYPE: decision
+TOPIC: dfl/sesion/cierre-2026-08-04-sfv5-addendum
+TYPE: fact
 STATUS: closed
 DATE: 2026-08-04
 PRECEDENCIA: D
@@ -425,33 +385,57 @@ AUTHORITY: evidence only
 LIFECYCLE: active
 CONFIDENCE: high
 
-MISION SFV5_INTERNAL_FACTORY_REALITY_DISCOVERY, modo YOLO read-only. Commit 3b2a8c9, evidence/sfv5-internal-factory-reality-2026-08-04/ (23 archivos, SHA256SUMS sin self-reference).
+@$fin de la sesion Claude Code (EJECUTOR, dflagent, La Garra/VM2). Rama feat/dfl-high-certainty-harness-v0.1.
 
-VEREDICTO: SFV5_AGENTIC_FACTORY_LIVE_PROGRAMMATIC_ENTRY_GAP.
+QUE PASO. Jorge reenvio el prompt completo de SFV5_INTERNAL_FACTORY_REALITY_DISCOVERY senalando que las preguntas numeradas no estaban respondidas. Tenia razon: el informe de obs #460 respondia por tema. Faltaban de verdad la seccion A enumerada, el inventario Q11 renderizado, la seccion C completa (Q22-Q30, ausente entera) y la tabla por arista de I (Q83-Q86). Al forzar la respuesta numero por numero aparecieron dos afirmaciones FALSAS del informe previo. Leccion metodologica: organizar por tema no solo esconde lo que falta, esconde lo que esta mal.
 
-SFV5 SI FABRICA SOFTWARE, y hay producto que lo prueba: roof-issues-mini (2026-06-13), via prp -> bucle-agentico, seis fases, con la seccion Self-Annealing del PRP LLENA con 3 errores reales y sus fixes (Zod v4 pipe con z.coerce, @import tailwindcss v4 con Tailwind v3 instalado, next lint eliminado en Next 16). Es el unico lugar del sistema donde la fabricacion institucionaliza aprendizaje. LIVE_PROVEN.
+ENTREGADO. Commit ceec81f, evidence/sfv5-internal-factory-reality-2026-08-04/ADDENDUM-RESPUESTAS-PREGUNTA-POR-PREGUNTA.md, sha256sum -c 24/24 OK exit 0. Las 87 preguntas numeradas + las 14 de J respondidas individualmente con clasificacion FACT/INFERENCE/UNKNOWN y nivel DECLARED..LIVE_PROVEN.
 
-PERO SOLO POR UNA RUTA: sesion interactiva de Claude Code leyendo prosa. Busqueda exhaustiva sobre 11 superficies (CI workflows, .claude/commands, .claude/agents, settings.json, Dockerfile/Makefile, claude -p, claude --print, spawn, execSync, SDK @anthropic-ai, MCP): CERO entradas headless. El unico child_process del canonico 9b18947 es git rev-parse HEAD dentro del bridge. package.json canonico: 4 scripts, todos Next.js, cero de fabrica. Solo 7 ejecutables fuera de src/.
+OBSERVACIONES ESCRITAS ESTA SESION: #462 (addendum + 3 correcciones), #463 (convergencia FMD/SFV5). #460 AMPLIADA via PATCH /observations/460 con nota de cabecera que apunta a ambas, contenido original preservado integro (len 5963).
 
-EL BRIDGE NO FABRICA Y SU ok:true ES CONSTANTE. buildArtifact() (-lib.mjs:169) es un objeto literal. `objective` se copia como metadato y NUNCA se lee. `requirements` ni siquiera llega al artefacto: usa [...REQUIRED_RULES], la constante del modulo. Las 4 assertions de buildTestReport() comparan constantes contra constantes y evaluan passInput/failInput hardcodeados en la propia funcion. NINGUNA toca la mision. ok:true es matematicamente true para toda mision estructuralmente valida.
+CORRECCIONES INSTITUCIONALIZADAS. C1: "cero tabla de routing" era falso, CLAUDE.md:48-140 tiene decision tree de 27 ramas, 27/32 skills ruteadas, 5 fuera (pack-cold-email, primer, skill-creator, update-sf, video-visuals); es DOCUMENTED no IMPLEMENTED. C2: "no existe pipeline explicito" era falso, CLAUDE.md:184-260 define 5 flujos y el Flujo 1 tiene 16 pasos; sigue siendo maquina de estados de papel porque no hay ejecutor y roof-issues-mini no lo siguio. C3: CLAUDE.md:140 declara 30 skills, hay 32.
 
-PRUEBA EMPIRICA: dos misiones identicas salvo objective — "webapp de heladeria con botones de chocolate, fresa y pistacho" vs "compilador de Rust a WebAssembly con macros procedurales". Ambas status=ready, ok=true, 4/4 assertions. Artefactos normalizados BYTE-IDENTICOS: diff exit 0, 0 bytes. Cero archivos HTML/CSS/JS. La palabra heladeria aparece una vez, dentro del campo objective, como metadato.
+HALLAZGO MAYOR DEL CIERRE: el discovery tuvo un punto ciego. Auditó SFV5 en aislamiento y nunca busco si DFL ya tenia disenado el orquestador faltante. Lo tenia: obs #280, first-operable-factory-v01/, 2026-07-21, 12 documentos, 788 lineas. El enlace es unidireccional, verificado por grep: el diseno del Gerente SI conocia SFV5; el discovery tiene CERO menciones del Gerente. Y la convergencia: MANAGEMENT_DAEMON_SPEC:45 ya nombraba "Adaptador hacia SFV5 - AUSENTE" y :127 ya dejaba fuera de alcance la "validacion semantica del entregable" — el mismo par de gaps que el discovery derivo 14 dias despues por otro camino.
 
-SKILLS, correccion de la afirmacion previa: 0/32 con tests CONFIRMADO. Pero "0/32 con camino vivo" era demasiado fuerte. Exacto: 0/32 tests, 3/32 camino vivo evidenciado (prp y bucle-agentico por PRP-001; skill-creator TESTED con quick_validate 32/32), 29/32 sin ninguna evidencia de haberse ejecutado. 20/32 son solo SKILL.md. 2/32 con scripts propios.
+ENCUADRE DECLARADO POR JORGE: Claude Code y Codex reciben los pedidos de fabricacion y los gestionan con el Gerente de Fabrica. No somos auditores de SFV5, somos su runtime. Consecuencia no trivial: como la capacidad productiva de SFV5 es una sesion interactiva de Claude Code, el "Adaptador hacia SFV5" del FMD es un adaptador hacia una sesion como la mia.
 
-NO HAY ORQUESTADOR. Las mas referenciadas del grafo de menciones son hojas: outcomes(7), add-login(7), supabase(7), factory-brain(6). Ninguna coordina el pipeline. El routing es razonamiento libre del modelo sobre description+triggers, mecanismo del HOST, no de SFV5. Las skills se referencian en prosa, no se invocan; solo autoresearch declara Agent en allowed-tools y parallel-build menciona Workflow, ambos del host.
+NO TOCADO: cero modificaciones a SFV5, sin uso de root, NO_TOUCH intacto (puntajeTigreKnockout, Supabase, Vercel config, env vars, HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets, /opt/futbolweb).
 
-WRU es la superficie headless mas cercana que EXISTE: wru.query.v1 por stdin/stdout con autoridad tipada (consumer_id + authority=READER), lee el frontmatter de las 32 skills. Es el paso 3 del roadmap por ROI de la auditoria del 2026-07-30, la unica recomendacion que llego a construirse. Pero CATALOGA, NO INVOCA. Probado en vivo hoy: 33/33 entradas stale, 20 propuestas y 4 conflictos pendientes, y una excepcion no capturada en query/client.mjs:20 (TypeError toLowerCase) que rompe su propio contrato escribiendo stack trace donde promete JSON.
+QUEDA ABIERTO, no atendido en esta sesion: (1) architecture/institutional-graph/WRU-LIVE-STATE.json sigue modificado sin commitear, venia asi desde antes de la sesion; (2) el PROXIMO_AGENTE_DEBE de Cabo 7 del 2026-08-03 sigue pendiente entero — rotar la llave SSH de dflagent a deploy key con scope, commitear receipts/root-live.receipt y g11-resolution.log, y commitear el fix de scripts/regen_graph.sh antes de que un git restore lo revierta; (3) el dispatch de DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02 sigue FAIL_CLOSED por E_AUTH_EXPIRED + E_DISPATCH_STALE.
 
-GAP EXACTO: falta (a) superficie de invocacion no interactiva del runtime existente y (b) verificador de correspondencia pedido->producto. La (b) NO TIENE NINGUN PRECEDENTE en el sistema: ningun mecanismo compara producto contra pedido. Clase de gap: adaptador + instrumentacion. NO requiere modificar skills ni capacidad nueva de fabricacion; SI requiere capacidad nueva de verificacion semantica.
+PROXIMO_AGENTE_DEBE: ejecutar SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF, pero ENCUADRADO como la implementacion del "Adaptador hacia SFV5" ya especificado en MANAGEMENT_DAEMON_SPEC_V0.1.md, no como experimento suelto — reutilizar su contrato de autoridad y su politica de excepcion N0-N3 en vez de inventar otros. Ground truth: los 6 criterios de exito verbatim de PRP-001-roof-issues-mini.md:25-31 (respaldo en /home/dflagent/dfl-backups/casa-limpia-2026-08-04/). Criterio >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio: falla si reporta PASS solo porque la ejecucion termino sin error. Y antes de abrir la mision, leer first-operable-factory-v01/ completo — sobre todo EVIDENCE_BASE.md.
 
-REUTILIZABLE INTACTO: las 32 skills, la plantilla PRP, el contrato de evidencia del bridge (status/artifact/test-report/producer-evidence + SHA), el patron mission_fingerprint + idempotencia, wru.query.v1 como descubrimiento.
+### [CONVERGENCIA] El Gerente de Fabrica (FMD, #280) ya nombro los dos gaps del discovery SFV5 14 dias antes; el discovery no lo cito nunca
+**Type:** decision  
+**Project:** dfl  
 
-EXPERIMENTO MINIMO PROPUESTO: SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF. Reproducir roof-issues-mini por via no interactiva usando su PRP-001 respaldado, con los 6 criterios de exito convertidos en aserciones ejecutables. Criterio: >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio explicito: falla si reporta PASS solo porque la ejecucion termino sin error.
+TOPIC: dfl/saas-factory/gap-convergence-fmd-sfv5
+TYPE: decision
+STATUS: open
+DATE: 2026-08-04
+PRECEDENCIA: D
+AUTHORITY: evidence only
+LIFECYCLE: active
+CONFIDENCE: high
 
-RIESGO PRINCIPAL: JPI consume este bridge via business-os/adapters/factory/. Si el flujo de negocio trata ready como "producto correcto", el defecto se propaga a decisiones operativas reales.
+ENCUADRE DECLARADO POR JORGE: Claude Code y Codex son quienes RECIBEN los pedidos de fabricacion y los gestionan con el "gerente de la fabrica". No somos auditores externos de SFV5: somos su runtime. El discovery #460/#462 ya lo habia probado tecnicamente sin sacar la consecuencia: la fabricacion general de SFV5 ES una sesion de Claude Code leyendo prosa.
 
-Sin uso de root: los bloqueos por ownership (.git de saas-factory-setup root, 38 rutas de skills V5 root, /opt root) quedan documentados, no ocultados. Sin grafo como autoridad: cero consultas a Graphify/agTopologo/codebase-memory.
+HALLAZGO: EL DISCOVERY TUVO UN PUNTO CIEGO REAL. Auditó SFV5 en aislamiento y nunca pregunto si DFL ya tenia disenado el orquestador faltante. Lo tenia, desde hacia 14 dias. Verificado por grep: evidence/sfv5-internal-factory-reality-2026-08-04/ tiene CERO menciones de "gerente", "first-operable", "factory_manager" o "management_daemon". El enlace es de una sola direccion: el diseno del Gerente SI conocia SFV5 (7 menciones en MANAGEMENT_DAEMON_SPEC, 6 en EVIDENCE_BASE, 6 en FACTORY_BUILD_MISSION_PACKET); el discovery no conocia el Gerente.
+
+EL GERENTE EXISTE COMO DISENO FORMAL: obs #280, 2026-07-21, /opt/dfl-knowledge/architecture/first-operable-factory-v01/, 12 documentos, 788 lineas, diseno puro sin codigo. Piezas: FACTORY_MANAGER_CONTRACT_V0.1.md (management loop de 10 pasos interpretar->planificar->asignar->ejecutar->observar->detectar desvio->replanificar->validar->cerrar->aprender; tabla de autoridad de 4 niveles; politica de excepcion graduada N0-N3 que extiende SILENT_CRON_JOBS) y MANAGEMENT_DAEMON_SPEC_V0.1.md (FMD = factory-manager-daemon, se sienta sobre el contrato AGENT-SERVER.md de BOS v2 sin reemplazarlo).
+
+CONVERGENCIA, EL HALLAZGO CENTRAL: dos misiones independientes, con 14 dias de diferencia y por caminos distintos, derivaron EL MISMO PAR DE GAPS.
+- FMD 2026-07-21, MANAGEMENT_DAEMON_SPEC linea 45: "Adaptador hacia SFV5 - AUSENTE hoy (EVIDENCE_BASE #34), debe construirse". Y linea 127, fuera de alcance explicito: "Validacion semantica de calidad del entregable (no solo verificacion de estado)".
+- Discovery 2026-08-04: falta (a) superficie de invocacion no interactiva y (b) verificador de correspondencia pedido->producto.
+Son el mismo par. El gap deja de ser hipotesis de una sola mision.
+
+ASIMETRIA IMPORTANTE ENTRE (a) Y (b): la (a) YA TIENE CONTRATO ESCRITO — el FMD especifica que debe hacer el invocador, con autoridad y excepciones. La (b) SIGUE SIN DUENO EN AMBOS DISENOS: el FMD la declaro fuera de alcance y SFV5 no tiene ningun precedente de comparar producto contra pedido. Es la unica pieza sin ancestro en el sistema.
+
+LA RECURSION QUE NADIE HABIA NOMBRADO: MANAGEMENT_DAEMON_SPEC linea 21 dice que el FMD "No escribe codigo de producto - invoca a SFV5 (u otra capacidad productiva) para eso". Pero el discovery probo que la capacidad productiva de SFV5 no es un binario: es una sesion interactiva de Claude Code. Por lo tanto el "Adaptador hacia SFV5" es, literalmente, un adaptador hacia una sesion como la mia. El FMD no invoca una fabrica: invoca un agente que sabe leer 32 manuales.
+
+CORRECCION AL "REUTILIZABLE INTACTO" DE #460/#462: faltaba el activo mas grande. Sumar first-operable-factory-v01/ completo — contrato de autoridad, politica de excepcion N0-N3, management loop de 10 pasos y el modelo goals/plans/success_criteria. El adaptador headless NO es pieza nueva: es la implementacion del "Adaptador hacia SFV5" ya especificado. No inventar otro contrato de autoridad.
+
+PROXIMO_AGENTE_DEBE: antes de abrir cualquier mision sobre SFV5, el headless gap o la fabrica, leer first-operable-factory-v01/ — sobre todo EVIDENCE_BASE.md (#34 adaptador ausente, #13 goals ausente, #11 tasks.status sin gate, #15 replanificacion ausente, #17 plasticidad aspiracional) y MANAGEMENT_DAEMON_SPEC_V0.1.md. Y buscar diseno previo en architecture/ y en Engram ANTES de declarar que algo no existe: el discovery no lo hizo y por eso le falto el activo principal.
 
 ---
 
@@ -562,4 +546,4 @@ Sin uso de root: los bloqueos por ownership (.git de saas-factory-setup root, 38
 
 ---
 
-*Mirror auto-generated 2026-08-04T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-04T10:28:41Z | La Garra → DFLghub/amos-context*
