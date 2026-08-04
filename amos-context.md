@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-04T02:39:11Z  
+**Generated:** 2026-08-04T03:05:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -562,4 +562,4 @@ Sin uso de root: los bloqueos por ownership (.git de saas-factory-setup root, 38
 
 ---
 
-*Mirror auto-generated 2026-08-04T02:39:11Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-04T03:05:02Z | La Garra → DFLghub/amos-context*
