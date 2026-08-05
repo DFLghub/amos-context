@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-04T10:28:41Z  
+**Generated:** 2026-08-05T02:09:51Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -270,6 +270,47 @@ VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
 
+### [SFV5] Entrevista canonica completada: la fabrica se autodescribe, mecanismo de interrogacion resuelto y 3 hallazgos criticos verificados
+**Type:** fact  
+**Project:** dfl  
+
+TOPIC: dfl/saas-factory/canonical-self-description
+TYPE: fact
+STATUS: closed
+DATE: 2026-08-05
+PRECEDENCIA: D
+AUTHORITY: evidence only
+LIFECYCLE: active
+CONFIDENCE: high
+
+ENTREVISTA CANONICA A SFV5 COMPLETADA. La fabrica se describio a si misma en 10 bloques, una sola voz (session ad815526), clon canonico 9b18947, solo lectura, cero mutaciones. Evidencia en /opt/dfl-knowledge/evidence/sfv5-canonical-interview-2026-08-05/ (8 documentos + 14 transcripciones JSON + SHA256SUMS + HANDOFF-TO-CX.md).
+
+MECANISMO RESUELTO (cierra Q65 del discovery #460, que quedo INFERENCE): no existe una segunda instancia de Claude Code esperando; se INVOCA. `claude -p` con cwd en <checkout>/saas-factory carga las 32 skills (~19k tokens medidos contra control vacio de 5.7k) y esa sesion ES la fabrica. Reanudable con --resume. LIVE_PROVEN.
+
+TESIS DE LA FABRICA (verbatim): "Soy una arquitectura de contratos declarativos ejecutada por un interprete probabilistico que no controlo, sobre un sistema de archivos que es mi unica memoria." Corolario suyo: todo imperativo en sus archivos (OBLIGATORIO/SIEMPRE/gate duro) es intencion de diseno, no garantia de ejecucion; las unicas garantias reales viven en tools/bridges/ (4 archivos de 82).
+
+HALLAZGOS ACCIONABLES verificados independientemente por Claude Code:
+1. CRITICO update-sf/SKILL.md:52 hace `rm -rf .claude/` y destruye .claude/memory/, PRPs del proyecto y settings.json, mientras anuncia "Archivos NO modificados". Reactiva en silencio la auto-memory del host que memory-manager desactivo. Con N proyectos = destruccion sistematica del activo de aprendizaje compuesto.
+2. CRITICO quality-gates/SKILL.md:25 exige `npm run typecheck`; package.json solo define dev/build/start/lint. Gate duro que invoca script inexistente.
+3. CRITICO dos clases de ciudadano: CLAUDE.md:360 "SIEMPRE habilitar RLS" vs add-payments:74 "service_role bypasses automatically". Resuelve el actor no-humano apagando su invariante mas fuerte.
+4. Sin concepto multi-inquilino organizacional: 1 hit en skills/+src/ y es "Google Workspace" incidental. Su unidad de aislamiento es el individuo, no la organizacion.
+5. codebase-analyst listado en SKILLS_README.md:59 sin directorio: su unico skill de analisis desaparecio en V4->V5.
+6. Son 32 skills, no las 30 documentadas.
+
+IDENTIDAD DERIVADA POR LA PROPIA FABRICA: su especializacion no es un dominio de negocio (atraveso biometria, RAG legal, generacion de video y cold email sin modificarse, verificado en vertical-pack:6) sino una TOPOLOGIA de entrega y operacion. Nombre operativo propuesto por ella: "fabrica de instancias multi-principal operadas en continuo". Criterio de pertenencia: el entregable hay que mantenerlo vivo y observarlo, y todos los principales se autorizan contra el MISMO modelo (hoy la respuesta es no). Aclaro que NO propone renombrar el repo, solo la definicion operativa de asignacion.
+
+CONSECUENCIA PARA EL FMD (#280): convergencia independiente, sin que se le entregara el diseno del Gerente. Derivo sola que tools/bridges/ YA presupone un gerente (factory_request_id, goal_id, attempt_number, evidence_path) y fijo la frontera: "el gerente gobierna ENTRE misiones, yo gobierno DENTRO; la frontera es el paquete de mision y se cruza solo con artefactos, nunca con supervision". Interfaz minima de 8 superficies: 1-4 ya existen en el bridge, 5-8 son la brecha.
+
+GENTLE AI: veredicto SI con acceso al clon completo (52adc25). Capacidad adoptable = el recibo ligado por hash al estado verificado (receipt.go:15) + gates que solo leen recibos. Concepto si, implementacion no. Debe vivir en el kernel compartido; SFV5 emite, el gerente hace vinculante; los tres roles no se pueden fusionar so pena de autocertificacion.
+
+ESTADO DFL VERIFICADO EN LA GARRA: no hay kernel, no hay CI (cero .github/), no existe ~/.saas-factory/brain/, y nada en produccion emite mission packets (los unicos factory_request_id son los que fabrico a mano el discovery). El tramo "hacer vinculantes los recibos" no tiene hoy actor posible.
+
+SIGUIENTE PASO: pedirle el INVENTARIO DE ATESTACION (entregable falsable que ella misma propuso). Pendiente de Jorge, bloquea el resto: que limites volver vinculantes, y si hay identidad para aprobaciones humanas.
+
+CAVEAT DE METODO: la fabrica es parte interesada describiendose a si misma. Los [FACT] no verificados por Claude Code son citas suyas, no evidencia. Se verificaron ~20 de mayor consecuencia.
+
+Costo total 10.50 USD, 14 invocaciones.
+
 ### [AUDIT] Cabo 7 — auditoria independiente de cierre 2026-08-03: CLOSED_WITH_NONBLOCKING_SECURITY_DEBT
 **Type:** fact  
 **Project:** dfl  
@@ -313,12 +354,6 @@ RESTRICCIONES RESPETADAS: DCSA no promovido. No se modificaron llaves, permisos,
 
 PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scope a DFLghub/amos-context; (2) commitear receipts/root-live.receipt y g11-resolution.log al paquete de evidencia; (3) commitear el fix de scripts/regen_graph.sh a main antes de que un git restore lo revierta.
 
-### @$fin 2026-08-02 — HEADLESS_REAL_FIXTURE_RUN verificado PASS
-**Type:** fact  
-**Project:** dfl  
-
-Cierre Gate 4B. Revisión mecánica independiente ejecutada desde checkout limpio sobre 20953ce, ae58480 y f4f3909. Se corrió la suite desde una ruta con espacios fuera de la restricción EPERM del sandbox: exit 0, 11 PASS, 0 FAIL, 0 SKIPPED, 0 SETUP_ERROR, G10 OBSERVED por diseño de corrida individual. G2 fabricación PASS; G3 consumo PASS con stdout JSON no vacío, exit/stderr separados, checked=12 y contract_honored=true en positivo, negativo INTEGRITY_FAILED exit 1; G8 reproducibilidad PASS mediante dos checkouts limpios, ambos exit 0, fingerprints idénticos 4be987320560c92ea1551d945dab74e041be001401a99f7203a3edfcb0bed27b y REPRODUCIBLE. Verificados refs ec0d8ee, d79fffdf4ab1739e45049bae9c3933794788c1df, 801ecc4 y 6f71e5e; lifecycle REVIEW_REQUIRED/PROMOTION_BLOCKED, sin integración/instalación/publicación/promoción/DCSA. No se modificó el workspace ni se abrió otra misión.
-
 ---
 
 ## PENDING
@@ -334,11 +369,26 @@ Cierre Gate 4B. Revisión mecánica independiente ejecutada desde checkout limpi
 
 Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (AgMaster_amOS_3, AI_amOS_Acta_Fundacional v1.1, Protocolo MS→amOS). Veredicto: B — Existe parcialmente pero disperso. Cobertura: Peso/costo metabólico→confidence+value en tabla events (Parcial, consolidar); Persistencia→status Origin Chain+estados Candidate Vault (Parcial, consolidar); Intención→scope+forbidden_uses agLego+Layer3 VALUE (Implícita, nombrar); Propagación→C-009+G-002 Protocol Taxonomy (Incompleta, GAP REAL); Relación con estado→Layer6+tabla asset_states (Existe, conservar). Conclusión: NO hace falta constructo nuevo tipo 'Light Signals'. Hace falta unificar y nombrar lo disperso. Gap real confirmado: G-002 Protocol Taxonomy (propagación, marcado como no cerrado en el Acta Fundacional). Próximo paso: cerrar G-002 dentro del Libro 1 amOS o como PRP independiente. Prerequisito: localizar RFC-DFL-001 (puede contener Event Model más completo).
 
-### amOS — ontología activa 13 capas (Acta Fundacional v1.1)
-**Type:** fact  
+### @$go/@$fin uniformidad multi-agente — AGENT_CAPABILITY_MATRIX + fix generador vs artefacto
+**Type:** decision  
 **Project:** dfl  
 
-13 Capas ratificadas del ecosistema amOS (AI_amOS_Acta_Fundacional v1.1, 2026-06-15 FINAL): L1=REALITY (amOS models reality, never IS reality); L2=CONTEXT (architectural law, el contexto manda); L3=VALUE (produce/protect/enable/avoid consequences); L4=INFORMATION (utility is in relationship, not information); L5=ASSETS (Entity+ContextualValue+Identity+State+Relationships); L6=STATE (amOS revolves around State, not AI/GPTs/documents); L7=REGISTRIES (Asset+Protocol+State Registry); L8=PROTOCOLS (biggest gap, without protocols agMesh=concept); L9=HOMEOSTASIS (habits reducing degradation probability, not deterministic); L10=ATTENTION (scarcest resource is attention, not storage/tokens/compute); L11=ENERGY (ATP-D: consumes/costs/produces/recovers); L12=EVOLUTION (Candidate Vault→Triunvirato→Ratification→Doctrine); L13=CONSTITUTION (what can change/cannot/who governs/how it changes). Constitución activa: C-001 contexto determina valor; C-002 amOS modela realidad; C-005 ningún componente se autoaprueba; C-006 candidate only hasta ratificación HI; C-008 nada entra al núcleo sin TRIAGE; C-009 domain sovereignty (hard boundaries); C-013 Doctrine first-governance second-software third; C-015 amOS produce coherencia, no software.
+**Qué**: Resuelta la asimetría de capacidades entre agentes (CC/Codex con bash vs ChatGPT/Gemini sin bash vs chat puro) que hacía fallar @$go/@$fin silenciosamente y quemaba tokens de Jorge en intentos imposibles.
+
+**Descubrimiento arquitectónico clave**: `amos-context.md` (Fuente A, el "Constitution-like" doc que cualquier agente nuevo lee primero) es 100% auto-generado — `publish-amos-context.sh` hace `git reset --hard origin/main` sobre `/opt/amos-context-mirror` y luego sobreescribe `amos-context.md` completo desde un template Python hardcodeado en el propio script, que renderiza el JSON servido por `/opt/dfl-context-proxy/main.py`. Editar `amos-context.md` a mano y comitearlo NO sobrevive — el próximo `push_mirror.sh` (cron 3:05am UTC, @$fin de cualquier EJECUTOR, o watchdog) lo pisa de vuelta. Solo sobreviven ediciones manuales a `agents/*.md` (los anexos) y a archivos nuevos que el script nunca toca, porque `publish-amos-context.sh` únicamente hace `git add amos-context.md` — nada más.
+
+**Solución implementada** (3 commits):
+1. `DFLghub/amos-context` commit `241ecec`: `AGENT_CAPABILITY_MATRIX.md` nuevo (barrera de entrada única, Paso 0 binario: bash+git+Engram→EJECUTOR, sin bash pero fetch confiable→ORQUESTADOR, ninguno→CONSULTOR) + pointer de una línea agregado al inicio de `agents/{ejecutor,orquestador,consultor}.md` para no duplicar el diagnóstico 3 veces.
+2. `DFLghub/dfl-context-proxy` commit `a5e4868`: editado el generador real (no el archivo generado) — `main.py` (`agent_directory.step_0`, `capability_matrix_url`, y por perfil `go_capability`/`fin_mode`/`fallback_if_capability_lost`) + `publish-amos-context.sh` (tabla AGENT DIRECTORY ahora incluye columnas `@$go`/`@$fin` y pointer a la matriz). Servicio `dfl-context-proxy` reiniciado para levantar el cambio de `main.py`.
+3. Verificado en vivo: `push_mirror.sh` corrido dos veces — primera vez `updated` (commit `501112f`), segunda vez `unchanged` (dedup por hash correcto, sin duplicar commits). `/go` público y `amos-context.md` público reflejan el cambio; `AGENT_CAPABILITY_MATRIX.md` accesible por raw.githubusercontent.com.
+
+**Patrón reutilizable (amOS learning)**: cuando un problema pide "editar el doc X", primero verificar si X es fuente o es artefacto derivado. Si es derivado, localizar el generador real y editarlo ahí — de lo contrario el fix es cosmético y se revierte solo en el próximo ciclo de regeneración. Aplica a cualquier futuro "documento espejo" en el ecosistema DFL (KNL, graph_context, etc.).
+
+**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/amos-context-mirror/agents/*.md`, `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh`.
+
+**No se tocó**: el archivo de secretos protegido bajo /etc (ruta omitida acá a propósito — mencionarla textual dispara el auditor anti-leak de publish-amos-context.sh como falso positivo), env vars, Supabase, `puntajeTigreKnockout`. `engram-backup-offhost.sh` tenía cambios preexistentes sin comitear ajenos a esta misión — no se tocó ni se comiteó.
+
+**Nota operativa**: si necesitás referenciar esa ruta protegida en una obs de Engram a futuro, evitá escribirla literal — cualquier mención textual que llegue a `recent_decisions`/`recent_engram_dfl` del payload `/go` hace abortar `publish-amos-context.sh` (bloqueó un `push_mirror.sh` real el 2026-07-08 hasta que se redactó esta obs).
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -372,6 +422,47 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### [SFV5] Entrevista canonica completada: la fabrica se autodescribe, mecanismo de interrogacion resuelto y 3 hallazgos criticos verificados
+**Type:** fact  
+**Project:** dfl  
+
+TOPIC: dfl/saas-factory/canonical-self-description
+TYPE: fact
+STATUS: closed
+DATE: 2026-08-05
+PRECEDENCIA: D
+AUTHORITY: evidence only
+LIFECYCLE: active
+CONFIDENCE: high
+
+ENTREVISTA CANONICA A SFV5 COMPLETADA. La fabrica se describio a si misma en 10 bloques, una sola voz (session ad815526), clon canonico 9b18947, solo lectura, cero mutaciones. Evidencia en /opt/dfl-knowledge/evidence/sfv5-canonical-interview-2026-08-05/ (8 documentos + 14 transcripciones JSON + SHA256SUMS + HANDOFF-TO-CX.md).
+
+MECANISMO RESUELTO (cierra Q65 del discovery #460, que quedo INFERENCE): no existe una segunda instancia de Claude Code esperando; se INVOCA. `claude -p` con cwd en <checkout>/saas-factory carga las 32 skills (~19k tokens medidos contra control vacio de 5.7k) y esa sesion ES la fabrica. Reanudable con --resume. LIVE_PROVEN.
+
+TESIS DE LA FABRICA (verbatim): "Soy una arquitectura de contratos declarativos ejecutada por un interprete probabilistico que no controlo, sobre un sistema de archivos que es mi unica memoria." Corolario suyo: todo imperativo en sus archivos (OBLIGATORIO/SIEMPRE/gate duro) es intencion de diseno, no garantia de ejecucion; las unicas garantias reales viven en tools/bridges/ (4 archivos de 82).
+
+HALLAZGOS ACCIONABLES verificados independientemente por Claude Code:
+1. CRITICO update-sf/SKILL.md:52 hace `rm -rf .claude/` y destruye .claude/memory/, PRPs del proyecto y settings.json, mientras anuncia "Archivos NO modificados". Reactiva en silencio la auto-memory del host que memory-manager desactivo. Con N proyectos = destruccion sistematica del activo de aprendizaje compuesto.
+2. CRITICO quality-gates/SKILL.md:25 exige `npm run typecheck`; package.json solo define dev/build/start/lint. Gate duro que invoca script inexistente.
+3. CRITICO dos clases de ciudadano: CLAUDE.md:360 "SIEMPRE habilitar RLS" vs add-payments:74 "service_role bypasses automatically". Resuelve el actor no-humano apagando su invariante mas fuerte.
+4. Sin concepto multi-inquilino organizacional: 1 hit en skills/+src/ y es "Google Workspace" incidental. Su unidad de aislamiento es el individuo, no la organizacion.
+5. codebase-analyst listado en SKILLS_README.md:59 sin directorio: su unico skill de analisis desaparecio en V4->V5.
+6. Son 32 skills, no las 30 documentadas.
+
+IDENTIDAD DERIVADA POR LA PROPIA FABRICA: su especializacion no es un dominio de negocio (atraveso biometria, RAG legal, generacion de video y cold email sin modificarse, verificado en vertical-pack:6) sino una TOPOLOGIA de entrega y operacion. Nombre operativo propuesto por ella: "fabrica de instancias multi-principal operadas en continuo". Criterio de pertenencia: el entregable hay que mantenerlo vivo y observarlo, y todos los principales se autorizan contra el MISMO modelo (hoy la respuesta es no). Aclaro que NO propone renombrar el repo, solo la definicion operativa de asignacion.
+
+CONSECUENCIA PARA EL FMD (#280): convergencia independiente, sin que se le entregara el diseno del Gerente. Derivo sola que tools/bridges/ YA presupone un gerente (factory_request_id, goal_id, attempt_number, evidence_path) y fijo la frontera: "el gerente gobierna ENTRE misiones, yo gobierno DENTRO; la frontera es el paquete de mision y se cruza solo con artefactos, nunca con supervision". Interfaz minima de 8 superficies: 1-4 ya existen en el bridge, 5-8 son la brecha.
+
+GENTLE AI: veredicto SI con acceso al clon completo (52adc25). Capacidad adoptable = el recibo ligado por hash al estado verificado (receipt.go:15) + gates que solo leen recibos. Concepto si, implementacion no. Debe vivir en el kernel compartido; SFV5 emite, el gerente hace vinculante; los tres roles no se pueden fusionar so pena de autocertificacion.
+
+ESTADO DFL VERIFICADO EN LA GARRA: no hay kernel, no hay CI (cero .github/), no existe ~/.saas-factory/brain/, y nada en produccion emite mission packets (los unicos factory_request_id son los que fabrico a mano el discovery). El tramo "hacer vinculantes los recibos" no tiene hoy actor posible.
+
+SIGUIENTE PASO: pedirle el INVENTARIO DE ATESTACION (entregable falsable que ella misma propuso). Pendiente de Jorge, bloquea el resto: que limites volver vinculantes, y si hay identidad para aprobaciones humanas.
+
+CAVEAT DE METODO: la fabrica es parte interesada describiendose a si misma. Los [FACT] no verificados por Claude Code son citas suyas, no evidencia. Se verificaron ~20 de mayor consecuencia.
+
+Costo total 10.50 USD, 14 invocaciones.
+
 ### @$fin 2026-08-04 — addendum SFV5 pregunta-por-pregunta, 3 correcciones y convergencia con el Gerente de Fabrica
 **Type:** fact  
 **Project:** dfl  
@@ -404,38 +495,6 @@ NO TOCADO: cero modificaciones a SFV5, sin uso de root, NO_TOUCH intacto (puntaj
 QUEDA ABIERTO, no atendido en esta sesion: (1) architecture/institutional-graph/WRU-LIVE-STATE.json sigue modificado sin commitear, venia asi desde antes de la sesion; (2) el PROXIMO_AGENTE_DEBE de Cabo 7 del 2026-08-03 sigue pendiente entero — rotar la llave SSH de dflagent a deploy key con scope, commitear receipts/root-live.receipt y g11-resolution.log, y commitear el fix de scripts/regen_graph.sh antes de que un git restore lo revierta; (3) el dispatch de DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02 sigue FAIL_CLOSED por E_AUTH_EXPIRED + E_DISPATCH_STALE.
 
 PROXIMO_AGENTE_DEBE: ejecutar SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF, pero ENCUADRADO como la implementacion del "Adaptador hacia SFV5" ya especificado en MANAGEMENT_DAEMON_SPEC_V0.1.md, no como experimento suelto — reutilizar su contrato de autoridad y su politica de excepcion N0-N3 en vez de inventar otros. Ground truth: los 6 criterios de exito verbatim de PRP-001-roof-issues-mini.md:25-31 (respaldo en /home/dflagent/dfl-backups/casa-limpia-2026-08-04/). Criterio >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio: falla si reporta PASS solo porque la ejecucion termino sin error. Y antes de abrir la mision, leer first-operable-factory-v01/ completo — sobre todo EVIDENCE_BASE.md.
-
-### [CONVERGENCIA] El Gerente de Fabrica (FMD, #280) ya nombro los dos gaps del discovery SFV5 14 dias antes; el discovery no lo cito nunca
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/gap-convergence-fmd-sfv5
-TYPE: decision
-STATUS: open
-DATE: 2026-08-04
-PRECEDENCIA: D
-AUTHORITY: evidence only
-LIFECYCLE: active
-CONFIDENCE: high
-
-ENCUADRE DECLARADO POR JORGE: Claude Code y Codex son quienes RECIBEN los pedidos de fabricacion y los gestionan con el "gerente de la fabrica". No somos auditores externos de SFV5: somos su runtime. El discovery #460/#462 ya lo habia probado tecnicamente sin sacar la consecuencia: la fabricacion general de SFV5 ES una sesion de Claude Code leyendo prosa.
-
-HALLAZGO: EL DISCOVERY TUVO UN PUNTO CIEGO REAL. Auditó SFV5 en aislamiento y nunca pregunto si DFL ya tenia disenado el orquestador faltante. Lo tenia, desde hacia 14 dias. Verificado por grep: evidence/sfv5-internal-factory-reality-2026-08-04/ tiene CERO menciones de "gerente", "first-operable", "factory_manager" o "management_daemon". El enlace es de una sola direccion: el diseno del Gerente SI conocia SFV5 (7 menciones en MANAGEMENT_DAEMON_SPEC, 6 en EVIDENCE_BASE, 6 en FACTORY_BUILD_MISSION_PACKET); el discovery no conocia el Gerente.
-
-EL GERENTE EXISTE COMO DISENO FORMAL: obs #280, 2026-07-21, /opt/dfl-knowledge/architecture/first-operable-factory-v01/, 12 documentos, 788 lineas, diseno puro sin codigo. Piezas: FACTORY_MANAGER_CONTRACT_V0.1.md (management loop de 10 pasos interpretar->planificar->asignar->ejecutar->observar->detectar desvio->replanificar->validar->cerrar->aprender; tabla de autoridad de 4 niveles; politica de excepcion graduada N0-N3 que extiende SILENT_CRON_JOBS) y MANAGEMENT_DAEMON_SPEC_V0.1.md (FMD = factory-manager-daemon, se sienta sobre el contrato AGENT-SERVER.md de BOS v2 sin reemplazarlo).
-
-CONVERGENCIA, EL HALLAZGO CENTRAL: dos misiones independientes, con 14 dias de diferencia y por caminos distintos, derivaron EL MISMO PAR DE GAPS.
-- FMD 2026-07-21, MANAGEMENT_DAEMON_SPEC linea 45: "Adaptador hacia SFV5 - AUSENTE hoy (EVIDENCE_BASE #34), debe construirse". Y linea 127, fuera de alcance explicito: "Validacion semantica de calidad del entregable (no solo verificacion de estado)".
-- Discovery 2026-08-04: falta (a) superficie de invocacion no interactiva y (b) verificador de correspondencia pedido->producto.
-Son el mismo par. El gap deja de ser hipotesis de una sola mision.
-
-ASIMETRIA IMPORTANTE ENTRE (a) Y (b): la (a) YA TIENE CONTRATO ESCRITO — el FMD especifica que debe hacer el invocador, con autoridad y excepciones. La (b) SIGUE SIN DUENO EN AMBOS DISENOS: el FMD la declaro fuera de alcance y SFV5 no tiene ningun precedente de comparar producto contra pedido. Es la unica pieza sin ancestro en el sistema.
-
-LA RECURSION QUE NADIE HABIA NOMBRADO: MANAGEMENT_DAEMON_SPEC linea 21 dice que el FMD "No escribe codigo de producto - invoca a SFV5 (u otra capacidad productiva) para eso". Pero el discovery probo que la capacidad productiva de SFV5 no es un binario: es una sesion interactiva de Claude Code. Por lo tanto el "Adaptador hacia SFV5" es, literalmente, un adaptador hacia una sesion como la mia. El FMD no invoca una fabrica: invoca un agente que sabe leer 32 manuales.
-
-CORRECCION AL "REUTILIZABLE INTACTO" DE #460/#462: faltaba el activo mas grande. Sumar first-operable-factory-v01/ completo — contrato de autoridad, politica de excepcion N0-N3, management loop de 10 pasos y el modelo goals/plans/success_criteria. El adaptador headless NO es pieza nueva: es la implementacion del "Adaptador hacia SFV5" ya especificado. No inventar otro contrato de autoridad.
-
-PROXIMO_AGENTE_DEBE: antes de abrir cualquier mision sobre SFV5, el headless gap o la fabrica, leer first-operable-factory-v01/ — sobre todo EVIDENCE_BASE.md (#34 adaptador ausente, #13 goals ausente, #11 tasks.status sin gate, #15 replanificacion ausente, #17 plasticidad aspiracional) y MANAGEMENT_DAEMON_SPEC_V0.1.md. Y buscar diseno previo en architecture/ y en Engram ANTES de declarar que algo no existe: el discovery no lo hizo y por eso le falto el activo principal.
 
 ---
 
@@ -546,4 +605,4 @@ PROXIMO_AGENTE_DEBE: antes de abrir cualquier mision sobre SFV5, el headless gap
 
 ---
 
-*Mirror auto-generated 2026-08-04T10:28:41Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-05T02:09:51Z | La Garra → DFLghub/amos-context*
