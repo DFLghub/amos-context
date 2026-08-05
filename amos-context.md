@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-05T03:05:02Z  
+**Generated:** 2026-08-05T03:05:21Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -390,37 +390,20 @@ Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (A
 
 **Nota operativa**: si necesitás referenciar esa ruta protegida en una obs de Engram a futuro, evitá escribirla literal — cualquier mención textual que llegue a `recent_decisions`/`recent_engram_dfl` del payload `/go` hace abortar `publish-amos-context.sh` (bloqueó un `push_mirror.sh` real el 2026-07-08 hasta que se redactó esta obs).
 
-### Session summary: futbolweb-app
-**Type:** session_summary  
-**Project:** futbolweb-app  
+### Onboarding @$go corregido: causas raíz de fallo Codex (falta AGENTS.md) y ChatGPT (capsule inexistente) + fix implementado local
+**Type:** decision  
+**Project:** dfl-knowledge  
 
-## Cierre DFL/KNL/FutbolWeb — 2026-06-27
+TOPIC: dfl/onboarding/codex-chatgpt-fix
+TYPE: decision
+STATUS: active
+DATE: 2026-07-22
 
-### Goal
-Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar FutbolWeb limpio de dirty files y factory artifacts.
+**What**: Diagnóstico y corrección del onboarding @$go que Codex y ChatGPT no ejecutaban bien. Dos causas raíz VERIFICADAS (no supuestas): (1) CODEX — ningún AGENTS.md en /opt menciona @$go ni bootstrap (los 4 existentes: engram/360eventos/co-001/futbolweb dan @$go:0), y NO existía AGENTS.md en /opt/dfl-knowledge; CC arranca con CLAUDE.md→BOOTSTRAP OBLIGATORIO pero Codex, que lee AGENTS.md, no tenía el gemelo → nunca se le instruía el protocolo. Además el payload solo trae cc_bootstrap con nombres CC (mem_search) sin traducción a los de Codex (search_memory/save_memory/update_memory via engram-mcp). (2) CHATGPT — el "offline bootstrap capsule" se referencia en 6 sitios como salvavidas del CONSULTOR pero NO existía como artefacto (solo menciones "usá el capsule de las instrucciones de la sesión", ninguna definición); ChatGPT choca con fetch bloqueado, se le manda a un capsule inexistente, y reporta GATE FALLIDO o fabrica.
 
-### Accomplished
-- Engram #101: payload /go slim — graph_context eliminado, knl canónico único en payload
-- cc-atgo-hook.sh: header @go → @$go corregido
-- dfl-nav fmt_brief: mensaje no-match → "sin god_node — intenta la raíz del concepto"
-- FutbolWeb repo limpio: Blueprint audit movido a /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Auditorias/, graphify-out/ eliminado, .gitignore actualizado, commit 3fd5801
-- Engram #102: higiene FutbolWeb documentada
-- Bitácora creada: /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+**Fix implementado (local, sin commit/push aún):** (a) NEW /opt/dfl-knowledge/AGENTS.md — entry-point Codex, gemelo de CLAUDE.md, con tabla de traducción de tools Engram + gotcha tmux/egress + validation gate. (b) NEW /opt/amos-context-mirror/ONBOARDING_CAPSULE.md — capsule real: Parte A estable (pasa el gate sin fetch) + Parte B snapshot que Jorge refresca. (c) Edit agents/consultor.md + AGENT_CAPABILITY_MATRIX.md apuntando al capsule canónico (test_onboarding_fallback.py sigue PASS). (d) pointer @$go en /opt/360eventos/AGENTS.md. Efecto local inmediato; commit/push a DFLghub/amos-context + los 3 repos = punto de decisión pendiente de Jorge. GOTCHA a respetar: push_mirror.sh hace git reset --hard sobre amos-context-mirror → commitear+pushear los anexos ANTES de correr push_mirror.sh.
 
-### Discoveries
-- graph_context era alias redundante del payload /go — eliminado sin romper consumidores
-- agProtocol_ATP-D_ROJA_v0.1-1: 3 archivos con MD5 idéntico en corpus (duplicados de indexación)
-- "estado" como nombre de god_node produce colisión léxica en español con el grafo
-- Blueprint_v0.6 audit era inconclusa (Blueprint no disponible en VM2) — conservada en Auditorias/
-
-### Next Steps
-1. FutbolWeb producto — runtime estable, knockout scoring deployado (91a4531)
-2. KNL próximo ciclo — nota stale graph_context en knl_builder.py, health test local, evaluar renombrar estado → context-proxy
-3. MERCADER — agregar a KNL si se activa como área de trabajo
-4. Corpus — eliminar agProtocol duplicados (-1 variants)
-
-### Relevant Files
-/opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+**Next**: Jorge autoriza el lote de commit/push. Propuesto follow-up (no hecho): propagar la referencia al capsule a los generadores (publish-amos-context.sh → amos-context.md, main.py → payload CONSULTOR/codex_bootstrap) para que el mirror generado y el payload también apunten al artefacto.
 
 ### [SFV5] Entrevista canonica completada: la fabrica se autodescribe, mecanismo de interrogacion resuelto y 3 hallazgos criticos verificados
 **Type:** fact  
@@ -594,15 +577,15 @@ PROXIMO_AGENTE_DEBE: ejecutar SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF, pero
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.9366  
+**Graph entropy:** 0.7038  
 
-- **Community 11** (94 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
-- **Community 0** (5 nodes): Modelo de Ejecución Secuencial, Protocolo de Contexto de Modelo (MCP), Regla de Importación en Grafo
-- **Community 1** (5 nodes): amOS, IAIM, Activo
-- **Community 2** (4 nodes): Schema Versionado, Interfaz HTTP de Goals, Políticas de Seguridad en RLS
-- **Community 3** (4 nodes): Devicetree, Preflight Algorithm
-- **Community 4** (4 nodes): Registro de disponibilidad
+- **Community 11** (96 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
+- **Community 0** (4 nodes): Onboarding Capability, Estructura de Código en Crystal
+- **Community 1** (4 nodes): Modelo de Ejecución Secuencial
+- **Community 2** (4 nodes): KDL, Jsonnet, Mermaid
+- **Community 3** (4 nodes): Desajuste en la arquitectura, Capacidades comunes reutilizables
+- **Community 4** (4 nodes): Engram Cloud, Responsabilidades del Kernel, Riesgos Operativos en VM2
 
 ---
 
-*Mirror auto-generated 2026-08-05T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-05T03:05:21Z | La Garra → DFLghub/amos-context*
