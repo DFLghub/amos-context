@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-05T22:24:02Z  
+**Generated:** 2026-08-05T23:42:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -405,6 +405,12 @@ DATE: 2026-07-22
 
 **Next**: Jorge autoriza el lote de commit/push. Propuesto follow-up (no hecho): propagar la referencia al capsule a los generadores (publish-amos-context.sh → amos-context.md, main.py → payload CONSULTOR/codex_bootstrap) para que el mirror generado y el payload también apunten al artefacto.
 
+### @$go 2026-08-05 — SFV5 headless minimal proof bloqueada por ausencia de invocador vivo
+**Type:** fact  
+**Project:** dfl  
+
+ONBOARDING: payload local + search_memory('contexto DFL'); perfil EJECUTOR. Primer pending: SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF, encuadrada como adaptador SFV5 del FMD. Se leyó por grafo y fuente local el paquete architecture/first-operable-factory-v01, incluyendo EVIDENCE_BASE.md, MANAGEMENT_DAEMON_SPEC_V0.1.md y FACTORY_MANAGER_CONTRACT_V0.1.md. Ground truth confirmado: 6 criterios de PRP-001 (Dashboard /, /issues con badges, Zod completo, aparición sin recarga, persistencia en sesión, build+typecheck). Verificación local: SFV5 canónica está indexada, pero el propio EVIDENCE_BASE/#34 y discovery vigente declaran AUSENTE cualquier endpoint/cola/CLI headless general; el bridge existente es especializado y no fabrica. No se ejecutó una falsa prueba ni se tocó SFV5, /opt/futbolweb, Supabase, Vercel, env vars, HLC, cron ni secretos. Estado: BLOCKED_ON_LIVE_INVOCATION; falta un adaptador/invocador real y una fixture PRP-001 accesible para correr la prueba contra producto. No se modificaron archivos.
+
 ### [SFV5] Entrevista canonica completada: la fabrica se autodescribe, mecanismo de interrogacion resuelto y 3 hallazgos criticos verificados
 **Type:** fact  
 **Project:** dfl  
@@ -445,39 +451,6 @@ SIGUIENTE PASO: pedirle el INVENTARIO DE ATESTACION (entregable falsable que ell
 CAVEAT DE METODO: la fabrica es parte interesada describiendose a si misma. Los [FACT] no verificados por Claude Code son citas suyas, no evidencia. Se verificaron ~20 de mayor consecuencia.
 
 Costo total 10.50 USD, 14 invocaciones.
-
-### @$fin 2026-08-04 — addendum SFV5 pregunta-por-pregunta, 3 correcciones y convergencia con el Gerente de Fabrica
-**Type:** fact  
-**Project:** dfl  
-
-TOPIC: dfl/sesion/cierre-2026-08-04-sfv5-addendum
-TYPE: fact
-STATUS: closed
-DATE: 2026-08-04
-PRECEDENCIA: D
-AUTHORITY: evidence only
-LIFECYCLE: active
-CONFIDENCE: high
-
-@$fin de la sesion Claude Code (EJECUTOR, dflagent, La Garra/VM2). Rama feat/dfl-high-certainty-harness-v0.1.
-
-QUE PASO. Jorge reenvio el prompt completo de SFV5_INTERNAL_FACTORY_REALITY_DISCOVERY senalando que las preguntas numeradas no estaban respondidas. Tenia razon: el informe de obs #460 respondia por tema. Faltaban de verdad la seccion A enumerada, el inventario Q11 renderizado, la seccion C completa (Q22-Q30, ausente entera) y la tabla por arista de I (Q83-Q86). Al forzar la respuesta numero por numero aparecieron dos afirmaciones FALSAS del informe previo. Leccion metodologica: organizar por tema no solo esconde lo que falta, esconde lo que esta mal.
-
-ENTREGADO. Commit ceec81f, evidence/sfv5-internal-factory-reality-2026-08-04/ADDENDUM-RESPUESTAS-PREGUNTA-POR-PREGUNTA.md, sha256sum -c 24/24 OK exit 0. Las 87 preguntas numeradas + las 14 de J respondidas individualmente con clasificacion FACT/INFERENCE/UNKNOWN y nivel DECLARED..LIVE_PROVEN.
-
-OBSERVACIONES ESCRITAS ESTA SESION: #462 (addendum + 3 correcciones), #463 (convergencia FMD/SFV5). #460 AMPLIADA via PATCH /observations/460 con nota de cabecera que apunta a ambas, contenido original preservado integro (len 5963).
-
-CORRECCIONES INSTITUCIONALIZADAS. C1: "cero tabla de routing" era falso, CLAUDE.md:48-140 tiene decision tree de 27 ramas, 27/32 skills ruteadas, 5 fuera (pack-cold-email, primer, skill-creator, update-sf, video-visuals); es DOCUMENTED no IMPLEMENTED. C2: "no existe pipeline explicito" era falso, CLAUDE.md:184-260 define 5 flujos y el Flujo 1 tiene 16 pasos; sigue siendo maquina de estados de papel porque no hay ejecutor y roof-issues-mini no lo siguio. C3: CLAUDE.md:140 declara 30 skills, hay 32.
-
-HALLAZGO MAYOR DEL CIERRE: el discovery tuvo un punto ciego. Auditó SFV5 en aislamiento y nunca busco si DFL ya tenia disenado el orquestador faltante. Lo tenia: obs #280, first-operable-factory-v01/, 2026-07-21, 12 documentos, 788 lineas. El enlace es unidireccional, verificado por grep: el diseno del Gerente SI conocia SFV5; el discovery tiene CERO menciones del Gerente. Y la convergencia: MANAGEMENT_DAEMON_SPEC:45 ya nombraba "Adaptador hacia SFV5 - AUSENTE" y :127 ya dejaba fuera de alcance la "validacion semantica del entregable" — el mismo par de gaps que el discovery derivo 14 dias despues por otro camino.
-
-ENCUADRE DECLARADO POR JORGE: Claude Code y Codex reciben los pedidos de fabricacion y los gestionan con el Gerente de Fabrica. No somos auditores de SFV5, somos su runtime. Consecuencia no trivial: como la capacidad productiva de SFV5 es una sesion interactiva de Claude Code, el "Adaptador hacia SFV5" del FMD es un adaptador hacia una sesion como la mia.
-
-NO TOCADO: cero modificaciones a SFV5, sin uso de root, NO_TOUCH intacto (puntajeTigreKnockout, Supabase, Vercel config, env vars, HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets, /opt/futbolweb).
-
-QUEDA ABIERTO, no atendido en esta sesion: (1) architecture/institutional-graph/WRU-LIVE-STATE.json sigue modificado sin commitear, venia asi desde antes de la sesion; (2) el PROXIMO_AGENTE_DEBE de Cabo 7 del 2026-08-03 sigue pendiente entero — rotar la llave SSH de dflagent a deploy key con scope, commitear receipts/root-live.receipt y g11-resolution.log, y commitear el fix de scripts/regen_graph.sh antes de que un git restore lo revierta; (3) el dispatch de DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02 sigue FAIL_CLOSED por E_AUTH_EXPIRED + E_DISPATCH_STALE.
-
-PROXIMO_AGENTE_DEBE: ejecutar SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF, pero ENCUADRADO como la implementacion del "Adaptador hacia SFV5" ya especificado en MANAGEMENT_DAEMON_SPEC_V0.1.md, no como experimento suelto — reutilizar su contrato de autoridad y su politica de excepcion N0-N3 en vez de inventar otros. Ground truth: los 6 criterios de exito verbatim de PRP-001-roof-issues-mini.md:25-31 (respaldo en /home/dflagent/dfl-backups/casa-limpia-2026-08-04/). Criterio >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio: falla si reporta PASS solo porque la ejecucion termino sin error. Y antes de abrir la mision, leer first-operable-factory-v01/ completo — sobre todo EVIDENCE_BASE.md.
 
 ---
 
@@ -588,4 +561,4 @@ PROXIMO_AGENTE_DEBE: ejecutar SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF, pero
 
 ---
 
-*Mirror auto-generated 2026-08-05T22:24:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-05T23:42:02Z | La Garra → DFLghub/amos-context*
