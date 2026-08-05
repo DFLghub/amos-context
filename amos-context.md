@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-05T02:09:51Z  
+**Generated:** 2026-08-05T03:05:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -605,4 +605,4 @@ PROXIMO_AGENTE_DEBE: ejecutar SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF, pero
 
 ---
 
-*Mirror auto-generated 2026-08-05T02:09:51Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-05T03:05:02Z | La Garra → DFLghub/amos-context*
