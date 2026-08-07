@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-07T03:05:02Z  
+**Generated:** 2026-08-07T03:07:10Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -363,47 +363,32 @@ PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scop
 
 ## RECENT ACTIVITY (cross-project)
 
-### amOS Event Model — veredicto auditoría 2026-06-23
+### @go Protocol v1.0 — protocolo de arranque DFL
 **Type:** decision  
 **Project:** dfl  
 
-Auditoría del Event Model amOS realizada 2026-06-23 contra 3 docs canónicos (AgMaster_amOS_3, AI_amOS_Acta_Fundacional v1.1, Protocolo MS→amOS). Veredicto: B — Existe parcialmente pero disperso. Cobertura: Peso/costo metabólico→confidence+value en tabla events (Parcial, consolidar); Persistencia→status Origin Chain+estados Candidate Vault (Parcial, consolidar); Intención→scope+forbidden_uses agLego+Layer3 VALUE (Implícita, nombrar); Propagación→C-009+G-002 Protocol Taxonomy (Incompleta, GAP REAL); Relación con estado→Layer6+tabla asset_states (Existe, conservar). Conclusión: NO hace falta constructo nuevo tipo 'Light Signals'. Hace falta unificar y nombrar lo disperso. Gap real confirmado: G-002 Protocol Taxonomy (propagación, marcado como no cerrado en el Acta Fundacional). Próximo paso: cerrar G-002 dentro del Libro 1 amOS o como PRP independiente. Prerequisito: localizar RFC-DFL-001 (puede contener Event Model más completo).
+Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT, Gemini) arrancar con contexto completo DFL en un paso. Fuente A: amos-context.md en DFLghub/amos-context (commit edd5f51). Fuente B: GET https://context.deepfeelingslabs.com/go — devuelve JSON con identity, recent_decisions, active_constraints, pending, generated_at. Backend: dfl-context-proxy en 127.0.0.1:8091 consulta Engram local 127.0.0.1:7437 con queries: "decisiones activas estado", "restricciones prohibido no tocar", "pendientes criticos". Sin auth requerida en /go. @go v1.0 activo y verificado.
 
-### @$go/@$fin uniformidad multi-agente — AGENT_CAPABILITY_MATRIX + fix generador vs artefacto
-**Type:** decision  
+### @$go 2026-07-31 — reconciliación final verificada y pending histórico archivado
+**Type:** fact  
 **Project:** dfl  
 
-**Qué**: Resuelta la asimetría de capacidades entre agentes (CC/Codex con bash vs ChatGPT/Gemini sin bash vs chat puro) que hacía fallar @$go/@$fin silenciosamente y quemaba tokens de Jorge en intentos imposibles.
+@$go ejecutado con payload local generated_at=2026-07-31T01:12:29Z y search_memory('contexto DFL'). Se retomó el primer pending mediante HANDOFF-CODEX.md. `check_registro_vivo.py` confirmó el estado, pero reportó además 30 hallazgos de infraestructura/dirty state fuera del alcance: no se remediaron. 08-RECONCILIACION-FINAL.md confirma que la misión ya estaba completada (commit 7b77b78, obs #236 archivada, mirror e525b9a). Se archivó Engram obs #239 como [RESOLVED] para evitar que el resumen histórico siguiera apareciendo como pending genérico. No se modificaron archivos ni superficies protegidas; no se tocaron decisiones reservadas a Jorge.
 
-**Descubrimiento arquitectónico clave**: `amos-context.md` (Fuente A, el "Constitution-like" doc que cualquier agente nuevo lee primero) es 100% auto-generado — `publish-amos-context.sh` hace `git reset --hard origin/main` sobre `/opt/amos-context-mirror` y luego sobreescribe `amos-context.md` completo desde un template Python hardcodeado en el propio script, que renderiza el JSON servido por `/opt/dfl-context-proxy/main.py`. Editar `amos-context.md` a mano y comitearlo NO sobrevive — el próximo `push_mirror.sh` (cron 3:05am UTC, @$fin de cualquier EJECUTOR, o watchdog) lo pisa de vuelta. Solo sobreviven ediciones manuales a `agents/*.md` (los anexos) y a archivos nuevos que el script nunca toca, porque `publish-amos-context.sh` únicamente hace `git add amos-context.md` — nada más.
-
-**Solución implementada** (3 commits):
-1. `DFLghub/amos-context` commit `241ecec`: `AGENT_CAPABILITY_MATRIX.md` nuevo (barrera de entrada única, Paso 0 binario: bash+git+Engram→EJECUTOR, sin bash pero fetch confiable→ORQUESTADOR, ninguno→CONSULTOR) + pointer de una línea agregado al inicio de `agents/{ejecutor,orquestador,consultor}.md` para no duplicar el diagnóstico 3 veces.
-2. `DFLghub/dfl-context-proxy` commit `a5e4868`: editado el generador real (no el archivo generado) — `main.py` (`agent_directory.step_0`, `capability_matrix_url`, y por perfil `go_capability`/`fin_mode`/`fallback_if_capability_lost`) + `publish-amos-context.sh` (tabla AGENT DIRECTORY ahora incluye columnas `@$go`/`@$fin` y pointer a la matriz). Servicio `dfl-context-proxy` reiniciado para levantar el cambio de `main.py`.
-3. Verificado en vivo: `push_mirror.sh` corrido dos veces — primera vez `updated` (commit `501112f`), segunda vez `unchanged` (dedup por hash correcto, sin duplicar commits). `/go` público y `amos-context.md` público reflejan el cambio; `AGENT_CAPABILITY_MATRIX.md` accesible por raw.githubusercontent.com.
-
-**Patrón reutilizable (amOS learning)**: cuando un problema pide "editar el doc X", primero verificar si X es fuente o es artefacto derivado. Si es derivado, localizar el generador real y editarlo ahí — de lo contrario el fix es cosmético y se revierte solo en el próximo ciclo de regeneración. Aplica a cualquier futuro "documento espejo" en el ecosistema DFL (KNL, graph_context, etc.).
-
-**Where**: `/opt/amos-context-mirror/AGENT_CAPABILITY_MATRIX.md`, `/opt/amos-context-mirror/agents/*.md`, `/opt/dfl-context-proxy/main.py`, `/opt/dfl-context-proxy/publish-amos-context.sh`.
-
-**No se tocó**: el archivo de secretos protegido bajo /etc (ruta omitida acá a propósito — mencionarla textual dispara el auditor anti-leak de publish-amos-context.sh como falso positivo), env vars, Supabase, `puntajeTigreKnockout`. `engram-backup-offhost.sh` tenía cambios preexistentes sin comitear ajenos a esta misión — no se tocó ni se comiteó.
-
-**Nota operativa**: si necesitás referenciar esa ruta protegida en una obs de Engram a futuro, evitá escribirla literal — cualquier mención textual que llegue a `recent_decisions`/`recent_engram_dfl` del payload `/go` hace abortar `publish-amos-context.sh` (bloqueó un `push_mirror.sh` real el 2026-07-08 hasta que se redactó esta obs).
-
-### Onboarding @$go corregido: causas raíz de fallo Codex (falta AGENTS.md) y ChatGPT (capsule inexistente) + fix implementado local
+### DRG-001 emitido: cierre normativo FS-01 360Eventos (mapeo legacy, sunset dual-write, AuthZ oficial, atomicidad, impacto FS-02/03)
 **Type:** decision  
 **Project:** dfl-knowledge  
 
-TOPIC: dfl/onboarding/codex-chatgpt-fix
+TOPIC: dfl/360eventos/drg-001-fs01-closure
 TYPE: decision
 STATUS: active
-DATE: 2026-07-22
+DATE: 2026-07-19
 
-**What**: Diagnóstico y corrección del onboarding @$go que Codex y ChatGPT no ejecutaban bien. Dos causas raíz VERIFICADAS (no supuestas): (1) CODEX — ningún AGENTS.md en /opt menciona @$go ni bootstrap (los 4 existentes: engram/360eventos/co-001/futbolweb dan @$go:0), y NO existía AGENTS.md en /opt/dfl-knowledge; CC arranca con CLAUDE.md→BOOTSTRAP OBLIGATORIO pero Codex, que lee AGENTS.md, no tenía el gemelo → nunca se le instruía el protocolo. Además el payload solo trae cc_bootstrap con nombres CC (mem_search) sin traducción a los de Codex (search_memory/save_memory/update_memory via engram-mcp). (2) CHATGPT — el "offline bootstrap capsule" se referencia en 6 sitios como salvavidas del CONSULTOR pero NO existía como artefacto (solo menciones "usá el capsule de las instrucciones de la sesión", ninguna definición); ChatGPT choca con fetch bloqueado, se le manda a un capsule inexistente, y reporta GATE FALLIDO o fabrica.
+**What**: DRG-001 emitido — documento normativo de cierre de FS-01 en /opt/360eventos/docs/architecture/DRG-001-FS01-CLOSURE.md (sin commit; misión "no escribas código" cumplida: solo documento). Decisiones vinculantes: D1 mapeo legacy definitivo (nueva→RECIBIDA, en_revision→RECIBIDA porque PENDIENTE_INFORMACION exigiría nota inexistente, cotizada→CALIFICADA, cerrada→ARCHIVADA_LEGACY [valor terminal nuevo fuera de la máquina de estados], cancelada→RECHAZADA con motivo literal de migración; fallback silencioso a RECIBIDA PROHIBIDO). D2 filas irregulares → estado_ddms NULL + "requiere revisión de datos"; con datos reales de cliente toda migración de estados exige revisión humana nominal. D3 sunset: estado_ddms única verdad; estado legacy congelado read-only en migration-11, drop físico al cierre de FS-03; CALIFICADA→'cotizada' abolido. D4 dual-write prohibido como patrón; servicios congelada; cotizaciones (migration-05) declarada muerta para FS-03. D5 AuthZ de aplicación primaria + RLS honesta (correcta o eliminada); roles DDMS migran YA en profiles CHECK (admin→ADMINISTRADOR); INSERT anónimo muerto se elimina. D6 atomicidad: cambio de estado + historial en una transacción vía RPC Postgres; aplica a toda entidad con estado del proyecto; calificar NO re-valida fecha_evento pasada. D7 FS-02 tablas nuevas + snapshot service como gate de salida + enums en src/domain/ único; FS-03 versionado nativo + secuencias. Condiciones de cierre FS-01 bloquean FS-02, incluida la obligación de versionar docs/ y domain/ en git. migration-10 SUPERSEDIDA.
 
-**Fix implementado (local, sin commit/push aún):** (a) NEW /opt/dfl-knowledge/AGENTS.md — entry-point Codex, gemelo de CLAUDE.md, con tabla de traducción de tools Engram + gotcha tmux/egress + validation gate. (b) NEW /opt/amos-context-mirror/ONBOARDING_CAPSULE.md — capsule real: Parte A estable (pasa el gate sin fetch) + Parte B snapshot que Jorge refresca. (c) Edit agents/consultor.md + AGENT_CAPABILITY_MATRIX.md apuntando al capsule canónico (test_onboarding_fallback.py sigue PASS). (d) pointer @$go en /opt/360eventos/AGENTS.md. Efecto local inmediato; commit/push a DFLghub/amos-context + los 3 repos = punto de decisión pendiente de Jorge. GOTCHA a respetar: push_mirror.sh hace git reset --hard sobre amos-context-mirror → commitear+pushear los anexos ANTES de correr push_mirror.sh.
+**Why**: Jorge ordenó misión DRG-001 (Architecture Review Board, decisiones no opciones) tras el informe de riesgos de la revisión read-only (obs #269). Evidencia habilitante de mapeos incondicionales: CLIENT_PRODUCTION_GATE BLOCKED + datos solo demo.
 
-**Next**: Jorge autoriza el lote de commit/push. Propuesto follow-up (no hecho): propagar la referencia al capsule a los generadores (publish-amos-context.sh → amos-context.md, main.py → payload CONSULTOR/codex_bootstrap) para que el mirror generado y el payload también apunten al artefacto.
+**Next**: migration-11 debe redactarse conforme a DRG-001 y aplicarse solo con autorización explícita de Jorge; Codex auditando migración en paralelo debe recibir DRG-001 como norma superior a migration-10.
 
 ### @$go 2026-08-05 — SFV5 headless minimal proof bloqueada por ausencia de invocador vivo
 **Type:** fact  
@@ -550,15 +535,15 @@ Costo total 10.50 USD, 14 invocaciones.
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.7038  
+**Graph entropy:** 0.8596  
 
-- **Community 11** (96 nodes): MCP Server Behavior, Evaluación de Plantillas, Preguntas para el Desarrollador
-- **Community 0** (4 nodes): Onboarding Capability, Estructura de Código en Crystal
-- **Community 1** (4 nodes): Modelo de Ejecución Secuencial
-- **Community 2** (4 nodes): KDL, Jsonnet, Mermaid
-- **Community 3** (4 nodes): Desajuste en la arquitectura, Capacidades comunes reutilizables
-- **Community 4** (4 nodes): Engram Cloud, Responsabilidades del Kernel, Riesgos Operativos en VM2
+- **Community 11** (91 nodes): Onboarding Capability, Dependencias para Fabricación, Tenencia Owner-Scoped
+- **Community 0** (9 nodes): Mercader Boundary, Mercader, Canal de Credenciales
+- **Community 1** (4 nodes): MCP Server Behavior, Semántica de Inventario
+- **Community 2** (4 nodes): hyprlang, aprendizaje en V1, productos digitales vs servicios profesionales
+- **Community 3** (4 nodes): Digest Semantics, Cadena de Publicación, Evaluación de Complejidad
+- **Community 4** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), RLS basado en propietario
 
 ---
 
-*Mirror auto-generated 2026-08-07T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-07T03:07:10Z | La Garra → DFLghub/amos-context*
