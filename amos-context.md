@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-08T03:05:02Z  
+**Generated:** 2026-08-08T03:06:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -363,32 +363,62 @@ PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scop
 
 ## RECENT ACTIVITY (cross-project)
 
-### @go Protocol v1.0 — protocolo de arranque DFL
-**Type:** decision  
+### SFV5 headless profile v0.2 — preflight pass, Golden Path incomplete
+**Type:** bugfix  
 **Project:** dfl  
 
-Protocolo @go desplegado el 2026-06-24. Permite a cualquier IA (Claude, ChatGPT, Gemini) arrancar con contexto completo DFL en un paso. Fuente A: amos-context.md en DFLghub/amos-context (commit edd5f51). Fuente B: GET https://context.deepfeelingslabs.com/go — devuelve JSON con identity, recent_decisions, active_constraints, pending, generated_at. Backend: dfl-context-proxy en 127.0.0.1:8091 consulta Engram local 127.0.0.1:7437 con queries: "decisiones activas estado", "restricciones prohibido no tocar", "pendientes criticos". Sin auth requerida en /go. @go v1.0 activo y verificado.
+Seed 4c0bdd0 corrigió el preflight. Checkout nuevo /tmp/sfv5-headless-profile-20260801-v2, main@9b18947fab2c0874caba729fdb464025dfdde8f0, tag canónico local, ejecutado como dflagent: PASS_CANONICAL_EPHEMERAL_CHECKOUT + PASS_OPERATIONAL_READY, safe_to_build=true. SFV5 Golden Path agent creó solo un candidate parcial (12 archivos) y quedó sin respuesta; continuación también quedó sin respuesta. Mission Packet valida, pero faltan contratos completos, test matrix, RESULTS, receipts de lifecycle/rollback y handoff. No se ejecutó fixture, integración ni promoción. Evidencia versionada en evidence/sfv5-headless-profile-2026-08-01-v2; veredicto REQUIRES_DELTA.
 
-### @$go 2026-07-31 — reconciliación final verificada y pending histórico archivado
-**Type:** fact  
-**Project:** dfl  
+### Session summary: dfl-knowledge
+**Type:** session_summary  
+**Project:** dfl-knowledge  
 
-@$go ejecutado con payload local generated_at=2026-07-31T01:12:29Z y search_memory('contexto DFL'). Se retomó el primer pending mediante HANDOFF-CODEX.md. `check_registro_vivo.py` confirmó el estado, pero reportó además 30 hallazgos de infraestructura/dirty state fuera del alcance: no se remediaron. 08-RECONCILIACION-FINAL.md confirma que la misión ya estaba completada (commit 7b77b78, obs #236 archivada, mirror e525b9a). Se archivó Engram obs #239 como [RESOLVED] para evitar que el resumen histórico siguiera apareciendo como pending genérico. No se modificaron archivos ni superficies protegidas; no se tocaron decisiones reservadas a Jorge.
+## Goal
+Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factory Extras / future Docking System coupling touchpoints, before any probe (DOCK_OBSERVATION_RUN, JPI, DCSA, Docking System) runs against real touchpoints.
 
-### DRG-001 emitido: cierre normativo FS-01 360Eventos (mapeo legacy, sunset dual-write, AuthZ oficial, atomicidad, impacto FS-02/03)
+## Instructions
+- MODO: YOLO — proceed autonomously without per-step confirmation.
+- Create ONLY: PATCH-RISK-POLICY.md, PATCH-RISK-POLICY.json, schema(s), minimal tests, preregistration receipt. Explicitly forbidden: running DOCK_OBSERVATION_RUN/JPI/DCSA/Docking System, modifying the sfv5 headless candidate, promoting anything.
+- Version the work in one exclusive git commit.
+
+## Discoveries
+- Repo has no package.json/npm deps anywhere — JSON Schema files (draft 2020-12) exist as documented contracts but are validated by hand-rolled JS logic in tests, not ajv. Node test convention is `node --test tests/*.test.mjs` with plain `.mjs` ESM.
+- Evidence-dir convention: `evidence/<slug>-<date>/` with a root `SHA256SUMS`, a `receipts/` subfolder, and receipts shaped like `{schema, receipt_id, gate, status, reason, producer, product, baseline{sha}, declared_at, evidence[]{declared_path,exists,sha256}, receipt_sha256-style provenance}`.
+- The user's stated GREEN/YELLOW/RED rules leave one case implicit: an INTERNAL_PATCH with GOLDEN_PATH_CRITICAL/ORCHESTRATION_CRITICAL criticality that DOES have a stable hook doesn't trip any of the five named RED triggers, but YELLOW explicitly excludes orchestration/golden-path criticality — resolved by falling through to a conservative RED-by-default (documented explicitly in the policy, flagged to the user for confirmation, not yet confirmed).
+
+## Accomplished
+- ✅ Created `evidence/patch-risk-policy-preregistration-2026-08-01/` with PATCH-RISK-POLICY.md, PATCH-RISK-POLICY.json (5 classes, 8 mandatory factors, 4 derived fields, rule engine spec), schemas/patch-risk-policy.schema.json, schemas/patch-risk-touchpoint.schema.json, lib/patch-risk-classify.mjs (pure `classify()`/`redTriggers()`), tests/patch-risk-policy.test.mjs (14/14 PASS), receipts/preregistration-receipt.json, SHA256SUMS.
+- ✅ Verified no other repo state touched (candidate untouched, only new evidence dir staged) and committed exclusively as `6f71e5e` on branch `feat/dfl-high-certainty-harness-v0.1`, baseline `d79fffdf4ab1739e45049bae9c3933794788c1df`.
+- ✅ Incremental Gate 4B mem_save done mid-session (obs id 421) at commit time.
+- 🔲 User has not yet confirmed the RED-default interpretation for the golden-path/stable-hook edge case — surfaced but unresolved.
+
+## Next Steps
+- If user confirms or amends the golden-path/stable-hook RED-default interpretation, update PATCH-RISK-POLICY.md/.json + tests accordingly (would be a policy_version bump, e.g. 0.1.1).
+- Actual DOCK_OBSERVATION_RUN / JPI / DCSA / Docking System work is explicitly NOT started — this session only preregistered the classification contract they must conform to.
+
+## Relevant Files
+- evidence/patch-risk-policy-preregistration-2026-08-01/PATCH-RISK-POLICY.md — canonical policy prose
+- evidence/patch-risk-policy-preregistration-2026-08-01/PATCH-RISK-POLICY.json — machine-checkable source of truth
+- evidence/patch-risk-policy-preregistration-2026-08-01/lib/patch-risk-classify.mjs — verdict algorithm
+- evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
+- evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
+
 **Type:** decision  
 **Project:** dfl-knowledge  
 
-TOPIC: dfl/360eventos/drg-001-fs01-closure
-TYPE: decision
-STATUS: active
-DATE: 2026-07-19
+## PATCH_RISK canonical policy preregistered (2026-08-01)
 
-**What**: DRG-001 emitido — documento normativo de cierre de FS-01 en /opt/360eventos/docs/architecture/DRG-001-FS01-CLOSURE.md (sin commit; misión "no escribas código" cumplida: solo documento). Decisiones vinculantes: D1 mapeo legacy definitivo (nueva→RECIBIDA, en_revision→RECIBIDA porque PENDIENTE_INFORMACION exigiría nota inexistente, cotizada→CALIFICADA, cerrada→ARCHIVADA_LEGACY [valor terminal nuevo fuera de la máquina de estados], cancelada→RECHAZADA con motivo literal de migración; fallback silencioso a RECIBIDA PROHIBIDO). D2 filas irregulares → estado_ddms NULL + "requiere revisión de datos"; con datos reales de cliente toda migración de estados exige revisión humana nominal. D3 sunset: estado_ddms única verdad; estado legacy congelado read-only en migration-11, drop físico al cierre de FS-03; CALIFICADA→'cotizada' abolido. D4 dual-write prohibido como patrón; servicios congelada; cotizaciones (migration-05) declarada muerta para FS-03. D5 AuthZ de aplicación primaria + RLS honesta (correcta o eliminada); roles DDMS migran YA en profiles CHECK (admin→ADMINISTRADOR); INSERT anónimo muerto se elimina. D6 atomicidad: cambio de estado + historial en una transacción vía RPC Postgres; aplica a toda entidad con estado del proyecto; calificar NO re-valida fecha_evento pasada. D7 FS-02 tablas nuevas + snapshot service como gate de salida + enums en src/domain/ único; FS-03 versionado nativo + secuencias. Condiciones de cierre FS-01 bloquean FS-02, incluida la obligación de versionar docs/ y domain/ en git. migration-10 SUPERSEDIDA.
+**What**: Created `evidence/patch-risk-policy-preregistration-2026-08-01/` — PATCH-RISK-POLICY.md + .json, two JSON Schemas (policy shape + touchpoint record), a pure `classify()`/`redTriggers()` node lib, 14/14 green `node --test` tests, SHA256SUMS, and a preregistration receipt. Committed exclusively as `6f71e5e` on `feat/dfl-high-certainty-harness-v0.1`, baseline `d79fffdf4ab1739e45049bae9c3933794788c1df`.
 
-**Why**: Jorge ordenó misión DRG-001 (Architecture Review Board, decisiones no opciones) tras el informe de riesgos de la revisión read-only (obs #269). Evidencia habilitante de mapeos incondicionales: CLIENT_PRODUCTION_GATE BLOCKED + datos solo demo.
+**Policy content**: 5 canonical touchpoint classes (INSTITUTIONAL_EXTERNAL, ADDITIVE_EXTRA, BOUNDARY_ADAPTER, INTERNAL_PATCH, UPSTREAM_CANDIDATE) classifying coupling between SF upstream, Factory Extras and the future Docking System. 8 mandatory per-touchpoint factors (DEPTH, VERSION_SENSITIVITY, CRITICALITY, REAPPLY_EFFORT, AUTOMATION_RISK, AUTO_ATTACH_FEASIBLE, AUTO_DETACH_FEASIBLE, ABORT_ON_DRIFT) + 4 derived fields (requires_exact_preconditions, has_stable_hook, rollback_byte_identical, manual_intervention_permanent). GREEN/YELLOW/RED verdict per user-specified rules, with 5 single-factor RED triggers (R1 critical patch w/o stable hook, R2 >2 internal patches, R3 permanent manual intervention, R4 can't abort on drift, R5 rollback not byte-identical) plus a conservative RED-by-default fallback for anything not explicitly GREEN/YELLOW (e.g. a GOLDEN_PATH_CRITICAL internal patch with a stable hook still fails YELLOW's explicit exclusion of orchestration/golden-path criticality).
 
-**Next**: migration-11 debe redactarse conforme a DRG-001 y aplicarse solo con autorización explícita de Jorge; Codex auditando migración en paralelo debe recibir DRG-001 como norma superior a migration-10.
+**Why**: User explicitly required this preregistered *before* any probe (DOCK_OBSERVATION_RUN, JPI, DCSA, Docking System) so future touchpoint classification is deterministic and auditable rather than judged ad hoc during a live run.
+
+**Scope discipline**: Did NOT execute DOCK_OBSERVATION_RUN/JPI/DCSA/Docking System, did NOT modify the sfv5-headless-profile-candidate-2026-08-01 candidate, did NOT promote anything — matches user's explicit non-goals.
+
+**Convention confirmed**: This repo's JSON-schema-validated artifacts (schemas/*.schema.json, draft 2020-12) are validated by hand-rolled JS logic, not ajv (no package.json/npm deps in repo) — tests do manual required-key/enum checks instead of a schema-validation library. Node test convention is `node --test tests/*.test.mjs`, `.mjs` ESM files, evidence dirs named `evidence/<slug>-<date>/` with SHA256SUMS at the root and a receipts/ subfolder for gate receipts.
+
+VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
 
 ### @$go 2026-08-05 — SFV5 headless minimal proof bloqueada por ausencia de invocador vivo
 **Type:** fact  
@@ -535,15 +565,15 @@ Costo total 10.50 USD, 14 invocaciones.
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.8596  
+**Graph entropy:** 0.869  
 
-- **Community 11** (91 nodes): Onboarding Capability, Dependencias para Fabricación, Tenencia Owner-Scoped
-- **Community 0** (9 nodes): Mercader Boundary, Mercader, Canal de Credenciales
-- **Community 1** (4 nodes): MCP Server Behavior, Semántica de Inventario
-- **Community 2** (4 nodes): hyprlang, aprendizaje en V1, productos digitales vs servicios profesionales
-- **Community 3** (4 nodes): Digest Semantics, Cadena de Publicación, Evaluación de Complejidad
-- **Community 4** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), RLS basado en propietario
+- **Community 11** (93 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Evaluación de complejidad en costos
+- **Community 0** (6 nodes): Merchant of Record, Métricas comerciales, Integraciones Externas
+- **Community 1** (5 nodes): Case B — Retail de camisetas, Oportunidades de simplificación
+- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
+- **Community 3** (4 nodes): Abstracción de oferta, Política de disponibilidad, Sesgo en la formulación de preguntas
+- **Community 4** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
 
 ---
 
-*Mirror auto-generated 2026-08-08T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-08T03:06:02Z | La Garra → DFLghub/amos-context*
