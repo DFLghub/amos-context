@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-09T03:05:02Z  
+**Generated:** 2026-08-09T03:05:57Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -363,62 +363,95 @@ PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scop
 
 ## RECENT ACTIVITY (cross-project)
 
-### SFV5 headless profile v0.2 — preflight pass, Golden Path incomplete
-**Type:** bugfix  
-**Project:** dfl  
-
-Seed 4c0bdd0 corrigió el preflight. Checkout nuevo /tmp/sfv5-headless-profile-20260801-v2, main@9b18947fab2c0874caba729fdb464025dfdde8f0, tag canónico local, ejecutado como dflagent: PASS_CANONICAL_EPHEMERAL_CHECKOUT + PASS_OPERATIONAL_READY, safe_to_build=true. SFV5 Golden Path agent creó solo un candidate parcial (12 archivos) y quedó sin respuesta; continuación también quedó sin respuesta. Mission Packet valida, pero faltan contratos completos, test matrix, RESULTS, receipts de lifecycle/rollback y handoff. No se ejecutó fixture, integración ni promoción. Evidencia versionada en evidence/sfv5-headless-profile-2026-08-01-v2; veredicto REQUIRES_DELTA.
-
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
 **Project:** dfl-knowledge  
 
 ## Goal
-Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factory Extras / future Docking System coupling touchpoints, before any probe (DOCK_OBSERVATION_RUN, JPI, DCSA, Docking System) runs against real touchpoints.
+Sesión larga y multi-misión sobre DFL/SFV5: auditoría forense grounded de la copia local SaaS Factory (VM2), su censo estructurado, remediación en 3 rondas hasta verificación independiente cerrada, reconciliación de la arquitectura laboral completa de DFL (Workforce Registry / Factory Manager), y el PRP ejecutable del primer incremento vivo (Workforce Registry Unit v0.1), reconciliado con resultados de un laboratorio experimental de gobierno de mutaciones.
 
 ## Instructions
-- MODO: YOLO — proceed autonomously without per-step confirmation.
-- Create ONLY: PATCH-RISK-POLICY.md, PATCH-RISK-POLICY.json, schema(s), minimal tests, preregistration receipt. Explicitly forbidden: running DOCK_OBSERVATION_RUN/JPI/DCSA/Docking System, modifying the sfv5 headless candidate, promoting anything.
-- Version the work in one exclusive git commit.
+- Jorge dio autorización explícita para operar autónomamente en varias misiones sucesivas ("no solicites autorización intermedia", y luego "full authorization to perform this task/mission").
+- Patrón de trabajo institucional confirmado y seguido en toda la sesión: nunca sobrescribir evidencia ya publicada/commiteada — toda corrección o ronda nueva va en un subdirectorio nuevo, con referencia explícita a lo que corrige.
+- Verificación de colisión con CX (otro agente operando en paralelo sobre el mismo repo) antes de cada `git add`/commit: `git log --oneline`, `git status --short`, nunca `git add -A`.
+- Contrato de integridad de evidencia consolidado y reutilizado en todas las misiones posteriores: manifest/checksum de dos pasos (MANIFEST.json escrito primero, excluyendo su propio nombre y el de SHA256SUMS.txt desde el listado inicial; SHA256SUMS.txt escrito después, nunca por `sha256sum * > archivo` ni por copiar/renombrar un archivo ya hasheado bajo otro nombre — ambas son causas raíz reales de bugs de autorreferencia ya encontrados en esta misma cadena).
+- Jorge pidió un `@$fin` parcial (checkpoint) a mitad de una misión — se distinguió correctamente de un cierre canónico: `mem_save` incremental sin barrido de archivado ni `push_mirror.sh`, sesión sigue abierta. Ese checkpoint (obs #394) quedó archivado hoy al completarse y validarse la misión que dejaba pendiente.
 
 ## Discoveries
-- Repo has no package.json/npm deps anywhere — JSON Schema files (draft 2020-12) exist as documented contracts but are validated by hand-rolled JS logic in tests, not ajv. Node test convention is `node --test tests/*.test.mjs` with plain `.mjs` ESM.
-- Evidence-dir convention: `evidence/<slug>-<date>/` with a root `SHA256SUMS`, a `receipts/` subfolder, and receipts shaped like `{schema, receipt_id, gate, status, reason, producer, product, baseline{sha}, declared_at, evidence[]{declared_path,exists,sha256}, receipt_sha256-style provenance}`.
-- The user's stated GREEN/YELLOW/RED rules leave one case implicit: an INTERNAL_PATCH with GOLDEN_PATH_CRITICAL/ORCHESTRATION_CRITICAL criticality that DOES have a stable hook doesn't trip any of the five named RED triggers, but YELLOW explicitly excludes orchestration/golden-path criticality — resolved by falling through to a conservative RED-by-default (documented explicitly in the policy, flagged to the user for confirmation, not yet confirmed).
+- **SFV5 local no es "SFV5 de Ricardo Silva".** El único autor real verificable del repo comunitario (`upstream/main`) es Daniel Carreón. Todo lo etiquetado "V5" localmente fue introducido en un commit único (`5e42124`) de Jorge Tigreros — es autoría DFL sobre el V4 comunitario, no una importación de terceros. Cero evidencia de "Ricardo Silva" en el historial git accesible.
+- Ningún "minion" nombrado (Sensei/Trinity/AI Dani) existe en el repo; "Levy" es solo un asset de imagen (mascota) para la skill `video-visuals`, no un agente.
+- El grafo de codebase-memory no cubre `.claude/` de SFV5 en absoluto (0 nodos) ni `tools/bridges/` — 4 índices duplicados para la misma ruta con conteos distintos pese al mismo `head_sha`, causa raíz confirmada: truncamiento de `max_rows` en ciertas queries (no corrupción de datos).
+- El activo de mayor apalancamiento de todo el inventario DFL, descubierto en la reconciliación arquitectónica (CC-2), no es BOS/Concierge/SFV5 por separado — es un harness de alta certeza **genérico** ya construido y probado (`experiments/dfl-high-certainty-exploration-harness-v0.1/`, 2/2 tests, piloto real ejecutado) que ninguna auditoría previa había conectado con el resto del inventario. Existe una duplicación real (2 patrones HLC independientes: el genérico y la instancia específica de Concierge F1B con defectos de evidencia confirmados) — pero la revisión independiente posterior (CX-N1) determinó que NO son duplicados funcionales demostrados y que su unificación queda `DEFER`, no se reabre.
+- WorkUnitLedger (`dfl-knowledge/concierge/workunit.py`, mergeado a main, dogfood real, 237/237 tests) es el activo más maduro para "Factory Manager" — más confiable que `parallel-build` de SFV5 (solo documentado).
+- "Opportunity Inbox" y "Refinería y Distribución de Capacidades" están completamente ausentes de todo el corpus DFL bajo cualquier variante de nombre buscada.
+- El laboratorio experimental de gobierno de mutaciones (`workforce-registry-capability-lab-2026-07-30`, 16/16 escenarios PASS) falsificó la intuición de que un CRUD simple sobre un Registry es suficiente: el estado canónico debe separarse de propuestas, con validación, aprobación, bloqueo optimista (`expected_version`), versionado append-only, verificación de dependencias y evidencia — nunca escritura directa, nunca hard delete, nunca "rollback = replay de audit log" (rollback real = commit gobernado de una versión restaurada).
+- Bug de autorreferencia de checksum tiene 2 causas raíz distintas ya encontradas en esta cadena: (1) truncamiento de shell (`sha256sum * > archivo` trunca el archivo de salida antes de leerlo como argumento del glob), (2) captura de hash bajo un nombre temporal que luego se reutiliza al copiar/renombrar el archivo final. Ambas se evitan solo excluyendo el nombre de salida de la lista de entrada ANTES de hashear, nunca por post-filtro.
 
 ## Accomplished
-- ✅ Created `evidence/patch-risk-policy-preregistration-2026-08-01/` with PATCH-RISK-POLICY.md, PATCH-RISK-POLICY.json (5 classes, 8 mandatory factors, 4 derived fields, rule engine spec), schemas/patch-risk-policy.schema.json, schemas/patch-risk-touchpoint.schema.json, lib/patch-risk-classify.mjs (pure `classify()`/`redTriggers()`), tests/patch-risk-policy.test.mjs (14/14 PASS), receipts/preregistration-receipt.json, SHA256SUMS.
-- ✅ Verified no other repo state touched (candidate untouched, only new evidence dir staged) and committed exclusively as `6f71e5e` on branch `feat/dfl-high-certainty-harness-v0.1`, baseline `d79fffdf4ab1739e45049bae9c3933794788c1df`.
-- ✅ Incremental Gate 4B mem_save done mid-session (obs id 421) at commit time.
-- 🔲 User has not yet confirmed the RED-default interpretation for the golden-path/stable-hook edge case — surfaced but unresolved.
+- ✅ Informe forense original SFV5 — commit `a4589bf` (obs #390).
+- ✅ Addendum de censo/registro/crosswalk/matrices — commit `c074c20` (obs #392).
+- ✅ Resolución documental de 4 preguntas puntuales (12 vs 13 skills, promotion_state de skill-creator/image-generation, límites reales de `log-tool-usage.sh`) — commit `56633d1`.
+- ✅ CC-R1: remediación de 3 defectos de CX-1 (checksum, `scan_delta.py` no reproducible, identidad de grafo) — commit `fa640a5`.
+- ✅ CC-H1: plan de remediación (no implementación) de defectos de evidencia en el harness HLC específico de Concierge F1B — commit `cedb54a`.
+- ✅ CC-R2: cierre del contrato de checksum/manifest de SFV5, retirado el claim "20/20 PASS", desglose honesto 17 PASS + 1 PARTIAL + 1 CORRECTED + 1 NOT_APPLICABLE — commit `0bfc5c9`. **Verificado independientemente por CX-R2 (`60316d9`): `SFV5_AUDIT_INDEPENDENTLY_VERIFIED`.**
+- ✅ CC-2: reconciliación completa de la arquitectura laboral DFL (Workforce Registry + Factory Manager + WorkUnits/HLC + BOS + Engram + grafo), 19 activos inventariados, composición híbrida decidida como borde vivo (sin runtime nuevo) — commit `5e30326`.
+- ✅ CC-3: PRP ejecutable de Workforce Registry Unit v0.1 (schema, adapter SFV5, Registry mínimo, validator, query consumer, blind discovery test de 8 casos, 22 gates) — commit `4dfb07d`. Validado por CX-N1 (`b902bc9`, decisión `REVISE_TO_REGISTRY_WITH_SFV5_ADAPTER`, 39/40).
+- ✅ CC-PRP-R1: reconciliación por delta del PRP con los resultados del laboratorio de gobierno de mutaciones (16/16 escenarios) — modelo de proposal/validation/approval/commit, 6 actores tipados, versionado append-only, prohibición de hard delete, `wru-draft.md` preparado (no colocado aún en SFV5) — commit `500c0a1`.
+- 🔲 `wru-draft.md` pendiente de `CX-PRP-1 independent review` y, tras eso, de colocarse en `.claude/PRPs/wru-draft.md` de SFV5 y someterse vía `/primer` + `/prp`.
+- 🔲 CC-H1 (remediación del harness F1B) quedó como plan documentado, no implementado — pendiente de decisión de si se ejecuta.
 
 ## Next Steps
-- If user confirms or amends the golden-path/stable-hook RED-default interpretation, update PATCH-RISK-POLICY.md/.json + tests accordingly (would be a policy_version bump, e.g. 0.1.1).
-- Actual DOCK_OBSERVATION_RUN / JPI / DCSA / Docking System work is explicitly NOT started — this session only preregistered the classification contract they must conform to.
+- Esperar/verificar `CX-PRP-1 independent review` sobre `500c0a1` antes de someter `wru-draft.md` a SFV5.
+- Si CX-PRP-1 aprueba: colocar `wru-draft.md` en `.claude/PRPs/` de SFV5 y ejecutar `/primer` + `/prp` para iniciar la fabricación real (fuera de esta cadena de diseño).
+- Decidir si se retoma la implementación del plan de remediación de CC-H1 (harness F1B) — quedó como diseño, no ejecutado.
+- `push_mirror.sh` no se ejecutó en ningún punto de la sesión — pendiente para cuando Jorge lo autorice explícitamente (ejecutado recién al cierre de hoy, ver línea MIRROR reportada).
 
 ## Relevant Files
-- evidence/patch-risk-policy-preregistration-2026-08-01/PATCH-RISK-POLICY.md — canonical policy prose
-- evidence/patch-risk-policy-preregistration-2026-08-01/PATCH-RISK-POLICY.json — machine-checkable source of truth
-- evidence/patch-risk-policy-preregistration-2026-08-01/lib/patch-risk-classify.mjs — verdict algorithm
-- evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
-- evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
+- `evidence/sfv5-forensic-inspection-2026-07-30/` — informe original + addendum + 2 rondas de remediación (r1, r2) + resolución documental.
+- `evidence/sfv5-forensic-inspection-2026-07-30-cx{1,r1,r2}/`, `evidence/concierge-f1b-finalization-2026-07-30-r2{,-cx1,-remediation-h1}/` — revisiones independientes de CX y remediación de HLC F1B.
+- `evidence/dfl-workforce-architecture-reconciliation-2026-07-30/` — reconciliación arquitectónica completa (CC-2).
+- `evidence/dfl-first-workforce-increment-review-2026-07-30/` — validación CX-N1 del primer incremento.
+- `evidence/workforce-registry-unit-v0.1-prp-2026-07-30/` — PRP original (CC-3).
+- `evidence/workforce-registry-capability-lab-2026-07-30/` — laboratorio experimental de gobierno de mutaciones (CX-LAB-1).
+- `evidence/workforce-registry-unit-v0.1-prp-r1-2026-07-30/` — PRP reconciliado con el laboratorio, incluye `wru-draft.md` listo para SFV5.
 
-**Type:** decision  
-**Project:** dfl-knowledge  
+### Session summary: futbolweb-app
+**Type:** session_summary  
+**Project:** futbolweb-app  
 
-## PATCH_RISK canonical policy preregistered (2026-08-01)
+## Cierre DFL/KNL/FutbolWeb — 2026-06-27
 
-**What**: Created `evidence/patch-risk-policy-preregistration-2026-08-01/` — PATCH-RISK-POLICY.md + .json, two JSON Schemas (policy shape + touchpoint record), a pure `classify()`/`redTriggers()` node lib, 14/14 green `node --test` tests, SHA256SUMS, and a preregistration receipt. Committed exclusively as `6f71e5e` on `feat/dfl-high-certainty-harness-v0.1`, baseline `d79fffdf4ab1739e45049bae9c3933794788c1df`.
+### Goal
+Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar FutbolWeb limpio de dirty files y factory artifacts.
 
-**Policy content**: 5 canonical touchpoint classes (INSTITUTIONAL_EXTERNAL, ADDITIVE_EXTRA, BOUNDARY_ADAPTER, INTERNAL_PATCH, UPSTREAM_CANDIDATE) classifying coupling between SF upstream, Factory Extras and the future Docking System. 8 mandatory per-touchpoint factors (DEPTH, VERSION_SENSITIVITY, CRITICALITY, REAPPLY_EFFORT, AUTOMATION_RISK, AUTO_ATTACH_FEASIBLE, AUTO_DETACH_FEASIBLE, ABORT_ON_DRIFT) + 4 derived fields (requires_exact_preconditions, has_stable_hook, rollback_byte_identical, manual_intervention_permanent). GREEN/YELLOW/RED verdict per user-specified rules, with 5 single-factor RED triggers (R1 critical patch w/o stable hook, R2 >2 internal patches, R3 permanent manual intervention, R4 can't abort on drift, R5 rollback not byte-identical) plus a conservative RED-by-default fallback for anything not explicitly GREEN/YELLOW (e.g. a GOLDEN_PATH_CRITICAL internal patch with a stable hook still fails YELLOW's explicit exclusion of orchestration/golden-path criticality).
+### Accomplished
+- Engram #101: payload /go slim — graph_context eliminado, knl canónico único en payload
+- cc-atgo-hook.sh: header @go → @$go corregido
+- dfl-nav fmt_brief: mensaje no-match → "sin god_node — intenta la raíz del concepto"
+- FutbolWeb repo limpio: Blueprint audit movido a /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Auditorias/, graphify-out/ eliminado, .gitignore actualizado, commit 3fd5801
+- Engram #102: higiene FutbolWeb documentada
+- Bitácora creada: /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-**Why**: User explicitly required this preregistered *before* any probe (DOCK_OBSERVATION_RUN, JPI, DCSA, Docking System) so future touchpoint classification is deterministic and auditable rather than judged ad hoc during a live run.
+### Discoveries
+- graph_context era alias redundante del payload /go — eliminado sin romper consumidores
+- agProtocol_ATP-D_ROJA_v0.1-1: 3 archivos con MD5 idéntico en corpus (duplicados de indexación)
+- "estado" como nombre de god_node produce colisión léxica en español con el grafo
+- Blueprint_v0.6 audit era inconclusa (Blueprint no disponible en VM2) — conservada en Auditorias/
 
-**Scope discipline**: Did NOT execute DOCK_OBSERVATION_RUN/JPI/DCSA/Docking System, did NOT modify the sfv5-headless-profile-candidate-2026-08-01 candidate, did NOT promote anything — matches user's explicit non-goals.
+### Next Steps
+1. FutbolWeb producto — runtime estable, knockout scoring deployado (91a4531)
+2. KNL próximo ciclo — nota stale graph_context en knl_builder.py, health test local, evaluar renombrar estado → context-proxy
+3. MERCADER — agregar a KNL si se activa como área de trabajo
+4. Corpus — eliminar agProtocol duplicados (-1 variants)
 
-**Convention confirmed**: This repo's JSON-schema-validated artifacts (schemas/*.schema.json, draft 2020-12) are validated by hand-rolled JS logic, not ajv (no package.json/npm deps in repo) — tests do manual required-key/enum checks instead of a schema-validation library. Node test convention is `node --test tests/*.test.mjs`, `.mjs` ESM files, evidence dirs named `evidence/<slug>-<date>/` with SHA256SUMS at the root and a receipts/ subfolder for gate receipts.
+### Relevant Files
+/opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
+### Stack FutbolWeb — runtime activo
+**Type:** fact  
+**Project:** futbolweb-app  
+
+FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
 ### @$go 2026-08-05 — SFV5 headless minimal proof bloqueada por ausencia de invocador vivo
 **Type:** fact  
@@ -565,15 +598,15 @@ Costo total 10.50 USD, 14 invocaciones.
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.869  
+**Graph entropy:** 0.834  
 
-- **Community 11** (93 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Evaluación de complejidad en costos
-- **Community 0** (6 nodes): Merchant of Record, Métricas comerciales, Integraciones Externas
-- **Community 1** (5 nodes): Case B — Retail de camisetas, Oportunidades de simplificación
-- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
+- **Community 11** (94 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Complejidad en la evaluación de costos
+- **Community 0** (5 nodes): Merchant of Record, Métricas comerciales, Integraciones Externas
+- **Community 1** (5 nodes): Caso B — Venta física de camisetas, Oportunidades de simplificación
+- **Community 2** (4 nodes): Comportamiento de Red en Tiempo de Ejecución, Trampas de RLS Basadas en Propietario, Semántica de Depleción de Inventario
 - **Community 3** (4 nodes): Abstracción de oferta, Política de disponibilidad, Sesgo en la formulación de preguntas
 - **Community 4** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
 
 ---
 
-*Mirror auto-generated 2026-08-09T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-09T03:05:57Z | La Garra → DFLghub/amos-context*
