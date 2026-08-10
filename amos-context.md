@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-10T03:05:04Z  
+**Generated:** 2026-08-10T03:05:09Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -598,15 +598,15 @@ Costo total 10.50 USD, 14 invocaciones.
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.834  
+**Graph entropy:** 0.8981  
 
 - **Community 11** (94 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Complejidad en la evaluación de costos
-- **Community 0** (5 nodes): Merchant of Record, Métricas comerciales, Integraciones Externas
-- **Community 1** (5 nodes): Caso B — Venta física de camisetas, Oportunidades de simplificación
-- **Community 2** (4 nodes): Comportamiento de Red en Tiempo de Ejecución, Trampas de RLS Basadas en Propietario, Semántica de Depleción de Inventario
-- **Community 3** (4 nodes): Abstracción de oferta, Política de disponibilidad, Sesgo en la formulación de preguntas
-- **Community 4** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
+- **Community 0** (5 nodes): Owner-Based RLS, Mercader Boundary, Self-Hosting Challenges
+- **Community 1** (5 nodes): Merchant of Record, Métricas comerciales, Integraciones Externas
+- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
+- **Community 3** (4 nodes): Abstracción de oferta, Política de disponibilidad
+- **Community 4** (4 nodes): Cost Drivers in Engineering Projects, PRP Structure and Dependencies, Onboarding Capability Deficiencies
 
 ---
 
-*Mirror auto-generated 2026-08-10T03:05:04Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-10T03:05:09Z | La Garra → DFLghub/amos-context*
