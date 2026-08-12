@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-12T03:05:03Z  
+**Generated:** 2026-08-12T12:39:04Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -583,4 +583,4 @@ Costo total 10.50 USD, 14 invocaciones.
 
 ---
 
-*Mirror auto-generated 2026-08-12T03:05:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-12T12:39:04Z | La Garra → DFLghub/amos-context*
