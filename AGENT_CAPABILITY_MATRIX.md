@@ -69,6 +69,13 @@ Este diagnóstico corre por **capacidad real de la sesión concreta**, no por ma
 La misma familia de agente puede calificar distinto según el entorno donde corre (con o sin
 `bash_tool`, con o sin `web_fetch`/`web_search` habilitado).
 
+**ADDENDUM — 2026-08-13:** antes de declarar "recurso ausente / credencial no encontrada / no
+tengo acceso a X" (cualquier momento de la sesión, no solo en este Paso 0), pasá primero por
+el gate `RESOURCE_DISCOVERY_BEFORE_DECLARING_ABSENCE`:
+[`AGENT_CAPABILITY_MATRIX_ADDENDUM_resource_discovery.md`](https://raw.githubusercontent.com/DFLghub/amos-context/main/AGENT_CAPABILITY_MATRIX_ADDENDUM_resource_discovery.md).
+Origen: un agente declaró ausente una credencial de Supabase que sí existía a nivel de cuenta
+de plataforma, por buscar solo en el nivel local/sesión.
+
 ---
 
 ## @$go VALIDATION GATE
