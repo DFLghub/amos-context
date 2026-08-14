@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-14T04:05:41Z  
+**Generated:** 2026-08-14T18:22:13Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -407,52 +407,55 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### Session close: institutional knowledge lifecycle wired + Asset Discovery inventoried itself
+### SESSION CLOSE 2026-08-14 -- WP Competence Experiment #001 (3 runs) + Engram review side-quest
 **Type:** session_summary  
 **Project:** saas-factory-setup  
 
+SESSION CLOSE 2026-08-14 -- DFL Labs Challenge / WP Competence Experiment #001 + Engram review side-quest.
+
 ## Goal
-Close the institutional knowledge lifecycle end-to-end for the Asset Discovery / WRU / Codebase Memory / Concierge arc, then use Asset Discovery itself to inventory the real DFL capabilities that surfaced during it.
-
-## Instructions
-- User authorized four bounded repairs in dependency order: commit real code, fix Engram routing, activate the existing (already-built, never-wired) cc-sessionend-hook.sh, extend the proven Concierge projects-rendering fix to services. No new brain/registry/daemon/memory architecture.
-- Then: exercise the complete lifecycle with a fresh synthetic learning, prove each transition independently, simulate a fresh onboarding consumer, and finally use Asset Discovery to inventory its own ecosystem - DISCOVER->VERIFY->CLASSIFY->MANIFEST ONLY IF JUSTIFIED->INDEX, no bulk cataloging, Anti-Garbage Gate on every candidate.
-
-## Discoveries
-- There are TWO Engram instances on this machine: a per-user local CLI store (dflagent, 58 obs, orphaned) and the real institutional one (root, engram serve, port 7437, 456 obs, already the thing /go reads live). This session had been writing to the wrong one the whole time.
-- Real, already-built Claude-Code session-end hooks (cc-sessionend-hook.sh etc.) existed at /opt/dfl-context-proxy/ but were registered in zero settings.json anywhere on the machine.
-- /go (dfl-context-proxy/main.py) does NOT read Concierge canonical/directory.yaml at all - Concierge F1 and the live /go entrypoint remain two disconnected onboarding tracks even after fixing Concierge rendering.
-- wru_graph_refresh.py hit two real environment blockers in sequence: a git safe.directory issue (fixed, personal git config, no privilege needed) then a genuine root:root permission wall on architecture/institutional-graph/ (NOT fixed - exact command reported, not worked around).
-- Asset Discovery search does exact AND-of-all-tokens matching: correct single-token content (topological->codebase-intelligence, graph->agtopologo, memory->codebase-memory-registry, onboarding->concierge) but natural multi-word queries (query code structure, graph topological navigation, institutional memory, onboarding entrypoint) return 0 results even when the right asset exists. Real, load-bearing tool weakness, reported rather than patched around this round.
-- graphify (the CLI) is actually the vendored PyPI package graphifyy (MIT, Safi Shamsi) - not a DFL asset, distinct from DFL-native agTopologo which consumes a similar extraction pattern.
-- dfl-context-proxy is a real, separate git repo (own origin/main), 11/11 tests pass, and is the actual answer to institutional-memory/onboarding-entrypoint discovery queries - but is root:dfl 2750 (no group write), so it could not be manifested this session. UNKNOWN/COVERAGE_INCOMPLETE, not MISSING.
-- DCSA is real, tested product code but its own report declares Lifecycle: BUILT/REVIEW_REQUIRED/PROMOTION_BLOCKED - deliberately not manifested as active, to avoid overclaiming past its own governance state.
+Physically build and run DFL Labs WordPress Platform Competence Experiment #001 (Specimen A / BLOAT), per the DFL Labs Challenge methodology v0.2 handoff. Institutional methodology + first physical specimen, explicitly not just "learn WordPress" -- testing whether a Universal Engine + Platform Adapter architecture can acquire verifiable operational competence.
 
 ## Accomplished
-- Code preserved and pushed: saas-factory-setup@bd8c02c (Asset Discovery + WRU EACCES fix, 84/84), dfl-knowledge@6004a4c (Codebase Memory adapter fix, 9/9, isolated branch off main), dfl-knowledge@582b8be (Concierge services rendering, 31/31).
-- Engram routing fixed by using the real endpoint (no new store): wrote 4 distilled observations to the institutional instance under project saas-factory-setup, verified via live server stats delta (456->460) and via /go actually surfacing 2 of them automatically on a live refetch.
-- cc-sessionend-hook.sh wired into ~/.claude/settings.json, JSON-valid, pipe-tested with real stdin -> real exit 0 and a real push_mirror.sh run observed in /var/log/dfl-publish-amos-context.log.
-- Concierge services rendering extended (same pattern as the earlier projects fix), 31/31 tests, real artifact inspected (Directory section now lists service:engram-local -> http://127.0.0.1:7437).
-- Asset Discovery used to inventory itself: 12 real assets in the final index (saas-factory-setup@0b01bf2, dfl-knowledge@e2c4de6), each individually DISCOVER->VERIFY->CLASSIFY-d - agTopologo, Concierge, and the Codebase Memory Registry adapter newly manifested; graphifyy correctly rejected as upstream; DCSA and dfl-context-proxy deliberately left unmanifested with precise reasons.
+- Hybrid substrate approved and built: WordPress Playground for Specimen A, Docker reserved for B (FATAL/OOB)/C (SCARCITY), not yet started.
+- Full harness at /opt/saas-factory-setup/wp-competence-tent/ (untracked, sibling to saas-factory/): environment (Blueprints), adapter (playground-adapter.mjs, Variant B contract: probe_affordances/execute/snapshot/restore), harness (sealed validator.mjs), evidence/runs/ (full technical trail).
+- Three real blind Engine runs against Specimen A, each a legitimate FAIL revealing a distinct, real capability gap (not Engine reasoning failure): Run 1 = AFFORDANCE_ROUTING_FAILURE (Adapter exposed only one artificial surface). Run 2 = surface-fitness judgment CONFIRMED (Engine correctly switched REST->WP-CLI with explicit reasoning) but recovery failed on an Adapter argument-convention bug. Run 3 (post-fix) = restore() fix CONFIRMED working under real Engine use; new gap found -- probe_affordances() exposes action names only, no parameter schemas, causing a false negative that triggered a real outage.
+- Root-caused and fixed two real Adapter bugs: inconsistent primitive argument conventions (restore/snapshot took sitePath first, probe/execute took baseUrl first) and an illusory "sitePath" concept (empirically proved Playground's --path provides NO real storage isolation -- even random mktemp dirs collide to one global site slot).
+- Jorge named three reusable universal principles from the three runs: Surface selection (#1), Reliable recovery (#2), Discoverable operational contract (#3) -- candidate evaluation criteria for any future Engine+Adapter pair on any platform.
+- SIDE-QUEST, commissioned by Jorge after this session repeated a routing mistake already diagnosed once (obs #471, prior session): full Engram review. Document at /opt/saas-factory-setup/engram-review/ENGRAM-REVIEW-2026-08-14.md. Finding: storage engine (SQLite+FTS5) is sound and fast (measured ~25ms write/~60ms read); the real problems are 3+ disconnected stores causing confirmed real data loss (searched "RSVP" across all 8 institutional projects, zero results -- weeks of real work never reached the canonical store), a silent search default, no per-observation authorship, unversioned dev build on critical infra. Jorge's direct "fit" question ("son los zapatos adecuados para el tamano del pie de DFL?") answered: no -- Engram (101K LOC, CRDT-style multi-tenant sync) is sized for a scale DFL does not currently have; that mismatch is the likely root cause, not the storage engine.
 
-## Next Steps
-- Root-privileged: chmod g+w /opt/dfl-context-proxy (unblocks manifesting the real institutional-memory/onboarding-entrypoint asset); chgrp dfl + chmod g+w /opt/dfl-knowledge/architecture/institutional-graph (unblocks wru_graph_refresh.py past drift-detection - downstream agTopologo pipeline stages still untraced).
-- Asset Discovery search weakness (AND-of-all-tokens too strict for natural multi-word queries) is real and unaddressed - candidate for a future small, bounded fix, not attempted this session per explicit scope discipline.
-- dfl-knowledge@e2c4de6 (asset manifests) and @6004a4c and @582b8be are pushed but not merged to main/feat/dfl-concierge - human review pending before merge, matching the same posture as prior sessions in this arc.
-- /go still does not consume Concierge canonical data - if that integration is ever wanted, it is real, separate, unscoped work.
+## Corrected this session
+- This session itself initially wrote its own checkpoint to the WRONG Engram store (local dflagent CLI db) before discovering and correcting to the real institutional instance (root, port 7437) -- the exact mistake obs #471 already diagnosed for a different arc. Both corrected observations now live at obs #472/#473 on the institutional store, project saas-factory-setup.
 
-## Relevant Files
-- saas-factory-setup/saas-factory/tools/asset-index/ - the discovery mechanism itself, now self-manifested.
-- saas-factory-setup/saas-factory/tools/workforce-registry/adapters/sfv5-adapter.mjs - EACCES/ENOENT fix + regression test.
-- dfl-knowledge/tools/codebase-memory-registry/src/cbm-registry.mjs - HOME-based engine path fix.
-- dfl-knowledge/concierge/compiler.py - directory+services rendering fix, with a regression test proven to fail pre-fix before confirming it passes post-fix.
-- /opt/dfl-context-proxy/main.py - the real, live /go server; /opt/dfl-context-proxy/cc-sessionend-hook.sh - now wired into ~/.claude/settings.json.
+## Next steps (awaiting Jorge)
+- WP Competence Experiment: decide whether to add parameter-schema metadata to probe_affordances() (candidate friction-earned primitive per the three-principles framework) and investigate Run #3's overlapping-invocation outage further, OR accept current evidence as sufficient and move to Specimen B/C on Docker.
+- Engram review: three open questions left explicitly undecided in the document (concrete offline/multi-device need, deprecation of existing stores, data migration ownership) -- read before acting further. Likely leads to a decision to build a smaller DFL-native replacement that keeps the storage engine approach but cuts the multi-store/cloud-replication machinery.
+- No architecture was added to the Adapter beyond what observed friction justified, per explicit standing instruction -- do not add delete_options_by_prefix() or any defect-shaped convenience action without a fresh review cycle first.
 
-### Concierge had its own Claim!=Evidence defect: directory/services declared INCLUDED but never rendered to onboarding artifacts
-**Type:** decision  
+## Relevant files
+- wp-competence-tent/adapter/playground-adapter.mjs -- the fixed Adapter (uniform baseUrl-first signature, post_restore_state transparency)
+- wp-competence-tent/evidence/runs/ -- full run-by-run evidence (specimen-a-first-pass.md, run2-surface-switching-prep.md, specimen-a-run2-surface-switching.md, specimen-a-run3-post-fix.md)
+- engram-review/ENGRAM-REVIEW-2026-08-14.md -- full Engram review, DRAFT for resumption
+- Claude Code project memory: MEMORY.md fully current, plus dedicated files for both threads (wp-competence-experiment-001-specimen-a-checkpoint.md, wp-competence-three-universal-principles.md, engram-review-2026-08-14.md)
+
+## Environment state
+All WordPress Playground test/experiment processes killed and ports freed. No lingering background processes. Repo working tree unmodified beyond untracked wp-competence-tent/ and engram-review/ directories (both outside git tracking, matching existing sibling-project convention).
+
+### Three universal principles from WP Competence Experiment #001: Surface selection, Reliable recovery, Discoverable operational contract
+**Type:** fact  
 **Project:** saas-factory-setup  
 
-coverage.manifest.json claimed directory (and would have made the same claim for services) as INCLUDED for claude-code/codex based only on the runtime profile's required_sections list - it never checked whether the markdown renderer actually emitted anything. _common_payload() never touched bundle.directory at all. Fixed minimally (concierge/compiler.py, dfl-knowledge feat/dfl-concierge@582b8be): render only directory.projects and directory.services (not factories/agents/owners - governance metadata, not discovery information), gated on the exact same required_sections/required_degradations check _coverage() uses so claim and render cannot drift again by construction. Regression test proven to fail against the pre-fix compiler before confirming it passes. MISSION_VERDICT: institutional graph freshness (agTopologo/wru_graph_refresh.py) is keyed on git HEAD of tracked repos - it correctly found no drift this whole arc because none of this work was committed yet, not because the pipeline is broken. The actual gap was uncommitted code + Engram writes going to an orphaned local per-user store instead of this real institutional server, not a missing mechanism.
+Three distinct capability layers were exposed as genuinely necessary -- one per run, each earned by real, observed friction (not speculated in advance), during DFL Labs WordPress Competence Experiment #001, Specimen A. Jorge named this pattern explicitly (2026-08-14) as reusable vocabulary, not just this experiment's local findings.
+
+1. Surface selection (Run #1). Having a tool is not enough -- the Engine must be able to discover that OTHER tools/surfaces exist and choose the fitting one. Run #1's Adapter exposed only one (artificial) surface; the Engine could never demonstrate surface-switching because there was nothing to switch to.
+
+2. Reliable recovery (Run #2). Choosing the right surface is not enough -- when something goes wrong mid-task, the sanctioned recovery mechanism must actually work. Run #2's Engine correctly judged surface fitness (REST inadequate, WP-CLI fit) but got stranded when restore() had an inconsistent argument-calling convention vs the other primitives.
+
+3. Discoverable operational contract (Run #3). Knowing a capability exists is not enough -- its exact invocation contract (parameters, required shape) must be discoverable, not guessable. Run #3's Engine correctly discovered REST's delete_option action existed, but probe_affordances() only exposed action names, never parameter schemas -- the Engine guessed the wrong parameter key, wrongly concluded the (actually-working) capability was broken, and that false negative pushed it toward a riskier path that caused a real outage.
+
+Why this matters beyond WordPress: these are candidate universal properties any Engine+Adapter composition needs, for any platform DFL acquires operational competence on, not WordPress-specific lessons. Each was earned by observed friction across independent runs (Run #2 and #3 both independently produced the same class of SQL-quoting self-correction, suggesting real, repeatable patterns rather than one-off flukes).
+
+How to apply: when evaluating a NEW Adapter for a new platform (Shopify or otherwise), check it against these three properties before assuming it's done: (1) does it expose more than one real surface where more than one plausibly exists? (2) is its recovery primitive's calling convention consistent with the rest of its interface, and does it actually work under real failure? (3) does its affordance discovery expose enough of each capability's contract (not just its name) that an Engine doesn't have to guess?
 
 ---
 
@@ -563,4 +566,4 @@ coverage.manifest.json claimed directory (and would have made the same claim for
 
 ---
 
-*Mirror auto-generated 2026-08-14T04:05:41Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-14T18:22:13Z | La Garra → DFLghub/amos-context*
