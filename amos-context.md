@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-14T04:04:27Z  
+**Generated:** 2026-08-14T04:05:41Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -563,4 +563,4 @@ coverage.manifest.json claimed directory (and would have made the same claim for
 
 ---
 
-*Mirror auto-generated 2026-08-14T04:04:27Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-14T04:05:41Z | La Garra → DFLghub/amos-context*
