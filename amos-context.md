@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-14T03:53:47Z  
+**Generated:** 2026-08-14T04:04:27Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -407,17 +407,52 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Session close: institutional knowledge lifecycle wired + Asset Discovery inventoried itself
+**Type:** session_summary  
+**Project:** saas-factory-setup  
+
+## Goal
+Close the institutional knowledge lifecycle end-to-end for the Asset Discovery / WRU / Codebase Memory / Concierge arc, then use Asset Discovery itself to inventory the real DFL capabilities that surfaced during it.
+
+## Instructions
+- User authorized four bounded repairs in dependency order: commit real code, fix Engram routing, activate the existing (already-built, never-wired) cc-sessionend-hook.sh, extend the proven Concierge projects-rendering fix to services. No new brain/registry/daemon/memory architecture.
+- Then: exercise the complete lifecycle with a fresh synthetic learning, prove each transition independently, simulate a fresh onboarding consumer, and finally use Asset Discovery to inventory its own ecosystem - DISCOVER->VERIFY->CLASSIFY->MANIFEST ONLY IF JUSTIFIED->INDEX, no bulk cataloging, Anti-Garbage Gate on every candidate.
+
+## Discoveries
+- There are TWO Engram instances on this machine: a per-user local CLI store (dflagent, 58 obs, orphaned) and the real institutional one (root, engram serve, port 7437, 456 obs, already the thing /go reads live). This session had been writing to the wrong one the whole time.
+- Real, already-built Claude-Code session-end hooks (cc-sessionend-hook.sh etc.) existed at /opt/dfl-context-proxy/ but were registered in zero settings.json anywhere on the machine.
+- /go (dfl-context-proxy/main.py) does NOT read Concierge canonical/directory.yaml at all - Concierge F1 and the live /go entrypoint remain two disconnected onboarding tracks even after fixing Concierge rendering.
+- wru_graph_refresh.py hit two real environment blockers in sequence: a git safe.directory issue (fixed, personal git config, no privilege needed) then a genuine root:root permission wall on architecture/institutional-graph/ (NOT fixed - exact command reported, not worked around).
+- Asset Discovery search does exact AND-of-all-tokens matching: correct single-token content (topological->codebase-intelligence, graph->agtopologo, memory->codebase-memory-registry, onboarding->concierge) but natural multi-word queries (query code structure, graph topological navigation, institutional memory, onboarding entrypoint) return 0 results even when the right asset exists. Real, load-bearing tool weakness, reported rather than patched around this round.
+- graphify (the CLI) is actually the vendored PyPI package graphifyy (MIT, Safi Shamsi) - not a DFL asset, distinct from DFL-native agTopologo which consumes a similar extraction pattern.
+- dfl-context-proxy is a real, separate git repo (own origin/main), 11/11 tests pass, and is the actual answer to institutional-memory/onboarding-entrypoint discovery queries - but is root:dfl 2750 (no group write), so it could not be manifested this session. UNKNOWN/COVERAGE_INCOMPLETE, not MISSING.
+- DCSA is real, tested product code but its own report declares Lifecycle: BUILT/REVIEW_REQUIRED/PROMOTION_BLOCKED - deliberately not manifested as active, to avoid overclaiming past its own governance state.
+
+## Accomplished
+- Code preserved and pushed: saas-factory-setup@bd8c02c (Asset Discovery + WRU EACCES fix, 84/84), dfl-knowledge@6004a4c (Codebase Memory adapter fix, 9/9, isolated branch off main), dfl-knowledge@582b8be (Concierge services rendering, 31/31).
+- Engram routing fixed by using the real endpoint (no new store): wrote 4 distilled observations to the institutional instance under project saas-factory-setup, verified via live server stats delta (456->460) and via /go actually surfacing 2 of them automatically on a live refetch.
+- cc-sessionend-hook.sh wired into ~/.claude/settings.json, JSON-valid, pipe-tested with real stdin -> real exit 0 and a real push_mirror.sh run observed in /var/log/dfl-publish-amos-context.log.
+- Concierge services rendering extended (same pattern as the earlier projects fix), 31/31 tests, real artifact inspected (Directory section now lists service:engram-local -> http://127.0.0.1:7437).
+- Asset Discovery used to inventory itself: 12 real assets in the final index (saas-factory-setup@0b01bf2, dfl-knowledge@e2c4de6), each individually DISCOVER->VERIFY->CLASSIFY-d - agTopologo, Concierge, and the Codebase Memory Registry adapter newly manifested; graphifyy correctly rejected as upstream; DCSA and dfl-context-proxy deliberately left unmanifested with precise reasons.
+
+## Next Steps
+- Root-privileged: chmod g+w /opt/dfl-context-proxy (unblocks manifesting the real institutional-memory/onboarding-entrypoint asset); chgrp dfl + chmod g+w /opt/dfl-knowledge/architecture/institutional-graph (unblocks wru_graph_refresh.py past drift-detection - downstream agTopologo pipeline stages still untraced).
+- Asset Discovery search weakness (AND-of-all-tokens too strict for natural multi-word queries) is real and unaddressed - candidate for a future small, bounded fix, not attempted this session per explicit scope discipline.
+- dfl-knowledge@e2c4de6 (asset manifests) and @6004a4c and @582b8be are pushed but not merged to main/feat/dfl-concierge - human review pending before merge, matching the same posture as prior sessions in this arc.
+- /go still does not consume Concierge canonical data - if that integration is ever wanted, it is real, separate, unscoped work.
+
+## Relevant Files
+- saas-factory-setup/saas-factory/tools/asset-index/ - the discovery mechanism itself, now self-manifested.
+- saas-factory-setup/saas-factory/tools/workforce-registry/adapters/sfv5-adapter.mjs - EACCES/ENOENT fix + regression test.
+- dfl-knowledge/tools/codebase-memory-registry/src/cbm-registry.mjs - HOME-based engine path fix.
+- dfl-knowledge/concierge/compiler.py - directory+services rendering fix, with a regression test proven to fail pre-fix before confirming it passes post-fix.
+- /opt/dfl-context-proxy/main.py - the real, live /go server; /opt/dfl-context-proxy/cc-sessionend-hook.sh - now wired into ~/.claude/settings.json.
+
 ### Concierge had its own Claim!=Evidence defect: directory/services declared INCLUDED but never rendered to onboarding artifacts
 **Type:** decision  
 **Project:** saas-factory-setup  
 
 coverage.manifest.json claimed directory (and would have made the same claim for services) as INCLUDED for claude-code/codex based only on the runtime profile's required_sections list - it never checked whether the markdown renderer actually emitted anything. _common_payload() never touched bundle.directory at all. Fixed minimally (concierge/compiler.py, dfl-knowledge feat/dfl-concierge@582b8be): render only directory.projects and directory.services (not factories/agents/owners - governance metadata, not discovery information), gated on the exact same required_sections/required_degradations check _coverage() uses so claim and render cannot drift again by construction. Regression test proven to fail against the pre-fix compiler before confirming it passes. MISSION_VERDICT: institutional graph freshness (agTopologo/wru_graph_refresh.py) is keyed on git HEAD of tracked repos - it correctly found no drift this whole arc because none of this work was committed yet, not because the pipeline is broken. The actual gap was uncommitted code + Engram writes going to an orphaned local per-user store instead of this real institutional server, not a missing mechanism.
-
-### codebase-memory-mcp was missing (accidental loss, not retirement) - restored under $HOME, fast-mode has a real correctness gap
-**Type:** decision  
-**Project:** saas-factory-setup  
-
-The upstream engine was proven working during a 2026-07-22 DFL audit (EXECUTIVE_VERDICT.md explicitly decided to KEEP it as a subordinate engine) but the /root-local install did not persist. Restored under the invoking user's own $HOME (no root needed), fixed the hardcoded /root default path in codebase-memory-registry (dfl-knowledge@6004a4c). CORRECTION_TO_PRIOR_BELIEF found while benchmarking: --mode=fast silently excludes bin/ and tests/fixtures from indexing, causing real wrong answers for caller/dependency questions (a function's real caller was reported as 0 callers). --mode=full/moderate does not have this gap and was also smaller than raw grep for the same question. RULE: use fast for lookup/architecture questions, moderate/full for caller or impact-tracing questions.
 
 ---
 
@@ -528,4 +563,4 @@ The upstream engine was proven working during a 2026-07-22 DFL audit (EXECUTIVE_
 
 ---
 
-*Mirror auto-generated 2026-08-14T03:53:47Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-14T04:04:27Z | La Garra → DFLghub/amos-context*
