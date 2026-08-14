@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-14T03:24:03Z  
+**Generated:** 2026-08-14T03:53:47Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,18 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Concierge had its own Claim!=Evidence defect: directory/services declared INCLUDED but never rendered to onboarding artifacts
+**Type:** decision  
+**Project:** saas-factory-setup  
+
+coverage.manifest.json claimed directory (and would have made the same claim for services) as INCLUDED for claude-code/codex based only on the runtime profile's required_sections list - it never checked whether the markdown renderer actually emitted anything. _common_payload() never touched bundle.directory at all. Fixed minimally (concierge/compiler.py, dfl-knowledge feat/dfl-concierge@582b8be): render only directory.projects and directory.services (not factories/agents/owners - governance metadata, not discovery information), gated on the exact same required_sections/required_degradations check _coverage() uses so claim and render cannot drift again by construction. Regression test proven to fail against the pre-fix compiler before confirming it passes. MISSION_VERDICT: institutional graph freshness (agTopologo/wru_graph_refresh.py) is keyed on git HEAD of tracked repos - it correctly found no drift this whole arc because none of this work was committed yet, not because the pipeline is broken. The actual gap was uncommitted code + Engram writes going to an orphaned local per-user store instead of this real institutional server, not a missing mechanism.
+
+### codebase-memory-mcp was missing (accidental loss, not retirement) - restored under $HOME, fast-mode has a real correctness gap
+**Type:** decision  
+**Project:** saas-factory-setup  
+
+The upstream engine was proven working during a 2026-07-22 DFL audit (EXECUTIVE_VERDICT.md explicitly decided to KEEP it as a subordinate engine) but the /root-local install did not persist. Restored under the invoking user's own $HOME (no root needed), fixed the hardcoded /root default path in codebase-memory-registry (dfl-knowledge@6004a4c). CORRECTION_TO_PRIOR_BELIEF found while benchmarking: --mode=fast silently excludes bin/ and tests/fixtures from indexing, causing real wrong answers for caller/dependency questions (a function's real caller was reported as 0 callers). --mode=full/moderate does not have this gap and was also smaller than raw grep for the same question. RULE: use fast for lookup/architecture questions, moderate/full for caller or impact-tracing questions.
+
 ### [CONVERGENCIA] El Gerente de Fabrica (FMD, #280) ya nombro los dos gaps del discovery SFV5 14 dias antes; el discovery no lo cito nunca
 **Type:** decision  
 **Project:** dfl  
@@ -207,64 +219,6 @@ PROXIMO_AGENTE_DEBE: ejecutar SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF con l
 **Convention confirmed**: This repo's JSON-schema-validated artifacts (schemas/*.schema.json, draft 2020-12) are validated by hand-rolled JS logic, not ajv (no package.json/npm deps in repo) — tests do manual required-key/enum checks instead of a schema-validation library. Node test convention is `node --test tests/*.test.mjs`, `.mjs` ESM files, evidence dirs named `evidence/<slug>-<date>/` with SHA256SUMS at the root and a receipts/ subfolder for gate receipts.
 
 VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
-
-### JPI Fase 5 Real E2E Completion Summary
-**Type:** decision  
-**Project:** dfl-knowledge  
-
-**What**: JPI Fase 5 E2E vertical successfully reconstructed using ONLY real runtime APIs; all 6 tests pass; RESERVA/OPERACION clarified as state transitions, not entities
-
-**Why**: Prior implementation bypassed 3 critical APIs (reviewOperationalFactoryRequest, useOperationalFactoryArtifact, closeGoal) and wrote directly to DB; mission required using real APIs exclusively and clarifying domain model
-
-**Where**: 
-- Implementation: business-os/fmd/jpi-fase5.js (184 insertions, 24 deletions)
-- Tests: business-os/tests/fmd-jpi-fase5-e2e.test.js (all 6 PASS)
-- Base commit: 8155a4f on feat/jpi-fase-5-real-runtime-v0.1
-- Prior base: 51a1ef177d795f3babbb67825e8e0f0e9da60886
-
-**Learned**:
-1. closeGoal() has strict preconditions; all must be satisfied before transition:
-   - quote_request.status = 'qualified' (requires qualifyByComercial call)
-   - operaciones assignment + operations_validation=PASS decision
-   - all deviations resolved
-   - factory_bridge_records review_status='approved' AND operations_status='used'
-
-2. Real domain entities:
-   - quote_requests (1:1 goal, RECEIVED→QUALIFIED→CLOSED flow)
-   - jpi_solicitudes (synthetic pilot, RECIBIDA→REQUIERE_INFORMACION→CALIFICADA→CERRADA)
-   - jpi_cotizaciones (synthetic pilot, BORRADOR→EMITIDA→ACEPTADA)
-   - factory_requests + factory_request_bridges (artifact lifecycle)
-   - goal_deviations (tracked, can be auto-resolved by operations validation)
-   - goal_closures (final evidence, requires closure_data structure)
-   - organizational_events (audit trail, acts as guard against terminal-state violations)
-
-3. RESERVA and OPERACION are NOT real entities:
-   - RESERVA maps to jpi_cotizaciones.estado='ACEPTADA' transition
-   - OPERACION maps to factory artifact ready→reviewed→used→goal_closed sequence
-   - Both emerge from coordinating existing entities via state transitions
-
-4. Sequence of real APIs (happy path):
-   - createRuntimeGoal(payload.quote_request) → creates goal + quote_request(received)
-   - assignLittleBoss(comercial) + qualifyByComercial() → quote_request(qualified)
-   - assignLittleBoss(operaciones) → pre-requisite for close
-   - createOperationalFactoryRequest() → factory dispatch
-   - pollOperationalFactoryRequest() → await ready
-   - reviewOperationalFactoryRequest(approve=true) → review_status=approved
-   - useOperationalFactoryArtifact() → operations_status=used + runs validations
-   - closeGoal(closureData) → validates preconditions, records closure, transitions goal_runtime_state→closed
-
-5. Factory bridge test failures (7 preexisting):
-   - NOT in scope; they test edge cases (timeouts, retries, rejection+re-approval)
-   - Happy path works; edge paths were already failing before JPI Fase 5 work
-   - Can be addressed separately in FACTORY_BRIDGE_RESILIENCE_BACKLOG
-
-**Outcome**: READY_FOR_FINAL_REVIEW
-- Happy path proven real E2E via all APIs
-- All E2E tests pass (6/6)
-- No manual DB writes
-- No bypasses
-- Domain model clarified
-- Preconditions documented and validated
 
 ---
 
@@ -453,52 +407,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### @$go 2026-08-05 — SFV5 headless minimal proof bloqueada por ausencia de invocador vivo
-**Type:** fact  
-**Project:** dfl  
+### Concierge had its own Claim!=Evidence defect: directory/services declared INCLUDED but never rendered to onboarding artifacts
+**Type:** decision  
+**Project:** saas-factory-setup  
 
-ONBOARDING: payload local + search_memory('contexto DFL'); perfil EJECUTOR. Primer pending: SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF, encuadrada como adaptador SFV5 del FMD. Se leyó por grafo y fuente local el paquete architecture/first-operable-factory-v01, incluyendo EVIDENCE_BASE.md, MANAGEMENT_DAEMON_SPEC_V0.1.md y FACTORY_MANAGER_CONTRACT_V0.1.md. Ground truth confirmado: 6 criterios de PRP-001 (Dashboard /, /issues con badges, Zod completo, aparición sin recarga, persistencia en sesión, build+typecheck). Verificación local: SFV5 canónica está indexada, pero el propio EVIDENCE_BASE/#34 y discovery vigente declaran AUSENTE cualquier endpoint/cola/CLI headless general; el bridge existente es especializado y no fabrica. No se ejecutó una falsa prueba ni se tocó SFV5, /opt/futbolweb, Supabase, Vercel, env vars, HLC, cron ni secretos. Estado: BLOCKED_ON_LIVE_INVOCATION; falta un adaptador/invocador real y una fixture PRP-001 accesible para correr la prueba contra producto. No se modificaron archivos.
+coverage.manifest.json claimed directory (and would have made the same claim for services) as INCLUDED for claude-code/codex based only on the runtime profile's required_sections list - it never checked whether the markdown renderer actually emitted anything. _common_payload() never touched bundle.directory at all. Fixed minimally (concierge/compiler.py, dfl-knowledge feat/dfl-concierge@582b8be): render only directory.projects and directory.services (not factories/agents/owners - governance metadata, not discovery information), gated on the exact same required_sections/required_degradations check _coverage() uses so claim and render cannot drift again by construction. Regression test proven to fail against the pre-fix compiler before confirming it passes. MISSION_VERDICT: institutional graph freshness (agTopologo/wru_graph_refresh.py) is keyed on git HEAD of tracked repos - it correctly found no drift this whole arc because none of this work was committed yet, not because the pipeline is broken. The actual gap was uncommitted code + Engram writes going to an orphaned local per-user store instead of this real institutional server, not a missing mechanism.
 
-### [SFV5] Entrevista canonica completada: la fabrica se autodescribe, mecanismo de interrogacion resuelto y 3 hallazgos criticos verificados
-**Type:** fact  
-**Project:** dfl  
+### codebase-memory-mcp was missing (accidental loss, not retirement) - restored under $HOME, fast-mode has a real correctness gap
+**Type:** decision  
+**Project:** saas-factory-setup  
 
-TOPIC: dfl/saas-factory/canonical-self-description
-TYPE: fact
-STATUS: closed
-DATE: 2026-08-05
-PRECEDENCIA: D
-AUTHORITY: evidence only
-LIFECYCLE: active
-CONFIDENCE: high
-
-ENTREVISTA CANONICA A SFV5 COMPLETADA. La fabrica se describio a si misma en 10 bloques, una sola voz (session ad815526), clon canonico 9b18947, solo lectura, cero mutaciones. Evidencia en /opt/dfl-knowledge/evidence/sfv5-canonical-interview-2026-08-05/ (8 documentos + 14 transcripciones JSON + SHA256SUMS + HANDOFF-TO-CX.md).
-
-MECANISMO RESUELTO (cierra Q65 del discovery #460, que quedo INFERENCE): no existe una segunda instancia de Claude Code esperando; se INVOCA. `claude -p` con cwd en <checkout>/saas-factory carga las 32 skills (~19k tokens medidos contra control vacio de 5.7k) y esa sesion ES la fabrica. Reanudable con --resume. LIVE_PROVEN.
-
-TESIS DE LA FABRICA (verbatim): "Soy una arquitectura de contratos declarativos ejecutada por un interprete probabilistico que no controlo, sobre un sistema de archivos que es mi unica memoria." Corolario suyo: todo imperativo en sus archivos (OBLIGATORIO/SIEMPRE/gate duro) es intencion de diseno, no garantia de ejecucion; las unicas garantias reales viven en tools/bridges/ (4 archivos de 82).
-
-HALLAZGOS ACCIONABLES verificados independientemente por Claude Code:
-1. CRITICO update-sf/SKILL.md:52 hace `rm -rf .claude/` y destruye .claude/memory/, PRPs del proyecto y settings.json, mientras anuncia "Archivos NO modificados". Reactiva en silencio la auto-memory del host que memory-manager desactivo. Con N proyectos = destruccion sistematica del activo de aprendizaje compuesto.
-2. CRITICO quality-gates/SKILL.md:25 exige `npm run typecheck`; package.json solo define dev/build/start/lint. Gate duro que invoca script inexistente.
-3. CRITICO dos clases de ciudadano: CLAUDE.md:360 "SIEMPRE habilitar RLS" vs add-payments:74 "service_role bypasses automatically". Resuelve el actor no-humano apagando su invariante mas fuerte.
-4. Sin concepto multi-inquilino organizacional: 1 hit en skills/+src/ y es "Google Workspace" incidental. Su unidad de aislamiento es el individuo, no la organizacion.
-5. codebase-analyst listado en SKILLS_README.md:59 sin directorio: su unico skill de analisis desaparecio en V4->V5.
-6. Son 32 skills, no las 30 documentadas.
-
-IDENTIDAD DERIVADA POR LA PROPIA FABRICA: su especializacion no es un dominio de negocio (atraveso biometria, RAG legal, generacion de video y cold email sin modificarse, verificado en vertical-pack:6) sino una TOPOLOGIA de entrega y operacion. Nombre operativo propuesto por ella: "fabrica de instancias multi-principal operadas en continuo". Criterio de pertenencia: el entregable hay que mantenerlo vivo y observarlo, y todos los principales se autorizan contra el MISMO modelo (hoy la respuesta es no). Aclaro que NO propone renombrar el repo, solo la definicion operativa de asignacion.
-
-CONSECUENCIA PARA EL FMD (#280): convergencia independiente, sin que se le entregara el diseno del Gerente. Derivo sola que tools/bridges/ YA presupone un gerente (factory_request_id, goal_id, attempt_number, evidence_path) y fijo la frontera: "el gerente gobierna ENTRE misiones, yo gobierno DENTRO; la frontera es el paquete de mision y se cruza solo con artefactos, nunca con supervision". Interfaz minima de 8 superficies: 1-4 ya existen en el bridge, 5-8 son la brecha.
-
-GENTLE AI: veredicto SI con acceso al clon completo (52adc25). Capacidad adoptable = el recibo ligado por hash al estado verificado (receipt.go:15) + gates que solo leen recibos. Concepto si, implementacion no. Debe vivir en el kernel compartido; SFV5 emite, el gerente hace vinculante; los tres roles no se pueden fusionar so pena de autocertificacion.
-
-ESTADO DFL VERIFICADO EN LA GARRA: no hay kernel, no hay CI (cero .github/), no existe ~/.saas-factory/brain/, y nada en produccion emite mission packets (los unicos factory_request_id son los que fabrico a mano el discovery). El tramo "hacer vinculantes los recibos" no tiene hoy actor posible.
-
-SIGUIENTE PASO: pedirle el INVENTARIO DE ATESTACION (entregable falsable que ella misma propuso). Pendiente de Jorge, bloquea el resto: que limites volver vinculantes, y si hay identidad para aprobaciones humanas.
-
-CAVEAT DE METODO: la fabrica es parte interesada describiendose a si misma. Los [FACT] no verificados por Claude Code son citas suyas, no evidencia. Se verificaron ~20 de mayor consecuencia.
-
-Costo total 10.50 USD, 14 invocaciones.
+The upstream engine was proven working during a 2026-07-22 DFL audit (EXECUTIVE_VERDICT.md explicitly decided to KEEP it as a subordinate engine) but the /root-local install did not persist. Restored under the invoking user's own $HOME (no root needed), fixed the hardcoded /root default path in codebase-memory-registry (dfl-knowledge@6004a4c). CORRECTION_TO_PRIOR_BELIEF found while benchmarking: --mode=fast silently excludes bin/ and tests/fixtures from indexing, causing real wrong answers for caller/dependency questions (a function's real caller was reported as 0 callers). --mode=full/moderate does not have this gap and was also smaller than raw grep for the same question. RULE: use fast for lookup/architecture questions, moderate/full for caller or impact-tracing questions.
 
 ---
 
@@ -609,4 +528,4 @@ Costo total 10.50 USD, 14 invocaciones.
 
 ---
 
-*Mirror auto-generated 2026-08-14T03:24:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-14T03:53:47Z | La Garra → DFLghub/amos-context*
