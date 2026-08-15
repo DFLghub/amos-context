@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-15T17:09:33Z  
+**Generated:** 2026-08-15T17:17:50Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,78 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
+**Type:** checkpoint  
+**Project:** saas-factory-setup  
+
+TOPIC: dfl/labs/tcc-tcx-concurrency-vm2-n2
+TYPE: lab_harvest
+DATE: 2026-08-15
+LIFECYCLE: active
+AUTHORITY: Jorge (Lab commissioned), executed by TCC
+
+== CONCLUSIONES: PROVEN vs NOT PROVEN ==
+
+PROVEN (E2E, evidencia independiente, no autorreportada):
+- Dos Tonys (TCC + un proceso real de `codex exec`, TCX) pueden operar sobre la misma SFV5/Iron Man con workstreams reales, distintos, en ventanas de tiempo genuinamente solapadas (12s de overlap medido por timestamps), sin colisión de archivos, sin pérdida de commits, sin pérdida ni mezcla de escrituras en Engram (session_id distintos confirmados), con `push_mirror.sh` serializando correctamente bajo concurrencia inducida (flock real, no accidental).
+- El aislamiento por `git worktree` (patrón ya existente en DFL, no inventado) elimina la colisión de archivos entre Tonys operando simultáneamente sobre el mismo repo.
+- El slot único de dispatch (`pending` con exactamente una misión) NO es un requisito para trabajo productivo real -- evidencia: 15+ commits reales de este arco completo con `execute_permitted:false` todo el tiempo. La restricción de una sola misión sigue sin resolverse, pero resultó estar fuera del camino crítico del QUIERO original.
+- VM2 (2 vCPU, ~3.9GB RAM) soporta n=2 procesos reales concurrentes (2x `codex exec`, tarea comparable) sin OOM, sin exit 137, sin throttling visible, sin degradar `wp-tent-app`/`wp-tent-db` ni la salud de `/go`/Engram verificada post-carga.
+
+NOT PROVEN (explícitamente, no inflar):
+- La medición de carga (n=2) fue con DOS procesos del MISMO motor (2x Codex), no con TCC+TCX heterogéneos bajo las mismas condiciones controladas y monitoreadas -- el demo de concurrencia genuina (git/Engram/mirror) sí fue TCC+TCX real, pero la medición cuantitativa de impacto en VM2 no. La huella de recursos específica de TCC operando concurrentemente con TCX no está medida con el mismo rigor.
+- Solo 1 muestra de línea base y 1 muestra de n=2 por lado (A/B) -- +7.6%/+19.3% es una señal real pero de tamaño de muestra insuficiente para descartar ruido de medición. No hay repetición que confirme que el rango es estable.
+- No se muestreó la latencia de `/go`/Engram de forma continua DURANTE la ventana exacta de concurrencia -- se verificó antes y después, no en cada segundo de la ventana. "Siguieron respondiendo normalmente" es cierto pero con menos granularidad de la que el enunciado sugiere.
+- No se probó n=3 ni el punto de quiebre -- explícitamente fuera de alcance de este Lab, no se debe inferir de acá.
+- No se determinó si el disco al 95%/swap al 100% en reposo son causa de algún costo de rendimiento medible hoy, o si son simplemente el estado histórico normal de esta VM -- quedó flageado, no diagnosticado.
+
+== OBSERVACIONES / HALLAZGOS ==
+
+1. Concurrencia TCC x TCX: confirmada real (session_id distintos: mcp-external-...-7b2af778 para TCX vs ...-c9cdceff para TCC), no simulada por un solo proceso jugando dos roles.
+2. Aislamiento por worktree: funcionó exactamente como se esperaba, cero colisión, mismo patrón que DFL ya usaba en otros 4 worktrees preexistentes -- no fue una invención de este Lab, fue reutilización correcta.
+3. Impacto medido en VM2 bajo n=2: CPU us/sy picos 42%/56% en 2 vCPUs, breve (~15-20s), RAM disponible bajó de ~400MB a ~325MB, IO real (bi hasta 130k) durante la ventana. Duración: 24.9s baseline -> 26.8s/29.7s concurrente. Ningún proceso murió, ningún timeout real (una vez corregido el bug de invocacion).
+4. Swap/disco preexistentes: VM2 tenia swap 100% usado (2047/2047MB) y disco 95% lleno (4.5GB libres) ANTES de que este Lab tocara nada -- no es degradacion inducida por el experimento, es el estado de base de la maquina, y quedo anotado como riesgo real independiente en IRONMAN.md, no resuelto aqui.
+5. FALSO INDICIO introducido por mi propia invocacion (el hallazgo metodologico mas importante de este Lab): el primer intento de medir la linea base colgo 2 minutos. Sin investigar, ese dato se hubiera podido reportar como "VM2 no soporta ni una tarea sola, mucho menos concurrencia" -- una conclusion catastroficamente equivocada. La causa real: `codex exec` invocado sin `< /dev/null`, quedo esperando stdin indefinidamente (el log decia literalmente "Reading additional input from stdin..."). Cero relacion con CPU/RAM/concurrencia. Jorge fue quien primero cuestiono "no es logico ese nivel de carga" y disparo la investigacion correcta -- yo no lo hice proactivamente antes de que me lo señalaran.
+
+== PREP: preparacion minima del host antes de una nueva linea/Tony (principio, no automatizacion pesada) ==
+
+Principio: antes de atribuir cualquier consumo o degradacion a una linea nueva, hay que saber que NO es residuo de algo anterior. Forma minima recomendada (checklist manual de 4 pasos, no un daemon, no un harness):
+1. `pgrep -a` (o equivalente) para detectar procesos huerfanos/zombies o sesiones previas de Labs que sigan vivas sin proposito activo.
+2. Barrido de temporales/artefactos conocidos de Labs anteriores identificables por convencion de nombre (`lab/*` branches, `/tmp/*lab*`, worktrees de medicion) -- limpiar solo lo que sea inequivocamente residuo, nunca por sospecha.
+2.b. NUNCA limpiar (ni siquiera cuando parezca residuo): puntajeTigreKnockout, Supabase, Vercel config, env vars, templates HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets -- las superficies NO_TOUCH nunca son "residuo elegible", sin importar cuan viejas o abandonadas parezcan.
+3. Snapshot de recursos EN REPOSO tras la limpieza (loadavg, free -m, df -h) -- este es el baseline real, no el que se toma antes de limpiar.
+4. Recien despues de 1-3, arrancar la linea nueva y medir contra ese baseline limpio.
+Este Lab no siguio este orden con disciplina -- el chequeo de "CX-A/CX-B siguen vivos" se hizo reactivamente cuando Jorge pregunto por zombies, no proactivamente antes de declarar un baseline. Ese es exactamente el gap que este principio cierra hacia adelante.
+
+== QUE HUBIERA HECHO DISTINTO Y POR QUE (autocritica, no autocomplacencia) ==
+
+1. Deberia haber corrido el checklist PREP (arriba) ANTES de tomar el primer `free -m`/`loadavg` de "reposo" -- los numeros de reposo que reporte ya incluian CX-A/CX-B corriendo hace mas de una hora, sin decirlo explicitamente como tal en ese momento.
+2. Deberia haber corrido 2-3 muestras de linea base y 2-3 de concurrencia, no 1 y 1 -- el +7.6%/+19.3% es una observacion real pero estadisticamente fragil, y lo reporte con mas confianza de la que una sola muestra deberia inspirar.
+3. Deberia haber muestreado `/go`/Engram con timestamps DENTRO de la ventana de concurrencia, no solo antes/despues -- dije "siguen respondiendo normalmente" con menos evidencia de la que esa frase implica.
+4. Deberia haber usado un TCX real Y una tarea TCC comparable y cronometrada de la misma manera para la medicion cuantitativa -- use 2x Codex por conveniencia, lo cual mide concurrencia-de-motor-homogeneo, no exactamente la pregunta de "TCC+TCX especificamente" que se estaba haciendo.
+5. No deberia haber borrado las ramas/worktrees del Lab (`lab/tcx-concurrency-2026-08-15`, `lab/n2-b-2026-08-15`) sin al menos etiquetar (`git tag`) los commits de evidencia primero -- ahora son commits inalcanzables (dangling), recuperables por poco tiempo via `git show <hash>` pero no garantizados si corre un `git gc` agresivo. La limpieza estuvo bien motivada (no dejar ramas de lab acumulandose) pero el orden fue incorrecto: etiquetar primero, limpiar despues.
+6. No investigue si el disco al 95% tiene relacion causal con los picos de IO observados (`bi` hasta 130k) -- quedo como dos hechos yuxtapuestos, no una hipotesis probada ni descartada.
+7. Lo que SI hice bien y vale la pena repetir: no acepte el timeout de 2 minutos como dato de carga sin investigar la causa raiz primero (una vez que Jorge lo señalo); verifique independientemente cada afirmacion antes de reportarla (exit codes, git log de ambos lados, contenido de Engram via API directa, no confiando en el stdout de los subprocesos); y separe explicitamente lo que el Lab si probo de lo que no, en vez de generalizar el resultado positivo mas alla de su evidencia real.
+
+== RECOMENDACION DE LA FABRICA SOBRE LA FABRICA (MUST / SHOULD / LATER) ==
+
+MUST (barato, sin ambiguedad, aplicar ya en el proximo Lab):
+- Redirigir stdin explicitamente (`< /dev/null`) en toda invocacion no-interactiva de `codex exec` u otro CLI similar usado en automatizacion -- el bug de esta sesion es evitable con una linea, y el costo de no hacerlo es un falso indicio que puede llevar a una conclusion opuesta a la real.
+- Correr el checklist PREP (4 pasos, arriba) antes de declarar cualquier baseline de recursos, siempre, no solo cuando alguien pregunta por zombies.
+- Etiquetar (`git tag`) los commits de evidencia de un Lab ANTES de borrar sus ramas/worktrees, si el Lab se declara cerrado y exitoso.
+
+SHOULD (barato, vale la pena, no urgente):
+- Para cualquier medicion de duracion/degradacion, tomar minimo 2-3 muestras por condicion antes de citar un porcentaje con confianza.
+- Si se mide un componente compartido (`/go`, Engram) durante una ventana de concurrencia, muestrear continuamente dentro de la ventana, no solo antes/despues.
+- Registrar el estado de swap/disco de VM2 como chequeo independiente y periodico (no atado a ningun Lab especifico) dado que ya se encontro en un estado ajustado sin que nadie lo hubiera investigado antes.
+
+LATER (NO hacer todavia, evitar sobreingenieria):
+- Un harness reusable de Lab (PREP + monitor + cleanup en un solo script) -- solo si los Labs se vuelven lo bastante frecuentes como para justificarlo; hoy seria automatizar antes de tener el patron de uso repetido, exactamente el atajo que este arco entero evito en F-ARCH-4 y en otros lugares.
+- Automatizar la deteccion de "cuando el disco/swap de VM2 se vuelve un problema real" -- por ahora un chequeo manual ocasional alcanza; no hay evidencia todavia de que sea un problema activo, solo un margen mas ajustado de lo esperado.
+
+== EVIDENCIA ==
+Commits (ahora dangling, no en ninguna rama, recuperables por hash mientras no corra gc agresivo): d7480410f5702a978d54d218f1b3282f6feb7dbd, 752efb9b1cec6774e7fea5ba3be392cdaa199962, ebd014ec496d1bb2ec312207cf005d1cd437a82d. Commits en la rama principal (persistentes): 8372ec1 (IRONMAN.md creado), ed4877b (cierre Lab TCC x TCX), 84b6b7e (cierre medicion VM2 n=2). Engram obs #491-#497 (tests de concurrencia y probes). IRONMAN.md, filas "Concurrencia TCC x TCX" y "VM2: n=2 fabricas virtuales concurrentes".
+
 ### @$fin CIERRE FORMAL 2026-08-15 -- Codex handoff completo publicado, MCP de Codex verificado y registrado, arco 100% cerrado
 **Type:** session_summary  
 **Project:** saas-factory-setup  
@@ -132,44 +204,6 @@ Gate 4B step 2 (archival check): nothing new to archive beyond what #487->#488 a
 Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all verified by real execution at onboarding), operating on /opt/saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge, final HEAD 2c7057a. Handing off to Codex per Jorge's explicit instruction (Claude Code credit running low across the arc, but the arc itself was fully closed by Claude Code before handoff -- Codex does not need to do any remaining work on THIS arc).
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
-
-### FINAL CLOSE 2026-08-15 -- Onboarding Freshness + WP Competence Specimen B/C + F-ARCH-1 all CLOSED. F-ARCH-2/3/4 explicitly DEFERRED with reopen conditions. This is the definitive close, not a provisional checkpoint.
-**Type:** checkpoint  
-**Project:** saas-factory-setup  
-
-DEFINITIVE INSTITUTIONAL CLOSE of this arc. Supersedes obs #487 (which was explicitly provisional, prepared in case Claude Code ran out of credit mid-session -- it did not; this session continued and finished the work itself). Mark #487 [RESOLVED]/archived pointing here.
-
-== EVERYTHING CLOSED THIS ARC (recap, full detail still in #487's body if needed, not repeated) ==
-1. Onboarding freshness (breaking_news/pending_status_notice/memory_conflicts/staleness flags) -- live in production, E2E-proven twice. Commits c769f0b, 77bea85.
-2. WP Competence Specimen B (FATAL/OOB) + C (SCARCITY) -- real Docker faults, real recovery, BUILD/ADAPT/REUSE proven to scale past a small reversible gap. Commit 062000c.
-3. wp_eval loophole in docker-adapter.mjs -- closed, capability preserved, contract honest, E2E-verified by re-fixing the real Specimen B fault through the new path. Commit 86f7dd1.
-4. push_mirror.sh git-permission bug -- root cause (bad umask on one .git/objects subdir) fixed via core.sharedRepository=group + git gc. VERIFIED CLOSED AGAIN just now as part of this final close: real production script run unmodified, real GitHub push confirmed, HEAD==origin/main. Config setting persists in the shared .git/config (not per-session), so this stays fixed going forward, not just for this session.
-
-== F-ARCH-1 -- NOW CLOSED (was open in #487, closed in this final session per Jorge's explicit Option B decision) ==
-Executed, not decided by me -- Jorge gave the decision (Option B: formal closure, preserve history/evidence, no substitute mission fabricated), this session implemented it.
-Change made to /opt/dfl-knowledge/governance/onboarding/provisional-routing-state.json (I have direct write access, group dfl -- no sudo needed, no institutional frontier crossed since the decision was already given):
-- Mission DFL_CONTROL_PLANE_ROADMAP_EXECUTION_BATCH_2026_08_02 moved from `pending` into `history`, status=CLOSED, outcome=CLOSED_ADMINISTRATIVE_NOT_COMPLETED, closed_by='Jorge_decision_2026-08-15_F-ARCH-1_option_B', full original mission record preserved verbatim inside the history entry (nothing deleted, only reclassified) for audit.
-- `pending` set to [] (honest -- no active mission, nothing fabricated to fill the slot).
-- `dispatch` key removed entirely from the file (was stale, pointed to the now-closed mission's expired authorization).
-Backup of the pre-close file at /tmp/provisional-routing-state.json.pre-close-2026-08-15.bak (local disk, not committed -- this file lives outside any git repo, it's DFL governance state, not source).
-E2E-VERIFIED against real production /go (:8091) immediately after the edit: dispatch_receipt flipped from FAIL_CLOSED (E_AUTH_EXPIRED, E_DISPATCH_STALE) to a CLEAN {decision: PASS, execute_permitted: false, dispatch_state: PENDIENTE_NO_ENVIADO, role: NO_DISPATCH_BLOCK_PRESENT} -- this is strictly better than before: previously the system claimed something was dispatched-but-broken, now it correctly says nothing is dispatched. `pending` confirmed empty. `routing_receipt` shows FAIL_CLOSED with a single accurate contradiction (pending_must_contain_exactly_one_mission) -- structurally expected given the validator's schema (always requires exactly one slot; representing 'zero active missions' cleanly would require a validator schema change, which is itself a separate, smaller architectural question, NOT reopened here, NOT part of Jorge's Option B instruction). Minor cosmetic note, not a new open item: `pending_status_notice`'s wording ('Reauthorization or formal closure is Jorge's call') is now slightly dated since closure already happened -- still truthful, not misleading, would need another main.py production deploy cycle to reword, not worth it for phrasing alone.
-
-== F-ARCH-2/3/4 -- EXPLICITLY DEFERRED, WITH REASON AND REOPEN CONDITION EACH ==
-F-ARCH-2 (memory_conflicts resolution policy): DEFERRED. Reason: only 3 unjudged relations exist, nothing blocking, no volume to justify a policy yet. REOPEN WHEN: unjudged relation count grows materially (e.g. >15-20) or any single unjudged conflict is shown to have caused a real bad decision by an agent trusting the wrong side of it.
-F-ARCH-3 (Engram CLI default store / /root/.engram permission boundary): DEFERRED. Reason: already mitigated (tools/engram-canary/check.sh + wired MCP), residual risk is low now that both detection and a correct-path workaround exist; changing shared-infra permissions without an audit of every consumer on La Garra risks breaking something invisible. REOPEN WHEN: a second host/user is added that needs CLI-direct (non-MCP, non-HTTP) access to the institutional store, or the canary starts firing repeatedly despite the CLAUDE.md warning (meaning the warning isn't enough and the underlying default genuinely needs to change).
-F-ARCH-4 (cron/systemd automation for KNL/asset-index regen): DEFERRED. Reason: no one is currently harmed by manual regen -- F9a's staleness annotation in production /go already surfaces the gap honestly; automating without first auditing the regen scripts for safe unattended execution would repeat exactly the shortcut this whole arc avoided everywhere else. REOPEN WHEN: someone is about to depend on KNL/asset-index freshness for a decision that can't tolerate a stale read (i.e., before automating, first prove there's a real consumer who needs it fresher than 'whoever last ran it manually').
-
-== ALSO STILL NOTED, DELIBERATELY NOT ACTED ON ==
-playground-adapter.mjs (Specimen A) has the identical false 'no eval' claim that docker-adapter had before item #3 above -- found, flagged in both dfl.yaml files, explicitly left untouched per instruction (separate already-closed asset, its own 'no new primitives for a specific defect' doctrine, out of scope). Not a decision pending from anyone -- just a known fact for whoever next touches that adapter.
-
-== CURRENT LIVE STATE (unchanged from #487 except F-ARCH-1) ==
-wp-tent-app/wp-tent-db containers still running (512MB cap, ~2,000,004 real posts from Specimen C -- not a clean instance). Snapshot 'clean' in wp-competence-tent/evidence/snapshots/ predates that import. No sudo in this environment. Don't trust bare engram CLI without the canary. Full detail in #487 if needed.
-
-== NOTHING IS BLOCKED FOR THE NEXT AGENT ==
-This arc has zero remaining action items requiring anyone's decision. F-ARCH-2/3/4 are consciously parked, not forgotten -- their reopen conditions are stated above, don't re-litigate them without new evidence matching those conditions. The next agent (Codex or Claude Code) can start entirely new work (DFL Website / JackyClean / JPI per Jorge's stated intent) with a completely clean starting point on this arc.
-
-== TOOL NAME TRANSLATION (same as #487, restated for anyone landing here directly without reading #487) ==
-Claude Code used mem_save/mem_search/mem_update. Codex uses save_memory/search_memory/update_memory via engram-mcp -- same institutional store (127.0.0.1:7437), same Gate 4B, same @$go/@$fin contract, different tool names only.
 
 ### [CONVERGENCIA] El Gerente de Fabrica (FMD, #280) ya nombro los dos gaps del discovery SFV5 14 dias antes; el discovery no lo cito nunca
 **Type:** decision  
@@ -446,17 +480,83 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
+### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
+**Type:** checkpoint  
+**Project:** saas-factory-setup  
+
+TOPIC: dfl/labs/tcc-tcx-concurrency-vm2-n2
+TYPE: lab_harvest
+DATE: 2026-08-15
+LIFECYCLE: active
+AUTHORITY: Jorge (Lab commissioned), executed by TCC
+
+== CONCLUSIONES: PROVEN vs NOT PROVEN ==
+
+PROVEN (E2E, evidencia independiente, no autorreportada):
+- Dos Tonys (TCC + un proceso real de `codex exec`, TCX) pueden operar sobre la misma SFV5/Iron Man con workstreams reales, distintos, en ventanas de tiempo genuinamente solapadas (12s de overlap medido por timestamps), sin colisión de archivos, sin pérdida de commits, sin pérdida ni mezcla de escrituras en Engram (session_id distintos confirmados), con `push_mirror.sh` serializando correctamente bajo concurrencia inducida (flock real, no accidental).
+- El aislamiento por `git worktree` (patrón ya existente en DFL, no inventado) elimina la colisión de archivos entre Tonys operando simultáneamente sobre el mismo repo.
+- El slot único de dispatch (`pending` con exactamente una misión) NO es un requisito para trabajo productivo real -- evidencia: 15+ commits reales de este arco completo con `execute_permitted:false` todo el tiempo. La restricción de una sola misión sigue sin resolverse, pero resultó estar fuera del camino crítico del QUIERO original.
+- VM2 (2 vCPU, ~3.9GB RAM) soporta n=2 procesos reales concurrentes (2x `codex exec`, tarea comparable) sin OOM, sin exit 137, sin throttling visible, sin degradar `wp-tent-app`/`wp-tent-db` ni la salud de `/go`/Engram verificada post-carga.
+
+NOT PROVEN (explícitamente, no inflar):
+- La medición de carga (n=2) fue con DOS procesos del MISMO motor (2x Codex), no con TCC+TCX heterogéneos bajo las mismas condiciones controladas y monitoreadas -- el demo de concurrencia genuina (git/Engram/mirror) sí fue TCC+TCX real, pero la medición cuantitativa de impacto en VM2 no. La huella de recursos específica de TCC operando concurrentemente con TCX no está medida con el mismo rigor.
+- Solo 1 muestra de línea base y 1 muestra de n=2 por lado (A/B) -- +7.6%/+19.3% es una señal real pero de tamaño de muestra insuficiente para descartar ruido de medición. No hay repetición que confirme que el rango es estable.
+- No se muestreó la latencia de `/go`/Engram de forma continua DURANTE la ventana exacta de concurrencia -- se verificó antes y después, no en cada segundo de la ventana. "Siguieron respondiendo normalmente" es cierto pero con menos granularidad de la que el enunciado sugiere.
+- No se probó n=3 ni el punto de quiebre -- explícitamente fuera de alcance de este Lab, no se debe inferir de acá.
+- No se determinó si el disco al 95%/swap al 100% en reposo son causa de algún costo de rendimiento medible hoy, o si son simplemente el estado histórico normal de esta VM -- quedó flageado, no diagnosticado.
+
+== OBSERVACIONES / HALLAZGOS ==
+
+1. Concurrencia TCC x TCX: confirmada real (session_id distintos: mcp-external-...-7b2af778 para TCX vs ...-c9cdceff para TCC), no simulada por un solo proceso jugando dos roles.
+2. Aislamiento por worktree: funcionó exactamente como se esperaba, cero colisión, mismo patrón que DFL ya usaba en otros 4 worktrees preexistentes -- no fue una invención de este Lab, fue reutilización correcta.
+3. Impacto medido en VM2 bajo n=2: CPU us/sy picos 42%/56% en 2 vCPUs, breve (~15-20s), RAM disponible bajó de ~400MB a ~325MB, IO real (bi hasta 130k) durante la ventana. Duración: 24.9s baseline -> 26.8s/29.7s concurrente. Ningún proceso murió, ningún timeout real (una vez corregido el bug de invocacion).
+4. Swap/disco preexistentes: VM2 tenia swap 100% usado (2047/2047MB) y disco 95% lleno (4.5GB libres) ANTES de que este Lab tocara nada -- no es degradacion inducida por el experimento, es el estado de base de la maquina, y quedo anotado como riesgo real independiente en IRONMAN.md, no resuelto aqui.
+5. FALSO INDICIO introducido por mi propia invocacion (el hallazgo metodologico mas importante de este Lab): el primer intento de medir la linea base colgo 2 minutos. Sin investigar, ese dato se hubiera podido reportar como "VM2 no soporta ni una tarea sola, mucho menos concurrencia" -- una conclusion catastroficamente equivocada. La causa real: `codex exec` invocado sin `< /dev/null`, quedo esperando stdin indefinidamente (el log decia literalmente "Reading additional input from stdin..."). Cero relacion con CPU/RAM/concurrencia. Jorge fue quien primero cuestiono "no es logico ese nivel de carga" y disparo la investigacion correcta -- yo no lo hice proactivamente antes de que me lo señalaran.
+
+== PREP: preparacion minima del host antes de una nueva linea/Tony (principio, no automatizacion pesada) ==
+
+Principio: antes de atribuir cualquier consumo o degradacion a una linea nueva, hay que saber que NO es residuo de algo anterior. Forma minima recomendada (checklist manual de 4 pasos, no un daemon, no un harness):
+1. `pgrep -a` (o equivalente) para detectar procesos huerfanos/zombies o sesiones previas de Labs que sigan vivas sin proposito activo.
+2. Barrido de temporales/artefactos conocidos de Labs anteriores identificables por convencion de nombre (`lab/*` branches, `/tmp/*lab*`, worktrees de medicion) -- limpiar solo lo que sea inequivocamente residuo, nunca por sospecha.
+2.b. NUNCA limpiar (ni siquiera cuando parezca residuo): puntajeTigreKnockout, Supabase, Vercel config, env vars, templates HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets -- las superficies NO_TOUCH nunca son "residuo elegible", sin importar cuan viejas o abandonadas parezcan.
+3. Snapshot de recursos EN REPOSO tras la limpieza (loadavg, free -m, df -h) -- este es el baseline real, no el que se toma antes de limpiar.
+4. Recien despues de 1-3, arrancar la linea nueva y medir contra ese baseline limpio.
+Este Lab no siguio este orden con disciplina -- el chequeo de "CX-A/CX-B siguen vivos" se hizo reactivamente cuando Jorge pregunto por zombies, no proactivamente antes de declarar un baseline. Ese es exactamente el gap que este principio cierra hacia adelante.
+
+== QUE HUBIERA HECHO DISTINTO Y POR QUE (autocritica, no autocomplacencia) ==
+
+1. Deberia haber corrido el checklist PREP (arriba) ANTES de tomar el primer `free -m`/`loadavg` de "reposo" -- los numeros de reposo que reporte ya incluian CX-A/CX-B corriendo hace mas de una hora, sin decirlo explicitamente como tal en ese momento.
+2. Deberia haber corrido 2-3 muestras de linea base y 2-3 de concurrencia, no 1 y 1 -- el +7.6%/+19.3% es una observacion real pero estadisticamente fragil, y lo reporte con mas confianza de la que una sola muestra deberia inspirar.
+3. Deberia haber muestreado `/go`/Engram con timestamps DENTRO de la ventana de concurrencia, no solo antes/despues -- dije "siguen respondiendo normalmente" con menos evidencia de la que esa frase implica.
+4. Deberia haber usado un TCX real Y una tarea TCC comparable y cronometrada de la misma manera para la medicion cuantitativa -- use 2x Codex por conveniencia, lo cual mide concurrencia-de-motor-homogeneo, no exactamente la pregunta de "TCC+TCX especificamente" que se estaba haciendo.
+5. No deberia haber borrado las ramas/worktrees del Lab (`lab/tcx-concurrency-2026-08-15`, `lab/n2-b-2026-08-15`) sin al menos etiquetar (`git tag`) los commits de evidencia primero -- ahora son commits inalcanzables (dangling), recuperables por poco tiempo via `git show <hash>` pero no garantizados si corre un `git gc` agresivo. La limpieza estuvo bien motivada (no dejar ramas de lab acumulandose) pero el orden fue incorrecto: etiquetar primero, limpiar despues.
+6. No investigue si el disco al 95% tiene relacion causal con los picos de IO observados (`bi` hasta 130k) -- quedo como dos hechos yuxtapuestos, no una hipotesis probada ni descartada.
+7. Lo que SI hice bien y vale la pena repetir: no acepte el timeout de 2 minutos como dato de carga sin investigar la causa raiz primero (una vez que Jorge lo señalo); verifique independientemente cada afirmacion antes de reportarla (exit codes, git log de ambos lados, contenido de Engram via API directa, no confiando en el stdout de los subprocesos); y separe explicitamente lo que el Lab si probo de lo que no, en vez de generalizar el resultado positivo mas alla de su evidencia real.
+
+== RECOMENDACION DE LA FABRICA SOBRE LA FABRICA (MUST / SHOULD / LATER) ==
+
+MUST (barato, sin ambiguedad, aplicar ya en el proximo Lab):
+- Redirigir stdin explicitamente (`< /dev/null`) en toda invocacion no-interactiva de `codex exec` u otro CLI similar usado en automatizacion -- el bug de esta sesion es evitable con una linea, y el costo de no hacerlo es un falso indicio que puede llevar a una conclusion opuesta a la real.
+- Correr el checklist PREP (4 pasos, arriba) antes de declarar cualquier baseline de recursos, siempre, no solo cuando alguien pregunta por zombies.
+- Etiquetar (`git tag`) los commits de evidencia de un Lab ANTES de borrar sus ramas/worktrees, si el Lab se declara cerrado y exitoso.
+
+SHOULD (barato, vale la pena, no urgente):
+- Para cualquier medicion de duracion/degradacion, tomar minimo 2-3 muestras por condicion antes de citar un porcentaje con confianza.
+- Si se mide un componente compartido (`/go`, Engram) durante una ventana de concurrencia, muestrear continuamente dentro de la ventana, no solo antes/despues.
+- Registrar el estado de swap/disco de VM2 como chequeo independiente y periodico (no atado a ningun Lab especifico) dado que ya se encontro en un estado ajustado sin que nadie lo hubiera investigado antes.
+
+LATER (NO hacer todavia, evitar sobreingenieria):
+- Un harness reusable de Lab (PREP + monitor + cleanup en un solo script) -- solo si los Labs se vuelven lo bastante frecuentes como para justificarlo; hoy seria automatizar antes de tener el patron de uso repetido, exactamente el atajo que este arco entero evito en F-ARCH-4 y en otros lugares.
+- Automatizar la deteccion de "cuando el disco/swap de VM2 se vuelve un problema real" -- por ahora un chequeo manual ocasional alcanza; no hay evidencia todavia de que sea un problema activo, solo un margen mas ajustado de lo esperado.
+
+== EVIDENCIA ==
+Commits (ahora dangling, no en ninguna rama, recuperables por hash mientras no corra gc agresivo): d7480410f5702a978d54d218f1b3282f6feb7dbd, 752efb9b1cec6774e7fea5ba3be392cdaa199962, ebd014ec496d1bb2ec312207cf005d1cd437a82d. Commits en la rama principal (persistentes): 8372ec1 (IRONMAN.md creado), ed4877b (cierre Lab TCC x TCX), 84b6b7e (cierre medicion VM2 n=2). Engram obs #491-#497 (tests de concurrencia y probes). IRONMAN.md, filas "Concurrencia TCC x TCX" y "VM2: n=2 fabricas virtuales concurrentes".
+
 ### LAB2 probe
 **Type:** fact  
 **Project:** dfl  
 
 Probe captured initial HEAD 1bbc7e66a3fdda1431b2d11803b12161b9a0e758 at Sat Aug 15 17:07:58 UTC 2026.
-
-### LAB2 probe
-**Type:** fact  
-**Project:** dfl  
-
-Probe captured commit ed4877b2e8bd85725772ce8d5fb99e8c0df4a30d and UTC time Sat Aug 15 17:07:59 UTC 2026.
 
 ---
 
@@ -567,4 +667,4 @@ Probe captured commit ed4877b2e8bd85725772ce8d5fb99e8c0df4a30d and UTC time Sat 
 
 ---
 
-*Mirror auto-generated 2026-08-15T17:09:33Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-15T17:17:50Z | La Garra → DFLghub/amos-context*
