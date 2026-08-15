@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-15T13:23:08Z  
+**Generated:** 2026-08-15T15:14:10Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,17 +116,51 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### Concierge had its own Claim!=Evidence defect: directory/services declared INCLUDED but never rendered to onboarding artifacts
-**Type:** decision  
+### SESSION CLOSE 2026-08-15 -- Specimen B (FATAL/OOB) + C (SCARCITY) closed, BUILD/ADAPT/REUSE proven on harder gaps
+**Type:** session_summary  
 **Project:** saas-factory-setup  
 
-coverage.manifest.json claimed directory (and would have made the same claim for services) as INCLUDED for claude-code/codex based only on the runtime profile's required_sections list - it never checked whether the markdown renderer actually emitted anything. _common_payload() never touched bundle.directory at all. Fixed minimally (concierge/compiler.py, dfl-knowledge feat/dfl-concierge@582b8be): render only directory.projects and directory.services (not factories/agents/owners - governance metadata, not discovery information), gated on the exact same required_sections/required_degradations check _coverage() uses so claim and render cannot drift again by construction. Regression test proven to fail against the pre-fix compiler before confirming it passes. MISSION_VERDICT: institutional graph freshness (agTopologo/wru_graph_refresh.py) is keyed on git HEAD of tracked repos - it correctly found no drift this whole arc because none of this work was committed yet, not because the pipeline is broken. The actual gap was uncommitted code + Engram writes going to an orphaned local per-user store instead of this real institutional server, not a missing mechanism.
+Closes the open question from obs #480: does BUILD/ADAPT/REUSE scale beyond a small reversible gap? Real Docker WordPress+MySQL stack built (docker-adapter.mjs, same Variant B contract/Fase 2 schema as the Playground adapter). Specimen B (FATAL/OOB): real corrupted wp-config.php (whole-site 500), blind Engine correctly diagnosed via differential testing, tried restore() first (partial failure, real), adapted to a working fix via wp eval --skip-wordpress. Found and fixed 2 real adapter bugs (restore() missing docker exec -i; wp-config.php never covered by snapshot) via independent verification, not agent self-report. Left one methodology gap explicitly open (wp_cli_command permits wp eval, unrestricted execution despite no-eval framing). Specimen C (SCARCITY): real 80MB cgroup cap, 2,000,000-record import task. Correct OOM diagnosis via live kernel oom_kill counters (not inference), correctly separated from an unrelated missing-mysql-client defect, adapted via chunked low-memory inserts. Verified independently: COUNT(*)=2000004. Site left degraded post-import (Engine correctly declined to restore() and hide it, reported honestly) - I closed the residual degradation myself (raised the artificial memory cap, legitimate cleanup) and verified full health. Registered via dfl.yaml (Fase 2 schema), reindexed (13 assets), closed with a genuinely blind fresh-agent discovery proof (found by search alone, correct summary, correct gap citation, recommended reuse). Commit 062000c on fase-3-5-jpi-real-sfv5-bridge. Causal diagnosis was correct on both runs this time (unlike Run #5) - one data point, not proof it is now reliable, per standing ruling to track behavior and diagnosis separately.
 
-### codebase-memory-mcp was missing (accidental loss, not retirement) - restored under $HOME, fast-mode has a real correctness gap
-**Type:** decision  
+STILL OPEN, not touched: F-ARCH-1..4 and the push_mirror.sh git-permission bug (registered separately, obs #483). wp_cli_command eval loophole (specimen-b-fatal-oob.md). Whether this proves BUILD/ADAPT/REUSE for an even bigger/riskier gap, or whether two specimens is enough evidence, is the next open question.
+
+### SESSION CLOSE 2026-08-15 -- Capability Supply Chain built and proven (Asset Discovery -> Capability Inventory -> WP Engine adaptive chain -> BUILD/REGISTER/VERIFY)
+**Type:** session_summary  
 **Project:** saas-factory-setup  
 
-The upstream engine was proven working during a 2026-07-22 DFL audit (EXECUTIVE_VERDICT.md explicitly decided to KEEP it as a subordinate engine) but the /root-local install did not persist. Restored under the invoking user's own $HOME (no root needed), fixed the hardcoded /root default path in codebase-memory-registry (dfl-knowledge@6004a4c). CORRECTION_TO_PRIOR_BELIEF found while benchmarking: --mode=fast silently excludes bin/ and tests/fixtures from indexing, causing real wrong answers for caller/dependency questions (a function's real caller was reported as 0 callers). --mode=full/moderate does not have this gap and was also smaller than raw grep for the same question. RULE: use fast for lookup/architecture questions, moderate/full for caller or impact-tracing questions.
+SESSION CLOSE 2026-08-15. Full arc, closes obs #472/#479 (2026-08-14 WP thread) and resolves both of that session's open decision points.
+
+## Goal
+Build and prove, with independent verification at every step (never trusting an agent's self-report alone), DFL's capability supply chain: what exists -> what it can do -> can I use it -> how do I invoke it -> use it -> verify -> if it doesn't exist or doesn't reach, build/adapt it and make it discoverable for the next agent.
+
+## Accomplished
+- Full radiography of dfl-context-proxy (the real live @go process, not the protocol doc): three disconnected live authorities feed /go (Engram, provisional-routing-state.json+dispatch_gate.py, agTopologo/KNL files). Concierge/WRU/cognitive-core/Asset-Discovery are all real and tested but completely unwired to it. Found the dispatch gate is verified LIVE FAIL_CLOSED right now (E_AUTH_EXPIRED, E_DISPATCH_STALE, ~12+ days since 2026-08-02T18:43:55Z) -- blocks the CX/roadmap-batch execution track specifically, not general sessions. Jorge's call, not decided this session: renew or formally close that mission.
+- Fase 0: root-caused the /opt permission-fragmentation pattern with real access tests (not ls -l); built tools/asset-index/perm-audit.sh as a rerunnable drift check instead of one-off sudo. Only /opt/engram genuinely needed a fix.
+- Fase 1: wired Asset Discovery's index.json into the LIVE production /go payload (asset_index field, same soft-fail file-read pattern as the existing KNL wiring) -- this required Jorge to apply via sudo, I have no write access to dfl-context-proxy. Proved via repeated genuinely-blind fresh-agent E2E tests that (a) embedding instructions inside a fetched-at-runtime JSON payload is correctly distrusted by well-aligned agents (indistinguishable from prompt injection next to the validation_gate block) -- writing MORE instructions there does not fix this; (b) moving the 'check before building' principle into the actually-trusted, auto-loaded CLAUDE.md DOES produce spontaneous compliant behavior, blind, unprompted. Honest result: the general principle (check before assuming absence) is proven twice blind; the SPECIFIC discovery of a non-obvious asset via Asset Discovery specifically (as opposed to solving the need some other way) is NOT proven -- one fresh agent solved a deliberately-hard-to-find need via direct code exploration instead of ever reaching Asset Discovery. Declared FAIL of that specific path per Jorge's explicit instruction not to inflate results.
+- Fase 2: built one minimal Capability Inventory schema (invoke/params/returns/restrictions/surface/authority), added to tools/asset-index/manifest.mjs, reused identically in WP's probe_affordances() as action_contracts -- same contract, two containers, no parallel system. Real lesson proven with a live agent test, not theorized: prose params for structured input drifts and goes stale (my first draft was wrong); a pointer to real evidence (a test fixture) doesn't. Found and fixed a real bug on the way: query.mjs get did not fulfill its own documented 'load fully' contract. Closed with a genuinely blind E2E: fresh agent searched, selected, and invoked dfl.codebase-memory-registry correctly on the first try, zero source access, zero contract handed in the prompt.
+- WP Line A resumed with the corrected action_contracts. Run #4: first-ever full PASS on Specimen A (sealed validator, 4ms/99 opts/37,224 bytes vs the CLEAN-baseline-derived thresholds) -- but the Engine skipped straight to wp_cli_command from static metadata reasoning, never attempted REST at all (upfront fitness judgment, not post-failure recognition).
+- Run #5, designed specifically to force attempt-then-real-failure-then-switch without fabricating a defect or hinting a solution (task framing only: prefer the more verifiable path first, escalate only on real operational evidence, not prediction). Full chain genuinely demonstrated for the first time: attempted raw-SQL CLI mutation -> real failure (ok:false, not a prediction) -> reassessed -> changed strategy (PHP API loop instead of raw SQL, same surface, different code) -> executed -> independently verified -> sealed-validator PASS. Jorge's explicit ruling: the adaptive-behavior chain DISCOVER->UNDERSTAND->SELECT->INVOKE->OBSERVE->REASSESS->SWITCH->COMPLETE->VERIFY is PROVEN and CLOSED, no Run #6 needed to re-demonstrate it.
+- Separately and NOT closed: verified, against the raw CLI logs (not the Engine's narrative), that the Engine's own causal explanation for the Run #5 failure was FALSE -- it claimed a 'deliberate guardrail' blocking raw SQL; the real cause was a plain PHP quoting/parse error, the same self-inflicted mistake class independently reproduced across Runs #2, #3, #4, and #5 (four occurrences). Jorge's explicit ruling: causal-diagnosis competence is NOT proven and stays explicitly open, separate from the adaptive-behavior finding.
+- Demonstrated the BUILD/REGISTER/VERIFY link on a real, pre-existing, non-fabricated gap (the exact one that caused the false diagnosis above): executeViaCli() was collapsing real PHP error output into a bare ok:false. Full method applied: REUSE checked first (zero hits, gap confirmed real via Asset Discovery search) -> BUILD decision written before any code -> minimal generic fix (diagnostic_tail field, no new primitive, no defect-specific parsing) -> verified myself with a live induced failure -> registered via the identical Fase 2 schema (new dfl.yaml, dfl.wp-competence.playground-adapter) -> closing proof was a genuinely blind fresh agent that found it via search, invented its OWN different failure to verify independently, and confirmed real error detail comes back. Jorge's explicit boundary: this was a small, reversible, low-risk BUILD -- not evidence the method holds for a bigger, less-reversible one (e.g. Engram consolidation).
+
+## Not decided this session (explicitly open)
+- Dispatch-gate re-authorization or formal closure (Jorge's call, zero code needed).
+- Engram consolidation/rebuild -- still DRAFT, three questions from 2026-08-14 review still genuinely open.
+- /opt/360eventos orphan directory -- flagged, never confirmed with Jorge.
+- Two duplicate registry entries (saas-factory, 360eventos in codebase-memory-registry) needing human approval.
+- Whether BUILD/ADAPT/REUSE holds for a bigger/riskier gap than today's small executeViaCli fix.
+
+## Real risk, not fixed this session
+wp-competence-tent/ is 100% untracked by git (confirmed: git status shows only '?? wp-competence-tent/', no .git inside it either) -- every Run #4/#5 evidence file, the BUILD decision doc, the adapter fix, and the new dfl.yaml exist only on disk. Not committed because committing was not asked for.
+
+## Relevant files
+- Claude Code project memory (this project's own memory system, not Engram): MEMORY.md fully current, checkpoint-capability-supply-chain-2026-08-15.md has the complete detailed writeup.
+- wp-competence-tent/evidence/runs/specimen-a-run4-full-fix.md, specimen-a-run5-post-failure-recognition.md, build-decision-executeViaCli-diagnostics.md.
+- tools/asset-index/manifest.mjs (schema), query.mjs (bug fix), tools/bridges/dfl.yaml + /opt/dfl-knowledge/tools/codebase-memory-registry/dfl.yaml + wp-competence-tent/adapter/dfl.yaml (three real capability-contract manifests, verified against source).
+- /opt/dfl-context-proxy/main.py (live production, two real changes: asset_index field, cc_bootstrap discovery steps) -- backups at main.py.pre-asset-index.bak, main.py.pre-cc-bootstrap.bak.
+
+## Environment state
+WordPress Playground on port 9400 left in its post-fix healthy state (not reset to BLOAT baseline). No Playground process running as of session close. Next session needs a fresh restore before any new Engine run.
 
 ### [CONVERGENCIA] El Gerente de Fabrica (FMD, #280) ya nombro los dos gaps del discovery SFV5 14 dias antes; el discovery no lo cito nunca
 **Type:** decision  
@@ -203,22 +237,47 @@ REUTILIZABLE QUE #460 NO LISTABA: el decision tree de CLAUDE.md como especificac
 
 PROXIMO_AGENTE_DEBE: ejecutar SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF con los 6 criterios de PRP-001 como aserciones ejecutables. Criterio >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio explicito: falla si reporta PASS solo porque la ejecucion termino sin error.
 
-**Type:** decision  
+### Session summary: dfl-knowledge
+**Type:** session_summary  
 **Project:** dfl-knowledge  
 
-## PATCH_RISK canonical policy preregistered (2026-08-01)
+## Goal
+Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factory Extras / future Docking System coupling touchpoints, before any probe (DOCK_OBSERVATION_RUN, JPI, DCSA, Docking System) runs against real touchpoints.
 
-**What**: Created `evidence/patch-risk-policy-preregistration-2026-08-01/` — PATCH-RISK-POLICY.md + .json, two JSON Schemas (policy shape + touchpoint record), a pure `classify()`/`redTriggers()` node lib, 14/14 green `node --test` tests, SHA256SUMS, and a preregistration receipt. Committed exclusively as `6f71e5e` on `feat/dfl-high-certainty-harness-v0.1`, baseline `d79fffdf4ab1739e45049bae9c3933794788c1df`.
+## Instructions
+- MODO: YOLO — proceed autonomously without per-step confirmation.
+- Create ONLY: PATCH-RISK-POLICY.md, PATCH-RISK-POLICY.json, schema(s), minimal tests, preregistration receipt. Explicitly forbidden: running DOCK_OBSERVATION_RUN/JPI/DCSA/Docking System, modifying the sfv5 headless candidate, promoting anything.
+- Version the work in one exclusive git commit.
 
-**Policy content**: 5 canonical touchpoint classes (INSTITUTIONAL_EXTERNAL, ADDITIVE_EXTRA, BOUNDARY_ADAPTER, INTERNAL_PATCH, UPSTREAM_CANDIDATE) classifying coupling between SF upstream, Factory Extras and the future Docking System. 8 mandatory per-touchpoint factors (DEPTH, VERSION_SENSITIVITY, CRITICALITY, REAPPLY_EFFORT, AUTOMATION_RISK, AUTO_ATTACH_FEASIBLE, AUTO_DETACH_FEASIBLE, ABORT_ON_DRIFT) + 4 derived fields (requires_exact_preconditions, has_stable_hook, rollback_byte_identical, manual_intervention_permanent). GREEN/YELLOW/RED verdict per user-specified rules, with 5 single-factor RED triggers (R1 critical patch w/o stable hook, R2 >2 internal patches, R3 permanent manual intervention, R4 can't abort on drift, R5 rollback not byte-identical) plus a conservative RED-by-default fallback for anything not explicitly GREEN/YELLOW (e.g. a GOLDEN_PATH_CRITICAL internal patch with a stable hook still fails YELLOW's explicit exclusion of orchestration/golden-path criticality).
+## Discoveries
+- Repo has no package.json/npm deps anywhere — JSON Schema files (draft 2020-12) exist as documented contracts but are validated by hand-rolled JS logic in tests, not ajv. Node test convention is `node --test tests/*.test.mjs` with plain `.mjs` ESM.
+- Evidence-dir convention: `evidence/<slug>-<date>/` with a root `SHA256SUMS`, a `receipts/` subfolder, and receipts shaped like `{schema, receipt_id, gate, status, reason, producer, product, baseline{sha}, declared_at, evidence[]{declared_path,exists,sha256}, receipt_sha256-style provenance}`.
+- The user's stated GREEN/YELLOW/RED rules leave one case implicit: an INTERNAL_PATCH with GOLDEN_PATH_CRITICAL/ORCHESTRATION_CRITICAL criticality that DOES have a stable hook doesn't trip any of the five named RED triggers, but YELLOW explicitly excludes orchestration/golden-path criticality — resolved by falling through to a conservative RED-by-default (documented explicitly in the policy, flagged to the user for confirmation, not yet confirmed).
 
-**Why**: User explicitly required this preregistered *before* any probe (DOCK_OBSERVATION_RUN, JPI, DCSA, Docking System) so future touchpoint classification is deterministic and auditable rather than judged ad hoc during a live run.
+## Accomplished
+- ✅ Created `evidence/patch-risk-policy-preregistration-2026-08-01/` with PATCH-RISK-POLICY.md, PATCH-RISK-POLICY.json (5 classes, 8 mandatory factors, 4 derived fields, rule engine spec), schemas/patch-risk-policy.schema.json, schemas/patch-risk-touchpoint.schema.json, lib/patch-risk-classify.mjs (pure `classify()`/`redTriggers()`), tests/patch-risk-policy.test.mjs (14/14 PASS), receipts/preregistration-receipt.json, SHA256SUMS.
+- ✅ Verified no other repo state touched (candidate untouched, only new evidence dir staged) and committed exclusively as `6f71e5e` on branch `feat/dfl-high-certainty-harness-v0.1`, baseline `d79fffdf4ab1739e45049bae9c3933794788c1df`.
+- ✅ Incremental Gate 4B mem_save done mid-session (obs id 421) at commit time.
+- 🔲 User has not yet confirmed the RED-default interpretation for the golden-path/stable-hook edge case — surfaced but unresolved.
 
-**Scope discipline**: Did NOT execute DOCK_OBSERVATION_RUN/JPI/DCSA/Docking System, did NOT modify the sfv5-headless-profile-candidate-2026-08-01 candidate, did NOT promote anything — matches user's explicit non-goals.
+## Next Steps
+- If user confirms or amends the golden-path/stable-hook RED-default interpretation, update PATCH-RISK-POLICY.md/.json + tests accordingly (would be a policy_version bump, e.g. 0.1.1).
+- Actual DOCK_OBSERVATION_RUN / JPI / DCSA / Docking System work is explicitly NOT started — this session only preregistered the classification contract they must conform to.
 
-**Convention confirmed**: This repo's JSON-schema-validated artifacts (schemas/*.schema.json, draft 2020-12) are validated by hand-rolled JS logic, not ajv (no package.json/npm deps in repo) — tests do manual required-key/enum checks instead of a schema-validation library. Node test convention is `node --test tests/*.test.mjs`, `.mjs` ESM files, evidence dirs named `evidence/<slug>-<date>/` with SHA256SUMS at the root and a receipts/ subfolder for gate receipts.
+## Relevant Files
+- evidence/patch-risk-policy-preregistration-2026-08-01/PATCH-RISK-POLICY.md — canonical policy prose
+- evidence/patch-risk-policy-preregistration-2026-08-01/PATCH-RISK-POLICY.json — machine-checkable source of truth
+- evidence/patch-risk-policy-preregistration-2026-08-01/lib/patch-risk-classify.mjs — verdict algorithm
+- evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
+- evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-VEREDICTO: DFL_PATCH_RISK_POLICY_PREREGISTERED
+### CLOSED: wp_cli_command "no eval" loophole (docker-adapter) - contract now honest, capability preserved and E2E-verified
+**Type:** fact  
+**Project:** saas-factory-setup  
+
+Closes the gap flagged in obs #484/specimen-b-fatal-oob.md: wp_cli_command claimed whitelisted, silently allowed wp eval/eval-file. Fix (per Jorge instruction, principle: if it promises wp eval it must really execute it): wp_cli_command now genuinely refuses eval/eval-file at the first token; new explicit wp_eval action carries that exact capability, honestly documented as arbitrary PHP execution. E2E-verified by re-inducing the real Specimen B fault (corrupted wp-config.php, real 500) and recovering via wp_eval only, confirming the old wp_cli_command eval path is now refused first. No regression: non-eval wp_cli_command calls still work. Deliberately NOT touched: playground-adapter.mjs (Specimen A) has the identical false claim in its own dfl.yaml - found, flagged, left alone (separate closed asset, out of scope, has its own no-new-primitives doctrine). Manifest updated (adapter-docker/dfl.yaml), asset index regenerated (13 assets). Commit 86f7dd1 on fase-3-5-jpi-real-sfv5-bridge.
+
+STILL OPEN: F-ARCH-1..4, push_mirror.sh git-permission bug (obs #483), playground-adapter.mjs equivalent false claim (deliberately out of scope today).
 
 ---
 
@@ -381,59 +440,21 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
-### SESSION CLOSE 2026-08-15 -- Capability Supply Chain built and proven (Asset Discovery -> Capability Inventory -> WP Engine adaptive chain -> BUILD/REGISTER/VERIFY)
-**Type:** session_summary  
-**Project:** saas-factory-setup  
-
-SESSION CLOSE 2026-08-15. Full arc, closes obs #472/#479 (2026-08-14 WP thread) and resolves both of that session's open decision points.
-
-## Goal
-Build and prove, with independent verification at every step (never trusting an agent's self-report alone), DFL's capability supply chain: what exists -> what it can do -> can I use it -> how do I invoke it -> use it -> verify -> if it doesn't exist or doesn't reach, build/adapt it and make it discoverable for the next agent.
-
-## Accomplished
-- Full radiography of dfl-context-proxy (the real live @go process, not the protocol doc): three disconnected live authorities feed /go (Engram, provisional-routing-state.json+dispatch_gate.py, agTopologo/KNL files). Concierge/WRU/cognitive-core/Asset-Discovery are all real and tested but completely unwired to it. Found the dispatch gate is verified LIVE FAIL_CLOSED right now (E_AUTH_EXPIRED, E_DISPATCH_STALE, ~12+ days since 2026-08-02T18:43:55Z) -- blocks the CX/roadmap-batch execution track specifically, not general sessions. Jorge's call, not decided this session: renew or formally close that mission.
-- Fase 0: root-caused the /opt permission-fragmentation pattern with real access tests (not ls -l); built tools/asset-index/perm-audit.sh as a rerunnable drift check instead of one-off sudo. Only /opt/engram genuinely needed a fix.
-- Fase 1: wired Asset Discovery's index.json into the LIVE production /go payload (asset_index field, same soft-fail file-read pattern as the existing KNL wiring) -- this required Jorge to apply via sudo, I have no write access to dfl-context-proxy. Proved via repeated genuinely-blind fresh-agent E2E tests that (a) embedding instructions inside a fetched-at-runtime JSON payload is correctly distrusted by well-aligned agents (indistinguishable from prompt injection next to the validation_gate block) -- writing MORE instructions there does not fix this; (b) moving the 'check before building' principle into the actually-trusted, auto-loaded CLAUDE.md DOES produce spontaneous compliant behavior, blind, unprompted. Honest result: the general principle (check before assuming absence) is proven twice blind; the SPECIFIC discovery of a non-obvious asset via Asset Discovery specifically (as opposed to solving the need some other way) is NOT proven -- one fresh agent solved a deliberately-hard-to-find need via direct code exploration instead of ever reaching Asset Discovery. Declared FAIL of that specific path per Jorge's explicit instruction not to inflate results.
-- Fase 2: built one minimal Capability Inventory schema (invoke/params/returns/restrictions/surface/authority), added to tools/asset-index/manifest.mjs, reused identically in WP's probe_affordances() as action_contracts -- same contract, two containers, no parallel system. Real lesson proven with a live agent test, not theorized: prose params for structured input drifts and goes stale (my first draft was wrong); a pointer to real evidence (a test fixture) doesn't. Found and fixed a real bug on the way: query.mjs get did not fulfill its own documented 'load fully' contract. Closed with a genuinely blind E2E: fresh agent searched, selected, and invoked dfl.codebase-memory-registry correctly on the first try, zero source access, zero contract handed in the prompt.
-- WP Line A resumed with the corrected action_contracts. Run #4: first-ever full PASS on Specimen A (sealed validator, 4ms/99 opts/37,224 bytes vs the CLEAN-baseline-derived thresholds) -- but the Engine skipped straight to wp_cli_command from static metadata reasoning, never attempted REST at all (upfront fitness judgment, not post-failure recognition).
-- Run #5, designed specifically to force attempt-then-real-failure-then-switch without fabricating a defect or hinting a solution (task framing only: prefer the more verifiable path first, escalate only on real operational evidence, not prediction). Full chain genuinely demonstrated for the first time: attempted raw-SQL CLI mutation -> real failure (ok:false, not a prediction) -> reassessed -> changed strategy (PHP API loop instead of raw SQL, same surface, different code) -> executed -> independently verified -> sealed-validator PASS. Jorge's explicit ruling: the adaptive-behavior chain DISCOVER->UNDERSTAND->SELECT->INVOKE->OBSERVE->REASSESS->SWITCH->COMPLETE->VERIFY is PROVEN and CLOSED, no Run #6 needed to re-demonstrate it.
-- Separately and NOT closed: verified, against the raw CLI logs (not the Engine's narrative), that the Engine's own causal explanation for the Run #5 failure was FALSE -- it claimed a 'deliberate guardrail' blocking raw SQL; the real cause was a plain PHP quoting/parse error, the same self-inflicted mistake class independently reproduced across Runs #2, #3, #4, and #5 (four occurrences). Jorge's explicit ruling: causal-diagnosis competence is NOT proven and stays explicitly open, separate from the adaptive-behavior finding.
-- Demonstrated the BUILD/REGISTER/VERIFY link on a real, pre-existing, non-fabricated gap (the exact one that caused the false diagnosis above): executeViaCli() was collapsing real PHP error output into a bare ok:false. Full method applied: REUSE checked first (zero hits, gap confirmed real via Asset Discovery search) -> BUILD decision written before any code -> minimal generic fix (diagnostic_tail field, no new primitive, no defect-specific parsing) -> verified myself with a live induced failure -> registered via the identical Fase 2 schema (new dfl.yaml, dfl.wp-competence.playground-adapter) -> closing proof was a genuinely blind fresh agent that found it via search, invented its OWN different failure to verify independently, and confirmed real error detail comes back. Jorge's explicit boundary: this was a small, reversible, low-risk BUILD -- not evidence the method holds for a bigger, less-reversible one (e.g. Engram consolidation).
-
-## Not decided this session (explicitly open)
-- Dispatch-gate re-authorization or formal closure (Jorge's call, zero code needed).
-- Engram consolidation/rebuild -- still DRAFT, three questions from 2026-08-14 review still genuinely open.
-- /opt/360eventos orphan directory -- flagged, never confirmed with Jorge.
-- Two duplicate registry entries (saas-factory, 360eventos in codebase-memory-registry) needing human approval.
-- Whether BUILD/ADAPT/REUSE holds for a bigger/riskier gap than today's small executeViaCli fix.
-
-## Real risk, not fixed this session
-wp-competence-tent/ is 100% untracked by git (confirmed: git status shows only '?? wp-competence-tent/', no .git inside it either) -- every Run #4/#5 evidence file, the BUILD decision doc, the adapter fix, and the new dfl.yaml exist only on disk. Not committed because committing was not asked for.
-
-## Relevant files
-- Claude Code project memory (this project's own memory system, not Engram): MEMORY.md fully current, checkpoint-capability-supply-chain-2026-08-15.md has the complete detailed writeup.
-- wp-competence-tent/evidence/runs/specimen-a-run4-full-fix.md, specimen-a-run5-post-failure-recognition.md, build-decision-executeViaCli-diagnostics.md.
-- tools/asset-index/manifest.mjs (schema), query.mjs (bug fix), tools/bridges/dfl.yaml + /opt/dfl-knowledge/tools/codebase-memory-registry/dfl.yaml + wp-competence-tent/adapter/dfl.yaml (three real capability-contract manifests, verified against source).
-- /opt/dfl-context-proxy/main.py (live production, two real changes: asset_index field, cc_bootstrap discovery steps) -- backups at main.py.pre-asset-index.bak, main.py.pre-cc-bootstrap.bak.
-
-## Environment state
-WordPress Playground on port 9400 left in its post-fix healthy state (not reset to BLOAT baseline). No Playground process running as of session close. Next session needs a fresh restore before any new Engine run.
-
-### Three universal principles from WP Competence Experiment #001: Surface selection, Reliable recovery, Discoverable operational contract
+### CLOSED: wp_cli_command "no eval" loophole (docker-adapter) - contract now honest, capability preserved and E2E-verified
 **Type:** fact  
 **Project:** saas-factory-setup  
 
-Three distinct capability layers were exposed as genuinely necessary -- one per run, each earned by real, observed friction (not speculated in advance), during DFL Labs WordPress Competence Experiment #001, Specimen A. Jorge named this pattern explicitly (2026-08-14) as reusable vocabulary, not just this experiment's local findings.
+Closes the gap flagged in obs #484/specimen-b-fatal-oob.md: wp_cli_command claimed whitelisted, silently allowed wp eval/eval-file. Fix (per Jorge instruction, principle: if it promises wp eval it must really execute it): wp_cli_command now genuinely refuses eval/eval-file at the first token; new explicit wp_eval action carries that exact capability, honestly documented as arbitrary PHP execution. E2E-verified by re-inducing the real Specimen B fault (corrupted wp-config.php, real 500) and recovering via wp_eval only, confirming the old wp_cli_command eval path is now refused first. No regression: non-eval wp_cli_command calls still work. Deliberately NOT touched: playground-adapter.mjs (Specimen A) has the identical false claim in its own dfl.yaml - found, flagged, left alone (separate closed asset, out of scope, has its own no-new-primitives doctrine). Manifest updated (adapter-docker/dfl.yaml), asset index regenerated (13 assets). Commit 86f7dd1 on fase-3-5-jpi-real-sfv5-bridge.
 
-1. Surface selection (Run #1). Having a tool is not enough -- the Engine must be able to discover that OTHER tools/surfaces exist and choose the fitting one. Run #1's Adapter exposed only one (artificial) surface; the Engine could never demonstrate surface-switching because there was nothing to switch to.
+STILL OPEN: F-ARCH-1..4, push_mirror.sh git-permission bug (obs #483), playground-adapter.mjs equivalent false claim (deliberately out of scope today).
 
-2. Reliable recovery (Run #2). Choosing the right surface is not enough -- when something goes wrong mid-task, the sanctioned recovery mechanism must actually work. Run #2's Engine correctly judged surface fitness (REST inadequate, WP-CLI fit) but got stranded when restore() had an inconsistent argument-calling convention vs the other primitives.
+### SESSION CLOSE 2026-08-15 -- Specimen B (FATAL/OOB) + C (SCARCITY) closed, BUILD/ADAPT/REUSE proven on harder gaps
+**Type:** session_summary  
+**Project:** saas-factory-setup  
 
-3. Discoverable operational contract (Run #3). Knowing a capability exists is not enough -- its exact invocation contract (parameters, required shape) must be discoverable, not guessable. Run #3's Engine correctly discovered REST's delete_option action existed, but probe_affordances() only exposed action names, never parameter schemas -- the Engine guessed the wrong parameter key, wrongly concluded the (actually-working) capability was broken, and that false negative pushed it toward a riskier path that caused a real outage.
+Closes the open question from obs #480: does BUILD/ADAPT/REUSE scale beyond a small reversible gap? Real Docker WordPress+MySQL stack built (docker-adapter.mjs, same Variant B contract/Fase 2 schema as the Playground adapter). Specimen B (FATAL/OOB): real corrupted wp-config.php (whole-site 500), blind Engine correctly diagnosed via differential testing, tried restore() first (partial failure, real), adapted to a working fix via wp eval --skip-wordpress. Found and fixed 2 real adapter bugs (restore() missing docker exec -i; wp-config.php never covered by snapshot) via independent verification, not agent self-report. Left one methodology gap explicitly open (wp_cli_command permits wp eval, unrestricted execution despite no-eval framing). Specimen C (SCARCITY): real 80MB cgroup cap, 2,000,000-record import task. Correct OOM diagnosis via live kernel oom_kill counters (not inference), correctly separated from an unrelated missing-mysql-client defect, adapted via chunked low-memory inserts. Verified independently: COUNT(*)=2000004. Site left degraded post-import (Engine correctly declined to restore() and hide it, reported honestly) - I closed the residual degradation myself (raised the artificial memory cap, legitimate cleanup) and verified full health. Registered via dfl.yaml (Fase 2 schema), reindexed (13 assets), closed with a genuinely blind fresh-agent discovery proof (found by search alone, correct summary, correct gap citation, recommended reuse). Commit 062000c on fase-3-5-jpi-real-sfv5-bridge. Causal diagnosis was correct on both runs this time (unlike Run #5) - one data point, not proof it is now reliable, per standing ruling to track behavior and diagnosis separately.
 
-Why this matters beyond WordPress: these are candidate universal properties any Engine+Adapter composition needs, for any platform DFL acquires operational competence on, not WordPress-specific lessons. Each was earned by observed friction across independent runs (Run #2 and #3 both independently produced the same class of SQL-quoting self-correction, suggesting real, repeatable patterns rather than one-off flukes).
-
-How to apply: when evaluating a NEW Adapter for a new platform (Shopify or otherwise), check it against these three properties before assuming it's done: (1) does it expose more than one real surface where more than one plausibly exists? (2) is its recovery primitive's calling convention consistent with the rest of its interface, and does it actually work under real failure? (3) does its affordance discovery expose enough of each capability's contract (not just its name) that an Engine doesn't have to guess?
+STILL OPEN, not touched: F-ARCH-1..4 and the push_mirror.sh git-permission bug (registered separately, obs #483). wp_cli_command eval loophole (specimen-b-fatal-oob.md). Whether this proves BUILD/ADAPT/REUSE for an even bigger/riskier gap, or whether two specimens is enough evidence, is the next open question.
 
 ---
 
@@ -544,4 +565,4 @@ How to apply: when evaluating a NEW Adapter for a new platform (Shopify or other
 
 ---
 
-*Mirror auto-generated 2026-08-15T13:23:08Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-15T15:14:10Z | La Garra → DFLghub/amos-context*
