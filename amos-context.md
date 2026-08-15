@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-15T05:52:52Z  
+**Generated:** 2026-08-15T05:56:05Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -544,4 +544,4 @@ How to apply: when evaluating a NEW Adapter for a new platform (Shopify or other
 
 ---
 
-*Mirror auto-generated 2026-08-15T05:52:52Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-15T05:56:05Z | La Garra → DFLghub/amos-context*
