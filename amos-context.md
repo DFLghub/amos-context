@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-15T16:53:49Z  
+**Generated:** 2026-08-15T17:09:03Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -280,11 +280,11 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### CONCURRENCY TEST A (TCC side) 2026-08-15
+### LAB2 probe
 **Type:** fact  
-**Project:** saas-factory-setup  
+**Project:** dfl  
 
-Concurrent write test A, launched simultaneously with test B to verify Engram doesn't lose or mix writes under real overlap.
+Probe captured initial HEAD 1bbc7e66a3fdda1431b2d11803b12161b9a0e758 at Sat Aug 15 17:07:58 UTC 2026.
 
 ---
 
@@ -446,17 +446,17 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
-### CONCURRENCY TEST A (TCC side) 2026-08-15
+### LAB2 probe
 **Type:** fact  
-**Project:** saas-factory-setup  
+**Project:** dfl  
 
-Concurrent write test A, launched simultaneously with test B to verify Engram doesn't lose or mix writes under real overlap.
+Probe captured initial HEAD 1bbc7e66a3fdda1431b2d11803b12161b9a0e758 at Sat Aug 15 17:07:58 UTC 2026.
 
-### CONCURRENCY TEST B (TCX side) 2026-08-15
+### LAB2 probe
 **Type:** fact  
-**Project:** saas-factory-setup  
+**Project:** dfl  
 
-Concurrent write test B, launched simultaneously with test A to verify Engram doesn't lose or mix writes under real overlap.
+Probe captured commit ed4877b2e8bd85725772ce8d5fb99e8c0df4a30d and UTC time Sat Aug 15 17:07:59 UTC 2026.
 
 ---
 
@@ -567,4 +567,4 @@ Concurrent write test B, launched simultaneously with test A to verify Engram do
 
 ---
 
-*Mirror auto-generated 2026-08-15T16:53:49Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-15T17:09:03Z | La Garra → DFLghub/amos-context*
