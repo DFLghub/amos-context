@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-15T03:05:02Z  
+**Generated:** 2026-08-15T05:52:52Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -381,39 +381,43 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
-### SESSION CLOSE 2026-08-14 -- WP Competence Experiment #001 (3 runs) + Engram review side-quest
+### SESSION CLOSE 2026-08-15 -- Capability Supply Chain built and proven (Asset Discovery -> Capability Inventory -> WP Engine adaptive chain -> BUILD/REGISTER/VERIFY)
 **Type:** session_summary  
 **Project:** saas-factory-setup  
 
-SESSION CLOSE 2026-08-14 -- DFL Labs Challenge / WP Competence Experiment #001 + Engram review side-quest.
+SESSION CLOSE 2026-08-15. Full arc, closes obs #472/#479 (2026-08-14 WP thread) and resolves both of that session's open decision points.
 
 ## Goal
-Physically build and run DFL Labs WordPress Platform Competence Experiment #001 (Specimen A / BLOAT), per the DFL Labs Challenge methodology v0.2 handoff. Institutional methodology + first physical specimen, explicitly not just "learn WordPress" -- testing whether a Universal Engine + Platform Adapter architecture can acquire verifiable operational competence.
+Build and prove, with independent verification at every step (never trusting an agent's self-report alone), DFL's capability supply chain: what exists -> what it can do -> can I use it -> how do I invoke it -> use it -> verify -> if it doesn't exist or doesn't reach, build/adapt it and make it discoverable for the next agent.
 
 ## Accomplished
-- Hybrid substrate approved and built: WordPress Playground for Specimen A, Docker reserved for B (FATAL/OOB)/C (SCARCITY), not yet started.
-- Full harness at /opt/saas-factory-setup/wp-competence-tent/ (untracked, sibling to saas-factory/): environment (Blueprints), adapter (playground-adapter.mjs, Variant B contract: probe_affordances/execute/snapshot/restore), harness (sealed validator.mjs), evidence/runs/ (full technical trail).
-- Three real blind Engine runs against Specimen A, each a legitimate FAIL revealing a distinct, real capability gap (not Engine reasoning failure): Run 1 = AFFORDANCE_ROUTING_FAILURE (Adapter exposed only one artificial surface). Run 2 = surface-fitness judgment CONFIRMED (Engine correctly switched REST->WP-CLI with explicit reasoning) but recovery failed on an Adapter argument-convention bug. Run 3 (post-fix) = restore() fix CONFIRMED working under real Engine use; new gap found -- probe_affordances() exposes action names only, no parameter schemas, causing a false negative that triggered a real outage.
-- Root-caused and fixed two real Adapter bugs: inconsistent primitive argument conventions (restore/snapshot took sitePath first, probe/execute took baseUrl first) and an illusory "sitePath" concept (empirically proved Playground's --path provides NO real storage isolation -- even random mktemp dirs collide to one global site slot).
-- Jorge named three reusable universal principles from the three runs: Surface selection (#1), Reliable recovery (#2), Discoverable operational contract (#3) -- candidate evaluation criteria for any future Engine+Adapter pair on any platform.
-- SIDE-QUEST, commissioned by Jorge after this session repeated a routing mistake already diagnosed once (obs #471, prior session): full Engram review. Document at /opt/saas-factory-setup/engram-review/ENGRAM-REVIEW-2026-08-14.md. Finding: storage engine (SQLite+FTS5) is sound and fast (measured ~25ms write/~60ms read); the real problems are 3+ disconnected stores causing confirmed real data loss (searched "RSVP" across all 8 institutional projects, zero results -- weeks of real work never reached the canonical store), a silent search default, no per-observation authorship, unversioned dev build on critical infra. Jorge's direct "fit" question ("son los zapatos adecuados para el tamano del pie de DFL?") answered: no -- Engram (101K LOC, CRDT-style multi-tenant sync) is sized for a scale DFL does not currently have; that mismatch is the likely root cause, not the storage engine.
+- Full radiography of dfl-context-proxy (the real live @go process, not the protocol doc): three disconnected live authorities feed /go (Engram, provisional-routing-state.json+dispatch_gate.py, agTopologo/KNL files). Concierge/WRU/cognitive-core/Asset-Discovery are all real and tested but completely unwired to it. Found the dispatch gate is verified LIVE FAIL_CLOSED right now (E_AUTH_EXPIRED, E_DISPATCH_STALE, ~12+ days since 2026-08-02T18:43:55Z) -- blocks the CX/roadmap-batch execution track specifically, not general sessions. Jorge's call, not decided this session: renew or formally close that mission.
+- Fase 0: root-caused the /opt permission-fragmentation pattern with real access tests (not ls -l); built tools/asset-index/perm-audit.sh as a rerunnable drift check instead of one-off sudo. Only /opt/engram genuinely needed a fix.
+- Fase 1: wired Asset Discovery's index.json into the LIVE production /go payload (asset_index field, same soft-fail file-read pattern as the existing KNL wiring) -- this required Jorge to apply via sudo, I have no write access to dfl-context-proxy. Proved via repeated genuinely-blind fresh-agent E2E tests that (a) embedding instructions inside a fetched-at-runtime JSON payload is correctly distrusted by well-aligned agents (indistinguishable from prompt injection next to the validation_gate block) -- writing MORE instructions there does not fix this; (b) moving the 'check before building' principle into the actually-trusted, auto-loaded CLAUDE.md DOES produce spontaneous compliant behavior, blind, unprompted. Honest result: the general principle (check before assuming absence) is proven twice blind; the SPECIFIC discovery of a non-obvious asset via Asset Discovery specifically (as opposed to solving the need some other way) is NOT proven -- one fresh agent solved a deliberately-hard-to-find need via direct code exploration instead of ever reaching Asset Discovery. Declared FAIL of that specific path per Jorge's explicit instruction not to inflate results.
+- Fase 2: built one minimal Capability Inventory schema (invoke/params/returns/restrictions/surface/authority), added to tools/asset-index/manifest.mjs, reused identically in WP's probe_affordances() as action_contracts -- same contract, two containers, no parallel system. Real lesson proven with a live agent test, not theorized: prose params for structured input drifts and goes stale (my first draft was wrong); a pointer to real evidence (a test fixture) doesn't. Found and fixed a real bug on the way: query.mjs get did not fulfill its own documented 'load fully' contract. Closed with a genuinely blind E2E: fresh agent searched, selected, and invoked dfl.codebase-memory-registry correctly on the first try, zero source access, zero contract handed in the prompt.
+- WP Line A resumed with the corrected action_contracts. Run #4: first-ever full PASS on Specimen A (sealed validator, 4ms/99 opts/37,224 bytes vs the CLEAN-baseline-derived thresholds) -- but the Engine skipped straight to wp_cli_command from static metadata reasoning, never attempted REST at all (upfront fitness judgment, not post-failure recognition).
+- Run #5, designed specifically to force attempt-then-real-failure-then-switch without fabricating a defect or hinting a solution (task framing only: prefer the more verifiable path first, escalate only on real operational evidence, not prediction). Full chain genuinely demonstrated for the first time: attempted raw-SQL CLI mutation -> real failure (ok:false, not a prediction) -> reassessed -> changed strategy (PHP API loop instead of raw SQL, same surface, different code) -> executed -> independently verified -> sealed-validator PASS. Jorge's explicit ruling: the adaptive-behavior chain DISCOVER->UNDERSTAND->SELECT->INVOKE->OBSERVE->REASSESS->SWITCH->COMPLETE->VERIFY is PROVEN and CLOSED, no Run #6 needed to re-demonstrate it.
+- Separately and NOT closed: verified, against the raw CLI logs (not the Engine's narrative), that the Engine's own causal explanation for the Run #5 failure was FALSE -- it claimed a 'deliberate guardrail' blocking raw SQL; the real cause was a plain PHP quoting/parse error, the same self-inflicted mistake class independently reproduced across Runs #2, #3, #4, and #5 (four occurrences). Jorge's explicit ruling: causal-diagnosis competence is NOT proven and stays explicitly open, separate from the adaptive-behavior finding.
+- Demonstrated the BUILD/REGISTER/VERIFY link on a real, pre-existing, non-fabricated gap (the exact one that caused the false diagnosis above): executeViaCli() was collapsing real PHP error output into a bare ok:false. Full method applied: REUSE checked first (zero hits, gap confirmed real via Asset Discovery search) -> BUILD decision written before any code -> minimal generic fix (diagnostic_tail field, no new primitive, no defect-specific parsing) -> verified myself with a live induced failure -> registered via the identical Fase 2 schema (new dfl.yaml, dfl.wp-competence.playground-adapter) -> closing proof was a genuinely blind fresh agent that found it via search, invented its OWN different failure to verify independently, and confirmed real error detail comes back. Jorge's explicit boundary: this was a small, reversible, low-risk BUILD -- not evidence the method holds for a bigger, less-reversible one (e.g. Engram consolidation).
 
-## Corrected this session
-- This session itself initially wrote its own checkpoint to the WRONG Engram store (local dflagent CLI db) before discovering and correcting to the real institutional instance (root, port 7437) -- the exact mistake obs #471 already diagnosed for a different arc. Both corrected observations now live at obs #472/#473 on the institutional store, project saas-factory-setup.
+## Not decided this session (explicitly open)
+- Dispatch-gate re-authorization or formal closure (Jorge's call, zero code needed).
+- Engram consolidation/rebuild -- still DRAFT, three questions from 2026-08-14 review still genuinely open.
+- /opt/360eventos orphan directory -- flagged, never confirmed with Jorge.
+- Two duplicate registry entries (saas-factory, 360eventos in codebase-memory-registry) needing human approval.
+- Whether BUILD/ADAPT/REUSE holds for a bigger/riskier gap than today's small executeViaCli fix.
 
-## Next steps (awaiting Jorge)
-- WP Competence Experiment: decide whether to add parameter-schema metadata to probe_affordances() (candidate friction-earned primitive per the three-principles framework) and investigate Run #3's overlapping-invocation outage further, OR accept current evidence as sufficient and move to Specimen B/C on Docker.
-- Engram review: three open questions left explicitly undecided in the document (concrete offline/multi-device need, deprecation of existing stores, data migration ownership) -- read before acting further. Likely leads to a decision to build a smaller DFL-native replacement that keeps the storage engine approach but cuts the multi-store/cloud-replication machinery.
-- No architecture was added to the Adapter beyond what observed friction justified, per explicit standing instruction -- do not add delete_options_by_prefix() or any defect-shaped convenience action without a fresh review cycle first.
+## Real risk, not fixed this session
+wp-competence-tent/ is 100% untracked by git (confirmed: git status shows only '?? wp-competence-tent/', no .git inside it either) -- every Run #4/#5 evidence file, the BUILD decision doc, the adapter fix, and the new dfl.yaml exist only on disk. Not committed because committing was not asked for.
 
 ## Relevant files
-- wp-competence-tent/adapter/playground-adapter.mjs -- the fixed Adapter (uniform baseUrl-first signature, post_restore_state transparency)
-- wp-competence-tent/evidence/runs/ -- full run-by-run evidence (specimen-a-first-pass.md, run2-surface-switching-prep.md, specimen-a-run2-surface-switching.md, specimen-a-run3-post-fix.md)
-- engram-review/ENGRAM-REVIEW-2026-08-14.md -- full Engram review, DRAFT for resumption
-- Claude Code project memory: MEMORY.md fully current, plus dedicated files for both threads (wp-competence-experiment-001-specimen-a-checkpoint.md, wp-competence-three-universal-principles.md, engram-review-2026-08-14.md)
+- Claude Code project memory (this project's own memory system, not Engram): MEMORY.md fully current, checkpoint-capability-supply-chain-2026-08-15.md has the complete detailed writeup.
+- wp-competence-tent/evidence/runs/specimen-a-run4-full-fix.md, specimen-a-run5-post-failure-recognition.md, build-decision-executeViaCli-diagnostics.md.
+- tools/asset-index/manifest.mjs (schema), query.mjs (bug fix), tools/bridges/dfl.yaml + /opt/dfl-knowledge/tools/codebase-memory-registry/dfl.yaml + wp-competence-tent/adapter/dfl.yaml (three real capability-contract manifests, verified against source).
+- /opt/dfl-context-proxy/main.py (live production, two real changes: asset_index field, cc_bootstrap discovery steps) -- backups at main.py.pre-asset-index.bak, main.py.pre-cc-bootstrap.bak.
 
 ## Environment state
-All WordPress Playground test/experiment processes killed and ports freed. No lingering background processes. Repo working tree unmodified beyond untracked wp-competence-tent/ and engram-review/ directories (both outside git tracking, matching existing sibling-project convention).
+WordPress Playground on port 9400 left in its post-fix healthy state (not reset to BLOAT baseline). No Playground process running as of session close. Next session needs a fresh restore before any new Engine run.
 
 ### Three universal principles from WP Competence Experiment #001: Surface selection, Reliable recovery, Discoverable operational contract
 **Type:** fact  
@@ -540,4 +544,4 @@ How to apply: when evaluating a NEW Adapter for a new platform (Shopify or other
 
 ---
 
-*Mirror auto-generated 2026-08-15T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-15T05:52:52Z | La Garra → DFLghub/amos-context*
