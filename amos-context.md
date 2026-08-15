@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-15T15:29:37Z  
+**Generated:** 2026-08-15T15:37:12Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,23 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### @$fin CIERRE FORMAL 2026-08-15 -- Codex handoff completo publicado, MCP de Codex verificado y registrado, arco 100% cerrado
+**Type:** session_summary  
+**Project:** saas-factory-setup  
+
+Formal @$fin close of the Claude Code session that ran this entire arc (onboarding freshness, WP Competence Specimen B/C, wp_eval loophole, push_mirror.sh fix, F-ARCH-1 closure). Canonical state record remains obs #488 (FINAL CLOSE) -- this observation is the @$fin transport-layer closure on top of it, not a new content layer.
+
+What this closing pass added beyond obs #488:
+- Full agent-agnostic, non-executive-summary handoff written to the repo: saas-factory/.claude/CODEX-HANDOFF-SFV5-FIRST-OPERATION-2026-08-15.md (commit 2c7057a) -- built to let Codex reconstruct full operational state without reinterpreting anything.
+- Verified (not assumed) Codex's real capabilities on this host: codex CLI 0.146.0 present, /opt/saas-factory-setup already trust_level=trusted in ~/.codex/config.toml, .mcp.json (Claude Code's MCP config) does NOT carry over to Codex (codex mcp list was empty before this pass) -- registered engram MCP for Codex directly: `codex mcp add engram --url http://127.0.0.1:8092/mcp`, confirmed live via `codex mcp get engram` (enabled:true, transport:streamable_http). Flagged CLAUDE.md auto-load behavior for Codex as UNKNOWN/TO VERIFY since no AGENTS.md equivalent was found in this repo -- did not invent an equivalence that isn't demonstrated.
+- Re-verified end-to-end one more time before closing: /go dispatch_receipt still PASS/NO_DISPATCH_BLOCK_PRESENT, pending still [], mirror HEAD==origin/main, wp_cli_command eval still refused, breaking_news/memory_conflicts fields still present in production.
+
+Gate 4B step 2 (archival check): nothing new to archive beyond what #487->#488 already superseded. No further observations from this arc need [RESOLVED]/LIFECYCLE:archived marking.
+
+Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all verified by real execution at onboarding), operating on /opt/saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge, final HEAD 2c7057a. Handing off to Codex per Jorge's explicit instruction (Claude Code credit running low across the arc, but the arc itself was fully closed by Claude Code before handoff -- Codex does not need to do any remaining work on THIS arc).
+
+Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
+
 ### FINAL CLOSE 2026-08-15 -- Onboarding Freshness + WP Competence Specimen B/C + F-ARCH-1 all CLOSED. F-ARCH-2/3/4 explicitly DEFERRED with reopen conditions. This is the definitive close, not a provisional checkpoint.
 **Type:** checkpoint  
 **Project:** saas-factory-setup  
@@ -153,14 +170,6 @@ This arc has zero remaining action items requiring anyone's decision. F-ARCH-2/3
 
 == TOOL NAME TRANSLATION (same as #487, restated for anyone landing here directly without reading #487) ==
 Claude Code used mem_save/mem_search/mem_update. Codex uses save_memory/search_memory/update_memory via engram-mcp -- same institutional store (127.0.0.1:7437), same Gate 4B, same @$go/@$fin contract, different tool names only.
-
-### SESSION CLOSE 2026-08-15 -- Specimen B (FATAL/OOB) + C (SCARCITY) closed, BUILD/ADAPT/REUSE proven on harder gaps
-**Type:** session_summary  
-**Project:** saas-factory-setup  
-
-Closes the open question from obs #480: does BUILD/ADAPT/REUSE scale beyond a small reversible gap? Real Docker WordPress+MySQL stack built (docker-adapter.mjs, same Variant B contract/Fase 2 schema as the Playground adapter). Specimen B (FATAL/OOB): real corrupted wp-config.php (whole-site 500), blind Engine correctly diagnosed via differential testing, tried restore() first (partial failure, real), adapted to a working fix via wp eval --skip-wordpress. Found and fixed 2 real adapter bugs (restore() missing docker exec -i; wp-config.php never covered by snapshot) via independent verification, not agent self-report. Left one methodology gap explicitly open (wp_cli_command permits wp eval, unrestricted execution despite no-eval framing). Specimen C (SCARCITY): real 80MB cgroup cap, 2,000,000-record import task. Correct OOM diagnosis via live kernel oom_kill counters (not inference), correctly separated from an unrelated missing-mysql-client defect, adapted via chunked low-memory inserts. Verified independently: COUNT(*)=2000004. Site left degraded post-import (Engine correctly declined to restore() and hide it, reported honestly) - I closed the residual degradation myself (raised the artificial memory cap, legitimate cleanup) and verified full health. Registered via dfl.yaml (Fase 2 schema), reindexed (13 assets), closed with a genuinely blind fresh-agent discovery proof (found by search alone, correct summary, correct gap citation, recommended reuse). Commit 062000c on fase-3-5-jpi-real-sfv5-bridge. Causal diagnosis was correct on both runs this time (unlike Run #5) - one data point, not proof it is now reliable, per standing ruling to track behavior and diagnosis separately.
-
-STILL OPEN, not touched: F-ARCH-1..4 and the push_mirror.sh git-permission bug (registered separately, obs #483). wp_cli_command eval loophole (specimen-b-fatal-oob.md). Whether this proves BUILD/ADAPT/REUSE for an even bigger/riskier gap, or whether two specimens is enough evidence, is the next open question.
 
 ### [CONVERGENCIA] El Gerente de Fabrica (FMD, #280) ya nombro los dos gaps del discovery SFV5 14 dias antes; el discovery no lo cito nunca
 **Type:** decision  
@@ -437,6 +446,23 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
 
+### @$fin CIERRE FORMAL 2026-08-15 -- Codex handoff completo publicado, MCP de Codex verificado y registrado, arco 100% cerrado
+**Type:** session_summary  
+**Project:** saas-factory-setup  
+
+Formal @$fin close of the Claude Code session that ran this entire arc (onboarding freshness, WP Competence Specimen B/C, wp_eval loophole, push_mirror.sh fix, F-ARCH-1 closure). Canonical state record remains obs #488 (FINAL CLOSE) -- this observation is the @$fin transport-layer closure on top of it, not a new content layer.
+
+What this closing pass added beyond obs #488:
+- Full agent-agnostic, non-executive-summary handoff written to the repo: saas-factory/.claude/CODEX-HANDOFF-SFV5-FIRST-OPERATION-2026-08-15.md (commit 2c7057a) -- built to let Codex reconstruct full operational state without reinterpreting anything.
+- Verified (not assumed) Codex's real capabilities on this host: codex CLI 0.146.0 present, /opt/saas-factory-setup already trust_level=trusted in ~/.codex/config.toml, .mcp.json (Claude Code's MCP config) does NOT carry over to Codex (codex mcp list was empty before this pass) -- registered engram MCP for Codex directly: `codex mcp add engram --url http://127.0.0.1:8092/mcp`, confirmed live via `codex mcp get engram` (enabled:true, transport:streamable_http). Flagged CLAUDE.md auto-load behavior for Codex as UNKNOWN/TO VERIFY since no AGENTS.md equivalent was found in this repo -- did not invent an equivalence that isn't demonstrated.
+- Re-verified end-to-end one more time before closing: /go dispatch_receipt still PASS/NO_DISPATCH_BLOCK_PRESENT, pending still [], mirror HEAD==origin/main, wp_cli_command eval still refused, breaking_news/memory_conflicts fields still present in production.
+
+Gate 4B step 2 (archival check): nothing new to archive beyond what #487->#488 already superseded. No further observations from this arc need [RESOLVED]/LIFECYCLE:archived marking.
+
+Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all verified by real execution at onboarding), operating on /opt/saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge, final HEAD 2c7057a. Handing off to Codex per Jorge's explicit instruction (Claude Code credit running low across the arc, but the arc itself was fully closed by Claude Code before handoff -- Codex does not need to do any remaining work on THIS arc).
+
+Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
+
 ### FINAL CLOSE 2026-08-15 -- Onboarding Freshness + WP Competence Specimen B/C + F-ARCH-1 all CLOSED. F-ARCH-2/3/4 explicitly DEFERRED with reopen conditions. This is the definitive close, not a provisional checkpoint.
 **Type:** checkpoint  
 **Project:** saas-factory-setup  
@@ -474,12 +500,6 @@ This arc has zero remaining action items requiring anyone's decision. F-ARCH-2/3
 
 == TOOL NAME TRANSLATION (same as #487, restated for anyone landing here directly without reading #487) ==
 Claude Code used mem_save/mem_search/mem_update. Codex uses save_memory/search_memory/update_memory via engram-mcp -- same institutional store (127.0.0.1:7437), same Gate 4B, same @$go/@$fin contract, different tool names only.
-
-### CLOSED: push_mirror.sh git-permission bug - root cause found and fixed, E2E verified against real GitHub push
-**Type:** fact  
-**Project:** saas-factory-setup  
-
-Root cause of the 2026-08-15 finding (insufficient permission for adding an object to repository database): some .git/objects/XX subdirectories in /opt/amos-context-mirror were created by root (via the watchdog cron running push_mirror.sh) with a umask that produced 2755 instead of 2770 - group dfl could read/execute but not write into that specific hash-prefix directory, blocking any non-root EJECUTOR from writing a new loose object landing in that prefix. Confirmed precisely (not guessed): 254/256 prefix dirs were 2770 (fine), 1 was 2755 root-owned (blocking), 1 was dflagent-owned 2775 (fine). Fix: git config core.sharedRepository group in the shared .git/config (writable by dflagent, applies to ALL future writers including root's cron, since it lives in the repo config, not a per-user setting) + git gc to repack existing loose objects. E2E-verified with the real production script: DFL_PUBLISH_* env vars pointed at test paths, ran the actual push_mirror.sh unmodified, got MIRROR: updated | commit af611926 exit 0, confirmed HEAD == origin/main on GitHub (real push, not just local commit). Residual: one specific hash-prefix directory (was 4f) remains root-owned/non-group-writable and could not be fixed without sudo (chmod as non-owner fails even with group membership) - low-probability (1/256 per future object) edge case, self-limiting since core.sharedRepository prevents new bad directories from forming; a single root chmod -R g+w .git/objects would close it completely if zero residual risk is wanted. Source A (GitHub mirror) no longer depends solely on the root cron/watchdog path for a non-root EJECUTOR to publish.
 
 ---
 
@@ -590,4 +610,4 @@ Root cause of the 2026-08-15 finding (insufficient permission for adding an obje
 
 ---
 
-*Mirror auto-generated 2026-08-15T15:29:37Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-15T15:37:12Z | La Garra → DFLghub/amos-context*
