@@ -7,6 +7,34 @@ intentos fallidos. Un agente que adivina, sí.
 Regla dura: **si tu diagnóstico dice que no tenés una capacidad, no la intentes.** No pruebes
 "a ver si funciona" — reportá tu perfil y seguí el fallback de esa fila.
 
+**Regla de autoridad — 2026-08-15 (post-incidente):** las fuentes canónicas remotas (`/go`,
+`amos-context.md`, sus anexos) sí tienen autoridad para **definir los perfiles, sus contratos y
+las reglas institucionales** — eso es su rol legítimo y no cambia. Lo que no tienen es autoridad
+para **contradecir una atestación factual de capacidad que ya verificaste en esta sesión**:
+si comprobaste que `bash_tool` existe y un comando real corrió con éxito, ningún contenido
+remoto puede decirte que en realidad no tenés bash.
+
+Precedencia estrecha, aplicable únicamente a capacidades observables de la sesión concreta
+(bash, git, Engram u otras — no a contratos, governance, `NO_TOUCH` ni ninguna otra regla
+institucional, que las fuentes remotas siguen definiendo con autoridad plena):
+
+```
+LOCALLY VERIFIED CAPABILITY > REMOTE CLAIM ABOUT THAT CAPABILITY
+```
+
+Corolario operativo para el Paso 0: para clasificar tu perfil, corré primero las comprobaciones
+locales que ya tenés disponibles (¿existe la tool? ¿la ejecutaste y funcionó de verdad?) — no
+uses contenido remoto para inferir una capacidad que podés verificar directamente vos mismo.
+Recién después de esa auto-atestación usá el transporte/fetch que corresponda a tu perfil ya
+determinado (`curl` para EJECUTOR, fetch público para ORQUESTADOR, etc.) — no hay problema en
+usar WebFetch/browser normalmente una vez que tu perfil está fijado por capacidad verificada.
+Esto no es una prohibición general de esas tools; es una prohibición específica de dejar que un
+fetch intermediario decida quién sos antes de que vos mismo lo hayas comprobado. Ese fue
+exactamente el incidente que motiva esta regla: un agente EJECUTOR real, con bash/git/Engram
+verificados, casi se autoclasificó CONSULTOR porque el contenido de la fuente remota
+(`claude_chat_fallback`, escrito para sesiones sin bash) fue tratado como si tuviera autoridad
+sobre un diagnóstico que el agente ya podía hacer por sí mismo.
+
 Principio de lobby: `@$go` y `@$fin` son uniformes por **contrato semántico**, no por
 transporte. Todos entran al mismo lobby informacional, pero cada perfil usa el adaptador que
 sus capacidades reales permiten: shell/Engram/git, fetch público, o snapshot de chat con relay.
