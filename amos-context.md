@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-15T18:35:16Z  
+**Generated:** 2026-08-15T20:48:25Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -115,6 +115,26 @@ Antes de operar, respondé:
 ---
 
 ## RECENT DECISIONS
+
+### VM2 OOM/crash + LABS jaula de capacidad + techo MAX 2 Tonys — arco cerrado 2026-08-15 (recuperado por @$fin sucesora)
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Arco completo del 2026-08-15 post-crash de VM2 (boot 18:48:22→19:08:04 UTC). Forense confirmó causa: cadáver del experimento WP Competence Specimen C (wp-tent-app/db, ya CLOSED sin recolectar) — DB sin límite de memoria golpeó techo de I/O real, app quedó zombie con OOMKilled interno al cgroup (no explica crash del host por sí solo); condición de fondo ya documentada antes del crash: VM2 (2vCPU/~3.9GB) con swap al 100% en reposo, sin holgura. Hueco de evidencia declarado y no cerrado: sin acceso root/adm para journalctl -k de la ventana exacta 18:48-19:06.
+
+Remediación aplicada: wp-tent-app/db (contenedores+volúmenes) eliminados tras archivar evidencia completa; sfv5-executor.timer roto detenido/deshabilitado; n8n reiniciado sin cambios de config (confirmado producción real, workflow "MERCADER - REAL INTAKE v0.1"). Deliberadamente sin tocar: sfv5-postgres/redis/weaviate (Optional, dev activo), vm.swappiness, resize de VM (instrucción explícita de Jorge).
+
+LABS: jaula cgroup v2 diseñada desde la reserva medida de producción hacia afuera (≈1321MB medido con margen → 1800MB, MemorySwapMax=0). Experimento real de 3 líneas (git clone+npm install+next build sobre saas-factory): 84% jaula en 52s → watcher fail-closed pausó línea C antes de que el kernel matara nada; con A+B solas, build llegó a 100% y se sostuvo ~45s sin kill pero con livelock (CPU ~2%, casi congeladas) — degradación no elegante. Swap de jaula: 0 todo el experimento. Producción sin desviación en ninguna muestra. Conclusión: 1800MB no alcanza ni para 2 líneas de build real sin degradación severa, mucho menos 3.
+
+Techo aplicado en producción: MAX_CONCURRENT_EXECUTORS=2 en dispatch_gate.py (/opt/dfl-knowledge/governance/dispatch/, módulo real que :8091 importa en vivo) — techo de capacidad física, no de autorización (IRONMAN sigue admitiendo N misiones DISPATCHED; máx 2 IN_EXECUTION a la vez). Falla cerrado con E_CAPACITY_CEILING_EXCEEDED, reintenta solo en próximo poll. FIFO por issued_at, desempate por mission_id. 14/14 tests (8 preexistentes + 6 nuevos) + E2E producción real. Activación en vivo encontró 3 misiones reales ya autorizadas al mismo instante (18:12:30Z, remanente del lab dispatch n>1): desempate dejó TCC/JPI (única con trabajo real) en espera; Jorge decidió Opción 2 — archivar JACKYCLEAN_CXB_2026_08_15 y DFLWEBSITE_CXA_2026_08_15 a `history` en provisional-routing-state.json con registro original preservado verbatim, sin reordenar el desempate. pending queda solo con TCC/JPI, /go confirma PASS limpio.
+
+**Why**: Jorge pidió explícitamente "no reproducir el colapso, establecer un sobre de capacidad segura que haga la recurrencia imposible por diseño" y "diseñar la jaula desde la reserva de producción hacia afuera".
+
+**Where**: /opt/dfl-knowledge/governance/dispatch/dispatch_gate.py + test_dispatch_gate.py; /opt/dfl-knowledge/governance/onboarding/provisional-routing-state.json; /opt/saas-factory-setup/saas-factory/IRONMAN.md (3 filas nuevas, working tree sin commitear al momento de este save); /opt/saas-factory-setup/saas-factory/.claude/HANDOFF-VM2-CAPACITY-CEILING-2026-08-15.md (registro operacional completo, secciones 1-14). Evidencia: wp-competence-tent/evidence/runs/{vm2-oom-crash,labs-3line-cage-experiment,capacity-ceiling-e2e,capacity-ceiling-unittest}-2026-08-15.*. Commit dfl-knowledge: 10bff65.
+
+**Learned**: Confirmación en vivo del gap de resiliencia @$fin documentado en obs #127 — la sesión que generó todo este trabajo murió (dejó de poder responder) antes de correr @$fin, con el handoff en disco a medio escribir (cortado mid-sentence en la autocrítica, sección 13). Recuperada por una sesión sucesora vía instrucción directa de Jorge (no por watchdog automático), que verificó el estado real (git diff IRONMAN.md, ausencia de esta obs en Engram, mirror desactualizado en 05decd3/18:35 UTC) antes de completar el Gate 4B final y correr push_mirror.sh — sin rediseñar el contrato, sin repetir el trabajo técnico ya cerrado (secciones 1-12 intactas), sin fabricar el contenido faltante de la autocrítica cortada.
+
+LIFECYCLE: active
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -236,49 +256,6 @@ LA RECURSION QUE NADIE HABIA NOMBRADO: MANAGEMENT_DAEMON_SPEC linea 21 dice que 
 CORRECCION AL "REUTILIZABLE INTACTO" DE #460/#462: faltaba el activo mas grande. Sumar first-operable-factory-v01/ completo — contrato de autoridad, politica de excepcion N0-N3, management loop de 10 pasos y el modelo goals/plans/success_criteria. El adaptador headless NO es pieza nueva: es la implementacion del "Adaptador hacia SFV5" ya especificado. No inventar otro contrato de autoridad.
 
 PROXIMO_AGENTE_DEBE: antes de abrir cualquier mision sobre SFV5, el headless gap o la fabrica, leer first-operable-factory-v01/ — sobre todo EVIDENCE_BASE.md (#34 adaptador ausente, #13 goals ausente, #11 tasks.status sin gate, #15 replanificacion ausente, #17 plasticidad aspiracional) y MANAGEMENT_DAEMON_SPEC_V0.1.md. Y buscar diseno previo en architecture/ y en Engram ANTES de declarar que algo no existe: el discovery no lo hizo y por eso le falto el activo principal.
-
-### [ADDENDUM] SFV5 discovery respondido pregunta-por-pregunta: existe routing y pipeline DOCUMENTADOS (27/32 y 16 pasos), falta el motor
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/internal-factory-reality-discovery
-TYPE: decision
-STATUS: closed
-DATE: 2026-08-04
-PRECEDENCIA: D
-AUTHORITY: evidence only
-LIFECYCLE: active
-CONFIDENCE: high
-
-AMPLIA obs #460 (mismo TOPIC). Commit ceec81f, evidence/sfv5-internal-factory-reality-2026-08-04/ADDENDUM-RESPUESTAS-PREGUNTA-POR-PREGUNTA.md, sha256sum -c 24/24 OK. Read-only, cero modificaciones a SFV5, sin uso de root.
-
-MOTIVO: el informe de #460 respondia por tema, no por numero. Jorge reenvio el prompt senalando que faltaban respuestas. Faltaban de verdad: seccion A enumerada, inventario Q11 renderizado, seccion C completa (Q22-Q30, AUSENTE ENTERA) y tabla por arista de I (Q83-Q86). Ahora estan las 87 numeradas + las 14 de J.
-
-TRES CORRECCIONES A #460, todas en la misma direccion: el informe SUBESTIMO lo que SFV5 tiene escrito.
-
-C1. "cero tabla de routing" es FALSO. saas-factory/CLAUDE.md:48-140 contiene un Decision Tree explicito de 27 ramas frase-gatillo -> skill. Medido: 26 por regex 'Ejecutar skill X' + bucle-agentico como segundo paso de la rama PRP en CLAUDE.md:72. 27/32 ruteadas; 5 FUERA del arbol, invisibles al routing documentado: pack-cold-email, primer, skill-creator, update-sf, video-visuals. Rama terminal: "No encaja en nada -> Usar tu juicio." Formulacion correcta: existe tabla de routing DOCUMENTED y casi completa; lo que no existe es un router IMPLEMENTED. Nada la parsea, nada la impone, nada falla si se la ignora.
-
-C2. "no existe maquina de estados/pipeline explicito" es FALSO. CLAUDE.md:184-260 define 5 flujos numerados; Flujo 1 tiene 16 pasos ordenados (0 factory-brain, 1 new-app, 3 i18n, 4 add-login ... 10 quality-gates, 12 deploy, 13 outcomes, 16 factory-brain). Es una maquina de estados DE PAPEL: sin estado persistido, sin gate bloqueante, sin ejecutor. Prueba empirica: roof-issues-mini, el unico producto real, NO siguio Flujo 1 sino Flujo 2 (prp -> bucle-agentico), y su src/ no tiene i18n, compliance, onboarding ni outcomes.
-
-C3. CLAUDE.md:140 declara "30 Herramientas Especializadas"; el filesystem canonico tiene 32.
-
-HALLAZGOS NUEVOS DEL RESPALDO DE ROOF-ISSUES-MINI (roof-issues-mini-source.tar.gz, 212 archivos, NO desempaquetado en la pasada previa):
-a) roof-issues-mini/.claude/settings.local.json declara los permisos que hicieron funcionar la fabrica: Bash(npm install *), Bash(npm run *), Bash(npx next *), Bash(npx eslint *) + enabledMcpjsonServers [next-devtools, playwright, supabase]. NO ESTA EN CANONICO. La configuracion que hizo funcionar la fabrica vive en un archivo por-maquina, no versionado.
-b) roof-issues-mini/.claude/logs/ NO EXISTE. El hook log-tool-usage.sh no solo carece de settings.json en canonico: tampoco corrio en el unico producto real. Es la causa mecanica probada de que 29/32 skills no tengan ninguna evidencia de ejecucion.
-c) Los 6 criterios de exito de PRP-001:25-31 quedan verbatim como ground truth del experimento minimo.
-d) 12 archivos de dominio en src/, correspondientes 1:1 con las 6 fases del Blueprint.
-
-SECCION C, RUNTIME REAL, respondida por primera vez. Q23, lo que ejecuta Claude Code y ningun binario: seleccion de skill, la entrevista adaptativa, la DESCOMPOSICION JIT EN SUBTAREAS (bucle-agentico: "Solo se definen FASES. Las subtareas se generan al entrar a cada fase"), la generacion de codigo y el juicio de los 6 gates sin runner. Q27: cero pins de modelo; las menciones a anthropic son nombres de paquete MCP. Q28: no hay contrato cross-agente, y la evidencia decisiva es que GEMINI.md, unico archivo nominalmente para otro agente, esta stale en V3, referencia .claude/prompts/ y .claude/commands/ inexistentes, y su pie dice "Este archivo es para que Claude Code entienda el repositorio". Q30: siete suposiciones ocultas verificadas (cwd raiz Next.js, alias shell saas-factory, estructura feature-first obligatoria, settings.local.json no versionado, env vars, placeholders MCP sin completar, ownership root que hace irreproducible quick_validate 32/32 como dflagent).
-
-NEGATIVOS HEADLESS RE-VERIFICADOS sobre 9b18947 con falsos positivos descartados uno por uno: los 2 hits de 'headless' son "UI headless" (diseno de UI) en skills/ai/references/; los 2 de @anthropic-ai son nombres de paquete MCP en CHANGELOG y example.mcp.json; el unico child_process es git rev-parse HEAD en el bridge. Cero .claude/commands, .claude/agents, CI, Dockerfile, Makefile, settings.json.
-
-Q21 queda con cifra final: 0/32 tests, 3/32 camino vivo evidenciado (prp, bucle-agentico, skill-creator), 29/32 sin ninguna evidencia de ejecucion.
-
-VEREDICTO SOSTENIDO Y REFORZADO: SFV5_AGENTIC_FACTORY_LIVE_PROGRAMMATIC_ENTRY_GAP. Las correcciones no lo debilitan, lo afilan: al existir routing documentado (27/32) y pipeline documentado (16 pasos), el gap toma su forma exacta. SFV5 TIENE EL MAPA DE ORQUESTACION ESCRITO Y NO TIENE EL MOTOR QUE LO RECORRA. Lo que falta no es disenar el flujo, ya esta disenado en CLAUDE.md; falta la puerta de invocacion y el verificador semantico.
-
-REUTILIZABLE QUE #460 NO LISTABA: el decision tree de CLAUDE.md como especificacion de routing YA ESCRITA, insumo directo del adaptador headless.
-
-PROXIMO_AGENTE_DEBE: ejecutar SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF con los 6 criterios de PRP-001 como aserciones ejecutables. Criterio >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio explicito: falla si reporta PASS solo porque la ejecucion termino sin error.
 
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
@@ -413,8 +390,6 @@ PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scop
 ## PENDING
 
 
-
-
 ---
 
 ## RECENT ACTIVITY (cross-project)
@@ -482,6 +457,26 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 **Where**: cc-atgo-hook.sh, main.py (/go endpoint), Engram project dfl.
 
 **Learned**: Codex demostró que /go ya transfiere suficiente contexto para reconstruir el testigo sin intervención humana. El sistema funciona — necesita afinamiento, no rediseño. Los dirty files de FutbolWeb son trabajo pendiente en la pipeline ESPN/scoring; requieren sesión dedicada con PRP antes de commit.
+
+### VM2 OOM/crash + LABS jaula de capacidad + techo MAX 2 Tonys — arco cerrado 2026-08-15 (recuperado por @$fin sucesora)
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Arco completo del 2026-08-15 post-crash de VM2 (boot 18:48:22→19:08:04 UTC). Forense confirmó causa: cadáver del experimento WP Competence Specimen C (wp-tent-app/db, ya CLOSED sin recolectar) — DB sin límite de memoria golpeó techo de I/O real, app quedó zombie con OOMKilled interno al cgroup (no explica crash del host por sí solo); condición de fondo ya documentada antes del crash: VM2 (2vCPU/~3.9GB) con swap al 100% en reposo, sin holgura. Hueco de evidencia declarado y no cerrado: sin acceso root/adm para journalctl -k de la ventana exacta 18:48-19:06.
+
+Remediación aplicada: wp-tent-app/db (contenedores+volúmenes) eliminados tras archivar evidencia completa; sfv5-executor.timer roto detenido/deshabilitado; n8n reiniciado sin cambios de config (confirmado producción real, workflow "MERCADER - REAL INTAKE v0.1"). Deliberadamente sin tocar: sfv5-postgres/redis/weaviate (Optional, dev activo), vm.swappiness, resize de VM (instrucción explícita de Jorge).
+
+LABS: jaula cgroup v2 diseñada desde la reserva medida de producción hacia afuera (≈1321MB medido con margen → 1800MB, MemorySwapMax=0). Experimento real de 3 líneas (git clone+npm install+next build sobre saas-factory): 84% jaula en 52s → watcher fail-closed pausó línea C antes de que el kernel matara nada; con A+B solas, build llegó a 100% y se sostuvo ~45s sin kill pero con livelock (CPU ~2%, casi congeladas) — degradación no elegante. Swap de jaula: 0 todo el experimento. Producción sin desviación en ninguna muestra. Conclusión: 1800MB no alcanza ni para 2 líneas de build real sin degradación severa, mucho menos 3.
+
+Techo aplicado en producción: MAX_CONCURRENT_EXECUTORS=2 en dispatch_gate.py (/opt/dfl-knowledge/governance/dispatch/, módulo real que :8091 importa en vivo) — techo de capacidad física, no de autorización (IRONMAN sigue admitiendo N misiones DISPATCHED; máx 2 IN_EXECUTION a la vez). Falla cerrado con E_CAPACITY_CEILING_EXCEEDED, reintenta solo en próximo poll. FIFO por issued_at, desempate por mission_id. 14/14 tests (8 preexistentes + 6 nuevos) + E2E producción real. Activación en vivo encontró 3 misiones reales ya autorizadas al mismo instante (18:12:30Z, remanente del lab dispatch n>1): desempate dejó TCC/JPI (única con trabajo real) en espera; Jorge decidió Opción 2 — archivar JACKYCLEAN_CXB_2026_08_15 y DFLWEBSITE_CXA_2026_08_15 a `history` en provisional-routing-state.json con registro original preservado verbatim, sin reordenar el desempate. pending queda solo con TCC/JPI, /go confirma PASS limpio.
+
+**Why**: Jorge pidió explícitamente "no reproducir el colapso, establecer un sobre de capacidad segura que haga la recurrencia imposible por diseño" y "diseñar la jaula desde la reserva de producción hacia afuera".
+
+**Where**: /opt/dfl-knowledge/governance/dispatch/dispatch_gate.py + test_dispatch_gate.py; /opt/dfl-knowledge/governance/onboarding/provisional-routing-state.json; /opt/saas-factory-setup/saas-factory/IRONMAN.md (3 filas nuevas, working tree sin commitear al momento de este save); /opt/saas-factory-setup/saas-factory/.claude/HANDOFF-VM2-CAPACITY-CEILING-2026-08-15.md (registro operacional completo, secciones 1-14). Evidencia: wp-competence-tent/evidence/runs/{vm2-oom-crash,labs-3line-cage-experiment,capacity-ceiling-e2e,capacity-ceiling-unittest}-2026-08-15.*. Commit dfl-knowledge: 10bff65.
+
+**Learned**: Confirmación en vivo del gap de resiliencia @$fin documentado en obs #127 — la sesión que generó todo este trabajo murió (dejó de poder responder) antes de correr @$fin, con el handoff en disco a medio escribir (cortado mid-sentence en la autocrítica, sección 13). Recuperada por una sesión sucesora vía instrucción directa de Jorge (no por watchdog automático), que verificó el estado real (git diff IRONMAN.md, ausencia de esta obs en Engram, mirror desactualizado en 05decd3/18:35 UTC) antes de completar el Gate 4B final y correr push_mirror.sh — sin rediseñar el contrato, sin repetir el trabajo técnico ya cerrado (secciones 1-12 intactas), sin fabricar el contenido faltante de la autocrítica cortada.
+
+LIFECYCLE: active
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -554,12 +549,6 @@ LATER (NO hacer todavia, evitar sobreingenieria):
 
 == EVIDENCIA ==
 Commits (ahora dangling, no en ninguna rama, recuperables por hash mientras no corra gc agresivo): d7480410f5702a978d54d218f1b3282f6feb7dbd, 752efb9b1cec6774e7fea5ba3be392cdaa199962, ebd014ec496d1bb2ec312207cf005d1cd437a82d. Commits en la rama principal (persistentes): 8372ec1 (IRONMAN.md creado), ed4877b (cierre Lab TCC x TCX), 84b6b7e (cierre medicion VM2 n=2). Engram obs #491-#497 (tests de concurrencia y probes). IRONMAN.md, filas "Concurrencia TCC x TCX" y "VM2: n=2 fabricas virtuales concurrentes".
-
-### LAB2 probe
-**Type:** fact  
-**Project:** dfl  
-
-Probe captured initial HEAD 1bbc7e66a3fdda1431b2d11803b12161b9a0e758 at Sat Aug 15 17:07:58 UTC 2026.
 
 ---
 
@@ -670,4 +659,4 @@ Probe captured initial HEAD 1bbc7e66a3fdda1431b2d11803b12161b9a0e758 at Sat Aug 
 
 ---
 
-*Mirror auto-generated 2026-08-15T18:35:16Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-15T20:48:25Z | La Garra → DFLghub/amos-context*
