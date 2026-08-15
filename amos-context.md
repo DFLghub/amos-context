@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-15T17:17:50Z  
+**Generated:** 2026-08-15T18:13:01Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -103,10 +103,10 @@ Antes de operar, respondé:
 
 **Authority:** `DFL_BOOTSTRAP.pending`  
 **Decision:** `FAIL_CLOSED`  
-**State version:** `None`  
-**State SHA:** `None`  
+**State version:** `UNKNOWN`  
+**State SHA:** `UNKNOWN`  
 **Freshness:** `UNKNOWN`  
-**Contradictions:** `['pending_must_contain_exactly_one_mission']`  
+**Contradictions:** `[]`  
 **Authorized actions:** `[]`  
 **Blocked actions:** `['ALL_ACTIONS']`  
 
@@ -412,6 +412,9 @@ PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scop
 
 ## PENDING
 
+
+
+
 ---
 
 ## RECENT ACTIVITY (cross-project)
@@ -667,4 +670,4 @@ Probe captured initial HEAD 1bbc7e66a3fdda1431b2d11803b12161b9a0e758 at Sat Aug 
 
 ---
 
-*Mirror auto-generated 2026-08-15T17:17:50Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-15T18:13:01Z | La Garra → DFLghub/amos-context*
