@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-16T18:11:48Z  
+**Generated:** 2026-08-16T18:18:20Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -277,11 +277,13 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### TCX website content lane closed — Spanish corpus consumed by TCC
+### DFL Website — Jorge ya tiene diseño propio, pendiente de traer (no implementar aún)
 **Type:** fact  
 **Project:** dfl  
 
-SESSION CLOSE / @$fin 2026-08-16. TCX lane: project/dfl-website-tcx-content-v2. Delivery commit b4dabb3514e8ed2396e0bdff9b74e1b1a19ea745; closure documentation commit ab60735. Delivered approved EN/ES public localization, /es/about, /es/challenge, 3 EN + 3 ES Evidence receipts, 3 EN + 3 ES Lab entries, no active Moments, provenance/public-safe/translation governance, and 24/24 tests plus build/leak/diff checks PASS. TCC consumed and reconciled the substantive delivery in fc4943d on project/dfl-website-t3; later primary HEAD at closure was 410235059746c1e69b99dba5d7714e639c93b39c with deployment/Supabase/Vercel documentation. TCX worktree cleaned of reproducible node_modules/dist/.astro; no useful uncommitted delta; TCX branch not pushed because primary contains the useful work. Safe to close TCX lane.
+2026-08-16, post-cierre de sesión: Jorge menciona que además de la arquitectura (T3 Locked Blueprint, ya implementada por TCC/TCX) también tiene diseño propio ya preparado para DFL Website, pero explícitamente "no lo vamos a hacer ahora" — es un anuncio de planificación, no un pedido de trabajo inmediato.
+
+Implicación para sesiones futuras: el sistema de diseño actual en el branch project/dfl-website-t3 (tokens Warm Ivory/Carbon/Copper/Teal, tipografía, Hero copper->teal SVG, etc.) es una implementación real y funcional del T2 Design Lock del Blueprint, pero NO es necesariamente el diseño final que Jorge quiere — cuando él traiga su propio diseño, probablemente reemplaza esta capa visual (no la arquitectura/backend/Supabase, que sí se mantienen). No asumir que el diseño actual es definitivo ni reconstruirlo/defenderlo si Jorge trae algo distinto.
 
 ---
 
@@ -470,6 +472,14 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### DFL Website — Jorge ya tiene diseño propio, pendiente de traer (no implementar aún)
+**Type:** fact  
+**Project:** dfl  
+
+2026-08-16, post-cierre de sesión: Jorge menciona que además de la arquitectura (T3 Locked Blueprint, ya implementada por TCC/TCX) también tiene diseño propio ya preparado para DFL Website, pero explícitamente "no lo vamos a hacer ahora" — es un anuncio de planificación, no un pedido de trabajo inmediato.
+
+Implicación para sesiones futuras: el sistema de diseño actual en el branch project/dfl-website-t3 (tokens Warm Ivory/Carbon/Copper/Teal, tipografía, Hero copper->teal SVG, etc.) es una implementación real y funcional del T2 Design Lock del Blueprint, pero NO es necesariamente el diseño final que Jorge quiere — cuando él traiga su propio diseño, probablemente reemplaza esta capa visual (no la arquitectura/backend/Supabase, que sí se mantienen). No asumir que el diseño actual es definitivo ni reconstruirlo/defenderlo si Jorge trae algo distinto.
+
 ### DFL Website — TCC lane closed 2026-08-16 (build+deploy+Supabase real, durable in git, two human actions remain)
 **Type:** decision  
 **Project:** dfl  
@@ -487,12 +497,6 @@ Decap public/admin/config.yml wired to the real repo/branch now that both are ge
 Two genuine human actions remain, both blocked on account-level credentials only I don't have: (1) `vercel login` + link/claim to make the Vercel deployment durable instead of anonymous-temporary (anonymous previews have a fixed ~60min lifetime from creation, NOT extended by redeploying -- confirmed by testing); (2) a GitHub OAuth App under DFLghub org for Decap to actually authenticate (its github backend defaults to assuming Netlify hosting). www.deepfeelingslabs.com is authorized as the production domain but deliberately never attached/DNS-touched this session.
 
 No secrets committed anywhere in the branch. One local scratch-file copy of the Supabase service-role key (never committed, never fully printed, never left this machine) was found during closure cleanup and securely deleted.
-
-### TCX website content lane closed — Spanish corpus consumed by TCC
-**Type:** fact  
-**Project:** dfl  
-
-SESSION CLOSE / @$fin 2026-08-16. TCX lane: project/dfl-website-tcx-content-v2. Delivery commit b4dabb3514e8ed2396e0bdff9b74e1b1a19ea745; closure documentation commit ab60735. Delivered approved EN/ES public localization, /es/about, /es/challenge, 3 EN + 3 ES Evidence receipts, 3 EN + 3 ES Lab entries, no active Moments, provenance/public-safe/translation governance, and 24/24 tests plus build/leak/diff checks PASS. TCC consumed and reconciled the substantive delivery in fc4943d on project/dfl-website-t3; later primary HEAD at closure was 410235059746c1e69b99dba5d7714e639c93b39c with deployment/Supabase/Vercel documentation. TCX worktree cleaned of reproducible node_modules/dist/.astro; no useful uncommitted delta; TCX branch not pushed because primary contains the useful work. Safe to close TCX lane.
 
 ---
 
@@ -603,4 +607,4 @@ SESSION CLOSE / @$fin 2026-08-16. TCX lane: project/dfl-website-tcx-content-v2. 
 
 ---
 
-*Mirror auto-generated 2026-08-16T18:11:48Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-16T18:18:20Z | La Garra → DFLghub/amos-context*
