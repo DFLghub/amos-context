@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-16T18:06:02Z  
+**Generated:** 2026-08-16T18:11:48Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,24 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### DFL Website — TCC lane closed 2026-08-16 (build+deploy+Supabase real, durable in git, two human actions remain)
+**Type:** decision  
+**Project:** dfl  
+
+Full TCC arc this session (T3 Falsification Proof -> full homepage build -> TCX content-corpus integration x2 -> real Challenge backend -> real Vercel/Supabase deployment -> closure) is CLOSED and durable.
+
+Durable state: branch project/dfl-website-t3, HEAD 14d3af6, pushed to DFLghub/saas-factory-setup and verified (origin HEAD == local HEAD, checked at every step including the final closure refresh). Full checkpoint: .claude/CHECKPOINT-DFL-WEBSITE-CLOSURE-2026-08-16.md in saas-factory-setup.
+
+Real dedicated Supabase project "dfl-website" (ref fkjwbepkwqzdwhpymigg) provisioned by Jorge, discovered via the Management API using the access token already in .mcp.json (no new credential needed), confirmed distinct from and never touched event-rsvp-waitlist/360eventos. Schema (challenge_submissions) applied, RLS enabled zero policies, real writes proven end-to-end (curl + real browser, EN+ES) with direct DB verification, not inferred from response codes. 6 synthetic @example.com test rows used as proof then deleted at closure -- table is 0 rows, clean, ready for real traffic.
+
+Real deployed E2E on two anonymous Vercel `--temporary` previews (worked around a broken Vercel MCP plugin OAuth client -- "app ID is invalid", a plugin-side bug not a Jorge account issue): all 6 EN/ES routes, axe 0, CLS 0, honeypot/rate-limit/CORS/validation-failure all confirmed against live infra. 48-Hour Sample is DB-constrained to never be writable as "approved" from the intake path -- structural guarantee, not just application logic.
+
+Decap public/admin/config.yml wired to the real repo/branch now that both are genuinely pushed; TCX's own governance test (repo-identity-is-explicit-deployment-decision) was rewritten, not bypassed, to assert the real value.
+
+Two genuine human actions remain, both blocked on account-level credentials only I don't have: (1) `vercel login` + link/claim to make the Vercel deployment durable instead of anonymous-temporary (anonymous previews have a fixed ~60min lifetime from creation, NOT extended by redeploying -- confirmed by testing); (2) a GitHub OAuth App under DFLghub org for Decap to actually authenticate (its github backend defaults to assuming Netlify hosting). www.deepfeelingslabs.com is authorized as the production domain but deliberately never attached/DNS-touched this session.
+
+No secrets committed anywhere in the branch. One local scratch-file copy of the Supabase service-role key (never committed, never fully printed, never left this machine) was found during closure cleanup and securely deleted.
+
 ### VM2 OOM/crash + LABS jaula de capacidad + techo MAX 2 Tonys — arco cerrado 2026-08-15 (recuperado por @$fin sucesora)
 **Type:** decision  
 **Project:** dfl  
@@ -224,38 +242,6 @@ Gate 4B step 2 (archival check): nothing new to archive beyond what #487->#488 a
 Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all verified by real execution at onboarding), operating on /opt/saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge, final HEAD 2c7057a. Handing off to Codex per Jorge's explicit instruction (Claude Code credit running low across the arc, but the arc itself was fully closed by Claude Code before handoff -- Codex does not need to do any remaining work on THIS arc).
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
-
-### [CONVERGENCIA] El Gerente de Fabrica (FMD, #280) ya nombro los dos gaps del discovery SFV5 14 dias antes; el discovery no lo cito nunca
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/gap-convergence-fmd-sfv5
-TYPE: decision
-STATUS: open
-DATE: 2026-08-04
-PRECEDENCIA: D
-AUTHORITY: evidence only
-LIFECYCLE: active
-CONFIDENCE: high
-
-ENCUADRE DECLARADO POR JORGE: Claude Code y Codex son quienes RECIBEN los pedidos de fabricacion y los gestionan con el "gerente de la fabrica". No somos auditores externos de SFV5: somos su runtime. El discovery #460/#462 ya lo habia probado tecnicamente sin sacar la consecuencia: la fabricacion general de SFV5 ES una sesion de Claude Code leyendo prosa.
-
-HALLAZGO: EL DISCOVERY TUVO UN PUNTO CIEGO REAL. Auditó SFV5 en aislamiento y nunca pregunto si DFL ya tenia disenado el orquestador faltante. Lo tenia, desde hacia 14 dias. Verificado por grep: evidence/sfv5-internal-factory-reality-2026-08-04/ tiene CERO menciones de "gerente", "first-operable", "factory_manager" o "management_daemon". El enlace es de una sola direccion: el diseno del Gerente SI conocia SFV5 (7 menciones en MANAGEMENT_DAEMON_SPEC, 6 en EVIDENCE_BASE, 6 en FACTORY_BUILD_MISSION_PACKET); el discovery no conocia el Gerente.
-
-EL GERENTE EXISTE COMO DISENO FORMAL: obs #280, 2026-07-21, /opt/dfl-knowledge/architecture/first-operable-factory-v01/, 12 documentos, 788 lineas, diseno puro sin codigo. Piezas: FACTORY_MANAGER_CONTRACT_V0.1.md (management loop de 10 pasos interpretar->planificar->asignar->ejecutar->observar->detectar desvio->replanificar->validar->cerrar->aprender; tabla de autoridad de 4 niveles; politica de excepcion graduada N0-N3 que extiende SILENT_CRON_JOBS) y MANAGEMENT_DAEMON_SPEC_V0.1.md (FMD = factory-manager-daemon, se sienta sobre el contrato AGENT-SERVER.md de BOS v2 sin reemplazarlo).
-
-CONVERGENCIA, EL HALLAZGO CENTRAL: dos misiones independientes, con 14 dias de diferencia y por caminos distintos, derivaron EL MISMO PAR DE GAPS.
-- FMD 2026-07-21, MANAGEMENT_DAEMON_SPEC linea 45: "Adaptador hacia SFV5 - AUSENTE hoy (EVIDENCE_BASE #34), debe construirse". Y linea 127, fuera de alcance explicito: "Validacion semantica de calidad del entregable (no solo verificacion de estado)".
-- Discovery 2026-08-04: falta (a) superficie de invocacion no interactiva y (b) verificador de correspondencia pedido->producto.
-Son el mismo par. El gap deja de ser hipotesis de una sola mision.
-
-ASIMETRIA IMPORTANTE ENTRE (a) Y (b): la (a) YA TIENE CONTRATO ESCRITO — el FMD especifica que debe hacer el invocador, con autoridad y excepciones. La (b) SIGUE SIN DUENO EN AMBOS DISENOS: el FMD la declaro fuera de alcance y SFV5 no tiene ningun precedente de comparar producto contra pedido. Es la unica pieza sin ancestro en el sistema.
-
-LA RECURSION QUE NADIE HABIA NOMBRADO: MANAGEMENT_DAEMON_SPEC linea 21 dice que el FMD "No escribe codigo de producto - invoca a SFV5 (u otra capacidad productiva) para eso". Pero el discovery probo que la capacidad productiva de SFV5 no es un binario: es una sesion interactiva de Claude Code. Por lo tanto el "Adaptador hacia SFV5" es, literalmente, un adaptador hacia una sesion como la mia. El FMD no invoca una fabrica: invoca un agente que sabe leer 32 manuales.
-
-CORRECCION AL "REUTILIZABLE INTACTO" DE #460/#462: faltaba el activo mas grande. Sumar first-operable-factory-v01/ completo — contrato de autoridad, politica de excepcion N0-N3, management loop de 10 pasos y el modelo goals/plans/success_criteria. El adaptador headless NO es pieza nueva: es la implementacion del "Adaptador hacia SFV5" ya especificado. No inventar otro contrato de autoridad.
-
-PROXIMO_AGENTE_DEBE: antes de abrir cualquier mision sobre SFV5, el headless gap o la fabrica, leer first-operable-factory-v01/ — sobre todo EVIDENCE_BASE.md (#34 adaptador ausente, #13 goals ausente, #11 tasks.status sin gate, #15 replanificacion ausente, #17 plasticidad aspiracional) y MANAGEMENT_DAEMON_SPEC_V0.1.md. Y buscar diseno previo en architecture/ y en Engram ANTES de declarar que algo no existe: el discovery no lo hizo y por eso le falto el activo principal.
 
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
@@ -484,23 +470,29 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### DFL Website — TCC lane closed 2026-08-16 (build+deploy+Supabase real, durable in git, two human actions remain)
+**Type:** decision  
+**Project:** dfl  
+
+Full TCC arc this session (T3 Falsification Proof -> full homepage build -> TCX content-corpus integration x2 -> real Challenge backend -> real Vercel/Supabase deployment -> closure) is CLOSED and durable.
+
+Durable state: branch project/dfl-website-t3, HEAD 14d3af6, pushed to DFLghub/saas-factory-setup and verified (origin HEAD == local HEAD, checked at every step including the final closure refresh). Full checkpoint: .claude/CHECKPOINT-DFL-WEBSITE-CLOSURE-2026-08-16.md in saas-factory-setup.
+
+Real dedicated Supabase project "dfl-website" (ref fkjwbepkwqzdwhpymigg) provisioned by Jorge, discovered via the Management API using the access token already in .mcp.json (no new credential needed), confirmed distinct from and never touched event-rsvp-waitlist/360eventos. Schema (challenge_submissions) applied, RLS enabled zero policies, real writes proven end-to-end (curl + real browser, EN+ES) with direct DB verification, not inferred from response codes. 6 synthetic @example.com test rows used as proof then deleted at closure -- table is 0 rows, clean, ready for real traffic.
+
+Real deployed E2E on two anonymous Vercel `--temporary` previews (worked around a broken Vercel MCP plugin OAuth client -- "app ID is invalid", a plugin-side bug not a Jorge account issue): all 6 EN/ES routes, axe 0, CLS 0, honeypot/rate-limit/CORS/validation-failure all confirmed against live infra. 48-Hour Sample is DB-constrained to never be writable as "approved" from the intake path -- structural guarantee, not just application logic.
+
+Decap public/admin/config.yml wired to the real repo/branch now that both are genuinely pushed; TCX's own governance test (repo-identity-is-explicit-deployment-decision) was rewritten, not bypassed, to assert the real value.
+
+Two genuine human actions remain, both blocked on account-level credentials only I don't have: (1) `vercel login` + link/claim to make the Vercel deployment durable instead of anonymous-temporary (anonymous previews have a fixed ~60min lifetime from creation, NOT extended by redeploying -- confirmed by testing); (2) a GitHub OAuth App under DFLghub org for Decap to actually authenticate (its github backend defaults to assuming Netlify hosting). www.deepfeelingslabs.com is authorized as the production domain but deliberately never attached/DNS-touched this session.
+
+No secrets committed anywhere in the branch. One local scratch-file copy of the Supabase service-role key (never committed, never fully printed, never left this machine) was found during closure cleanup and securely deleted.
+
 ### TCX website content lane closed — Spanish corpus consumed by TCC
 **Type:** fact  
 **Project:** dfl  
 
 SESSION CLOSE / @$fin 2026-08-16. TCX lane: project/dfl-website-tcx-content-v2. Delivery commit b4dabb3514e8ed2396e0bdff9b74e1b1a19ea745; closure documentation commit ab60735. Delivered approved EN/ES public localization, /es/about, /es/challenge, 3 EN + 3 ES Evidence receipts, 3 EN + 3 ES Lab entries, no active Moments, provenance/public-safe/translation governance, and 24/24 tests plus build/leak/diff checks PASS. TCC consumed and reconciled the substantive delivery in fc4943d on project/dfl-website-t3; later primary HEAD at closure was 410235059746c1e69b99dba5d7714e639c93b39c with deployment/Supabase/Vercel documentation. TCX worktree cleaned of reproducible node_modules/dist/.astro; no useful uncommitted delta; TCX branch not pushed because primary contains the useful work. Safe to close TCX lane.
-
-### @$fin cierre TCC — recuperación de sesión muerta (VM2/techo) vía Ordered Close, 2026-08-15
-**Type:** fact  
-**Project:** dfl  
-
-**What**: Sesión TCC ejecutó `@$fin` recibiendo cierre ordenado. Trabajo de esta sesión: recuperación institucional de una sesión predecesora que quedó incapaz de responder antes de completar su propio `@$fin` (arco VM2 OOM/crash + LABS jaula de capacidad + techo MAX_CONCURRENT_EXECUTORS=2, 2026-08-15). Acciones: (1) localizado el contrato canónico `@$fin` en Engram (obs #127, #139, #212) en vez de improvisar un mecanismo nuevo; (2) verificado el gap real antes de actuar — `git diff IRONMAN.md` confirmó que el trabajo técnico descrito en el handoff (`HANDOFF-VM2-CAPACITY-CEILING-2026-08-15.md`, secciones 1-12) ya estaba en el working tree y era consistente con el documento; `search_memory` confirmó que el Gate 4B final de ese arco nunca se había guardado; el mirror (`amos-context-mirror`) estaba desactualizado (`05decd3`, 18:35 UTC, anterior al crash); (3) completado el corte a media frase de la sección 13 del handoff sin fabricar contenido — declarado explícitamente el hueco en vez de inventarlo; (4) agregada sección 14 documentando la recuperación; (5) Gate 4B final del arco recuperado ejecutado como obs #499; (6) `push_mirror.sh` corrido, resultado `MIRROR: updated | commit 5fd6e31f...`; (7) verificado post-cierre contra `:8091` en vivo — `dispatch_receipt`/`routing_receipt` PASS, `pending` solo `JPI_TCC_2026_08_15` `IN_EXECUTION`, sin contradicciones.
-
-**Files affected**: `/opt/saas-factory-setup/saas-factory/.claude/HANDOFF-VM2-CAPACITY-CEILING-2026-08-15.md` (secciones 13-14 completadas/agregadas; secciones 1-12 preservadas sin cambios). Ningún archivo de producto ni superficie NO_TOUCH tocada.
-
-**Closure**: `@$fin` de esta sesión en modo CIERRE. No hay contenido adicional que archivar — obs #499 ya es el registro semántico completo del arco recuperado; este save es el cierre de la propia sesión de recuperación, distinto de obs #499 (el cierre del arco que se recuperó).
-
-LIFECYCLE: active
 
 ---
 
@@ -611,4 +603,4 @@ LIFECYCLE: active
 
 ---
 
-*Mirror auto-generated 2026-08-16T18:06:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-16T18:11:48Z | La Garra → DFLghub/amos-context*
