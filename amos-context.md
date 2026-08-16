@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-16T03:05:02Z  
+**Generated:** 2026-08-16T18:03:08Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -291,17 +291,11 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### @$fin cierre TCC — recuperación de sesión muerta (VM2/techo) vía Ordered Close, 2026-08-15
+### TCX website content lane closed — Spanish corpus consumed by TCC
 **Type:** fact  
 **Project:** dfl  
 
-**What**: Sesión TCC ejecutó `@$fin` recibiendo cierre ordenado. Trabajo de esta sesión: recuperación institucional de una sesión predecesora que quedó incapaz de responder antes de completar su propio `@$fin` (arco VM2 OOM/crash + LABS jaula de capacidad + techo MAX_CONCURRENT_EXECUTORS=2, 2026-08-15). Acciones: (1) localizado el contrato canónico `@$fin` en Engram (obs #127, #139, #212) en vez de improvisar un mecanismo nuevo; (2) verificado el gap real antes de actuar — `git diff IRONMAN.md` confirmó que el trabajo técnico descrito en el handoff (`HANDOFF-VM2-CAPACITY-CEILING-2026-08-15.md`, secciones 1-12) ya estaba en el working tree y era consistente con el documento; `search_memory` confirmó que el Gate 4B final de ese arco nunca se había guardado; el mirror (`amos-context-mirror`) estaba desactualizado (`05decd3`, 18:35 UTC, anterior al crash); (3) completado el corte a media frase de la sección 13 del handoff sin fabricar contenido — declarado explícitamente el hueco en vez de inventarlo; (4) agregada sección 14 documentando la recuperación; (5) Gate 4B final del arco recuperado ejecutado como obs #499; (6) `push_mirror.sh` corrido, resultado `MIRROR: updated | commit 5fd6e31f...`; (7) verificado post-cierre contra `:8091` en vivo — `dispatch_receipt`/`routing_receipt` PASS, `pending` solo `JPI_TCC_2026_08_15` `IN_EXECUTION`, sin contradicciones.
-
-**Files affected**: `/opt/saas-factory-setup/saas-factory/.claude/HANDOFF-VM2-CAPACITY-CEILING-2026-08-15.md` (secciones 13-14 completadas/agregadas; secciones 1-12 preservadas sin cambios). Ningún archivo de producto ni superficie NO_TOUCH tocada.
-
-**Closure**: `@$fin` de esta sesión en modo CIERRE. No hay contenido adicional que archivar — obs #499 ya es el registro semántico completo del arco recuperado; este save es el cierre de la propia sesión de recuperación, distinto de obs #499 (el cierre del arco que se recuperó).
-
-LIFECYCLE: active
+SESSION CLOSE / @$fin 2026-08-16. TCX lane: project/dfl-website-tcx-content-v2. Delivery commit b4dabb3514e8ed2396e0bdff9b74e1b1a19ea745; closure documentation commit ab60735. Delivered approved EN/ES public localization, /es/about, /es/challenge, 3 EN + 3 ES Evidence receipts, 3 EN + 3 ES Lab entries, no active Moments, provenance/public-safe/translation governance, and 24/24 tests plus build/leak/diff checks PASS. TCC consumed and reconciled the substantive delivery in fc4943d on project/dfl-website-t3; later primary HEAD at closure was 410235059746c1e69b99dba5d7714e639c93b39c with deployment/Supabase/Vercel documentation. TCX worktree cleaned of reproducible node_modules/dist/.astro; no useful uncommitted delta; TCX branch not pushed because primary contains the useful work. Safe to close TCX lane.
 
 ---
 
@@ -490,6 +484,12 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### TCX website content lane closed — Spanish corpus consumed by TCC
+**Type:** fact  
+**Project:** dfl  
+
+SESSION CLOSE / @$fin 2026-08-16. TCX lane: project/dfl-website-tcx-content-v2. Delivery commit b4dabb3514e8ed2396e0bdff9b74e1b1a19ea745; closure documentation commit ab60735. Delivered approved EN/ES public localization, /es/about, /es/challenge, 3 EN + 3 ES Evidence receipts, 3 EN + 3 ES Lab entries, no active Moments, provenance/public-safe/translation governance, and 24/24 tests plus build/leak/diff checks PASS. TCC consumed and reconciled the substantive delivery in fc4943d on project/dfl-website-t3; later primary HEAD at closure was 410235059746c1e69b99dba5d7714e639c93b39c with deployment/Supabase/Vercel documentation. TCX worktree cleaned of reproducible node_modules/dist/.astro; no useful uncommitted delta; TCX branch not pushed because primary contains the useful work. Safe to close TCX lane.
+
 ### @$fin cierre TCC — recuperación de sesión muerta (VM2/techo) vía Ordered Close, 2026-08-15
 **Type:** fact  
 **Project:** dfl  
@@ -499,26 +499,6 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 **Files affected**: `/opt/saas-factory-setup/saas-factory/.claude/HANDOFF-VM2-CAPACITY-CEILING-2026-08-15.md` (secciones 13-14 completadas/agregadas; secciones 1-12 preservadas sin cambios). Ningún archivo de producto ni superficie NO_TOUCH tocada.
 
 **Closure**: `@$fin` de esta sesión en modo CIERRE. No hay contenido adicional que archivar — obs #499 ya es el registro semántico completo del arco recuperado; este save es el cierre de la propia sesión de recuperación, distinto de obs #499 (el cierre del arco que se recuperó).
-
-LIFECYCLE: active
-
-### VM2 OOM/crash + LABS jaula de capacidad + techo MAX 2 Tonys — arco cerrado 2026-08-15 (recuperado por @$fin sucesora)
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Arco completo del 2026-08-15 post-crash de VM2 (boot 18:48:22→19:08:04 UTC). Forense confirmó causa: cadáver del experimento WP Competence Specimen C (wp-tent-app/db, ya CLOSED sin recolectar) — DB sin límite de memoria golpeó techo de I/O real, app quedó zombie con OOMKilled interno al cgroup (no explica crash del host por sí solo); condición de fondo ya documentada antes del crash: VM2 (2vCPU/~3.9GB) con swap al 100% en reposo, sin holgura. Hueco de evidencia declarado y no cerrado: sin acceso root/adm para journalctl -k de la ventana exacta 18:48-19:06.
-
-Remediación aplicada: wp-tent-app/db (contenedores+volúmenes) eliminados tras archivar evidencia completa; sfv5-executor.timer roto detenido/deshabilitado; n8n reiniciado sin cambios de config (confirmado producción real, workflow "MERCADER - REAL INTAKE v0.1"). Deliberadamente sin tocar: sfv5-postgres/redis/weaviate (Optional, dev activo), vm.swappiness, resize de VM (instrucción explícita de Jorge).
-
-LABS: jaula cgroup v2 diseñada desde la reserva medida de producción hacia afuera (≈1321MB medido con margen → 1800MB, MemorySwapMax=0). Experimento real de 3 líneas (git clone+npm install+next build sobre saas-factory): 84% jaula en 52s → watcher fail-closed pausó línea C antes de que el kernel matara nada; con A+B solas, build llegó a 100% y se sostuvo ~45s sin kill pero con livelock (CPU ~2%, casi congeladas) — degradación no elegante. Swap de jaula: 0 todo el experimento. Producción sin desviación en ninguna muestra. Conclusión: 1800MB no alcanza ni para 2 líneas de build real sin degradación severa, mucho menos 3.
-
-Techo aplicado en producción: MAX_CONCURRENT_EXECUTORS=2 en dispatch_gate.py (/opt/dfl-knowledge/governance/dispatch/, módulo real que :8091 importa en vivo) — techo de capacidad física, no de autorización (IRONMAN sigue admitiendo N misiones DISPATCHED; máx 2 IN_EXECUTION a la vez). Falla cerrado con E_CAPACITY_CEILING_EXCEEDED, reintenta solo en próximo poll. FIFO por issued_at, desempate por mission_id. 14/14 tests (8 preexistentes + 6 nuevos) + E2E producción real. Activación en vivo encontró 3 misiones reales ya autorizadas al mismo instante (18:12:30Z, remanente del lab dispatch n>1): desempate dejó TCC/JPI (única con trabajo real) en espera; Jorge decidió Opción 2 — archivar JACKYCLEAN_CXB_2026_08_15 y DFLWEBSITE_CXA_2026_08_15 a `history` en provisional-routing-state.json con registro original preservado verbatim, sin reordenar el desempate. pending queda solo con TCC/JPI, /go confirma PASS limpio.
-
-**Why**: Jorge pidió explícitamente "no reproducir el colapso, establecer un sobre de capacidad segura que haga la recurrencia imposible por diseño" y "diseñar la jaula desde la reserva de producción hacia afuera".
-
-**Where**: /opt/dfl-knowledge/governance/dispatch/dispatch_gate.py + test_dispatch_gate.py; /opt/dfl-knowledge/governance/onboarding/provisional-routing-state.json; /opt/saas-factory-setup/saas-factory/IRONMAN.md (3 filas nuevas, working tree sin commitear al momento de este save); /opt/saas-factory-setup/saas-factory/.claude/HANDOFF-VM2-CAPACITY-CEILING-2026-08-15.md (registro operacional completo, secciones 1-14). Evidencia: wp-competence-tent/evidence/runs/{vm2-oom-crash,labs-3line-cage-experiment,capacity-ceiling-e2e,capacity-ceiling-unittest}-2026-08-15.*. Commit dfl-knowledge: 10bff65.
-
-**Learned**: Confirmación en vivo del gap de resiliencia @$fin documentado en obs #127 — la sesión que generó todo este trabajo murió (dejó de poder responder) antes de correr @$fin, con el handoff en disco a medio escribir (cortado mid-sentence en la autocrítica, sección 13). Recuperada por una sesión sucesora vía instrucción directa de Jorge (no por watchdog automático), que verificó el estado real (git diff IRONMAN.md, ausencia de esta obs en Engram, mirror desactualizado en 05decd3/18:35 UTC) antes de completar el Gate 4B final y correr push_mirror.sh — sin rediseñar el contrato, sin repetir el trabajo técnico ya cerrado (secciones 1-12 intactas), sin fabricar el contenido faltante de la autocrítica cortada.
 
 LIFECYCLE: active
 
@@ -631,4 +611,4 @@ LIFECYCLE: active
 
 ---
 
-*Mirror auto-generated 2026-08-16T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-16T18:03:08Z | La Garra → DFLghub/amos-context*
