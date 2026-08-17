@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-17T19:32:51Z  
+**Generated:** 2026-08-17T19:42:03Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -667,4 +667,4 @@ NEXT AGENT SHOULD: read IRONMAN.md rows for event-rsvp-waitlist before touching 
 
 ---
 
-*Mirror auto-generated 2026-08-17T19:32:51Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-17T19:42:03Z | La Garra → DFLghub/amos-context*
