@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-17T14:09:03Z  
+**Generated:** 2026-08-17T16:17:03Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,38 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Event RSVP MVP — full session close: blind AQA, Back/Forward fix, José delegated-admin grant, lifecycle-gap diagnostic, handoff sent (2026-08-17)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/event-rsvp/session-close-2026-08-17-tcc-post-jose-remediation
+STATUS: closed
+DATE: 2026-08-17
+PRECEDENCIA: C
+AUTHORITY: evidence only
+LIFECYCLE: active
+CONFIDENCE: high
+
+WHAT: Single long TCC session, four threads, all closed, no open blockers for the José handoff.
+
+1) Blind adversarial AQA (Playwright + OWASP ZAP, not seeded with José's known findings, per Jorge's explicit "keep it simple, minimum tools" instruction): Playwright 24 checks (auth abuse, direct-Supabase-REST IDOR/bypass attempts, business-logic bounds, stored XSS, 10-way concurrent RSVP race) + ZAP baseline+full active scan (135+ rules incl. SQLi/XSS/SSRF/SSTI/RCE/Log4Shell/Spring4Shell) = 0 injection/RCE findings, RLS defense-in-depth confirmed on every bypass attempt. One real NEW bug found (not on José's list): signup with a taken username silently "succeeded" (redirected to /events) while the actual DB insert failed, leaving an orphaned profile-less authenticated session — root cause was auth.signUp() opening a session before the users-table uniqueness check could fail, and a page-level useEffect reacting to that transient truthy `user` state. Fixed (signOut in the error path + stopped reacting to global auth state for the signup redirect) + added CSP/X-Content-Type-Options/X-Frame-Options/Permissions-Policy headers. Verified live post-deploy. Commit 112ab97.
+
+2) Multi-tab auth investigation (Jorge's real Firefox report: 2 tabs, logout in one deauthed both, a reopened tab showed authenticated then deauthed): reproduced exactly via Playwright pages sharing one BrowserContext. Confirmed root cause: single shared localStorage session per browser origin/profile + GoTrue's own cross-tab storage-event sync — this is expected upstream Supabase behavior, NOT a bug. The 6-8 independent router.push-based auth-guard useEffects reacting uncoordinated to that shared state IS implementation-level amplification, diagnosed but explicitly NOT fixed in that pass per Jorge's scope (diagnosis only, no new investigation lines).
+
+3) Back/Forward bug (found via Jorge's real repro description, fixed for real this time): Back into /login or /signup while authenticated ate the Back action and bounced straight back to where you started — root cause was those two pages redirecting away from themselves the instant global `user` was truthy, including when reached via popstate (browser Back), which is a real implementation bug distinct from #2. Fix: /login and /signup now render a static non-navigating "already signed in" panel instead of an effect-driven redirect; all 5 protected-route guards (+root "/") switched router.push('/login') to router.replace('/login') so a lost-auth redirect never leaves a trapped history entry. All 7 required scenarios (Back/Forward authenticated, normal nav, refresh, logout, Back after logout, direct access to protected route after logout) verified PASS live in production.
+
+4) José capability grant: JoseIncer (confirmed is_admin=true, is_owner=false in production) can now execute remove_demo_data() (DEMO->REAL transition) — migration 018 widened that one RPC from owner-only to any-admin, with an explicit is_owner=false added to its own DELETE as defense in depth. Every other owner/delegated-admin boundary from migration 015 re-verified untouched via real auth.uid() simulation against the LIVE functions/triggers (not mocks, not assumptions): José structurally cannot grant/revoke admin, disable the owner or himself, or change is_owner through any authenticated-role path. NOTE (transparency, self-caught error): a WITH-CTE test harness bug (an unreferenced `select set_config(...)` CTE got planner-pruned and never executed) made one is_owner-bypass test appear to succeed against AdminDFL's real row; caught within ~1 minute, reverted immediately, re-verified correctly with a DO $$ block confirming the real trigger blocks it — root cause was the test methodology, not the app. Documented honestly rather than hidden.
+
+5) Deploy incident (real, separate from all of the above): the GitHub->Vercel webhook for event-rsvp-waitlist silently stopped firing — two full pushes (17c09f5, f022acd) sat completely unbuilt for 50+ minutes, confirmed via `vercel ls` showing the most recent deployment was still 2h old (not just a slow build, zero new deployments triggered at all). Resolved by an interactive `vercel login` device-flow (Jorge authorized twice, first code expired unused) followed by a direct `vercel --prod` deploy, bypassing the broken webhook entirely. NOT root-caused — if pushes to main stop auto-deploying again, this same workaround applies, but the underlying webhook problem is still open and undiagnosed.
+
+6) Event lifecycle gap diagnostic (Jorge-initiated, explicitly asked NOT to fix yet): a regular user can create up to 3 events (events_insert_own RLS, real server-side cap, verified) but the UI has zero edit path (EventForm only renders under /events/new, no edit mode anywhere) and zero delete/cancel-event path (the only "Cancel" button anywhere in the app is "Cancel RSVP", a guest cancelling their own attendance -- /events/[id]/page.tsx never once checks user.id === event.creator_id). The DB-layer delete capability already exists and works (events_delete_own RLS) -- verified live via a real signup->create->direct-REST-DELETE round trip -- it's just never exposed in the UI. Practical consequence Jorge named precisely: a creator's only in-product fix for a mistake is creating ANOTHER event, which still burns one of the 3 slots -- "3 events" can degrade into "3 mistakes and you're locked out." Duplicates (same title, close time) explicitly should NOT be blocked -- legitimate multi-session use case; the real gap is the forced workaround, not the duplicate. Classified by Jorge as product-evolution backlog, non-blocking, NOT a defect Factory hid, and explicitly NOT authorization to build it later without a fresh go-ahead. Methodological lesson captured as a standing feedback memory (feedback-aqa-full-crud-lifecycle): future AQA must exercise CREATE->READ->UPDATE->CANCEL/DELETE for any user-created object, not just CREATE -- a CREATE-only pass gave a clean READY over an object that was otherwise create-only/frozen.
+
+FINAL STATE: production event-rsvp-waitlist.vercel.app serving commit f022acd (deployed via `vercel --prod`, dpl_Dv7MUpeRRFij4vf4JpGFCX6hQX8R), migration 018 applied directly to the DB. Jorge sent José the official re-review message this same session, after the READY_FOR_JOSE verdict. All synthetic test accounts/events from every phase of this session cleaned, 0 residue confirmed by SQL each time. IRONMAN.md has the full detailed rows (3 separate entries: AQA close, Back/Forward+admin-grant+webhook-incident close, lifecycle-gap diagnostic) plus a "HANDOFF SENT" note on the closing row.
+
+WHY IT MATTERS: this is the authoritative narrative for anyone picking up Event RSVP work after this point -- what's actually fixed vs. diagnosed-only vs. deliberately deferred, and why.
+
+NEXT AGENT SHOULD: read IRONMAN.md rows for event-rsvp-waitlist before touching that repo again. If José's re-review surfaces something new, treat it as a fresh finding against this baseline, not against the earlier 2026-08-13 remediation. Do not build event edit/delete/cancel UI without an explicit fresh go-ahead from Jorge, even though this observation documents the gap in detail. If a push to event-rsvp-waitlist/main doesn't deploy within a few minutes, check `vercel ls` for the actual deployment list before assuming it's just slow -- the webhook has failed silently once already.
+
 ### Event RSVP MVP — José remediation CLOSED 2026-08-17, TCC + TCX dispatch regularized for closure
 **Type:** decision  
 **Project:** dfl  
@@ -137,24 +169,6 @@ FINAL STEP: once TCC's own @$fin (this record, push_mirror.sh) was underway, mov
 Neither TCC's nor TCX's regularized authorization grants new work -- both are explicitly closure-only in their role text; the underlying schema has no machine-enforced "closure-only" action verb (EXECUTE_MISSION is coupled to execute_permitted by the atomicity invariant), so the actual limiting mechanism is the 3h TTL plus explicit human instruction, stated here for anyone auditing this later. TCX still needs to run its OWN @$fin (mem_save/push_mirror.sh) under its now-valid TCX_CLOSURE_2026_08_17 authorization -- TCC cannot execute that on TCX's behalf.
 
 Do NOT re-open José's findings without a new specific failure report. Do NOT re-add the Python backend or /api/rsvp route. Do NOT treat the time-picker finding as closed.
-
-### DFL Website — TCC lane closed 2026-08-16 (build+deploy+Supabase real, durable in git, two human actions remain)
-**Type:** decision  
-**Project:** dfl  
-
-Full TCC arc this session (T3 Falsification Proof -> full homepage build -> TCX content-corpus integration x2 -> real Challenge backend -> real Vercel/Supabase deployment -> closure) is CLOSED and durable.
-
-Durable state: branch project/dfl-website-t3, HEAD 14d3af6, pushed to DFLghub/saas-factory-setup and verified (origin HEAD == local HEAD, checked at every step including the final closure refresh). Full checkpoint: .claude/CHECKPOINT-DFL-WEBSITE-CLOSURE-2026-08-16.md in saas-factory-setup.
-
-Real dedicated Supabase project "dfl-website" (ref fkjwbepkwqzdwhpymigg) provisioned by Jorge, discovered via the Management API using the access token already in .mcp.json (no new credential needed), confirmed distinct from and never touched event-rsvp-waitlist/360eventos. Schema (challenge_submissions) applied, RLS enabled zero policies, real writes proven end-to-end (curl + real browser, EN+ES) with direct DB verification, not inferred from response codes. 6 synthetic @example.com test rows used as proof then deleted at closure -- table is 0 rows, clean, ready for real traffic.
-
-Real deployed E2E on two anonymous Vercel `--temporary` previews (worked around a broken Vercel MCP plugin OAuth client -- "app ID is invalid", a plugin-side bug not a Jorge account issue): all 6 EN/ES routes, axe 0, CLS 0, honeypot/rate-limit/CORS/validation-failure all confirmed against live infra. 48-Hour Sample is DB-constrained to never be writable as "approved" from the intake path -- structural guarantee, not just application logic.
-
-Decap public/admin/config.yml wired to the real repo/branch now that both are genuinely pushed; TCX's own governance test (repo-identity-is-explicit-deployment-decision) was rewritten, not bypassed, to assert the real value.
-
-Two genuine human actions remain, both blocked on account-level credentials only I don't have: (1) `vercel login` + link/claim to make the Vercel deployment durable instead of anonymous-temporary (anonymous previews have a fixed ~60min lifetime from creation, NOT extended by redeploying -- confirmed by testing); (2) a GitHub OAuth App under DFLghub org for Decap to actually authenticate (its github backend defaults to assuming Netlify hosting). www.deepfeelingslabs.com is authorized as the production domain but deliberately never attached/DNS-touched this session.
-
-No secrets committed anywhere in the branch. One local scratch-file copy of the Supabase service-role key (never committed, never fully printed, never left this machine) was found during closure cleanup and securely deleted.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -484,6 +498,38 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Event RSVP MVP — full session close: blind AQA, Back/Forward fix, José delegated-admin grant, lifecycle-gap diagnostic, handoff sent (2026-08-17)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/event-rsvp/session-close-2026-08-17-tcc-post-jose-remediation
+STATUS: closed
+DATE: 2026-08-17
+PRECEDENCIA: C
+AUTHORITY: evidence only
+LIFECYCLE: active
+CONFIDENCE: high
+
+WHAT: Single long TCC session, four threads, all closed, no open blockers for the José handoff.
+
+1) Blind adversarial AQA (Playwright + OWASP ZAP, not seeded with José's known findings, per Jorge's explicit "keep it simple, minimum tools" instruction): Playwright 24 checks (auth abuse, direct-Supabase-REST IDOR/bypass attempts, business-logic bounds, stored XSS, 10-way concurrent RSVP race) + ZAP baseline+full active scan (135+ rules incl. SQLi/XSS/SSRF/SSTI/RCE/Log4Shell/Spring4Shell) = 0 injection/RCE findings, RLS defense-in-depth confirmed on every bypass attempt. One real NEW bug found (not on José's list): signup with a taken username silently "succeeded" (redirected to /events) while the actual DB insert failed, leaving an orphaned profile-less authenticated session — root cause was auth.signUp() opening a session before the users-table uniqueness check could fail, and a page-level useEffect reacting to that transient truthy `user` state. Fixed (signOut in the error path + stopped reacting to global auth state for the signup redirect) + added CSP/X-Content-Type-Options/X-Frame-Options/Permissions-Policy headers. Verified live post-deploy. Commit 112ab97.
+
+2) Multi-tab auth investigation (Jorge's real Firefox report: 2 tabs, logout in one deauthed both, a reopened tab showed authenticated then deauthed): reproduced exactly via Playwright pages sharing one BrowserContext. Confirmed root cause: single shared localStorage session per browser origin/profile + GoTrue's own cross-tab storage-event sync — this is expected upstream Supabase behavior, NOT a bug. The 6-8 independent router.push-based auth-guard useEffects reacting uncoordinated to that shared state IS implementation-level amplification, diagnosed but explicitly NOT fixed in that pass per Jorge's scope (diagnosis only, no new investigation lines).
+
+3) Back/Forward bug (found via Jorge's real repro description, fixed for real this time): Back into /login or /signup while authenticated ate the Back action and bounced straight back to where you started — root cause was those two pages redirecting away from themselves the instant global `user` was truthy, including when reached via popstate (browser Back), which is a real implementation bug distinct from #2. Fix: /login and /signup now render a static non-navigating "already signed in" panel instead of an effect-driven redirect; all 5 protected-route guards (+root "/") switched router.push('/login') to router.replace('/login') so a lost-auth redirect never leaves a trapped history entry. All 7 required scenarios (Back/Forward authenticated, normal nav, refresh, logout, Back after logout, direct access to protected route after logout) verified PASS live in production.
+
+4) José capability grant: JoseIncer (confirmed is_admin=true, is_owner=false in production) can now execute remove_demo_data() (DEMO->REAL transition) — migration 018 widened that one RPC from owner-only to any-admin, with an explicit is_owner=false added to its own DELETE as defense in depth. Every other owner/delegated-admin boundary from migration 015 re-verified untouched via real auth.uid() simulation against the LIVE functions/triggers (not mocks, not assumptions): José structurally cannot grant/revoke admin, disable the owner or himself, or change is_owner through any authenticated-role path. NOTE (transparency, self-caught error): a WITH-CTE test harness bug (an unreferenced `select set_config(...)` CTE got planner-pruned and never executed) made one is_owner-bypass test appear to succeed against AdminDFL's real row; caught within ~1 minute, reverted immediately, re-verified correctly with a DO $$ block confirming the real trigger blocks it — root cause was the test methodology, not the app. Documented honestly rather than hidden.
+
+5) Deploy incident (real, separate from all of the above): the GitHub->Vercel webhook for event-rsvp-waitlist silently stopped firing — two full pushes (17c09f5, f022acd) sat completely unbuilt for 50+ minutes, confirmed via `vercel ls` showing the most recent deployment was still 2h old (not just a slow build, zero new deployments triggered at all). Resolved by an interactive `vercel login` device-flow (Jorge authorized twice, first code expired unused) followed by a direct `vercel --prod` deploy, bypassing the broken webhook entirely. NOT root-caused — if pushes to main stop auto-deploying again, this same workaround applies, but the underlying webhook problem is still open and undiagnosed.
+
+6) Event lifecycle gap diagnostic (Jorge-initiated, explicitly asked NOT to fix yet): a regular user can create up to 3 events (events_insert_own RLS, real server-side cap, verified) but the UI has zero edit path (EventForm only renders under /events/new, no edit mode anywhere) and zero delete/cancel-event path (the only "Cancel" button anywhere in the app is "Cancel RSVP", a guest cancelling their own attendance -- /events/[id]/page.tsx never once checks user.id === event.creator_id). The DB-layer delete capability already exists and works (events_delete_own RLS) -- verified live via a real signup->create->direct-REST-DELETE round trip -- it's just never exposed in the UI. Practical consequence Jorge named precisely: a creator's only in-product fix for a mistake is creating ANOTHER event, which still burns one of the 3 slots -- "3 events" can degrade into "3 mistakes and you're locked out." Duplicates (same title, close time) explicitly should NOT be blocked -- legitimate multi-session use case; the real gap is the forced workaround, not the duplicate. Classified by Jorge as product-evolution backlog, non-blocking, NOT a defect Factory hid, and explicitly NOT authorization to build it later without a fresh go-ahead. Methodological lesson captured as a standing feedback memory (feedback-aqa-full-crud-lifecycle): future AQA must exercise CREATE->READ->UPDATE->CANCEL/DELETE for any user-created object, not just CREATE -- a CREATE-only pass gave a clean READY over an object that was otherwise create-only/frozen.
+
+FINAL STATE: production event-rsvp-waitlist.vercel.app serving commit f022acd (deployed via `vercel --prod`, dpl_Dv7MUpeRRFij4vf4JpGFCX6hQX8R), migration 018 applied directly to the DB. Jorge sent José the official re-review message this same session, after the READY_FOR_JOSE verdict. All synthetic test accounts/events from every phase of this session cleaned, 0 residue confirmed by SQL each time. IRONMAN.md has the full detailed rows (3 separate entries: AQA close, Back/Forward+admin-grant+webhook-incident close, lifecycle-gap diagnostic) plus a "HANDOFF SENT" note on the closing row.
+
+WHY IT MATTERS: this is the authoritative narrative for anyone picking up Event RSVP work after this point -- what's actually fixed vs. diagnosed-only vs. deliberately deferred, and why.
+
+NEXT AGENT SHOULD: read IRONMAN.md rows for event-rsvp-waitlist before touching that repo again. If José's re-review surfaces something new, treat it as a fresh finding against this baseline, not against the earlier 2026-08-13 remediation. Do not build event edit/delete/cancel UI without an explicit fresh go-ahead from Jorge, even though this observation documents the gap in detail. If a push to event-rsvp-waitlist/main doesn't deploy within a few minutes, check `vercel ls` for the actual deployment list before assuming it's just slow -- the webhook has failed silently once already.
+
 ### P12 TCX — Event RSVP closure, independent verification, and Q/R learning
 **Type:** architecture  
 **Project:** dfl  
@@ -501,28 +547,6 @@ Systemic Factory learnings: validation/domain integrity must be enforced at UI, 
 Incidents and self-evaluation: TCX initially found NOT_READY because source/schema/deployed/runtime evidence diverged and the stale /api/rsvp endpoint remained deployed. A Vercel token failure temporarily blocked deployment; after valid TCX authorization and recovery, the rewrite was corrected and production was reverified. Good: adversarial independence, boundary testing, cleanup, deployment recheck, and explicit Q/R recursion. Mistakes: initial closure attempt occurred while TCX routing was absent; some early proof depended on source/live function inference before direct runtime evidence; a generated build directory had to be cleaned after verification. Better next time: establish executor authorization at session start, preserve evidence incrementally, and separate production deployment proof from local candidate proof from the beginning.
 
 Next-session handoff: do not redo this remediation or reopen CLOSED lanes absent contradictory runtime evidence. Start by reading this checkpoint and IRONMAN, then verify /go routing for the actual executor. Treat FINAL DEPLOYMENT VERIFIED as the final outcome. No pending remediation work from this session.
-
-### Event RSVP MVP — José remediation CLOSED 2026-08-17, TCC + TCX dispatch regularized for closure
-**Type:** decision  
-**Project:** dfl  
-
-Full TCC session on Event RSVP MVP (DFLghub/event-rsvp-waitlist, mission JPI_TCC_2026_08_15): José's 9 external-testing findings + 1 forgery bug found during independent adversarial re-verification are CLOSED with live-production evidence, not just code review.
-
-DELIVERED: DB migrations 016 (input/domain integrity: bounded max_attendees/party_size, required/future/12mo-horizon event_date via trigger not CHECK, text length limits) + 017 (RSVP self-service update lockdown via enforce_rsvp_update_lifecycle trigger -- closes a real forgery gap where users could PATCH their own row to self-promote from waitlist or inflate party_size, since assign_rsvp_status only ever ran on INSERT; partial unique index rsvps_active_unique_idx makes "RSVP again after cancelling" work without resurrecting the old row; users.username/email length bounds) applied directly to production Supabase (axqiedeppdkxtovriwqf). Code: EventForm/AuthForm/admin console share validation, friendly error mapping instead of raw RLS text, logout only navigates on confirmed signOut() success, orphaned /api/rsvp route + unused Python backend removed. Commits 9455aa6 + b375b06 pushed to DFLghub/event-rsvp-waitlist main (HEAD == origin/main, verified repeatedly through session close).
-
-INCIDENT (owned, not buried): deploying 9455aa6 took production down completely -- the vercel.json edit removing the backend service dropped the entire `rewrites` array including the catch-all "/(.*)" -> frontend rule, so nothing routed to the frontend either. npm run build passed clean both times; it doesn't exercise Vercel's routing layer. Caught same session via a background poller on the live URL, root-caused, fixed with hotfix b375b06 restoring just the frontend catch-all. Full recovery verified: all 6 frontend routes 200 with real content, /api/rsvp and /api/python-rsvp/health 404 -- re-verified fresh at final session close, still healthy.
-
-FACTORY LEARNING: build PASS != deployment/runtime PASS for platform-level routing config -- a concrete gate candidate is a live-URL smoke check after any vercel.json/deployment-config change, before calling it done.
-
-José's finding #2 (native datetime-local picker can't scroll to other hours) remains explicitly UNPROVEN -- no working browser in this environment (Playwright Chromium missing, no sudo to install). Do not treat as closed.
-
-DISPATCH GOVERNANCE FINDING + FIX (separate from the product work, same session): mid-closure, TCX/Codex reported /go showing zero pending entry for executor=TCX at all (never existed, not merely expired) and TCC's own dispatch authorization (disp-tcc-20260815181230, issued by Jorge under policy DFL_LAB_DISPATCH_N_GT_1_2026_08_15, a same-day lab policy) had been FAIL_CLOSED since 2026-08-15T22:12:30Z -- ~35h before this session's actual work happened, meaning the whole remediation ran without valid institutional dispatch authorization the entire time (the product-repo git/Supabase credentials are separate infrastructure and were never gated by this). Verified independently against the real dispatch_gate.py/provisional_routing.py validator code, not just by reading /go's rendered output. Root state file: /opt/dfl-knowledge/governance/onboarding/provisional-routing-state.json (dflagent:dfl, group-writable, tracked in a git repo shared with unrelated in-progress work from other agents -- NOT committed to git, since the file write is already effective/authoritative for /go without a commit, and committing would have mixed with substantial unrelated uncommitted state already present in that repo). Under Jorge's direct chat authorization (2026-08-17), regularized TCC's mission (new policy DFL_SESSION_CLOSURE_2026_08_17, 3h TTL, closure-scoped role text, dispatch_id disp-tcc-20260817-closure) and created TCX's first-ever pending entry (mission_id TCX_CLOSURE_2026_08_17, executor TCX, same closure policy, 3h TTL, status DISPATCHED not IN_EXECUTION since it hadn't started executing yet, dispatch_id disp-tcx-20260817-closure). Verified TCX's EJECUTOR profile via observed capability (real bash execution seen in its own transcript: git log, node script, pgrep, file removal) rather than assumed by brand, per @$go Paso 0. Respected MAX_CONCURRENT_EXECUTORS=2 (TCC is the only IN_EXECUTION entry; TCX DISPATCHED doesn't count against the physical ceiling). Verified every edit against the actual live validate_bootstrap()/verify_dispatch() functions offline AND against the live /go HTTP endpoint after writing.
-
-FINAL STEP: once TCC's own @$fin (this record, push_mirror.sh) was underway, moved JPI_TCC_2026_08_15 OUT of `pending` (where it falsely would have kept reading "IN_EXECUTION" forever) and INTO `history` as CLOSED (outcome CLOSED_SESSION_COMPLETE), following the exact precedent set by JACKYCLEAN_CXB_2026_08_15's closure -- full original mission record preserved verbatim inside the history entry, nothing fabricated as a substitute. Re-verified live against /go after this move: dispatch_receipts now shows ONLY TCX_CLOSURE_2026_08_17 (PASS/PERMITTED); TCC no longer appears as pending/executing anywhere. Whether the broader "TCC Track A / JPI" productive line continues in a future session is Jorge's decision, not implied by this closure -- if it does, it gets a fresh dispatch authorization, not a reopening of this one. Backup of the pre-regularization state preserved at provisional-routing-state.json.pre-tcc-tcx-closure-regularization-20260817.bak.
-
-Neither TCC's nor TCX's regularized authorization grants new work -- both are explicitly closure-only in their role text; the underlying schema has no machine-enforced "closure-only" action verb (EXECUTE_MISSION is coupled to execute_permitted by the atomicity invariant), so the actual limiting mechanism is the 3h TTL plus explicit human instruction, stated here for anyone auditing this later. TCX still needs to run its OWN @$fin (mem_save/push_mirror.sh) under its now-valid TCX_CLOSURE_2026_08_17 authorization -- TCC cannot execute that on TCX's behalf.
-
-Do NOT re-open José's findings without a new specific failure report. Do NOT re-add the Python backend or /api/rsvp route. Do NOT treat the time-picker finding as closed.
 
 ---
 
@@ -633,4 +657,4 @@ Do NOT re-open José's findings without a new specific failure report. Do NOT re
 
 ---
 
-*Mirror auto-generated 2026-08-17T14:09:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-17T16:17:03Z | La Garra → DFLghub/amos-context*
