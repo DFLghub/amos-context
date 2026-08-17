@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-17T05:13:28Z  
+**Generated:** 2026-08-17T05:16:07Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -277,13 +277,23 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### DFL Website — Jorge ya tiene diseño propio, pendiente de traer (no implementar aún)
-**Type:** fact  
+### P12 TCX — Event RSVP closure, independent verification, and Q/R learning
+**Type:** architecture  
 **Project:** dfl  
 
-2026-08-16, post-cierre de sesión: Jorge menciona que además de la arquitectura (T3 Locked Blueprint, ya implementada por TCC/TCX) también tiene diseño propio ya preparado para DFL Website, pero explícitamente "no lo vamos a hacer ahora" — es un anuncio de planificación, no un pedido de trabajo inmediato.
+P12 closure checkpoint, 2026-08-17. Independent final verdict: FINAL DEPLOYMENT VERIFIED. Read-only production evidence: https://event-rsvp-waitlist.vercel.app/ , /login, /signup, /events, and /events/new returned HTTP 200 with real application content; /api/rsvp returned HTTP 404; /api/python-rsvp/health returned HTTP 404. No production regression observed.
 
-Implicación para sesiones futuras: el sistema de diseño actual en el branch project/dfl-website-t3 (tokens Warm Ivory/Carbon/Copper/Teal, tipografía, Hero copper->teal SVG, etc.) es una implementación real y funcional del T2 Design Lock del Blueprint, pero NO es necesariamente el diseño final que Jorge quiere — cuando él traiga su propio diseño, probablemente reemplaza esta capa visual (no la arquitectura/backend/Supabase, que sí se mantienen). No asumir que el diseño actual es definitivo ni reconstruirlo/defenderlo si Jorge trae algo distinto.
+Final Event RSVP lane states: #1 authoritative DB/domain integrity CLOSED (live authenticated direct probes rejected zero, negative, decimal, exponent, overlong title/description, past date, and 13-month date; live horizon RPC returned 12 months); #3 obsolete RSVP paths CLOSED (Next route and Python implementations removed; vercel.json decommissioned backend service/rewrite; deployed 404s verified); #5 text boundaries CLOSED (shared Zod validation for public/admin signup and live DB username/email bounds confirmed by TCC; live event text bypasses rejected); #7 fresh RSVP lifecycle CLOSED (TCC prior live evidence confirmed cancel -> fresh distinct row, cancelled history preserved, active partial unique index, independent capacity/waitlist); #9 time picker CLOSED (native datetime-local replaced with explicit date plus 24-hour/60-minute selectors; build and runtime route checks passed).
+
+Evidence chain: source/build/deployed artifact/runtime was checked separately. npm type-check/build and git diff --check passed. The stale Vercel rewrite was fixed and deployed; final production probes verified it. No synthetic accounts/rows/fixtures were created in final verification. No background server/job remained. Temporary verification directory /tmp/event-rsvp-next-previous-pass2 was removed.
+
+Working tree distinction: product /opt/dfl-products/event-rsvp-waitlist has no tracked diff at closure; only untracked dfl.yaml and tsconfig.tsbuildinfo remain, understood as pre-existing/generated and not closure-created application changes. Factory root contains extensive pre-existing/unrelated worktree changes; none were modified during closure.
+
+Systemic Factory learnings: validation/domain integrity must be enforced at UI, application, and authoritative DB boundaries; source/migration presence is not applied schema; build artifact is not deployed artifact; deployed runtime is the final proof; deployment incidents (invalid Vercel token/stale rewrite) require recursive Q/R until deployment and 404 behavior are reverified; TCC/TCX non-interference requires explicit lane ownership and evidence handoff; Q/R is recursive DFS with suspended parent goals, dynamic REQUIEROs, backtracking/unwind, and mandatory parent revalidation. Core rule: “¿Qué REQUIERO para lograr lo que QUIERO?” A satisfied prerequisite only enables retry; it does not prove the parent. Do not repeat checklist-based closure, source-only readiness claims, or native-control assumptions without runtime proof.
+
+Incidents and self-evaluation: TCX initially found NOT_READY because source/schema/deployed/runtime evidence diverged and the stale /api/rsvp endpoint remained deployed. A Vercel token failure temporarily blocked deployment; after valid TCX authorization and recovery, the rewrite was corrected and production was reverified. Good: adversarial independence, boundary testing, cleanup, deployment recheck, and explicit Q/R recursion. Mistakes: initial closure attempt occurred while TCX routing was absent; some early proof depended on source/live function inference before direct runtime evidence; a generated build directory had to be cleaned after verification. Better next time: establish executor authorization at session start, preserve evidence incrementally, and separate production deployment proof from local candidate proof from the beginning.
+
+Next-session handoff: do not redo this remediation or reopen CLOSED lanes absent contradictory runtime evidence. Start by reading this checkpoint and IRONMAN, then verify /go routing for the actual executor. Treat FINAL DEPLOYMENT VERIFIED as the final outcome. No pending remediation work from this session.
 
 ---
 
@@ -473,6 +483,24 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### P12 TCX — Event RSVP closure, independent verification, and Q/R learning
+**Type:** architecture  
+**Project:** dfl  
+
+P12 closure checkpoint, 2026-08-17. Independent final verdict: FINAL DEPLOYMENT VERIFIED. Read-only production evidence: https://event-rsvp-waitlist.vercel.app/ , /login, /signup, /events, and /events/new returned HTTP 200 with real application content; /api/rsvp returned HTTP 404; /api/python-rsvp/health returned HTTP 404. No production regression observed.
+
+Final Event RSVP lane states: #1 authoritative DB/domain integrity CLOSED (live authenticated direct probes rejected zero, negative, decimal, exponent, overlong title/description, past date, and 13-month date; live horizon RPC returned 12 months); #3 obsolete RSVP paths CLOSED (Next route and Python implementations removed; vercel.json decommissioned backend service/rewrite; deployed 404s verified); #5 text boundaries CLOSED (shared Zod validation for public/admin signup and live DB username/email bounds confirmed by TCC; live event text bypasses rejected); #7 fresh RSVP lifecycle CLOSED (TCC prior live evidence confirmed cancel -> fresh distinct row, cancelled history preserved, active partial unique index, independent capacity/waitlist); #9 time picker CLOSED (native datetime-local replaced with explicit date plus 24-hour/60-minute selectors; build and runtime route checks passed).
+
+Evidence chain: source/build/deployed artifact/runtime was checked separately. npm type-check/build and git diff --check passed. The stale Vercel rewrite was fixed and deployed; final production probes verified it. No synthetic accounts/rows/fixtures were created in final verification. No background server/job remained. Temporary verification directory /tmp/event-rsvp-next-previous-pass2 was removed.
+
+Working tree distinction: product /opt/dfl-products/event-rsvp-waitlist has no tracked diff at closure; only untracked dfl.yaml and tsconfig.tsbuildinfo remain, understood as pre-existing/generated and not closure-created application changes. Factory root contains extensive pre-existing/unrelated worktree changes; none were modified during closure.
+
+Systemic Factory learnings: validation/domain integrity must be enforced at UI, application, and authoritative DB boundaries; source/migration presence is not applied schema; build artifact is not deployed artifact; deployed runtime is the final proof; deployment incidents (invalid Vercel token/stale rewrite) require recursive Q/R until deployment and 404 behavior are reverified; TCC/TCX non-interference requires explicit lane ownership and evidence handoff; Q/R is recursive DFS with suspended parent goals, dynamic REQUIEROs, backtracking/unwind, and mandatory parent revalidation. Core rule: “¿Qué REQUIERO para lograr lo que QUIERO?” A satisfied prerequisite only enables retry; it does not prove the parent. Do not repeat checklist-based closure, source-only readiness claims, or native-control assumptions without runtime proof.
+
+Incidents and self-evaluation: TCX initially found NOT_READY because source/schema/deployed/runtime evidence diverged and the stale /api/rsvp endpoint remained deployed. A Vercel token failure temporarily blocked deployment; after valid TCX authorization and recovery, the rewrite was corrected and production was reverified. Good: adversarial independence, boundary testing, cleanup, deployment recheck, and explicit Q/R recursion. Mistakes: initial closure attempt occurred while TCX routing was absent; some early proof depended on source/live function inference before direct runtime evidence; a generated build directory had to be cleaned after verification. Better next time: establish executor authorization at session start, preserve evidence incrementally, and separate production deployment proof from local candidate proof from the beginning.
+
+Next-session handoff: do not redo this remediation or reopen CLOSED lanes absent contradictory runtime evidence. Start by reading this checkpoint and IRONMAN, then verify /go routing for the actual executor. Treat FINAL DEPLOYMENT VERIFIED as the final outcome. No pending remediation work from this session.
+
 ### Event RSVP MVP — José remediation CLOSED 2026-08-17, TCC + TCX dispatch regularized for closure
 **Type:** decision  
 **Project:** dfl  
@@ -492,14 +520,6 @@ DISPATCH GOVERNANCE FINDING + FIX (separate from the product work, same session)
 Neither TCC's nor TCX's regularized authorization grants new work -- both are explicitly closure-only in their role text; the underlying schema has no machine-enforced "closure-only" action verb (EXECUTE_MISSION is coupled to execute_permitted by the atomicity invariant), so the actual limiting mechanism is the 3h TTL plus explicit human instruction, stated here for anyone auditing this later.
 
 Do NOT re-open José's findings without a new specific failure report. Do NOT re-add the Python backend or /api/rsvp route. Do NOT treat the time-picker finding as closed.
-
-### DFL Website — Jorge ya tiene diseño propio, pendiente de traer (no implementar aún)
-**Type:** fact  
-**Project:** dfl  
-
-2026-08-16, post-cierre de sesión: Jorge menciona que además de la arquitectura (T3 Locked Blueprint, ya implementada por TCC/TCX) también tiene diseño propio ya preparado para DFL Website, pero explícitamente "no lo vamos a hacer ahora" — es un anuncio de planificación, no un pedido de trabajo inmediato.
-
-Implicación para sesiones futuras: el sistema de diseño actual en el branch project/dfl-website-t3 (tokens Warm Ivory/Carbon/Copper/Teal, tipografía, Hero copper->teal SVG, etc.) es una implementación real y funcional del T2 Design Lock del Blueprint, pero NO es necesariamente el diseño final que Jorge quiere — cuando él traiga su propio diseño, probablemente reemplaza esta capa visual (no la arquitectura/backend/Supabase, que sí se mantienen). No asumir que el diseño actual es definitivo ni reconstruirlo/defenderlo si Jorge trae algo distinto.
 
 ---
 
@@ -610,4 +630,4 @@ Implicación para sesiones futuras: el sistema de diseño actual en el branch pr
 
 ---
 
-*Mirror auto-generated 2026-08-17T05:13:28Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-17T05:16:07Z | La Garra → DFLghub/amos-context*
