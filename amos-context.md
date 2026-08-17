@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-16T18:18:20Z  
+**Generated:** 2026-08-17T03:05:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -607,4 +607,4 @@ No secrets committed anywhere in the branch. One local scratch-file copy of the 
 
 ---
 
-*Mirror auto-generated 2026-08-16T18:18:20Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-17T03:05:02Z | La Garra → DFLghub/amos-context*
