@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-17T16:18:07Z  
+**Generated:** 2026-08-17T19:32:51Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -293,23 +293,28 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### P12 TCX — Event RSVP closure, independent verification, and Q/R learning
-**Type:** architecture  
-**Project:** dfl  
+### @$fin CIERRE 2026-08-17 — saas-factory factory-submit /review findings P1-1/P1-2/P2-3 CLOSED, verified
+**Type:** bugfix  
+**Project:** saas-factory  
 
-P12 closure checkpoint, 2026-08-17. Independent final verdict: FINAL DEPLOYMENT VERIFIED. Read-only production evidence: https://event-rsvp-waitlist.vercel.app/ , /login, /signup, /events, and /events/new returned HTTP 200 with real application content; /api/rsvp returned HTTP 404; /api/python-rsvp/health returned HTTP 404. No production regression observed.
+TCC session closure, short-form, per Jorge's explicit "cierre corto" instruction. Scope: close exactly 3 /review findings from the saas-factory factory-submit feature review round, no new fronts opened, no DFL website audit.
 
-Final Event RSVP lane states: #1 authoritative DB/domain integrity CLOSED (live authenticated direct probes rejected zero, negative, decimal, exponent, overlong title/description, past date, and 13-month date; live horizon RPC returned 12 months); #3 obsolete RSVP paths CLOSED (Next route and Python implementations removed; vercel.json decommissioned backend service/rewrite; deployed 404s verified); #5 text boundaries CLOSED (shared Zod validation for public/admin signup and live DB username/email bounds confirmed by TCC; live event text bypasses rejected); #7 fresh RSVP lifecycle CLOSED (TCC prior live evidence confirmed cancel -> fresh distinct row, cancelled history preserved, active partial unique index, independent capacity/waitlist); #9 time picker CLOSED (native datetime-local replaced with explicit date plus 24-hour/60-minute selectors; build and runtime route checks passed).
+CLOSED — VERIFIED (real build/tests, not self-reported):
 
-Evidence chain: source/build/deployed artifact/runtime was checked separately. npm type-check/build and git diff --check passed. The stale Vercel rewrite was fixed and deployed; final production probes verified it. No synthetic accounts/rows/fixtures were created in final verification. No background server/job remained. Temporary verification directory /tmp/event-rsvp-next-previous-pass2 was removed.
+P1-1 Root TypeScript build (OOM): root cause was tsconfig.json's `include` glob compiling `Varios para SFV5/` (4.8GB, dozens of embedded apps each with their own tsconfig) and `tools/vector-memory` (self-contained subproject, own tsconfig) into the root `next build` typecheck pass. Fixed by adding both, plus `tests/` (contained a dead pre-Jest-removal .ts duplicate of an already-working .mjs test), to root tsconfig `exclude` — not by patching anything inside the excluded trees, per Jorge's explicit constraint. That surfaced real, previously OOM-masked root-app errors: Zod v4 `z.record()` needing 2 args (key+value schema) in factory-result-schema.ts, AI SDK v7 renaming `maxTokens`→`maxOutputTokens` in strategy-c-helpers.ts/strategy-c-demo route, one dead `experimental_generateThinkingTime` option that was never a real SDK field (removed, it was a no-op), implicit-any Supabase cookie typing in supabase/server.ts. All fixed for real. `npm run build` (next build --webpack) verified green end-to-end: compiles, typechecks, generates all 12 routes.
 
-Working tree distinction: product /opt/dfl-products/event-rsvp-waitlist has no tracked diff at closure; only untracked dfl.yaml and tsconfig.tsbuildinfo remain, understood as pre-existing/generated and not closure-created application changes. Factory root contains extensive pre-existing/unrelated worktree changes; none were modified during closure.
+P1-2 Vector-memory idempotent re-ingestion: root cause was Weaviate's create endpoint rejecting a re-used deterministic ID (weaviateUuid derived from sourceId), causing ingestOne to throw, which meant the event never got popped from the Redis queue and stayed stuck at the head, blocking everything behind it. My first fix attempt (check-then-update via weaviate-ts-client's Updater) had its own real bug — Updater has no .withVector() method, discovered via a live debug script against a real Weaviate instance, not assumed from docs. Corrected to check-then-delete-then-recreate, which does support setting the vector — full, correct upsert semantics. Verified against real sfv5-redis/sfv5-weaviate Docker containers (already existed on host from a prior session, stopped; started/stopped cleanly for this verification, zero residue left running). All 4 required scenarios passed as one real e2e run (8/8 total suite): first ingestion, retry of the exact same event, duplicate with different content, and a subsequent distinct event queued right behind the duplicate — none got dropped or stuck. Added as a permanent test case (testIdempotentReingestion) in tools/vector-memory/tests/e2e.test.ts.
 
-Systemic Factory learnings: validation/domain integrity must be enforced at UI, application, and authoritative DB boundaries; source/migration presence is not applied schema; build artifact is not deployed artifact; deployed runtime is the final proof; deployment incidents (invalid Vercel token/stale rewrite) require recursive Q/R until deployment and 404 behavior are reverified; TCC/TCX non-interference requires explicit lane ownership and evidence handoff; Q/R is recursive DFS with suspended parent goals, dynamic REQUIEROs, backtracking/unwind, and mandatory parent revalidation. Core rule: “¿Qué REQUIERO para lograr lo que QUIERO?” A satisfied prerequisite only enables retry; it does not prove the parent. Do not repeat checklist-based closure, source-only readiness claims, or native-control assumptions without runtime proof.
+P2-3 Health metrics reales: query_latency_p95_ms and ingestion_latency_p95_ms were previously either a single last-call value or hardcoded 0 — now computed as a real p95 over a rolling 200-sample window (new shared LatencyWindow class in tools/vector-memory/src/metrics/latency-window.ts), fed by every real /query call and every real ingestOne attempt (success and failure both counted). weaviate_observation_count was hardcoded 0 — now a real GraphQL Aggregate{meta{count}} query summed across both Weaviate classes. Verified live against the real stack: {query_latency_p95_ms:32.7, ingestion_latency_p95_ms:100.9, redis_queue_depth:0, weaviate_observation_count:6}, cross-checked the count directly against Weaviate's own aggregate endpoint (6, exact match).
 
-Incidents and self-evaluation: TCX initially found NOT_READY because source/schema/deployed/runtime evidence diverged and the stale /api/rsvp endpoint remained deployed. A Vercel token failure temporarily blocked deployment; after valid TCX authorization and recovery, the rewrite was corrected and production was reverified. Good: adversarial independence, boundary testing, cleanup, deployment recheck, and explicit Q/R recursion. Mistakes: initial closure attempt occurred while TCX routing was absent; some early proof depended on source/live function inference before direct runtime evidence; a generated build directory had to be cleaned after verification. Better next time: establish executor authorization at session start, preserve evidence incrementally, and separate production deployment proof from local candidate proof from the beginning.
+EXPLICITLY PRESERVED, NOT TOUCHED (do not infer authorization to fix from this record):
+1. A real, pre-existing bug in tools/vector-memory/src/api/server.ts's /query endpoint (semantic search) — every call was logging "Query error:" with the actual error swallowed, caused by a pino logger.error(msg, err) call-signature mistake (pino expects the object first). I corrected only the logging call itself (so the error text is now visible to whoever picks this up), but did NOT diagnose or fix the underlying query failure — that's a new, separate, real open item, explicitly not one of the 3 findings I was asked to close.
+2. The 3 residual validate-phase1.sh failures flagged in the prior AQA-kit review round — untouched this session, still open, still out of scope, per Jorge's explicit instruction not to open them without a demonstrated causal connection (none found).
+3. DFL website — not audited, not touched at all this session, confirmed.
 
-Next-session handoff: do not redo this remediation or reopen CLOSED lanes absent contradictory runtime evidence. Start by reading this checkpoint and IRONMAN, then verify /go routing for the actual executor. Treat FINAL DEPLOYMENT VERIFIED as the final outcome. No pending remediation work from this session.
+Files touched: tsconfig.json; src/lib/factory-result-schema.ts; src/lib/ai/strategy-c-helpers.ts; src/app/api/strategy-c-demo/route.ts; src/lib/supabase/server.ts; tools/vector-memory/src/ingestion/pipeline.ts; tools/vector-memory/src/api/server.ts; tools/vector-memory/src/metrics/latency-window.ts (new); tools/vector-memory/tests/e2e.test.ts; tools/vector-memory/dist/* (recompiled from source, kept in sync). IRONMAN.md updated with the full closure row (same repo, saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge).
+
+This repo (saas-factory-setup) does not have a push_mirror.sh (that convention exists in dfl-context-proxy variants, not here) — closure record for this repo is IRONMAN.md + this Engram observation + a git commit of the touched files, no separate mirror push step applies.
 
 ---
 
@@ -498,6 +503,29 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### @$fin CIERRE 2026-08-17 — saas-factory factory-submit /review findings P1-1/P1-2/P2-3 CLOSED, verified
+**Type:** bugfix  
+**Project:** saas-factory  
+
+TCC session closure, short-form, per Jorge's explicit "cierre corto" instruction. Scope: close exactly 3 /review findings from the saas-factory factory-submit feature review round, no new fronts opened, no DFL website audit.
+
+CLOSED — VERIFIED (real build/tests, not self-reported):
+
+P1-1 Root TypeScript build (OOM): root cause was tsconfig.json's `include` glob compiling `Varios para SFV5/` (4.8GB, dozens of embedded apps each with their own tsconfig) and `tools/vector-memory` (self-contained subproject, own tsconfig) into the root `next build` typecheck pass. Fixed by adding both, plus `tests/` (contained a dead pre-Jest-removal .ts duplicate of an already-working .mjs test), to root tsconfig `exclude` — not by patching anything inside the excluded trees, per Jorge's explicit constraint. That surfaced real, previously OOM-masked root-app errors: Zod v4 `z.record()` needing 2 args (key+value schema) in factory-result-schema.ts, AI SDK v7 renaming `maxTokens`→`maxOutputTokens` in strategy-c-helpers.ts/strategy-c-demo route, one dead `experimental_generateThinkingTime` option that was never a real SDK field (removed, it was a no-op), implicit-any Supabase cookie typing in supabase/server.ts. All fixed for real. `npm run build` (next build --webpack) verified green end-to-end: compiles, typechecks, generates all 12 routes.
+
+P1-2 Vector-memory idempotent re-ingestion: root cause was Weaviate's create endpoint rejecting a re-used deterministic ID (weaviateUuid derived from sourceId), causing ingestOne to throw, which meant the event never got popped from the Redis queue and stayed stuck at the head, blocking everything behind it. My first fix attempt (check-then-update via weaviate-ts-client's Updater) had its own real bug — Updater has no .withVector() method, discovered via a live debug script against a real Weaviate instance, not assumed from docs. Corrected to check-then-delete-then-recreate, which does support setting the vector — full, correct upsert semantics. Verified against real sfv5-redis/sfv5-weaviate Docker containers (already existed on host from a prior session, stopped; started/stopped cleanly for this verification, zero residue left running). All 4 required scenarios passed as one real e2e run (8/8 total suite): first ingestion, retry of the exact same event, duplicate with different content, and a subsequent distinct event queued right behind the duplicate — none got dropped or stuck. Added as a permanent test case (testIdempotentReingestion) in tools/vector-memory/tests/e2e.test.ts.
+
+P2-3 Health metrics reales: query_latency_p95_ms and ingestion_latency_p95_ms were previously either a single last-call value or hardcoded 0 — now computed as a real p95 over a rolling 200-sample window (new shared LatencyWindow class in tools/vector-memory/src/metrics/latency-window.ts), fed by every real /query call and every real ingestOne attempt (success and failure both counted). weaviate_observation_count was hardcoded 0 — now a real GraphQL Aggregate{meta{count}} query summed across both Weaviate classes. Verified live against the real stack: {query_latency_p95_ms:32.7, ingestion_latency_p95_ms:100.9, redis_queue_depth:0, weaviate_observation_count:6}, cross-checked the count directly against Weaviate's own aggregate endpoint (6, exact match).
+
+EXPLICITLY PRESERVED, NOT TOUCHED (do not infer authorization to fix from this record):
+1. A real, pre-existing bug in tools/vector-memory/src/api/server.ts's /query endpoint (semantic search) — every call was logging "Query error:" with the actual error swallowed, caused by a pino logger.error(msg, err) call-signature mistake (pino expects the object first). I corrected only the logging call itself (so the error text is now visible to whoever picks this up), but did NOT diagnose or fix the underlying query failure — that's a new, separate, real open item, explicitly not one of the 3 findings I was asked to close.
+2. The 3 residual validate-phase1.sh failures flagged in the prior AQA-kit review round — untouched this session, still open, still out of scope, per Jorge's explicit instruction not to open them without a demonstrated causal connection (none found).
+3. DFL website — not audited, not touched at all this session, confirmed.
+
+Files touched: tsconfig.json; src/lib/factory-result-schema.ts; src/lib/ai/strategy-c-helpers.ts; src/app/api/strategy-c-demo/route.ts; src/lib/supabase/server.ts; tools/vector-memory/src/ingestion/pipeline.ts; tools/vector-memory/src/api/server.ts; tools/vector-memory/src/metrics/latency-window.ts (new); tools/vector-memory/tests/e2e.test.ts; tools/vector-memory/dist/* (recompiled from source, kept in sync). IRONMAN.md updated with the full closure row (same repo, saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge).
+
+This repo (saas-factory-setup) does not have a push_mirror.sh (that convention exists in dfl-context-proxy variants, not here) — closure record for this repo is IRONMAN.md + this Engram observation + a git commit of the touched files, no separate mirror push step applies.
+
 ### Event RSVP MVP — full session close: blind AQA, Back/Forward fix, José delegated-admin grant, lifecycle-gap diagnostic, handoff sent (2026-08-17)
 **Type:** decision  
 **Project:** dfl  
@@ -529,24 +557,6 @@ FINAL STATE: production event-rsvp-waitlist.vercel.app serving commit f022acd (d
 WHY IT MATTERS: this is the authoritative narrative for anyone picking up Event RSVP work after this point -- what's actually fixed vs. diagnosed-only vs. deliberately deferred, and why.
 
 NEXT AGENT SHOULD: read IRONMAN.md rows for event-rsvp-waitlist before touching that repo again. If José's re-review surfaces something new, treat it as a fresh finding against this baseline, not against the earlier 2026-08-13 remediation. Do not build event edit/delete/cancel UI without an explicit fresh go-ahead from Jorge, even though this observation documents the gap in detail. If a push to event-rsvp-waitlist/main doesn't deploy within a few minutes, check `vercel ls` for the actual deployment list before assuming it's just slow -- the webhook has failed silently once already.
-
-### P12 TCX — Event RSVP closure, independent verification, and Q/R learning
-**Type:** architecture  
-**Project:** dfl  
-
-P12 closure checkpoint, 2026-08-17. Independent final verdict: FINAL DEPLOYMENT VERIFIED. Read-only production evidence: https://event-rsvp-waitlist.vercel.app/ , /login, /signup, /events, and /events/new returned HTTP 200 with real application content; /api/rsvp returned HTTP 404; /api/python-rsvp/health returned HTTP 404. No production regression observed.
-
-Final Event RSVP lane states: #1 authoritative DB/domain integrity CLOSED (live authenticated direct probes rejected zero, negative, decimal, exponent, overlong title/description, past date, and 13-month date; live horizon RPC returned 12 months); #3 obsolete RSVP paths CLOSED (Next route and Python implementations removed; vercel.json decommissioned backend service/rewrite; deployed 404s verified); #5 text boundaries CLOSED (shared Zod validation for public/admin signup and live DB username/email bounds confirmed by TCC; live event text bypasses rejected); #7 fresh RSVP lifecycle CLOSED (TCC prior live evidence confirmed cancel -> fresh distinct row, cancelled history preserved, active partial unique index, independent capacity/waitlist); #9 time picker CLOSED (native datetime-local replaced with explicit date plus 24-hour/60-minute selectors; build and runtime route checks passed).
-
-Evidence chain: source/build/deployed artifact/runtime was checked separately. npm type-check/build and git diff --check passed. The stale Vercel rewrite was fixed and deployed; final production probes verified it. No synthetic accounts/rows/fixtures were created in final verification. No background server/job remained. Temporary verification directory /tmp/event-rsvp-next-previous-pass2 was removed.
-
-Working tree distinction: product /opt/dfl-products/event-rsvp-waitlist has no tracked diff at closure; only untracked dfl.yaml and tsconfig.tsbuildinfo remain, understood as pre-existing/generated and not closure-created application changes. Factory root contains extensive pre-existing/unrelated worktree changes; none were modified during closure.
-
-Systemic Factory learnings: validation/domain integrity must be enforced at UI, application, and authoritative DB boundaries; source/migration presence is not applied schema; build artifact is not deployed artifact; deployed runtime is the final proof; deployment incidents (invalid Vercel token/stale rewrite) require recursive Q/R until deployment and 404 behavior are reverified; TCC/TCX non-interference requires explicit lane ownership and evidence handoff; Q/R is recursive DFS with suspended parent goals, dynamic REQUIEROs, backtracking/unwind, and mandatory parent revalidation. Core rule: “¿Qué REQUIERO para lograr lo que QUIERO?” A satisfied prerequisite only enables retry; it does not prove the parent. Do not repeat checklist-based closure, source-only readiness claims, or native-control assumptions without runtime proof.
-
-Incidents and self-evaluation: TCX initially found NOT_READY because source/schema/deployed/runtime evidence diverged and the stale /api/rsvp endpoint remained deployed. A Vercel token failure temporarily blocked deployment; after valid TCX authorization and recovery, the rewrite was corrected and production was reverified. Good: adversarial independence, boundary testing, cleanup, deployment recheck, and explicit Q/R recursion. Mistakes: initial closure attempt occurred while TCX routing was absent; some early proof depended on source/live function inference before direct runtime evidence; a generated build directory had to be cleaned after verification. Better next time: establish executor authorization at session start, preserve evidence incrementally, and separate production deployment proof from local candidate proof from the beginning.
-
-Next-session handoff: do not redo this remediation or reopen CLOSED lanes absent contradictory runtime evidence. Start by reading this checkpoint and IRONMAN, then verify /go routing for the actual executor. Treat FINAL DEPLOYMENT VERIFIED as the final outcome. No pending remediation work from this session.
 
 ---
 
@@ -657,4 +667,4 @@ Next-session handoff: do not redo this remediation or reopen CLOSED lanes absent
 
 ---
 
-*Mirror auto-generated 2026-08-17T16:18:07Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-17T19:32:51Z | La Garra → DFLghub/amos-context*
