@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-17T03:05:02Z  
+**Generated:** 2026-08-17T05:13:28Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,26 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Event RSVP MVP — José remediation CLOSED 2026-08-17, TCC + TCX dispatch regularized for closure
+**Type:** decision  
+**Project:** dfl  
+
+Full TCC session on Event RSVP MVP (DFLghub/event-rsvp-waitlist, mission JPI_TCC_2026_08_15): José's 9 external-testing findings + 1 forgery bug found during independent adversarial re-verification are CLOSED with live-production evidence, not just code review.
+
+DELIVERED: DB migrations 016 (input/domain integrity: bounded max_attendees/party_size, required/future/12mo-horizon event_date via trigger not CHECK, text length limits) + 017 (RSVP self-service update lockdown via enforce_rsvp_update_lifecycle trigger -- closes a real forgery gap where users could PATCH their own row to self-promote from waitlist or inflate party_size, since assign_rsvp_status only ever ran on INSERT; partial unique index rsvps_active_unique_idx makes "RSVP again after cancelling" work without resurrecting the old row; users.username/email length bounds) applied directly to production Supabase (axqiedeppdkxtovriwqf). Code: EventForm/AuthForm/admin console share validation, friendly error mapping instead of raw RLS text, logout only navigates on confirmed signOut() success, orphaned /api/rsvp route + unused Python backend removed. Commits 9455aa6 + b375b06 pushed to DFLghub/event-rsvp-waitlist main.
+
+INCIDENT (owned, not buried): deploying 9455aa6 took production down completely -- the vercel.json edit removing the backend service dropped the entire `rewrites` array including the catch-all "/(.*)" -> frontend rule, so nothing routed to the frontend either. npm run build passed clean both times; it doesn't exercise Vercel's routing layer. Caught same session via a background poller on the live URL, root-caused, fixed with hotfix b375b06 restoring just the frontend catch-all. Full recovery verified: all 6 frontend routes 200 with real content, /api/rsvp and /api/python-rsvp/health 404.
+
+FACTORY LEARNING: build PASS != deployment/runtime PASS for platform-level routing config -- a concrete gate candidate is a live-URL smoke check after any vercel.json/deployment-config change, before calling it done.
+
+José's finding #2 (native datetime-local picker can't scroll to other hours) remains explicitly UNPROVEN -- no working browser in this environment (Playwright Chromium missing, no sudo to install). Do not treat as closed.
+
+DISPATCH GOVERNANCE FINDING + FIX (separate from the product work, same session): mid-closure, TCX/Codex reported /go showing zero pending entry for executor=TCX at all (never existed, not merely expired) and TCC's own dispatch authorization (disp-tcc-20260815181230, issued by Jorge under policy DFL_LAB_DISPATCH_N_GT_1_2026_08_15, a same-day lab policy) had been FAIL_CLOSED since 2026-08-15T22:12:30Z -- ~35h before this session's actual work happened, meaning the whole remediation ran without valid institutional dispatch authorization the entire time (the product-repo git/Supabase credentials are separate infrastructure and were never gated by this). Verified independently against the real dispatch_gate.py/provisional_routing.py validator code, not just by reading /go's rendered output. Root state file: /opt/dfl-knowledge/governance/onboarding/provisional-routing-state.json (dflagent:dfl, group-writable). Under Jorge's direct chat authorization (2026-08-17), regularized TCC's mission (new policy DFL_SESSION_CLOSURE_2026_08_17, 3h TTL, closure-scoped role text, dispatch_id disp-tcc-20260817-closure) and created TCX's first-ever pending entry (mission_id TCX_CLOSURE_2026_08_17, executor TCX, same closure policy, 3h TTL, status DISPATCHED not IN_EXECUTION since it hadn't started executing yet, dispatch_id disp-tcx-20260817-closure). Verified TCX's EJECUTOR profile via observed capability (real bash execution seen in its own transcript: git log, node script, pgrep, file removal) rather than assumed by brand, per @$go Paso 0. Respected MAX_CONCURRENT_EXECUTORS=2 (TCC is the only IN_EXECUTION entry; TCX DISPATCHED doesn't count against the physical ceiling). Verified the edit against the actual live validate_bootstrap()/verify_dispatch() functions offline AND against the live /go HTTP endpoint after writing -- both TCC and TCX now show decision=PASS, execute_mission=PERMITTED, zero blocks. Backup of the pre-edit state preserved at provisional-routing-state.json.pre-tcc-tcx-closure-regularization-20260817.bak.
+
+Neither TCC's nor TCX's regularized authorization grants new work -- both are explicitly closure-only in their role text; the underlying schema has no machine-enforced "closure-only" action verb (EXECUTE_MISSION is coupled to execute_permitted by the atomicity invariant), so the actual limiting mechanism is the 3h TTL plus explicit human instruction, stated here for anyone auditing this later.
+
+Do NOT re-open José's findings without a new specific failure report. Do NOT re-add the Python backend or /api/rsvp route. Do NOT treat the time-picker finding as closed.
+
 ### DFL Website — TCC lane closed 2026-08-16 (build+deploy+Supabase real, durable in git, two human actions remain)
 **Type:** decision  
 **Project:** dfl  
@@ -133,26 +153,6 @@ Decap public/admin/config.yml wired to the real repo/branch now that both are ge
 Two genuine human actions remain, both blocked on account-level credentials only I don't have: (1) `vercel login` + link/claim to make the Vercel deployment durable instead of anonymous-temporary (anonymous previews have a fixed ~60min lifetime from creation, NOT extended by redeploying -- confirmed by testing); (2) a GitHub OAuth App under DFLghub org for Decap to actually authenticate (its github backend defaults to assuming Netlify hosting). www.deepfeelingslabs.com is authorized as the production domain but deliberately never attached/DNS-touched this session.
 
 No secrets committed anywhere in the branch. One local scratch-file copy of the Supabase service-role key (never committed, never fully printed, never left this machine) was found during closure cleanup and securely deleted.
-
-### VM2 OOM/crash + LABS jaula de capacidad + techo MAX 2 Tonys — arco cerrado 2026-08-15 (recuperado por @$fin sucesora)
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Arco completo del 2026-08-15 post-crash de VM2 (boot 18:48:22→19:08:04 UTC). Forense confirmó causa: cadáver del experimento WP Competence Specimen C (wp-tent-app/db, ya CLOSED sin recolectar) — DB sin límite de memoria golpeó techo de I/O real, app quedó zombie con OOMKilled interno al cgroup (no explica crash del host por sí solo); condición de fondo ya documentada antes del crash: VM2 (2vCPU/~3.9GB) con swap al 100% en reposo, sin holgura. Hueco de evidencia declarado y no cerrado: sin acceso root/adm para journalctl -k de la ventana exacta 18:48-19:06.
-
-Remediación aplicada: wp-tent-app/db (contenedores+volúmenes) eliminados tras archivar evidencia completa; sfv5-executor.timer roto detenido/deshabilitado; n8n reiniciado sin cambios de config (confirmado producción real, workflow "MERCADER - REAL INTAKE v0.1"). Deliberadamente sin tocar: sfv5-postgres/redis/weaviate (Optional, dev activo), vm.swappiness, resize de VM (instrucción explícita de Jorge).
-
-LABS: jaula cgroup v2 diseñada desde la reserva medida de producción hacia afuera (≈1321MB medido con margen → 1800MB, MemorySwapMax=0). Experimento real de 3 líneas (git clone+npm install+next build sobre saas-factory): 84% jaula en 52s → watcher fail-closed pausó línea C antes de que el kernel matara nada; con A+B solas, build llegó a 100% y se sostuvo ~45s sin kill pero con livelock (CPU ~2%, casi congeladas) — degradación no elegante. Swap de jaula: 0 todo el experimento. Producción sin desviación en ninguna muestra. Conclusión: 1800MB no alcanza ni para 2 líneas de build real sin degradación severa, mucho menos 3.
-
-Techo aplicado en producción: MAX_CONCURRENT_EXECUTORS=2 en dispatch_gate.py (/opt/dfl-knowledge/governance/dispatch/, módulo real que :8091 importa en vivo) — techo de capacidad física, no de autorización (IRONMAN sigue admitiendo N misiones DISPATCHED; máx 2 IN_EXECUTION a la vez). Falla cerrado con E_CAPACITY_CEILING_EXCEEDED, reintenta solo en próximo poll. FIFO por issued_at, desempate por mission_id. 14/14 tests (8 preexistentes + 6 nuevos) + E2E producción real. Activación en vivo encontró 3 misiones reales ya autorizadas al mismo instante (18:12:30Z, remanente del lab dispatch n>1): desempate dejó TCC/JPI (única con trabajo real) en espera; Jorge decidió Opción 2 — archivar JACKYCLEAN_CXB_2026_08_15 y DFLWEBSITE_CXA_2026_08_15 a `history` en provisional-routing-state.json con registro original preservado verbatim, sin reordenar el desempate. pending queda solo con TCC/JPI, /go confirma PASS limpio.
-
-**Why**: Jorge pidió explícitamente "no reproducir el colapso, establecer un sobre de capacidad segura que haga la recurrencia imposible por diseño" y "diseñar la jaula desde la reserva de producción hacia afuera".
-
-**Where**: /opt/dfl-knowledge/governance/dispatch/dispatch_gate.py + test_dispatch_gate.py; /opt/dfl-knowledge/governance/onboarding/provisional-routing-state.json; /opt/saas-factory-setup/saas-factory/IRONMAN.md (3 filas nuevas, working tree sin commitear al momento de este save); /opt/saas-factory-setup/saas-factory/.claude/HANDOFF-VM2-CAPACITY-CEILING-2026-08-15.md (registro operacional completo, secciones 1-14). Evidencia: wp-competence-tent/evidence/runs/{vm2-oom-crash,labs-3line-cage-experiment,capacity-ceiling-e2e,capacity-ceiling-unittest}-2026-08-15.*. Commit dfl-knowledge: 10bff65.
-
-**Learned**: Confirmación en vivo del gap de resiliencia @$fin documentado en obs #127 — la sesión que generó todo este trabajo murió (dejó de poder responder) antes de correr @$fin, con el handoff en disco a medio escribir (cortado mid-sentence en la autocrítica, sección 13). Recuperada por una sesión sucesora vía instrucción directa de Jorge (no por watchdog automático), que verificó el estado real (git diff IRONMAN.md, ausencia de esta obs en Engram, mirror desactualizado en 05decd3/18:35 UTC) antes de completar el Gate 4B final y correr push_mirror.sh — sin rediseñar el contrato, sin repetir el trabajo técnico ya cerrado (secciones 1-12 intactas), sin fabricar el contenido faltante de la autocrítica cortada.
-
-LIFECYCLE: active
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -378,6 +378,7 @@ PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scop
 ## PENDING
 
 
+
 ---
 
 ## RECENT ACTIVITY (cross-project)
@@ -472,6 +473,26 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Event RSVP MVP — José remediation CLOSED 2026-08-17, TCC + TCX dispatch regularized for closure
+**Type:** decision  
+**Project:** dfl  
+
+Full TCC session on Event RSVP MVP (DFLghub/event-rsvp-waitlist, mission JPI_TCC_2026_08_15): José's 9 external-testing findings + 1 forgery bug found during independent adversarial re-verification are CLOSED with live-production evidence, not just code review.
+
+DELIVERED: DB migrations 016 (input/domain integrity: bounded max_attendees/party_size, required/future/12mo-horizon event_date via trigger not CHECK, text length limits) + 017 (RSVP self-service update lockdown via enforce_rsvp_update_lifecycle trigger -- closes a real forgery gap where users could PATCH their own row to self-promote from waitlist or inflate party_size, since assign_rsvp_status only ever ran on INSERT; partial unique index rsvps_active_unique_idx makes "RSVP again after cancelling" work without resurrecting the old row; users.username/email length bounds) applied directly to production Supabase (axqiedeppdkxtovriwqf). Code: EventForm/AuthForm/admin console share validation, friendly error mapping instead of raw RLS text, logout only navigates on confirmed signOut() success, orphaned /api/rsvp route + unused Python backend removed. Commits 9455aa6 + b375b06 pushed to DFLghub/event-rsvp-waitlist main.
+
+INCIDENT (owned, not buried): deploying 9455aa6 took production down completely -- the vercel.json edit removing the backend service dropped the entire `rewrites` array including the catch-all "/(.*)" -> frontend rule, so nothing routed to the frontend either. npm run build passed clean both times; it doesn't exercise Vercel's routing layer. Caught same session via a background poller on the live URL, root-caused, fixed with hotfix b375b06 restoring just the frontend catch-all. Full recovery verified: all 6 frontend routes 200 with real content, /api/rsvp and /api/python-rsvp/health 404.
+
+FACTORY LEARNING: build PASS != deployment/runtime PASS for platform-level routing config -- a concrete gate candidate is a live-URL smoke check after any vercel.json/deployment-config change, before calling it done.
+
+José's finding #2 (native datetime-local picker can't scroll to other hours) remains explicitly UNPROVEN -- no working browser in this environment (Playwright Chromium missing, no sudo to install). Do not treat as closed.
+
+DISPATCH GOVERNANCE FINDING + FIX (separate from the product work, same session): mid-closure, TCX/Codex reported /go showing zero pending entry for executor=TCX at all (never existed, not merely expired) and TCC's own dispatch authorization (disp-tcc-20260815181230, issued by Jorge under policy DFL_LAB_DISPATCH_N_GT_1_2026_08_15, a same-day lab policy) had been FAIL_CLOSED since 2026-08-15T22:12:30Z -- ~35h before this session's actual work happened, meaning the whole remediation ran without valid institutional dispatch authorization the entire time (the product-repo git/Supabase credentials are separate infrastructure and were never gated by this). Verified independently against the real dispatch_gate.py/provisional_routing.py validator code, not just by reading /go's rendered output. Root state file: /opt/dfl-knowledge/governance/onboarding/provisional-routing-state.json (dflagent:dfl, group-writable). Under Jorge's direct chat authorization (2026-08-17), regularized TCC's mission (new policy DFL_SESSION_CLOSURE_2026_08_17, 3h TTL, closure-scoped role text, dispatch_id disp-tcc-20260817-closure) and created TCX's first-ever pending entry (mission_id TCX_CLOSURE_2026_08_17, executor TCX, same closure policy, 3h TTL, status DISPATCHED not IN_EXECUTION since it hadn't started executing yet, dispatch_id disp-tcx-20260817-closure). Verified TCX's EJECUTOR profile via observed capability (real bash execution seen in its own transcript: git log, node script, pgrep, file removal) rather than assumed by brand, per @$go Paso 0. Respected MAX_CONCURRENT_EXECUTORS=2 (TCC is the only IN_EXECUTION entry; TCX DISPATCHED doesn't count against the physical ceiling). Verified the edit against the actual live validate_bootstrap()/verify_dispatch() functions offline AND against the live /go HTTP endpoint after writing -- both TCC and TCX now show decision=PASS, execute_mission=PERMITTED, zero blocks. Backup of the pre-edit state preserved at provisional-routing-state.json.pre-tcc-tcx-closure-regularization-20260817.bak.
+
+Neither TCC's nor TCX's regularized authorization grants new work -- both are explicitly closure-only in their role text; the underlying schema has no machine-enforced "closure-only" action verb (EXECUTE_MISSION is coupled to execute_permitted by the atomicity invariant), so the actual limiting mechanism is the 3h TTL plus explicit human instruction, stated here for anyone auditing this later.
+
+Do NOT re-open José's findings without a new specific failure report. Do NOT re-add the Python backend or /api/rsvp route. Do NOT treat the time-picker finding as closed.
+
 ### DFL Website — Jorge ya tiene diseño propio, pendiente de traer (no implementar aún)
 **Type:** fact  
 **Project:** dfl  
@@ -479,24 +500,6 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 2026-08-16, post-cierre de sesión: Jorge menciona que además de la arquitectura (T3 Locked Blueprint, ya implementada por TCC/TCX) también tiene diseño propio ya preparado para DFL Website, pero explícitamente "no lo vamos a hacer ahora" — es un anuncio de planificación, no un pedido de trabajo inmediato.
 
 Implicación para sesiones futuras: el sistema de diseño actual en el branch project/dfl-website-t3 (tokens Warm Ivory/Carbon/Copper/Teal, tipografía, Hero copper->teal SVG, etc.) es una implementación real y funcional del T2 Design Lock del Blueprint, pero NO es necesariamente el diseño final que Jorge quiere — cuando él traiga su propio diseño, probablemente reemplaza esta capa visual (no la arquitectura/backend/Supabase, que sí se mantienen). No asumir que el diseño actual es definitivo ni reconstruirlo/defenderlo si Jorge trae algo distinto.
-
-### DFL Website — TCC lane closed 2026-08-16 (build+deploy+Supabase real, durable in git, two human actions remain)
-**Type:** decision  
-**Project:** dfl  
-
-Full TCC arc this session (T3 Falsification Proof -> full homepage build -> TCX content-corpus integration x2 -> real Challenge backend -> real Vercel/Supabase deployment -> closure) is CLOSED and durable.
-
-Durable state: branch project/dfl-website-t3, HEAD 14d3af6, pushed to DFLghub/saas-factory-setup and verified (origin HEAD == local HEAD, checked at every step including the final closure refresh). Full checkpoint: .claude/CHECKPOINT-DFL-WEBSITE-CLOSURE-2026-08-16.md in saas-factory-setup.
-
-Real dedicated Supabase project "dfl-website" (ref fkjwbepkwqzdwhpymigg) provisioned by Jorge, discovered via the Management API using the access token already in .mcp.json (no new credential needed), confirmed distinct from and never touched event-rsvp-waitlist/360eventos. Schema (challenge_submissions) applied, RLS enabled zero policies, real writes proven end-to-end (curl + real browser, EN+ES) with direct DB verification, not inferred from response codes. 6 synthetic @example.com test rows used as proof then deleted at closure -- table is 0 rows, clean, ready for real traffic.
-
-Real deployed E2E on two anonymous Vercel `--temporary` previews (worked around a broken Vercel MCP plugin OAuth client -- "app ID is invalid", a plugin-side bug not a Jorge account issue): all 6 EN/ES routes, axe 0, CLS 0, honeypot/rate-limit/CORS/validation-failure all confirmed against live infra. 48-Hour Sample is DB-constrained to never be writable as "approved" from the intake path -- structural guarantee, not just application logic.
-
-Decap public/admin/config.yml wired to the real repo/branch now that both are genuinely pushed; TCX's own governance test (repo-identity-is-explicit-deployment-decision) was rewritten, not bypassed, to assert the real value.
-
-Two genuine human actions remain, both blocked on account-level credentials only I don't have: (1) `vercel login` + link/claim to make the Vercel deployment durable instead of anonymous-temporary (anonymous previews have a fixed ~60min lifetime from creation, NOT extended by redeploying -- confirmed by testing); (2) a GitHub OAuth App under DFLghub org for Decap to actually authenticate (its github backend defaults to assuming Netlify hosting). www.deepfeelingslabs.com is authorized as the production domain but deliberately never attached/DNS-touched this session.
-
-No secrets committed anywhere in the branch. One local scratch-file copy of the Supabase service-role key (never committed, never fully printed, never left this machine) was found during closure cleanup and securely deleted.
 
 ---
 
@@ -607,4 +610,4 @@ No secrets committed anywhere in the branch. One local scratch-file copy of the 
 
 ---
 
-*Mirror auto-generated 2026-08-17T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-17T05:13:28Z | La Garra → DFLghub/amos-context*
