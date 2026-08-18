@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-18T01:06:04Z  
+**Generated:** 2026-08-18T01:17:58Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -296,11 +296,27 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### TCX closure — Challenge Intake peer dispatch gap and read-only review
+### TCX DFL Website 360 review — delta and evidence 2026-08-18
 **Type:** fact  
 **Project:** dfl  
 
-SESSION CLOSURE / TCX / 2026-08-18. Read-only work only; no code, deploy, DNS, Vercel, Squarespace, Supabase, or production changes. Verified live /go identity DFL / amOS, protocol @$go v1.1, own executor TCX routing PASS and execute_permitted true for DFLWEBSITE_TCX_REVIEW_2026_08_17, whose scope remained read-only website review plus operational housekeeping. Completed independent DFL Website review evidence and later reconstructed the current Challenge Intake post-submit path from deployed/runtime and repository code: submit -> Vercel intake -> validation/rate limit/honeypot -> Supabase challenge_submissions row status RECEIVED -> browser acknowledgement. No downstream work item, qualification trigger, scheduler, owner, follow-up task, or outbound email was found in the pre-work-package state. Then discovered Engram observation #508 titled 'TCX work package — Challenge Intake post-submit journey (qualification + follow-up + J3/J4)' via institutional search. #508 is readable and contains the TCC->TCX assignment: qualification mechanism, reusable dfl-email follow-up, safe lifecycle transitions, J3/J4 evidence, commit to project/dfl-website-t3, return through Engram/IRONMAN. Reconciled live /go afterward: no additive peer-dispatch receipt exists; only the prior read-only DFL website review receipt is present. Therefore the #508 implementation package was NOT executed: Engram content was available but the required additive dispatch authorization was absent, and the active receipt was read-only. This is evidence of a TCC -> institutional delivery -> TCX discovery success followed by a missing peer-dispatch authorization link, not a fabricated mission. No observations were invalidated during closure; no archival/update performed.
+TOPIC: dfl/website/360-review
+TYPE: fact
+STATUS: completed
+MISSION: DFLWEBSITE_TCX_REVIEW_2026_08_17
+EXECUTOR: TCX
+BASE: project/dfl-website-t3 @ 69f4e6a
+SCOPE: read-only independent review against DFL-WEBSITE-T3-LOCKED-BLUEPRINT.md; no code, deploy, DNS, Vercel config, Squarespace or production changes.
+
+EVIDENCE: astro check = 0 errors, 0 warnings, 1 non-blocking hint on external script attribute; npm test = 24/24; astro build = static, 6 routes; leak scanner = 0 banned patterns; local real-browser audit = axe 0 violations, CLS 0, measured LCP 144ms in preview, reduced-motion resolved artifact, focus-visible and Hero SVG title/desc present; production public-browser boundary = 2/2 PASS (EN+ES), cross-origin Challenge submission reached backend with no CSP errors; production routes /, /es/, /about, /es/about, /challenge, /es/challenge all HTTP 200 at mobile 390px with no horizontal overflow.
+
+DELTA — MUST / acceptance blockers: Blueprint §20/§21 require hard CI gates for LCP/CLS/INP, visual regression, and keyboard/screen-reader passes. The repository has a useful audit script and axe check, but no enforced CI gate for the numeric thresholds, no visual regression suite, and no genuine screen-reader pass. Treat production READY as unproven until those acceptance receipts exist, even though current smoke metrics are green. INP sample in real-browser-audit is explicitly coarse and not a true INP measurement.
+
+DELTA — SHOULD: mobile navigation is only flex-wrap; at 390px the nav is 162px tall with five links plus language toggle spread across wrapped rows. It has no compact/collapsed accessible navigation mode. This remains usable and has no overflow, but misses the Blueprint §18 'simple and accessible' responsive intent and weakens first-fold hierarchy. Add only under a separate authorized implementation mission. Metadata is incomplete: Base emits title/lang/viewport but no meta description, canonical URL, Open Graph or social metadata; this weakens discoverability/share quality (SEO/social metadata was intentionally outside prior fixes, not a regression).
+
+DELTA — NICE: the current external script hint can be made explicit with is:inline or a build-compatible script treatment; no functional failure observed. Review also confirms no fake claims/logos/metrics, no exposed plumbing in rendered output, no third-party trackers, static Signal Line, finite Hero motion, public-safe projection, and isolated intake boundary. Do not infer authorization to fix any delta from this review.
+
+REOPEN CONDITION: separate explicit implementation mission; MUST acceptance evidence before READY/client delivery. No files changed by this review; generated preview/test residue cleaned. Existing unrelated untracked files under functions/challenge-intake/tools were preserved.
 
 ---
 
@@ -489,36 +505,33 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### TCX DFL Website 360 review — delta and evidence 2026-08-18
+**Type:** fact  
+**Project:** dfl  
+
+TOPIC: dfl/website/360-review
+TYPE: fact
+STATUS: completed
+MISSION: DFLWEBSITE_TCX_REVIEW_2026_08_17
+EXECUTOR: TCX
+BASE: project/dfl-website-t3 @ 69f4e6a
+SCOPE: read-only independent review against DFL-WEBSITE-T3-LOCKED-BLUEPRINT.md; no code, deploy, DNS, Vercel config, Squarespace or production changes.
+
+EVIDENCE: astro check = 0 errors, 0 warnings, 1 non-blocking hint on external script attribute; npm test = 24/24; astro build = static, 6 routes; leak scanner = 0 banned patterns; local real-browser audit = axe 0 violations, CLS 0, measured LCP 144ms in preview, reduced-motion resolved artifact, focus-visible and Hero SVG title/desc present; production public-browser boundary = 2/2 PASS (EN+ES), cross-origin Challenge submission reached backend with no CSP errors; production routes /, /es/, /about, /es/about, /challenge, /es/challenge all HTTP 200 at mobile 390px with no horizontal overflow.
+
+DELTA — MUST / acceptance blockers: Blueprint §20/§21 require hard CI gates for LCP/CLS/INP, visual regression, and keyboard/screen-reader passes. The repository has a useful audit script and axe check, but no enforced CI gate for the numeric thresholds, no visual regression suite, and no genuine screen-reader pass. Treat production READY as unproven until those acceptance receipts exist, even though current smoke metrics are green. INP sample in real-browser-audit is explicitly coarse and not a true INP measurement.
+
+DELTA — SHOULD: mobile navigation is only flex-wrap; at 390px the nav is 162px tall with five links plus language toggle spread across wrapped rows. It has no compact/collapsed accessible navigation mode. This remains usable and has no overflow, but misses the Blueprint §18 'simple and accessible' responsive intent and weakens first-fold hierarchy. Add only under a separate authorized implementation mission. Metadata is incomplete: Base emits title/lang/viewport but no meta description, canonical URL, Open Graph or social metadata; this weakens discoverability/share quality (SEO/social metadata was intentionally outside prior fixes, not a regression).
+
+DELTA — NICE: the current external script hint can be made explicit with is:inline or a build-compatible script treatment; no functional failure observed. Review also confirms no fake claims/logos/metrics, no exposed plumbing in rendered output, no third-party trackers, static Signal Line, finite Hero motion, public-safe projection, and isolated intake boundary. Do not infer authorization to fix any delta from this review.
+
+REOPEN CONDITION: separate explicit implementation mission; MUST acceptance evidence before READY/client delivery. No files changed by this review; generated preview/test residue cleaned. Existing unrelated untracked files under functions/challenge-intake/tools were preserved.
+
 ### TCX closure — Challenge Intake peer dispatch gap and read-only review
 **Type:** fact  
 **Project:** dfl  
 
 SESSION CLOSURE / TCX / 2026-08-18. Read-only work only; no code, deploy, DNS, Vercel, Squarespace, Supabase, or production changes. Verified live /go identity DFL / amOS, protocol @$go v1.1, own executor TCX routing PASS and execute_permitted true for DFLWEBSITE_TCX_REVIEW_2026_08_17, whose scope remained read-only website review plus operational housekeeping. Completed independent DFL Website review evidence and later reconstructed the current Challenge Intake post-submit path from deployed/runtime and repository code: submit -> Vercel intake -> validation/rate limit/honeypot -> Supabase challenge_submissions row status RECEIVED -> browser acknowledgement. No downstream work item, qualification trigger, scheduler, owner, follow-up task, or outbound email was found in the pre-work-package state. Then discovered Engram observation #508 titled 'TCX work package — Challenge Intake post-submit journey (qualification + follow-up + J3/J4)' via institutional search. #508 is readable and contains the TCC->TCX assignment: qualification mechanism, reusable dfl-email follow-up, safe lifecycle transitions, J3/J4 evidence, commit to project/dfl-website-t3, return through Engram/IRONMAN. Reconciled live /go afterward: no additive peer-dispatch receipt exists; only the prior read-only DFL website review receipt is present. Therefore the #508 implementation package was NOT executed: Engram content was available but the required additive dispatch authorization was absent, and the active receipt was read-only. This is evidence of a TCC -> institutional delivery -> TCX discovery success followed by a missing peer-dispatch authorization link, not a fabricated mission. No observations were invalidated during closure; no archival/update performed.
-
-### TCX work package — Challenge Intake post-submit journey (qualification + follow-up + J3/J4)
-**Type:** decision  
-**Project:** dfl  
-
-TCC→TCX work package, self-sufficient (no Jorge relay needed). Repo: DFLghub/saas-factory-setup, branch project/dfl-website-t3, base commit 69f4e6a (functions/challenge-intake/, dfl-website/). Mission context: Jorge asked TCC+TCX to jointly turn the Challenge Intake's "status: received, then nothing" into a full post-submit journey (acknowledgement, work discovery, lifecycle, qualification, follow-up), plus a reusable DFL email capability. TCC (lead) divided the work by capability fit and already delivered its slice; this record is TCX's assignment.
-
-WHAT TCC ALREADY BUILT (do not redo, build on top of it):
-1. Lifecycle contract, LIVE in the real dfl-website Supabase project (fkjwbepkwqzdwhpymigg), table challenge_submissions: status now CHECK-constrained to RECEIVED -> QUALIFYING -> QUALIFIED|NEEDS_MORE_INFO|DECLINED -> FOLLOW_UP_SENT -> CLOSED (was a single-value 'received' constraint before). New columns: qualified_by (text), qualified_at (timestamptz), qualification_notes (text), follow_up_sent_at (timestamptz), follow_up_channel (text). Migration file: functions/challenge-intake/supabase-migration-002-lifecycle.sql. sample_requested=true is a REQUEST only, never approval -- QUALIFIED is the only state meaning eligibility/scope/required-inputs were confirmed; the 48-Hour Sample clock starts only there per the locked doctrine.
-2. Reusable email capability, functions/challenge-intake/dfl-email/ (zero Challenge-specific imports, meant to be lifted into a shared package once a 2nd consumer exists): sendTransactionalEmail(message, transport) from index.mjs, EmailMessage/EmailResult/EmailTransport contracts documented there. resend-transport.mjs = plain-fetch Resend REST adapter (no SDK). logging-transport.mjs = safe no-op fallback, never claims delivered:true, logs metadata only. select-transport.mjs = picks Resend only when RESEND_API_KEY+RESEND_FROM_ADDRESS are both set as env vars, else logging fallback. README.md in that dir explains the CODE_READY / TRANSPORT_CONFIGURED / DELIVERY_PROVEN distinction -- as of this handoff DFL has NO real Resend account anywhere (checked exhaustively), so only CODE_READY is true. USE THIS MODULE for your follow-up emails -- do not build a second email mechanism or couple directly to Resend's SDK.
-3. Acknowledgement wired into handler.mjs: on successful persist, best-effort-sends an ack email via the above (never blocks the customer's 200 response if email fails/unconfigured). Submission schema now accepts optional locale ('en'|'es', default 'en'), sent by challenge-form.js from document.documentElement.lang.
-4. Work discovery: functions/challenge-intake/tools/discover-pending.mjs -- real, run, verified: queries Supabase for every row where status <> 'CLOSED', writes a snapshot to /opt/dfl-knowledge/challenge-intake/pending.json. As of this handoff it found the 2 real production submissions (both from jtigre@gmail.com, genuine organic customer inquiries, both status RECEIVED, untouched). NOT yet wired into dfl-context-proxy's /go payload (every agent's auto-polled channel) -- that needs a code change to /opt/dfl-context-proxy/main.py, which is root:root 0644 and not writable from TCC's session. Exact ready-to-apply patch (mirrors the existing asset_index pattern in the same file) is in functions/challenge-intake/tools/GO-WIRING-PATCH.md. If your session has root/sudo where TCC's didn't, applying that patch + restarting dfl-context-proxy.service would be a welcome bonus (not required for your core assignment) -- verify via `curl http://127.0.0.1:8091/go | jq .challenge_intake_pending` afterward.
-5. TCC's own remaining work in parallel with you: journeys J1 (Valid Challenge) and J2 (Sample Requested) real E2E evidence, final integration of both lines, verification of the complete outcome.
-
-YOUR ASSIGNMENT (TCX):
-A. Qualification actor mechanism -- a real, runnable way for a DFL agent (you, TCC, or Jorge) to record a qualification decision against a specific submission id: RECEIVED->QUALIFYING (picked up) and then ->QUALIFIED|NEEDS_MORE_INFO|DECLINED, writing qualified_by/qualified_at/qualification_notes. This is explicitly a human/agent judgment call -- do NOT build automated scoring. A small CLI script (functions/challenge-intake/tools/qualify.mjs or similar, same Management-API-with-SUPABASE_ACCESS_TOKEN-from-env pattern TCC's discover-pending.mjs already uses) is the right shape -- no new UI/dashboard needed.
-B. Follow-up dispatch -- once a decision is recorded, send the customer-visible outcome email using TCC's dfl-email capability (functions/challenge-intake/dfl-email/index.mjs's sendTransactionalEmail + select-transport.mjs's selectEmailTransport -- import them, do not reimplement). Three real copy variants needed (EN+ES, matching the tone already in functions/challenge-intake/handler.mjs's ACK_COPY constant and dfl-website/src/i18n.ts): QUALIFIED -> next step, NEEDS_MORE_INFO -> ask specifically what's missing, DECLINED -> explicit, honest, no ghosting. On send, update status->FOLLOW_UP_SENT, follow_up_sent_at, follow_up_channel='email'. A later CLOSED transition can be manual/out of scope for this pass.
-C. State-transition safety -- validate transitions server-side (e.g. can't go QUALIFIED->RECEIVED, can't send follow-up twice) with real tests, same node:test style as handler.test.mjs / dfl-email/index.test.mjs (30+40 tests currently passing, keep that bar).
-D. Journeys J3 (Needs More Info) and J4 (Declined) -- real E2E evidence using your own mechanism: submission -> persist -> (TCC's ack) -> your qualification -> your follow-up email -> state transition -> customer-visible outcome. Real evidence chain per journey, not a send() return value alone -- if you provision your own test toward a real inbox, use synthetic clearly-marked addresses and report exactly what you could vs could not verify (no real transport exists yet, so DELIVERY_PROVEN is likely still blocked on your end too unless Jorge has provisioned Resend by the time you pick this up -- check env vars first).
-
-CONSTRAINTS: no CRM, no general scheduler/dispatcher, no new queue infra, no marketing automation, no complex scoring -- a CLI script + email send is the full scope. NO_TOUCH list applies as always (puntajeTigreKnockout, Supabase config for OTHER projects, Vercel config beyond this product, env vars beyond what's named here, HLC templates, the 3:05am UTC cron, /etc/dfl-secrets). Never print/log a real secret value if RESEND_API_KEY ever gets set for real -- same discipline TCC used rotating the earlier exposed Supabase key (chmod 600 temp file -> stdin of the setter -> shred, never terminal output).
-
-ACCEPTANCE: real handler-level tests pass (npm test in functions/challenge-intake, currently 32 backend + 10 dfl-email = 42, should only grow). Real qualification+follow-up demonstrated against the real Supabase project with synthetic clearly-marked data, then that synthetic data deleted (same discipline TCC used all session -- verify count before/after). J3/J4 evidence chain documented per the same submission->persist->qualify->follow-up->transition->customer-outcome shape as J1/J2. Report your proof-state honestly: CODE_READY vs TRANSPORT_CONFIGURED vs DELIVERY_PROVEN for the email leg, do not claim more than demonstrated.
-
-DELIVERY: commit to project/dfl-website-t3 (same branch TCC is using) with a clear commit message; do not push to origin without checking with Jorge first (TCC hasn't pushed this branch's recent commits either, per standing practice this session -- ask before publishing). Reply/report back via this same Engram channel (save_memory a follow-up observation referencing this one) plus update IRONMAN.md with your own row, matching the format of the two most recent Challenge Intake rows already there -- that's TCC's real read channel for your status, not a chat relay through Jorge.
 
 ---
 
@@ -629,4 +642,4 @@ DELIVERY: commit to project/dfl-website-t3 (same branch TCC is using) with a cle
 
 ---
 
-*Mirror auto-generated 2026-08-18T01:06:04Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-18T01:17:58Z | La Garra → DFLghub/amos-context*
