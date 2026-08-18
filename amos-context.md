@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-18T03:38:18Z  
+**Generated:** 2026-08-18T04:01:00Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -280,11 +280,25 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### @$fin completed — mirror publication verified
+### Session closure (@$fin) — peer-work/Telegram-BOS/Challenge-Manager mission, 2026-08-18
 **Type:** fact  
 **Project:** dfl  
 
-Gate 4B closure completed for TCX Challenge Intake mission. Saved closure summary #513, searched and updated obsolete observations #508 and #509 with [RESOLVED]/LIFECYCLE: archived, then ran bash /opt/dfl-context-proxy/push_mirror.sh. Required stdout: MIRROR: updated | commit 251bc0817a7d48527b37a3fffcec4dd62cb6ea83 | 2026-08-18 03:13:06 +0000. Verified independently with git -C /opt/amos-context-mirror log -1: 251bc08 mirror(@go): auto-update 2026-08-18 03:13 UTC, origin/main aligned. No production application or credential changes were made.
+TCC session closure, CIERRE mode (default, not CHECKPOINT). Full detail lives in IRONMAN.md rows (all dated 2026-08-18) and two new docs -- this is a pointer/summary, not a duplicate.
+
+WHAT WAS BUILT, REAL AND VERIFIED LIVE:
+1. tools/peer-work/ -- file-based dispatch queue for TCC<->TCX/CC/CX/human work, with authority genuinely separated from specification (verify-authority re-checks live against /go's projected routing_receipts.mission.role, or against a live Telegram allowlist for human-originated work). Headless cron activation (codex exec/claude -p, zero window), stale-claim recovery (requeue_stale, a dead claimant's items un-stick automatically), real exit-code capture. Proven with real TCC<->TCX round trips and real dispatched/completed production work (Engram #508's Challenge Intake package, and a real technical-assessment dispatch from the Challenge Manager).
+2. tools/telegram-bos/ -- real, live Telegram bot (@DFL_BOS_bot) bridging Jorge's phone to the Factory via the same queue, no container/inbound networking needed. Two real production incidents found and fixed live during actual use (a delivery-dedup re-send loop; a 3-concurrent-process race from restart racing), both Jorge-confirmed resolved in his real Telegram chat.
+3. functions/challenge-intake/tools/manager.mjs + AUTHORITY_ENVELOPE.md -- real process ownership for DFL Website Challenges (previously nobody owned a case after submit). Policy-bounded autonomy / escalate-by-exception governance, actually enforced in code (concurrency ceiling, decline-reason allowlist), not just documented. Ran against all 7 real production Challenge submissions; drove one the full lifecycle including a real peer-work-dispatched technical assessment.
+4. Asset Registry: 3 new dfl.yaml manifests (dfl.peer-work-queue, dfl.telegram-bos-adapter, dfl.challenge-process-manager), index regenerated 14->17 assets, all independently query-verified discoverable.
+5. Two durable docs: .claude/HANDOFF-TCC-TCX-PEER-COLLABORATION-2026-08-18.md (full mechanics + standing lessons for whoever operates this next) and .claude/BUSINESSOS-CORPUS-INVENTORY-2026-08-18.md (real inventory of the ~55-project BusinessOS corpus for manager/staff patterns, MCP libraries, WhatsApp/Telegram/marketing/video automation -- concrete REUSE/CUSTOMIZE/INSTALL/METABOLIZE/IGNORE/RETIRE calls, not vague).
+6. TCX notified via both a real peer-work FYI item (claimed, read, acknowledged -- pw-4daa4bec5196) and Engram obs #515.
+
+PUSH/DURABILITY STATE (final Gate 4B-relevant fact): all of the above is pushed to the correct origins and remote-verified (saas-factory-setup@fase-3-5-jpi-real-sfv5-bridge commit 27811cb; same repo's project/dfl-website-t3 commit 0227f73). One exception, not a loss: dfl-knowledge's feat/dfl-high-certainty-harness-v0.1 branch (carrying real work from OTHER, prior sessions, not this one) is blocked from pushing by two >100MB files in a pre-existing commit unrelated to this session -- this session's one real dfl-knowledge commit (the /go role-field authorization fix, ee0b315) was cherry-picked clean onto a new branch fix/tcx-go-role-visibility-2026-08-18 (commit 475155c) and pushed successfully instead. Nothing from this session is local-only/unreachable.
+
+STANDING INFRASTRUCTURE LEFT RUNNING (do not stop): @DFL_BOS_bot (run.sh+bot.mjs, supervised, single-instance-locked), 3 cron entries (TCX/TCC peer-work activation every 10min, Telegram supervisor liveness every 5min).
+
+Cleanup performed: verified zero stray processes, zero non-terminal queue items, zero orphaned worktrees, zero leftover scratch files from this session before closing.
 
 ---
 
@@ -473,17 +487,37 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### @$fin completed — mirror publication verified
+### Session closure (@$fin) — peer-work/Telegram-BOS/Challenge-Manager mission, 2026-08-18
 **Type:** fact  
 **Project:** dfl  
 
-Gate 4B closure completed for TCX Challenge Intake mission. Saved closure summary #513, searched and updated obsolete observations #508 and #509 with [RESOLVED]/LIFECYCLE: archived, then ran bash /opt/dfl-context-proxy/push_mirror.sh. Required stdout: MIRROR: updated | commit 251bc0817a7d48527b37a3fffcec4dd62cb6ea83 | 2026-08-18 03:13:06 +0000. Verified independently with git -C /opt/amos-context-mirror log -1: 251bc08 mirror(@go): auto-update 2026-08-18 03:13 UTC, origin/main aligned. No production application or credential changes were made.
+TCC session closure, CIERRE mode (default, not CHECKPOINT). Full detail lives in IRONMAN.md rows (all dated 2026-08-18) and two new docs -- this is a pointer/summary, not a duplicate.
 
-### @$fin closure summary — TCX Challenge Intake slice
+WHAT WAS BUILT, REAL AND VERIFIED LIVE:
+1. tools/peer-work/ -- file-based dispatch queue for TCC<->TCX/CC/CX/human work, with authority genuinely separated from specification (verify-authority re-checks live against /go's projected routing_receipts.mission.role, or against a live Telegram allowlist for human-originated work). Headless cron activation (codex exec/claude -p, zero window), stale-claim recovery (requeue_stale, a dead claimant's items un-stick automatically), real exit-code capture. Proven with real TCC<->TCX round trips and real dispatched/completed production work (Engram #508's Challenge Intake package, and a real technical-assessment dispatch from the Challenge Manager).
+2. tools/telegram-bos/ -- real, live Telegram bot (@DFL_BOS_bot) bridging Jorge's phone to the Factory via the same queue, no container/inbound networking needed. Two real production incidents found and fixed live during actual use (a delivery-dedup re-send loop; a 3-concurrent-process race from restart racing), both Jorge-confirmed resolved in his real Telegram chat.
+3. functions/challenge-intake/tools/manager.mjs + AUTHORITY_ENVELOPE.md -- real process ownership for DFL Website Challenges (previously nobody owned a case after submit). Policy-bounded autonomy / escalate-by-exception governance, actually enforced in code (concurrency ceiling, decline-reason allowlist), not just documented. Ran against all 7 real production Challenge submissions; drove one the full lifecycle including a real peer-work-dispatched technical assessment.
+4. Asset Registry: 3 new dfl.yaml manifests (dfl.peer-work-queue, dfl.telegram-bos-adapter, dfl.challenge-process-manager), index regenerated 14->17 assets, all independently query-verified discoverable.
+5. Two durable docs: .claude/HANDOFF-TCC-TCX-PEER-COLLABORATION-2026-08-18.md (full mechanics + standing lessons for whoever operates this next) and .claude/BUSINESSOS-CORPUS-INVENTORY-2026-08-18.md (real inventory of the ~55-project BusinessOS corpus for manager/staff patterns, MCP libraries, WhatsApp/Telegram/marketing/video automation -- concrete REUSE/CUSTOMIZE/INSTALL/METABOLIZE/IGNORE/RETIRE calls, not vague).
+6. TCX notified via both a real peer-work FYI item (claimed, read, acknowledged -- pw-4daa4bec5196) and Engram obs #515.
+
+PUSH/DURABILITY STATE (final Gate 4B-relevant fact): all of the above is pushed to the correct origins and remote-verified (saas-factory-setup@fase-3-5-jpi-real-sfv5-bridge commit 27811cb; same repo's project/dfl-website-t3 commit 0227f73). One exception, not a loss: dfl-knowledge's feat/dfl-high-certainty-harness-v0.1 branch (carrying real work from OTHER, prior sessions, not this one) is blocked from pushing by two >100MB files in a pre-existing commit unrelated to this session -- this session's one real dfl-knowledge commit (the /go role-field authorization fix, ee0b315) was cherry-picked clean onto a new branch fix/tcx-go-role-visibility-2026-08-18 (commit 475155c) and pushed successfully instead. Nothing from this session is local-only/unreachable.
+
+STANDING INFRASTRUCTURE LEFT RUNNING (do not stop): @DFL_BOS_bot (run.sh+bot.mjs, supervised, single-instance-locked), 3 cron entries (TCX/TCC peer-work activation every 10min, Telegram supervisor liveness every 5min).
+
+Cleanup performed: verified zero stray processes, zero non-terminal queue items, zero orphaned worktrees, zero leftover scratch files from this session before closing.
+
+### FYI for TCX — peer collaboration handoff + BusinessOS corpus inventory (2026-08-18)
 **Type:** fact  
 **Project:** dfl  
 
-Closure summary for mission DFLWEBSITE_TCX_REVIEW_2026_08_17 / additive Challenge Intake assignment: live /go was rechecked for executor TCX and remained routing decision PASS. Discovered peer item pw-17b2da40495a, already completed from prior TCX synthetic J3/J4 evidence; follow-on hardening committed as badd123 on project/dfl-website-t3. Challenge Intake tests passed 51/51. Institutional result returned via peer-work as COMPLETED, Engram observation #512, and IRONMAN row. Fresh production J3/J4 was not executed in the follow-on because SUPABASE_ACCESS_TOKEN was absent and email transport was unconfigured; no production rows, emails, credentials, or push were touched. Pre-existing AQA journey files were preserved and excluded from badd123. @$fin closure now requires Gate 4B archival sweep and push_mirror.sh.
+FYI, no action required. TCC has published a full, detailed, engine-agnostic handoff at `.claude/HANDOFF-TCC-TCX-PEER-COLLABORATION-2026-08-18.md` (repo `saas-factory-setup`, branch `fase-3-5-jpi-real-sfv5-bridge`, commit `27811cb`) covering how TCC<->TCX peer collaboration works from now on: the `tools/peer-work/` queue (contract, discovery, the two live authority schemes and why `authority_ref` must be a literally-checkable assertion, headless activation via cron, stale-claim recovery), real production use so far in both directions (including your own successful pickups of Engram #508's Challenge Intake work and the later `qualify.mjs`/`lifecycle.mjs` hardening pass on `badd123`), the new Telegram/BOS phone bridge (`@DFL_BOS_bot`, real live use with Jorge), the Challenge Process Manager and its authority envelope (`functions/challenge-intake/tools/manager.mjs` + `AUTHORITY_ENVELOPE.md`), and three new `dfl.yaml` asset-index entries (`dfl.peer-work-queue`, `dfl.telegram-bos-adapter`, `dfl.challenge-process-manager` -- query the asset index before building anything that smells like a dispatch mechanism, human bridge, or process owner).
+
+Separately, a full BusinessOS corpus inventory is at `.claude/BUSINESSOS-CORPUS-INVENTORY-2026-08-18.md` (same commit) -- two passes (manager/staff roles, then MCP/WhatsApp/Telegram/marketing/video automation) with concrete REUSE_AS_IS/CUSTOMIZE/INSTALL/METABOLIZE/IGNORE/RETIRE calls. Headline finds worth knowing about before building anything similar from scratch: a real, correctly-built WhatsApp MCP server at `Varios para SFV5/BusinessOS/wacrm/mcp-server/` (Meta WhatsApp Business Cloud API, needs a real business number from Jorge to go live); a mature Grammy-based Telegram layer at `openclaw/src/telegram/` that's meaningfully more capable than the new `tools/telegram-bos/bot.mjs` (group chat, media/voice, streaming) -- worth a multi-day integration if that becomes a real need, not done yet; and the strongest single find, `business-os-v6/Automatización de Redes Sociales/` ("SocialFlow AI") -- a real multi-platform social publisher AND a real video-assembly pipeline (ffmpeg+ElevenLabs), already built on the SaaS Factory V4 stack, needing only real platform credentials to go live.
+
+Also worth noting one honest, disclosed miss from this same session: a real bug was found in your `badd123` lifecycle rewrite when TCC ran it against live production (not your mocked test suite) -- `lifecycle.mjs`'s TRANSITIONS table didn't know about the manager's fuller lifecycle states, and `getSubmission()` referenced a `locale` column that didn't exist yet. Both fixed (`c150a2e`), not a criticism -- exactly the class of gap a mocked-query suite can't catch, and your own handoff was honest about not having tested against real production. Standing lesson for both of us either way: any lifecycle/schema change either of us makes needs at least one real-production round-trip before being trusted.
+
+Read the two files directly for full detail -- this note is a pointer, not a duplicate of the content, per the established no-duplicate-content convention.
 
 ---
 
@@ -594,4 +628,4 @@ Closure summary for mission DFLWEBSITE_TCX_REVIEW_2026_08_17 / additive Challeng
 
 ---
 
-*Mirror auto-generated 2026-08-18T03:38:18Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-18T04:01:00Z | La Garra → DFLghub/amos-context*
