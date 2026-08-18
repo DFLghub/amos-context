@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-18T03:13:05Z  
+**Generated:** 2026-08-18T03:21:03Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -280,11 +280,11 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### @$fin closure summary — TCX Challenge Intake slice
+### @$fin completed — mirror publication verified
 **Type:** fact  
 **Project:** dfl  
 
-Closure summary for mission DFLWEBSITE_TCX_REVIEW_2026_08_17 / additive Challenge Intake assignment: live /go was rechecked for executor TCX and remained routing decision PASS. Discovered peer item pw-17b2da40495a, already completed from prior TCX synthetic J3/J4 evidence; follow-on hardening committed as badd123 on project/dfl-website-t3. Challenge Intake tests passed 51/51. Institutional result returned via peer-work as COMPLETED, Engram observation #512, and IRONMAN row. Fresh production J3/J4 was not executed in the follow-on because SUPABASE_ACCESS_TOKEN was absent and email transport was unconfigured; no production rows, emails, credentials, or push were touched. Pre-existing AQA journey files were preserved and excluded from badd123. @$fin closure now requires Gate 4B archival sweep and push_mirror.sh.
+Gate 4B closure completed for TCX Challenge Intake mission. Saved closure summary #513, searched and updated obsolete observations #508 and #509 with [RESOLVED]/LIFECYCLE: archived, then ran bash /opt/dfl-context-proxy/push_mirror.sh. Required stdout: MIRROR: updated | commit 251bc0817a7d48527b37a3fffcec4dd62cb6ea83 | 2026-08-18 03:13:06 +0000. Verified independently with git -C /opt/amos-context-mirror log -1: 251bc08 mirror(@go): auto-update 2026-08-18 03:13 UTC, origin/main aligned. No production application or credential changes were made.
 
 ---
 
@@ -473,17 +473,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### @$fin completed — mirror publication verified
+**Type:** fact  
+**Project:** dfl  
+
+Gate 4B closure completed for TCX Challenge Intake mission. Saved closure summary #513, searched and updated obsolete observations #508 and #509 with [RESOLVED]/LIFECYCLE: archived, then ran bash /opt/dfl-context-proxy/push_mirror.sh. Required stdout: MIRROR: updated | commit 251bc0817a7d48527b37a3fffcec4dd62cb6ea83 | 2026-08-18 03:13:06 +0000. Verified independently with git -C /opt/amos-context-mirror log -1: 251bc08 mirror(@go): auto-update 2026-08-18 03:13 UTC, origin/main aligned. No production application or credential changes were made.
+
 ### @$fin closure summary — TCX Challenge Intake slice
 **Type:** fact  
 **Project:** dfl  
 
 Closure summary for mission DFLWEBSITE_TCX_REVIEW_2026_08_17 / additive Challenge Intake assignment: live /go was rechecked for executor TCX and remained routing decision PASS. Discovered peer item pw-17b2da40495a, already completed from prior TCX synthetic J3/J4 evidence; follow-on hardening committed as badd123 on project/dfl-website-t3. Challenge Intake tests passed 51/51. Institutional result returned via peer-work as COMPLETED, Engram observation #512, and IRONMAN row. Fresh production J3/J4 was not executed in the follow-on because SUPABASE_ACCESS_TOKEN was absent and email transport was unconfigured; no production rows, emails, credentials, or push were touched. Pre-existing AQA journey files were preserved and excluded from badd123. @$fin closure now requires Gate 4B archival sweep and push_mirror.sh.
-
-### TCX Challenge Intake slice hardened and institutionally returned
-**Type:** bugfix  
-**Project:** dfl  
-
-Work item pw-17b2da40495a (TCC -> TCX, Engram #508) was discovered in the institutional peer-work queue and live authority was re-verified: /go routing_receipts for executor TCX decision PASS; peer_work verify-authority returned valid=true. The queue item was already COMPLETED from an earlier TCX execution with synthetic J3/J4 state-transition evidence and explicit email DELIVERY_PROVEN gap. Follow-on TCX hardening committed on project/dfl-website-t3 as badd123: shared lifecycle guards, conditional claim/decision transitions, locale persistence migration 004, localized follow-up copy, compatibility with manager/dfl-email contracts, and delivery-before-FOLLOW_UP_SENT invariant. npm test in functions/challenge-intake: 51/51 pass. No production rows, emails, credentials, or pushes were touched in this follow-on execution. Fresh production J3/J4 cannot be claimed in this session because SUPABASE_ACCESS_TOKEN is absent and dfl-email transport is unconfigured; do not conflate synthetic transport evidence with inbox delivery. IRONMAN row added 2026-08-18. Pre-existing untracked AQA journey files in the worktree were preserved and not included in badd123.
 
 ---
 
@@ -594,4 +594,4 @@ Work item pw-17b2da40495a (TCC -> TCX, Engram #508) was discovered in the instit
 
 ---
 
-*Mirror auto-generated 2026-08-18T03:13:05Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-18T03:21:03Z | La Garra → DFLghub/amos-context*
