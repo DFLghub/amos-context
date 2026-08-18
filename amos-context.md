@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-18T01:36:04Z  
+**Generated:** 2026-08-18T03:03:58Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -296,11 +296,11 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### TCX delivery — Challenge Intake qualification and J3/J4 follow-up
-**Type:** fact  
+### TCX Challenge Intake slice hardened and institutionally returned
+**Type:** bugfix  
 **Project:** dfl  
 
-TCX execution of Engram observation #508 is complete on 2026-08-18. Added functions/challenge-intake/tools/qualify.mjs and qualify.test.mjs on project/dfl-website-t3 commit 969d40a. The CLI records the human/agent lifecycle RECEIVED -> QUALIFYING -> QUALIFIED|NEEDS_MORE_INFO|DECLINED and sends EN/ES outcome copy through the existing dfl-email capability; FOLLOW_UP_SENT is conditional on delivered transport and follow_up_sent_at null. npm test passes 37/37. Real dfl-website Supabase evidence used two clearly synthetic rows: J3 reached NEEDS_MORE_INFO then FOLLOW_UP_SENT; J4 reached DECLINED then FOLLOW_UP_SENT; both had qualified_by=TCX and follow_up_channel=email, and both were verified deleted afterward. The follow-up email leg used a clearly synthetic test transport because no Resend configuration exists; TRANSPORT_CONFIGURED and DELIVERY_PROVEN remain unproven. No dfl-email reimplementation, push, production configuration, or NO_TOUCH surface was changed. IRONMAN.md row added.
+Work item pw-17b2da40495a (TCC -> TCX, Engram #508) was discovered in the institutional peer-work queue and live authority was re-verified: /go routing_receipts for executor TCX decision PASS; peer_work verify-authority returned valid=true. The queue item was already COMPLETED from an earlier TCX execution with synthetic J3/J4 state-transition evidence and explicit email DELIVERY_PROVEN gap. Follow-on TCX hardening committed on project/dfl-website-t3 as badd123: shared lifecycle guards, conditional claim/decision transitions, locale persistence migration 004, localized follow-up copy, compatibility with manager/dfl-email contracts, and delivery-before-FOLLOW_UP_SENT invariant. npm test in functions/challenge-intake: 51/51 pass. No production rows, emails, credentials, or pushes were touched in this follow-on execution. Fresh production J3/J4 cannot be claimed in this session because SUPABASE_ACCESS_TOKEN is absent and dfl-email transport is unconfigured; do not conflate synthetic transport evidence with inbox delivery. IRONMAN row added 2026-08-18. Pre-existing untracked AQA journey files in the worktree were preserved and not included in badd123.
 
 ---
 
@@ -489,33 +489,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### TCX Challenge Intake slice hardened and institutionally returned
+**Type:** bugfix  
+**Project:** dfl  
+
+Work item pw-17b2da40495a (TCC -> TCX, Engram #508) was discovered in the institutional peer-work queue and live authority was re-verified: /go routing_receipts for executor TCX decision PASS; peer_work verify-authority returned valid=true. The queue item was already COMPLETED from an earlier TCX execution with synthetic J3/J4 state-transition evidence and explicit email DELIVERY_PROVEN gap. Follow-on TCX hardening committed on project/dfl-website-t3 as badd123: shared lifecycle guards, conditional claim/decision transitions, locale persistence migration 004, localized follow-up copy, compatibility with manager/dfl-email contracts, and delivery-before-FOLLOW_UP_SENT invariant. npm test in functions/challenge-intake: 51/51 pass. No production rows, emails, credentials, or pushes were touched in this follow-on execution. Fresh production J3/J4 cannot be claimed in this session because SUPABASE_ACCESS_TOKEN is absent and dfl-email transport is unconfigured; do not conflate synthetic transport evidence with inbox delivery. IRONMAN row added 2026-08-18. Pre-existing untracked AQA journey files in the worktree were preserved and not included in badd123.
+
 ### TCX delivery — Challenge Intake qualification and J3/J4 follow-up
 **Type:** fact  
 **Project:** dfl  
 
 TCX execution of Engram observation #508 is complete on 2026-08-18. Added functions/challenge-intake/tools/qualify.mjs and qualify.test.mjs on project/dfl-website-t3 commit 969d40a. The CLI records the human/agent lifecycle RECEIVED -> QUALIFYING -> QUALIFIED|NEEDS_MORE_INFO|DECLINED and sends EN/ES outcome copy through the existing dfl-email capability; FOLLOW_UP_SENT is conditional on delivered transport and follow_up_sent_at null. npm test passes 37/37. Real dfl-website Supabase evidence used two clearly synthetic rows: J3 reached NEEDS_MORE_INFO then FOLLOW_UP_SENT; J4 reached DECLINED then FOLLOW_UP_SENT; both had qualified_by=TCX and follow_up_channel=email, and both were verified deleted afterward. The follow-up email leg used a clearly synthetic test transport because no Resend configuration exists; TRANSPORT_CONFIGURED and DELIVERY_PROVEN remain unproven. No dfl-email reimplementation, push, production configuration, or NO_TOUCH surface was changed. IRONMAN.md row added.
-
-### TCX DFL Website 360 review — delta and evidence 2026-08-18
-**Type:** fact  
-**Project:** dfl  
-
-TOPIC: dfl/website/360-review
-TYPE: fact
-STATUS: completed
-MISSION: DFLWEBSITE_TCX_REVIEW_2026_08_17
-EXECUTOR: TCX
-BASE: project/dfl-website-t3 @ 69f4e6a
-SCOPE: read-only independent review against DFL-WEBSITE-T3-LOCKED-BLUEPRINT.md; no code, deploy, DNS, Vercel config, Squarespace or production changes.
-
-EVIDENCE: astro check = 0 errors, 0 warnings, 1 non-blocking hint on external script attribute; npm test = 24/24; astro build = static, 6 routes; leak scanner = 0 banned patterns; local real-browser audit = axe 0 violations, CLS 0, measured LCP 144ms in preview, reduced-motion resolved artifact, focus-visible and Hero SVG title/desc present; production public-browser boundary = 2/2 PASS (EN+ES), cross-origin Challenge submission reached backend with no CSP errors; production routes /, /es/, /about, /es/about, /challenge, /es/challenge all HTTP 200 at mobile 390px with no horizontal overflow.
-
-DELTA — MUST / acceptance blockers: Blueprint §20/§21 require hard CI gates for LCP/CLS/INP, visual regression, and keyboard/screen-reader passes. The repository has a useful audit script and axe check, but no enforced CI gate for the numeric thresholds, no visual regression suite, and no genuine screen-reader pass. Treat production READY as unproven until those acceptance receipts exist, even though current smoke metrics are green. INP sample in real-browser-audit is explicitly coarse and not a true INP measurement.
-
-DELTA — SHOULD: mobile navigation is only flex-wrap; at 390px the nav is 162px tall with five links plus language toggle spread across wrapped rows. It has no compact/collapsed accessible navigation mode. This remains usable and has no overflow, but misses the Blueprint §18 'simple and accessible' responsive intent and weakens first-fold hierarchy. Add only under a separate authorized implementation mission. Metadata is incomplete: Base emits title/lang/viewport but no meta description, canonical URL, Open Graph or social metadata; this weakens discoverability/share quality (SEO/social metadata was intentionally outside prior fixes, not a regression).
-
-DELTA — NICE: the current external script hint can be made explicit with is:inline or a build-compatible script treatment; no functional failure observed. Review also confirms no fake claims/logos/metrics, no exposed plumbing in rendered output, no third-party trackers, static Signal Line, finite Hero motion, public-safe projection, and isolated intake boundary. Do not infer authorization to fix any delta from this review.
-
-REOPEN CONDITION: separate explicit implementation mission; MUST acceptance evidence before READY/client delivery. No files changed by this review; generated preview/test residue cleaned. Existing unrelated untracked files under functions/challenge-intake/tools were preserved.
 
 ---
 
@@ -617,13 +601,13 @@ REOPEN CONDITION: separate explicit implementation mission; MUST acceptance evid
 
 **Graph entropy:** 0.8083  
 
-- **Community 11** (93 nodes): Abstracción de oferta, Políticas de disponibilidad, PRP como artefacto nativo
-- **Community 0** (6 nodes): Case B — Retail de camisetas, Oportunidades de simplificación
-- **Community 1** (5 nodes): Merchant of Record, Métricas comerciales, Integraciones Externas
-- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
-- **Community 3** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
-- **Community 4** (4 nodes): Política de privacidad, Términos de uso, Consentimiento en la captura de datos
+- **Community 11** (95 nodes): Abstracción de oferta, Política de disponibilidad, PRP como artefacto nativo
+- **Community 0** (5 nodes): Merchant of Record, Integraciones Externas
+- **Community 1** (4 nodes): MCP Server Behavior, RLS Trap, Semántica de Inventario
+- **Community 2** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
+- **Community 3** (4 nodes): Licenciamiento y acceso
+- **Community 4** (4 nodes): Ciclo de vida automatizado en comercio
 
 ---
 
-*Mirror auto-generated 2026-08-18T01:36:04Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-18T03:03:58Z | La Garra → DFLghub/amos-context*
