@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-18T23:28:01Z  
+**Generated:** 2026-08-18T23:34:00Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,26 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Sesión Remote Control TCC — cierre ordenado, iMac queda como único vivo (2026-08-18)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/remote-control/imac-vs-pixel-handoff-2026-08-18
+STATUS: closed
+DATE: 2026-08-18
+AUTHORITY: session evidence only
+LIFECYCLE: active
+
+WHAT: Sesión Claude Code "DFL Factory TCC" (--remote-control, PID 1340066, session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c) en said-vm2-la-garra (DigitalOcean 67.205.166.199), lanzada originalmente vía cliente ET del iMac de Jorge. Se probó y confirmó en vivo que la sesión sobrevive: cierre del cliente ET local (Terminal.app "Terminate"), pérdida de conexión, y apagado del iMac -- todos inocuos porque el cómputo real corre en la VM (etserver systemd daemon + etterminal, independiente del cliente) y el proceso claude mantiene sus propias conexiones TLS directas a Anthropic, no proxied por la tty.
+
+Jorge después abrió una sesión nueva en el iMac ("otro TCC", PID separado, sin --resume) -- la cerró para no tener 2 fábricas. Luego pidió continuar ESTA MISMA conversación desde el iMac. Vía `sudo -iu dflagent bash -lc 'cd /opt/saas-factory-setup/saas-factory && claude --resume 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c'` + `/resume` interactivo, logró resumir el MISMO session_id en un proceso nuevo en el iMac (PID 1358709). Esto creó doble escritor concurrente sobre el mismo .jsonl (confirmado: el archivo saltó de ~1MB a 3.67MB al resumir). Se le informó el riesgo y eligió Opción A: cerrar el proceso Remote Control (este) y quedarse en el iMac (pantalla 27" vs Pixel <7").
+
+WHY: Preferencia de UX/ergonomía de Jorge, no un problema tecnico -- ambos caminos eran viables, eligió pantalla grande.
+
+CIERRE: @$fin modo CIERRE ejecutado desde el proceso Remote Control (PID 1340066) para liberar el lock del session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c y dejar al proceso del iMac (PID 1358709) como único escritor activo.
+
+NEXT AGENT: si alguien retoma session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c de nuevo vía Remote Control mientras el iMac sigue vivo, va a recrear el mismo conflicto de doble escritor -- avisar antes de resumir, no asumir que es seguro.
+
 ### [RESOLVED] TCX work package — Challenge Intake post-submit journey
 **Type:** decision  
 **Project:** dfl  
@@ -124,38 +144,6 @@ LIFECYCLE: archived/resolved 2026-08-18. This TCC→TCX work package was execute
 
 ORIGINAL SPECIFICATION:
 TCC→TCX work package for Challenge Intake qualification mechanism, reusable dfl-email follow-up, safe lifecycle transitions, J3/J4 evidence, commit on project/dfl-website-t3, and report via Engram/IRONMAN. No automated scoring, no new queue, no dfl-email reimplementation, and honest CODE_READY/TRANSPORT_CONFIGURED/DELIVERY_PROVEN reporting.
-
-### Event RSVP MVP — full session close: blind AQA, Back/Forward fix, José delegated-admin grant, lifecycle-gap diagnostic, handoff sent (2026-08-17)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/event-rsvp/session-close-2026-08-17-tcc-post-jose-remediation
-STATUS: closed
-DATE: 2026-08-17
-PRECEDENCIA: C
-AUTHORITY: evidence only
-LIFECYCLE: active
-CONFIDENCE: high
-
-WHAT: Single long TCC session, four threads, all closed, no open blockers for the José handoff.
-
-1) Blind adversarial AQA (Playwright + OWASP ZAP, not seeded with José's known findings, per Jorge's explicit "keep it simple, minimum tools" instruction): Playwright 24 checks (auth abuse, direct-Supabase-REST IDOR/bypass attempts, business-logic bounds, stored XSS, 10-way concurrent RSVP race) + ZAP baseline+full active scan (135+ rules incl. SQLi/XSS/SSRF/SSTI/RCE/Log4Shell/Spring4Shell) = 0 injection/RCE findings, RLS defense-in-depth confirmed on every bypass attempt. One real NEW bug found (not on José's list): signup with a taken username silently "succeeded" (redirected to /events) while the actual DB insert failed, leaving an orphaned profile-less authenticated session — root cause was auth.signUp() opening a session before the users-table uniqueness check could fail, and a page-level useEffect reacting to that transient truthy `user` state. Fixed (signOut in the error path + stopped reacting to global auth state for the signup redirect) + added CSP/X-Content-Type-Options/X-Frame-Options/Permissions-Policy headers. Verified live post-deploy. Commit 112ab97.
-
-2) Multi-tab auth investigation (Jorge's real Firefox report: 2 tabs, logout in one deauthed both, a reopened tab showed authenticated then deauthed): reproduced exactly via Playwright pages sharing one BrowserContext. Confirmed root cause: single shared localStorage session per browser origin/profile + GoTrue's own cross-tab storage-event sync — this is expected upstream Supabase behavior, NOT a bug. The 6-8 independent router.push-based auth-guard useEffects reacting uncoordinated to that shared state IS implementation-level amplification, diagnosed but explicitly NOT fixed in that pass per Jorge's scope (diagnosis only, no new investigation lines).
-
-3) Back/Forward bug (found via Jorge's real repro description, fixed for real this time): Back into /login or /signup while authenticated ate the Back action and bounced straight back to where you started — root cause was those two pages redirecting away from themselves the instant global `user` was truthy, including when reached via popstate (browser Back), which is a real implementation bug distinct from #2. Fix: /login and /signup now render a static non-navigating "already signed in" panel instead of an effect-driven redirect; all 5 protected-route guards (+root "/") switched router.push('/login') to router.replace('/login') so a lost-auth redirect never leaves a trapped history entry. All 7 required scenarios (Back/Forward authenticated, normal nav, refresh, logout, Back after logout, direct access to protected route after logout) verified PASS live in production.
-
-4) José capability grant: JoseIncer (confirmed is_admin=true, is_owner=false in production) can now execute remove_demo_data() (DEMO->REAL transition) — migration 018 widened that one RPC from owner-only to any-admin, with an explicit is_owner=false added to its own DELETE as defense in depth. Every other owner/delegated-admin boundary from migration 015 re-verified untouched via real auth.uid() simulation against the LIVE functions/triggers (not mocks, not assumptions): José structurally cannot grant/revoke admin, disable the owner or himself, or change is_owner through any authenticated-role path. NOTE (transparency, self-caught error): a WITH-CTE test harness bug (an unreferenced `select set_config(...)` CTE got planner-pruned and never executed) made one is_owner-bypass test appear to succeed against AdminDFL's real row; caught within ~1 minute, reverted immediately, re-verified correctly with a DO $$ block confirming the real trigger blocks it — root cause was the test methodology, not the app. Documented honestly rather than hidden.
-
-5) Deploy incident (real, separate from all of the above): the GitHub->Vercel webhook for event-rsvp-waitlist silently stopped firing — two full pushes (17c09f5, f022acd) sat completely unbuilt for 50+ minutes, confirmed via `vercel ls` showing the most recent deployment was still 2h old (not just a slow build, zero new deployments triggered at all). Resolved by an interactive `vercel login` device-flow (Jorge authorized twice, first code expired unused) followed by a direct `vercel --prod` deploy, bypassing the broken webhook entirely. NOT root-caused — if pushes to main stop auto-deploying again, this same workaround applies, but the underlying webhook problem is still open and undiagnosed.
-
-6) Event lifecycle gap diagnostic (Jorge-initiated, explicitly asked NOT to fix yet): a regular user can create up to 3 events (events_insert_own RLS, real server-side cap, verified) but the UI has zero edit path (EventForm only renders under /events/new, no edit mode anywhere) and zero delete/cancel-event path (the only "Cancel" button anywhere in the app is "Cancel RSVP", a guest cancelling their own attendance -- /events/[id]/page.tsx never once checks user.id === event.creator_id). The DB-layer delete capability already exists and works (events_delete_own RLS) -- verified live via a real signup->create->direct-REST-DELETE round trip -- it's just never exposed in the UI. Practical consequence Jorge named precisely: a creator's only in-product fix for a mistake is creating ANOTHER event, which still burns one of the 3 slots -- "3 events" can degrade into "3 mistakes and you're locked out." Duplicates (same title, close time) explicitly should NOT be blocked -- legitimate multi-session use case; the real gap is the forced workaround, not the duplicate. Classified by Jorge as product-evolution backlog, non-blocking, NOT a defect Factory hid, and explicitly NOT authorization to build it later without a fresh go-ahead. Methodological lesson captured as a standing feedback memory (feedback-aqa-full-crud-lifecycle): future AQA must exercise CREATE->READ->UPDATE->CANCEL/DELETE for any user-created object, not just CREATE -- a CREATE-only pass gave a clean READY over an object that was otherwise create-only/frozen.
-
-FINAL STATE: production event-rsvp-waitlist.vercel.app serving commit f022acd (deployed via `vercel --prod`, dpl_Dv7MUpeRRFij4vf4JpGFCX6hQX8R), migration 018 applied directly to the DB. Jorge sent José the official re-review message this same session, after the READY_FOR_JOSE verdict. All synthetic test accounts/events from every phase of this session cleaned, 0 residue confirmed by SQL each time. IRONMAN.md has the full detailed rows (3 separate entries: AQA close, Back/Forward+admin-grant+webhook-incident close, lifecycle-gap diagnostic) plus a "HANDOFF SENT" note on the closing row.
-
-WHY IT MATTERS: this is the authoritative narrative for anyone picking up Event RSVP work after this point -- what's actually fixed vs. diagnosed-only vs. deliberately deferred, and why.
-
-NEXT AGENT SHOULD: read IRONMAN.md rows for event-rsvp-waitlist before touching that repo again. If José's re-review surfaces something new, treat it as a fresh finding against this baseline, not against the earlier 2026-08-13 remediation. Do not build event edit/delete/cancel UI without an explicit fresh go-ahead from Jorge, even though this observation documents the gap in detail. If a push to event-rsvp-waitlist/main doesn't deploy within a few minutes, check `vercel ls` for the actual deployment list before assuming it's just slow -- the webhook has failed silently once already.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -487,6 +475,26 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Sesión Remote Control TCC — cierre ordenado, iMac queda como único vivo (2026-08-18)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/remote-control/imac-vs-pixel-handoff-2026-08-18
+STATUS: closed
+DATE: 2026-08-18
+AUTHORITY: session evidence only
+LIFECYCLE: active
+
+WHAT: Sesión Claude Code "DFL Factory TCC" (--remote-control, PID 1340066, session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c) en said-vm2-la-garra (DigitalOcean 67.205.166.199), lanzada originalmente vía cliente ET del iMac de Jorge. Se probó y confirmó en vivo que la sesión sobrevive: cierre del cliente ET local (Terminal.app "Terminate"), pérdida de conexión, y apagado del iMac -- todos inocuos porque el cómputo real corre en la VM (etserver systemd daemon + etterminal, independiente del cliente) y el proceso claude mantiene sus propias conexiones TLS directas a Anthropic, no proxied por la tty.
+
+Jorge después abrió una sesión nueva en el iMac ("otro TCC", PID separado, sin --resume) -- la cerró para no tener 2 fábricas. Luego pidió continuar ESTA MISMA conversación desde el iMac. Vía `sudo -iu dflagent bash -lc 'cd /opt/saas-factory-setup/saas-factory && claude --resume 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c'` + `/resume` interactivo, logró resumir el MISMO session_id en un proceso nuevo en el iMac (PID 1358709). Esto creó doble escritor concurrente sobre el mismo .jsonl (confirmado: el archivo saltó de ~1MB a 3.67MB al resumir). Se le informó el riesgo y eligió Opción A: cerrar el proceso Remote Control (este) y quedarse en el iMac (pantalla 27" vs Pixel <7").
+
+WHY: Preferencia de UX/ergonomía de Jorge, no un problema tecnico -- ambos caminos eran viables, eligió pantalla grande.
+
+CIERRE: @$fin modo CIERRE ejecutado desde el proceso Remote Control (PID 1340066) para liberar el lock del session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c y dejar al proceso del iMac (PID 1358709) como único escritor activo.
+
+NEXT AGENT: si alguien retoma session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c de nuevo vía Remote Control mientras el iMac sigue vivo, va a recrear el mismo conflicto de doble escritor -- avisar antes de resumir, no asumir que es seguro.
+
 ### Session closure (@$fin) — peer-work/Telegram-BOS/Challenge-Manager mission, 2026-08-18
 **Type:** fact  
 **Project:** dfl  
@@ -506,18 +514,6 @@ PUSH/DURABILITY STATE (final Gate 4B-relevant fact): all of the above is pushed 
 STANDING INFRASTRUCTURE LEFT RUNNING (do not stop): @DFL_BOS_bot (run.sh+bot.mjs, supervised, single-instance-locked), 3 cron entries (TCX/TCC peer-work activation every 10min, Telegram supervisor liveness every 5min).
 
 Cleanup performed: verified zero stray processes, zero non-terminal queue items, zero orphaned worktrees, zero leftover scratch files from this session before closing.
-
-### FYI for TCX — peer collaboration handoff + BusinessOS corpus inventory (2026-08-18)
-**Type:** fact  
-**Project:** dfl  
-
-FYI, no action required. TCC has published a full, detailed, engine-agnostic handoff at `.claude/HANDOFF-TCC-TCX-PEER-COLLABORATION-2026-08-18.md` (repo `saas-factory-setup`, branch `fase-3-5-jpi-real-sfv5-bridge`, commit `27811cb`) covering how TCC<->TCX peer collaboration works from now on: the `tools/peer-work/` queue (contract, discovery, the two live authority schemes and why `authority_ref` must be a literally-checkable assertion, headless activation via cron, stale-claim recovery), real production use so far in both directions (including your own successful pickups of Engram #508's Challenge Intake work and the later `qualify.mjs`/`lifecycle.mjs` hardening pass on `badd123`), the new Telegram/BOS phone bridge (`@DFL_BOS_bot`, real live use with Jorge), the Challenge Process Manager and its authority envelope (`functions/challenge-intake/tools/manager.mjs` + `AUTHORITY_ENVELOPE.md`), and three new `dfl.yaml` asset-index entries (`dfl.peer-work-queue`, `dfl.telegram-bos-adapter`, `dfl.challenge-process-manager` -- query the asset index before building anything that smells like a dispatch mechanism, human bridge, or process owner).
-
-Separately, a full BusinessOS corpus inventory is at `.claude/BUSINESSOS-CORPUS-INVENTORY-2026-08-18.md` (same commit) -- two passes (manager/staff roles, then MCP/WhatsApp/Telegram/marketing/video automation) with concrete REUSE_AS_IS/CUSTOMIZE/INSTALL/METABOLIZE/IGNORE/RETIRE calls. Headline finds worth knowing about before building anything similar from scratch: a real, correctly-built WhatsApp MCP server at `Varios para SFV5/BusinessOS/wacrm/mcp-server/` (Meta WhatsApp Business Cloud API, needs a real business number from Jorge to go live); a mature Grammy-based Telegram layer at `openclaw/src/telegram/` that's meaningfully more capable than the new `tools/telegram-bos/bot.mjs` (group chat, media/voice, streaming) -- worth a multi-day integration if that becomes a real need, not done yet; and the strongest single find, `business-os-v6/Automatización de Redes Sociales/` ("SocialFlow AI") -- a real multi-platform social publisher AND a real video-assembly pipeline (ffmpeg+ElevenLabs), already built on the SaaS Factory V4 stack, needing only real platform credentials to go live.
-
-Also worth noting one honest, disclosed miss from this same session: a real bug was found in your `badd123` lifecycle rewrite when TCC ran it against live production (not your mocked test suite) -- `lifecycle.mjs`'s TRANSITIONS table didn't know about the manager's fuller lifecycle states, and `getSubmission()` referenced a `locale` column that didn't exist yet. Both fixed (`c150a2e`), not a criticism -- exactly the class of gap a mocked-query suite can't catch, and your own handoff was honest about not having tested against real production. Standing lesson for both of us either way: any lifecycle/schema change either of us makes needs at least one real-production round-trip before being trusted.
-
-Read the two files directly for full detail -- this note is a pointer, not a duplicate of the content, per the established no-duplicate-content convention.
 
 ---
 
@@ -628,4 +624,4 @@ Read the two files directly for full detail -- this note is a pointer, not a dup
 
 ---
 
-*Mirror auto-generated 2026-08-18T23:28:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-18T23:34:00Z | La Garra → DFLghub/amos-context*
