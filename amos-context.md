@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T23:46:01Z  
+**Generated:** 2026-08-19T23:49:16Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -246,11 +246,11 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### DCSA 30-day authorization auto-renew lifecycle live proof 2026-08-19
-**Type:** fact  
+### TCC OpenRouter Tony route activated E2E
+**Type:** architecture  
 **Project:** dfl  
 
-DCSA authorization lifecycle durable pattern implemented 2026-08-19 for MERCADER TCX: /opt/dfl-knowledge/governance/dispatch/authorization_renewal.py + notify helper + renewal-policy.json + append-only AUTHORIZATION-RENEWAL-LEDGER.jsonl. 30-day authorization renewed immediately preserving active gate; policy AUTO, notice <24h exact Jorge text with Sí/No actions, no response auto-renews before expiry using existing 10-minute autonomous peer activation cadence, explicit NO lets expire, REVOKED wins. Projection freshness remains 24h critical and is auto-refreshed without extending scope. dispatch_gate hardened for executor/scope mismatch, explicit revocation, authorization body hash. 25 unit tests PASS; real activate-peer TCX smoke PASS; live /go: routing PASS, dispatch PASS, execute_permitted=true, expires 2026-09-18T23:19:01Z. Evidence audit includes prior expiry, explicit decision/reason, new expiry, projection refresh. No Supabase/Vercel/secrets touched. User-space systemd timer was not installed because user bus unavailable; lifecycle is attached to existing crontab activation cadence via activate-peer.sh flock hook.
+Activated the TCC-only OpenRouter route using the dedicated Tony credential at the institutional path /home/dflagent/.config/dfl-tony/openrouter.key; secret value was never exposed. Selector policy persists provider=openrouter with model open_router/qwen/qwen3-coder-next and reports credential=dedicated. Fresh tcc-provider runs returned TCC_OPENROUTER_E2E_OK and TCC_OPENROUTER_RESTART_OK. OpenRouter generation metadata and usage delta confirmed real upstream consumption. No Anthropic route, SFV5 app credential, Supabase, Vercel, or MERCADER routing was changed. Automatic hot failover remains intentionally unsupported; switching is by new process.
 
 ---
 
@@ -434,17 +434,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### TCC OpenRouter Tony route activated E2E
+**Type:** architecture  
+**Project:** dfl  
+
+Activated the TCC-only OpenRouter route using the dedicated Tony credential at the institutional path /home/dflagent/.config/dfl-tony/openrouter.key; secret value was never exposed. Selector policy persists provider=openrouter with model open_router/qwen/qwen3-coder-next and reports credential=dedicated. Fresh tcc-provider runs returned TCC_OPENROUTER_E2E_OK and TCC_OPENROUTER_RESTART_OK. OpenRouter generation metadata and usage delta confirmed real upstream consumption. No Anthropic route, SFV5 app credential, Supabase, Vercel, or MERCADER routing was changed. Automatic hot failover remains intentionally unsupported; switching is by new process.
+
 ### DCSA 30-day authorization auto-renew lifecycle live proof 2026-08-19
 **Type:** fact  
 **Project:** dfl  
 
 DCSA authorization lifecycle durable pattern implemented 2026-08-19 for MERCADER TCX: /opt/dfl-knowledge/governance/dispatch/authorization_renewal.py + notify helper + renewal-policy.json + append-only AUTHORIZATION-RENEWAL-LEDGER.jsonl. 30-day authorization renewed immediately preserving active gate; policy AUTO, notice <24h exact Jorge text with Sí/No actions, no response auto-renews before expiry using existing 10-minute autonomous peer activation cadence, explicit NO lets expire, REVOKED wins. Projection freshness remains 24h critical and is auto-refreshed without extending scope. dispatch_gate hardened for executor/scope mismatch, explicit revocation, authorization body hash. 25 unit tests PASS; real activate-peer TCX smoke PASS; live /go: routing PASS, dispatch PASS, execute_permitted=true, expires 2026-09-18T23:19:01Z. Evidence audit includes prior expiry, explicit decision/reason, new expiry, projection refresh. No Supabase/Vercel/secrets touched. User-space systemd timer was not installed because user bus unavailable; lifecycle is attached to existing crontab activation cadence via activate-peer.sh flock hook.
-
-### TCC provider resilience decision and safe selector 2026-08-19
-**Type:** fact  
-**Project:** dfl  
-
-TCC provider resilience 2026-08-19: inspected /home/dflagent/reference/BusinessOS/free-claude-code. It is an Anthropic-compatible Claude Code proxy with static provider/model routing (OpenRouter supported), no Anthropic primary, no cross-provider automatic fallback/failback, and retries 429 within a provider. Automatic Anthropic->OpenRouter failover is unsafe after streaming/tool effects and is not enabled. Added saas-factory/tools/tcc-provider/tcc-provider and docs/TCC-PROVIDER-RESILIENCE.md: persistent one-action selector, Anthropic direct default, OpenRouter only with a separately authorized TCC key file and explicit open_router/<provider>/<model>, fail closed on missing/ambiguous credentials, metadata-only observability. SFV5 app OPENROUTER_API_KEY is explicitly not reused. Current host has no separate TCC OpenRouter key configured, so real provider spend E2E B is correctly blocked until credential provisioning; no secrets exposed. Shell syntax PASS; focused free-claude-code tests could not start because pydantic_settings is absent in that reference environment. Live /go remains PASS for executor TCX with execute_permitted=true for MERCADER mission, checked 2026-08-19T23:05:18Z.
 
 ---
 
@@ -555,4 +555,4 @@ TCC provider resilience 2026-08-19: inspected /home/dflagent/reference/BusinessO
 
 ---
 
-*Mirror auto-generated 2026-08-19T23:46:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T23:49:16Z | La Garra → DFLghub/amos-context*
