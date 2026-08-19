@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T14:01:14Z  
+**Generated:** 2026-08-19T14:16:47Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -632,4 +632,4 @@ NEXT AGENT: si Jorge vuelve a preguntar por diffs entre versiones de BOS del dum
 
 ---
 
-*Mirror auto-generated 2026-08-19T14:01:14Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T14:16:47Z | La Garra → DFLghub/amos-context*
