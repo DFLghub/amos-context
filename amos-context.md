@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T23:49:16Z  
+**Generated:** 2026-08-19T23:50:21Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -555,4 +555,4 @@ DCSA authorization lifecycle durable pattern implemented 2026-08-19 for MERCADER
 
 ---
 
-*Mirror auto-generated 2026-08-19T23:49:16Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T23:50:21Z | La Garra → DFLghub/amos-context*
