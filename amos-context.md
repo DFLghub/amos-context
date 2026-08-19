@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T15:51:00Z  
+**Generated:** 2026-08-19T16:16:37Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -251,67 +251,27 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### Session summary: dfl-knowledge
-**Type:** session_summary  
-**Project:** dfl-knowledge  
-
-## Goal
-Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factory Extras / future Docking System coupling touchpoints, before any probe (DOCK_OBSERVATION_RUN, JPI, DCSA, Docking System) runs against real touchpoints.
-
-## Instructions
-- MODO: YOLO — proceed autonomously without per-step confirmation.
-- Create ONLY: PATCH-RISK-POLICY.md, PATCH-RISK-POLICY.json, schema(s), minimal tests, preregistration receipt. Explicitly forbidden: running DOCK_OBSERVATION_RUN/JPI/DCSA/Docking System, modifying the sfv5 headless candidate, promoting anything.
-- Version the work in one exclusive git commit.
-
-## Discoveries
-- Repo has no package.json/npm deps anywhere — JSON Schema files (draft 2020-12) exist as documented contracts but are validated by hand-rolled JS logic in tests, not ajv. Node test convention is `node --test tests/*.test.mjs` with plain `.mjs` ESM.
-- Evidence-dir convention: `evidence/<slug>-<date>/` with a root `SHA256SUMS`, a `receipts/` subfolder, and receipts shaped like `{schema, receipt_id, gate, status, reason, producer, product, baseline{sha}, declared_at, evidence[]{declared_path,exists,sha256}, receipt_sha256-style provenance}`.
-- The user's stated GREEN/YELLOW/RED rules leave one case implicit: an INTERNAL_PATCH with GOLDEN_PATH_CRITICAL/ORCHESTRATION_CRITICAL criticality that DOES have a stable hook doesn't trip any of the five named RED triggers, but YELLOW explicitly excludes orchestration/golden-path criticality — resolved by falling through to a conservative RED-by-default (documented explicitly in the policy, flagged to the user for confirmation, not yet confirmed).
-
-## Accomplished
-- ✅ Created `evidence/patch-risk-policy-preregistration-2026-08-01/` with PATCH-RISK-POLICY.md, PATCH-RISK-POLICY.json (5 classes, 8 mandatory factors, 4 derived fields, rule engine spec), schemas/patch-risk-policy.schema.json, schemas/patch-risk-touchpoint.schema.json, lib/patch-risk-classify.mjs (pure `classify()`/`redTriggers()`), tests/patch-risk-policy.test.mjs (14/14 PASS), receipts/preregistration-receipt.json, SHA256SUMS.
-- ✅ Verified no other repo state touched (candidate untouched, only new evidence dir staged) and committed exclusively as `6f71e5e` on branch `feat/dfl-high-certainty-harness-v0.1`, baseline `d79fffdf4ab1739e45049bae9c3933794788c1df`.
-- ✅ Incremental Gate 4B mem_save done mid-session (obs id 421) at commit time.
-- 🔲 User has not yet confirmed the RED-default interpretation for the golden-path/stable-hook edge case — surfaced but unresolved.
-
-## Next Steps
-- If user confirms or amends the golden-path/stable-hook RED-default interpretation, update PATCH-RISK-POLICY.md/.json + tests accordingly (would be a policy_version bump, e.g. 0.1.1).
-- Actual DOCK_OBSERVATION_RUN / JPI / DCSA / Docking System work is explicitly NOT started — this session only preregistered the classification contract they must conform to.
-
-## Relevant Files
-- evidence/patch-risk-policy-preregistration-2026-08-01/PATCH-RISK-POLICY.md — canonical policy prose
-- evidence/patch-risk-policy-preregistration-2026-08-01/PATCH-RISK-POLICY.json — machine-checkable source of truth
-- evidence/patch-risk-policy-preregistration-2026-08-01/lib/patch-risk-classify.mjs — verdict algorithm
-- evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
-- evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
-
-### Institucionalizada autopsia final de identidad/autoridad/delegación agéntica 2026 — RESEARCH CLOSED (2026-08-19)
+### Design Candidate v0 institucionalizado — arquitectura mínima elástica DFL, corregida, READY FOR REAL-WORLD VALIDATION (2026-08-19)
 **Type:** architecture  
 **Project:** dfl  
 
-TOPIC: dfl/research/agent-identity-authority-delegation-2026
-STATUS: closed (institucionalizacion) / RESEARCH CLOSED (declarado explicito -- cierra la cadena completa de 4 rondas antes de sintesis)
+TOPIC: dfl/design/elastic-capacity-interop-v0
+STATUS: closed (institucionalizacion) / DESIGN CANDIDATE READY FOR REAL-WORLD VALIDATION (no implementado, no runtime tocado)
 DATE: 2026-08-19
 
-WHAT: Quinta y ultima pieza de la cadena de research (Monoid obs#524 -> interop-2026 obs#525 -> ARD obs#526 -> A2A en chat, no institucionalizado por separado -> esta, identidad/autoridad/delegacion). Jorge pidio el ultimo frente antes de sintesis: quien es el agente, en nombre de quien, quien dio autoridad, que puede invocar, con que parametros, cuantos saltos, como se verifica sin confianza ciega.
+WHAT: Sintesis final de la sesion completa. Jorge cerro la cadena RESEARCH CLOSED (Monoid obs#524, interop-2026 obs#525, ARD obs#526, A2A en chat, identidad/autoridad/delegacion obs#527) pidiendo sintetizar (no investigar mas) la arquitectura minima fractal propia de DFL para interoperabilidad universal entre organismos sin integracion punto-a-punto. Primera version tuvo una correccion de principio critica de Jorge ("todo trabajo valido y autorizado debe hacerse, la falta de capacidad NO es causal de rechazo") que obligo a repensar ACCEPT/capacity-awareness. Luego una correccion quirurgica final (P11) sobre 4 confusiones reales que TCC seguia cometiendo: (1) elasticidad limitada a un solo nivel worker/executor en vez de fractal (worker->celula->Fabrica->n Fabricas); (2) Capacity Registry cristalizado prematuramente como busy/free en vez de contrato abierto extensible; (3) claim sin evidencia de que AGENT_PROJECTS "equivale a" clonar una Fabrica -- retirado, reemplazado por separacion explicita PROBADO/HIPOTESIS/POR-DEMOSTRAR; (4) "ACCEPT incondicional" confundiendo compromiso organizacional con readiness/ejecutabilidad inmediata -- corregido a COMMITMENT != READINESS con 6 responsabilidades distintas (commitment, readiness, scheduling, provisioning, ejecucion, blocker real).
 
-Institucionalizado en docs/patterns/agent-identity-authority-delegation-2026/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.agent-identity-authority-delegation-2026.v0, status DRAFT. Indexado: 25 assets (subio de 24), 0 errores, 7/7 tests.
+Institucionalizado en docs/patterns/design-candidate-v0-elastic-capacity/{DESIGN.md,dfl.yaml}, asset_id dfl.design-candidate.elastic-capacity-interop.v0, capability_type=design-candidate (distinto de "research" -- es sintesis de diseno, no autopsia), status DRAFT explicito -- NO active, NO estandar institucional, NO autorizacion de construccion en bloque. Indexado: 26 assets (subio de 25), 0 errores, 7/7 tests, descubribilidad verificada con 5 queries directas, todas exitosas sin problema de fraseo esta vez.
 
-Fuentes primarias reales: spec de autorizacion MCP 2026-07-28 completa (RFC8707 Resource Indicators, RFC9207 Issuer Identification, RFC9728 Protected Resource Metadata, step-up authorization); modelcontextprotocol/ext-auth (extension EMA/ID-JAG marcada "stable"); AuthZEN Authorization API 1.0 -- CONFIRMADO estandar FINAL (votado dic-2025/ene-2026), correccion de precision sobre lo dicho en el research de interop-2026 que no distinguia ese detalle de madurez; draft-ietf-oauth-identity-assertion-authz-grant (ya en WG IETF); draft-mcguinness-oauth-ai-agent-instance (claims exactos: agent_instance_id, agent_platform, agent_model, agent_runtime -- el propio doc declara "not endorsed by IETF, no formal standing", individual draft, la pieza menos madura de toda la ronda); A2A AUTH_REQUIRED (re-auth deliberadamente out-of-band).
+7 invariantes finales preservados integros: NO DROP, COMMITMENT!=READINESS, ELASTIC CAPACITY IS FRACTAL, FAIL->REASSIGN/RECOVER (fundamentado explicitamente en el Axioma A4 de la Constitucion DFL v2 leida temprano en esta misma sesion -- crash-only, el sucesor lee Ledger+contrato y continua, no inventado, doctrina DFL ya existente), TEMPORARY SCALE-DOWN, NO POINT-TO-POINT, BLOCKER!=TERMINAL (nuevo en esta ronda).
 
-Hallazgo estructural: NINGUN estandar resuelve el problema completo -- todos delegan a extensiones o mecanismos out-of-band (mismo patron ya visto en MCP/A2A/ARD en rondas anteriores). Hallazgo mas importante para DFL: NINGUN estandar de 4 rondas de research modela "mission authorization" (autorizar un esfuerzo multi-paso completo) -- DCSA de DFL (8 bloqueos con test+mutante cada uno) no tiene equivalente externo encontrado, ventaja real confirmada, no gap.
+Arquitectura minima: reusa intacto Asset Index/dfl.yaml, DCSA (mission authorization, confirmado en el research anterior como SIN equivalente externo encontrado en toda la industria), patron manager.mjs (ACCEPT generalizado), AGENT_PROJECTS/Claude Agent SDK (alcance de la prueba real corregido -- solo crea/ejecuta sesion con cwd, NO demostrado que equivale a clonar Fabrica), AQA (DELIVER, sin cambios), bloqueo optimista del workforce-registry-capability-lab (16/16 escenarios ya validados, citado para que el Scheduler no sea chokepoint). Piezas nuevas minimas: Workload Ledger (extension de peer-work), Capacity Registry (contrato abierto, NO busy/free definitivo), Scheduler (matching no bloqueante, resuelve REQUIERO horizontal o vertical sin nivel fijo), PDP minimo de AUTHORIZE-invocation, RECEIVE/ACK generico.
 
-Taxonomia identity!=authority!=delegation verificada con evidencia, con 2 capas agregadas mas alla de las propuestas por Jorge: invocation authorization (scopes OAuth+step-up, ESTABLE) y parameter authority (AuthZEN tecnicamente capaz, pero SIN integracion formal con MCP, solo issue de discusion abierto ext-auth#14 sin resolver).
+Correccion explicita de instruccion directa de Jorge, reemplaza conclusion previa: NO es requisito cerrar la fila "CAPACIDAD QUE FALTA DEMOSTRAR" (aislamiento entre clones, continuidad tras teardown, costo/tiempo real, si Fabrica es la unidad clonable correcta) antes de implementar -- esas hipotesis se validan cuando un outcome real las obligue via QUIERO->bloqueo->REQUIERO, no se abre investigacion nueva por adelantado.
 
-Gaps DFL confirmados contra codigo real: AGENT_API_TOKEN de SocialFlow sin audience binding (verificado contra auth.ts real de la activacion, obs#520); sin PDP separado en ningun punto DFL; sin instancia de agente atestiguada (Engram identifica sesion/proyecto, no runtime/modelo con evidencia criptografica).
+Contrastado explicitamente contra evidencia operativa real independiente del mismo dia: CHECKPOINT-MERCADER-QR-2026-08-19.md (hallazgos R-F1..R-F8) -- el gap que este diseno intenta cerrar fue confirmado dos veces, por research externo de 5 rondas Y por diagnostico operativo real de MERCADER, coincidencia no fabricada.
 
-DEUDA DE DESCUBRIBILIDAD encontrada y documentada con precision durante la verificacion (no la misma que en rondas anteriores): la busqueda del asset-index SOLO indexa el texto de dfl.yaml, NUNCA el RESEARCH.md completo enlazado -- terminos que solo aparecen en el documento profundo (ej. "PEP" nunca se escribio en el yaml, solo "PDP"; "confused-deputy" quedo con guion en RESEARCH.md, no como 2 palabras separadas) no son encontrables via query.mjs aunque el concepto SI este documentado. Queries de 1-2 palabras que SI aparecen literal en el yaml funcionan bien (AuthZEN, ID-JAG, "agent instance", "mission authorization DCSA ventaja" con 4 palabras funciono). No es un bug del asset-index -- es una caracteristica de diseño (busca solo el manifest, no el contenido completo) que vale la pena que cualquier agente futuro conozca antes de asumir que algo "no esta documentado" solo porque una query no lo encontro.
-
-Preguntas: las 9 heredadas (4 Monoid + 3 interop-2026 + 2 ARD) preservadas integras sin resolver. 2 nuevas de esta ronda: quien seria el "Agent Attester" si DFL adoptara agent_instance_id; si DCSA y un futuro PDP tipo AuthZEN deberian ser el mismo componente o capas separadas.
-
-RESEARCH CLOSED declarado explicito. El gap material pendiente (fuentes orientales primarias, FUENTE-UNICA desde la primera ronda) NO bloquea sintesis -- es enriquecimiento posible, no invalidacion.
-
-NEXT AGENT: la cadena de research (5 documentos: Monoid, interop-2026, ARD, A2A-en-chat, este) queda cerrada. La siguiente mision natural es SINTESIS/DISENO, no mas autopsia -- no reabrir estos temas desde cero. Si se institucionaliza la autopsia de A2A (quedo solo en chat, no en docs/patterns/), hacerlo como pieza separada enlazada a esta cadena, no fusionarla con esta.
+NEXT AGENT: DESIGN CANDIDATE v0 INSTITUTIONALIZED -- READY FOR REAL-WORLD VALIDATION. La siguiente mision autorizada (no ejecutada aca) es el vertical slice real: MERCADER ORDER -> FABRICA RECEIVE -> COMMIT -> PRODUCE -> AQA -> DELIVER -> MERCADER RECEIVE/ACK -> REPEAT, primero con 1 pedido, luego repetido con multiples pedidos simultaneos para tensionar elasticidad real (no simulada). Ese ciclo es el que debe descubrir que piezas de este Design Candidate necesitan existir de verdad y en que orden -- no re-disenar desde cero, no re-investigar. No confundir esta institucionalizacion con autorizacion de implementar toda la arquitectura de una vez -- sigue siendo DRAFT.
 
 ---
 
@@ -495,6 +455,28 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Design Candidate v0 institucionalizado — arquitectura mínima elástica DFL, corregida, READY FOR REAL-WORLD VALIDATION (2026-08-19)
+**Type:** architecture  
+**Project:** dfl  
+
+TOPIC: dfl/design/elastic-capacity-interop-v0
+STATUS: closed (institucionalizacion) / DESIGN CANDIDATE READY FOR REAL-WORLD VALIDATION (no implementado, no runtime tocado)
+DATE: 2026-08-19
+
+WHAT: Sintesis final de la sesion completa. Jorge cerro la cadena RESEARCH CLOSED (Monoid obs#524, interop-2026 obs#525, ARD obs#526, A2A en chat, identidad/autoridad/delegacion obs#527) pidiendo sintetizar (no investigar mas) la arquitectura minima fractal propia de DFL para interoperabilidad universal entre organismos sin integracion punto-a-punto. Primera version tuvo una correccion de principio critica de Jorge ("todo trabajo valido y autorizado debe hacerse, la falta de capacidad NO es causal de rechazo") que obligo a repensar ACCEPT/capacity-awareness. Luego una correccion quirurgica final (P11) sobre 4 confusiones reales que TCC seguia cometiendo: (1) elasticidad limitada a un solo nivel worker/executor en vez de fractal (worker->celula->Fabrica->n Fabricas); (2) Capacity Registry cristalizado prematuramente como busy/free en vez de contrato abierto extensible; (3) claim sin evidencia de que AGENT_PROJECTS "equivale a" clonar una Fabrica -- retirado, reemplazado por separacion explicita PROBADO/HIPOTESIS/POR-DEMOSTRAR; (4) "ACCEPT incondicional" confundiendo compromiso organizacional con readiness/ejecutabilidad inmediata -- corregido a COMMITMENT != READINESS con 6 responsabilidades distintas (commitment, readiness, scheduling, provisioning, ejecucion, blocker real).
+
+Institucionalizado en docs/patterns/design-candidate-v0-elastic-capacity/{DESIGN.md,dfl.yaml}, asset_id dfl.design-candidate.elastic-capacity-interop.v0, capability_type=design-candidate (distinto de "research" -- es sintesis de diseno, no autopsia), status DRAFT explicito -- NO active, NO estandar institucional, NO autorizacion de construccion en bloque. Indexado: 26 assets (subio de 25), 0 errores, 7/7 tests, descubribilidad verificada con 5 queries directas, todas exitosas sin problema de fraseo esta vez.
+
+7 invariantes finales preservados integros: NO DROP, COMMITMENT!=READINESS, ELASTIC CAPACITY IS FRACTAL, FAIL->REASSIGN/RECOVER (fundamentado explicitamente en el Axioma A4 de la Constitucion DFL v2 leida temprano en esta misma sesion -- crash-only, el sucesor lee Ledger+contrato y continua, no inventado, doctrina DFL ya existente), TEMPORARY SCALE-DOWN, NO POINT-TO-POINT, BLOCKER!=TERMINAL (nuevo en esta ronda).
+
+Arquitectura minima: reusa intacto Asset Index/dfl.yaml, DCSA (mission authorization, confirmado en el research anterior como SIN equivalente externo encontrado en toda la industria), patron manager.mjs (ACCEPT generalizado), AGENT_PROJECTS/Claude Agent SDK (alcance de la prueba real corregido -- solo crea/ejecuta sesion con cwd, NO demostrado que equivale a clonar Fabrica), AQA (DELIVER, sin cambios), bloqueo optimista del workforce-registry-capability-lab (16/16 escenarios ya validados, citado para que el Scheduler no sea chokepoint). Piezas nuevas minimas: Workload Ledger (extension de peer-work), Capacity Registry (contrato abierto, NO busy/free definitivo), Scheduler (matching no bloqueante, resuelve REQUIERO horizontal o vertical sin nivel fijo), PDP minimo de AUTHORIZE-invocation, RECEIVE/ACK generico.
+
+Correccion explicita de instruccion directa de Jorge, reemplaza conclusion previa: NO es requisito cerrar la fila "CAPACIDAD QUE FALTA DEMOSTRAR" (aislamiento entre clones, continuidad tras teardown, costo/tiempo real, si Fabrica es la unidad clonable correcta) antes de implementar -- esas hipotesis se validan cuando un outcome real las obligue via QUIERO->bloqueo->REQUIERO, no se abre investigacion nueva por adelantado.
+
+Contrastado explicitamente contra evidencia operativa real independiente del mismo dia: CHECKPOINT-MERCADER-QR-2026-08-19.md (hallazgos R-F1..R-F8) -- el gap que este diseno intenta cerrar fue confirmado dos veces, por research externo de 5 rondas Y por diagnostico operativo real de MERCADER, coincidencia no fabricada.
+
+NEXT AGENT: DESIGN CANDIDATE v0 INSTITUTIONALIZED -- READY FOR REAL-WORLD VALIDATION. La siguiente mision autorizada (no ejecutada aca) es el vertical slice real: MERCADER ORDER -> FABRICA RECEIVE -> COMMIT -> PRODUCE -> AQA -> DELIVER -> MERCADER RECEIVE/ACK -> REPEAT, primero con 1 pedido, luego repetido con multiples pedidos simultaneos para tensionar elasticidad real (no simulada). Ese ciclo es el que debe descubrir que piezas de este Design Candidate necesitan existir de verdad y en que orden -- no re-disenar desde cero, no re-investigar. No confundir esta institucionalizacion con autorizacion de implementar toda la arquitectura de una vez -- sigue siendo DRAFT.
+
 ### Institucionalizada autopsia final de identidad/autoridad/delegación agéntica 2026 — RESEARCH CLOSED (2026-08-19)
 **Type:** architecture  
 **Project:** dfl  
@@ -522,34 +504,6 @@ Preguntas: las 9 heredadas (4 Monoid + 3 interop-2026 + 2 ARD) preservadas integ
 RESEARCH CLOSED declarado explicito. El gap material pendiente (fuentes orientales primarias, FUENTE-UNICA desde la primera ronda) NO bloquea sintesis -- es enriquecimiento posible, no invalidacion.
 
 NEXT AGENT: la cadena de research (5 documentos: Monoid, interop-2026, ARD, A2A-en-chat, este) queda cerrada. La siguiente mision natural es SINTESIS/DISENO, no mas autopsia -- no reabrir estos temas desde cero. Si se institucionaliza la autopsia de A2A (quedo solo en chat, no en docs/patterns/), hacerlo como pieza separada enlazada a esta cadena, no fusionarla con esta.
-
-### Institucionalizada autopsia profunda de ARD — spec+código+runtime real, discovery/research validated (2026-08-19)
-**Type:** architecture  
-**Project:** dfl  
-
-TOPIC: dfl/research/ard-deep-autopsy-2026
-STATUS: closed (como institucionalizacion) / OPEN (como conocimiento -- no elige ARD, no autoriza nada)
-DATE: 2026-08-19
-
-WHAT: Tercera pieza de la cadena de research (Monoid obs#524 -> panorama interop obs#525 -> ARD deep-autopsy obs#526). Jorge pidio autopsia profunda de ARD especificamente, con fuentes primarias reales (spec+codigo+runtime, no resumenes), foco en si "discovery federado separado de ejecucion" aporta algo durable y como tensiona/confirma/contradice tools/asset-index/.
-
-Institucionalizado en docs/patterns/ard-deep-autopsy-2026/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.ard-deep-autopsy.v0, status DRAFT. Indexado: 24 assets (subio de 23), 0 errores, 7/7 tests, descubribilidad verificada con 4 queries (3 directas + 1 confirmada tras ajuste ES/EN, mismo patron ya documentado, no gap nuevo).
-
-Metodologia real, no lectura pasiva: se clono github.com/ards-project/ard-spec (432 estrellas, repo real), se leyeron 9 ADRs reales (decisiones de diseno documentadas, ej. ADR-0004 justifica por que /search y /agents estan separados, ADR-0009 documenta un cambio de wire-format urn:ai:->urn:air: por invalidez IETF), y **se EJECUTO el CLI de conformidad real** (./bin/run-conformance-demo): valido 3 manifiestos reales contra JSON Schema, levanto un mock registry server real en 127.0.0.1:9010, disparo peticiones HTTP reales (GET /agents, POST /search, POST /explore), resultado real PASS. Esto es evidencia [RUNTIME] genuina, no [SPEC] ni [CLAIM] -- primera vez en esta cadena de research que se llega a ese nivel.
-
-Correccion importante sobre el research anterior: la spec ARD es v0.9/Proposal fechada 2026-05-28 (no "julio 2026" como se penso -- esa era la fecha del anuncio de blog, no de la spec). Deuda explicita preservada: sigue siendo borrador, no estandar asentado.
-
-Hallazgo mas importante de toda la autopsia: la "busqueda semantica" que la prosa de ARD sugiere (mencion de "vector embeddings" como ejemplo posible) es ASPIRACIONAL en su propia implementacion de referencia -- verificado linea por linea en examples/basic/registry-server.py: es matching por substring con pesos fijos (score base 50, +30/+40 segun campo, tope 100), funcionalmente EQUIVALENTE al AND-of-words de query.mjs de DFL, no superior. Claim!=Evidence confirmado con codigo real, no solo sospechado.
-
-Otros hallazgos con nivel de evidencia explicito: separacion discovery/execution (type=IANA media type dirige a MCP/A2A/OpenAPI, ARD nunca ejecuta) [SPEC]; url XOR data estricto [SPEC+CODE+RUNTIME]; URN anclado a dominio [SPEC]; federacion auto/referrals/none [SPEC, NO ejecutada -- mock server no la implementa, unico candidato a experimento runtime futuro]; ausencia total de heartbeat/invalidacion real -- DCSA de DFL (E_STALE, verificacion activa) es ESTRICTAMENTE MAS riguroso, DFL ya superior en esa dimension puntual; conformance tooling como parte del propio estandar [CODE+RUNTIME]; riesgo real de re-centralizacion de facto (GitHub Agent Finder + HuggingFace Discover Tool ya lanzados a 3 meses de la spec, pese a diseno nominal descentralizado).
-
-Disciplina de evidencia [SPEC]->[CODE]->[RUNTIME]->[CLAIM] aplicada rigurosamente y adoptada EXPLICITAMENTE como estandar para autopsias futuras -- sin elevar nunca una categoria a otra.
-
-Preguntas: las 7 heredadas (4 Monoid + 3 interop-2026) preservadas integras sin resolver. 2 nuevas: como se verificaria "dominio ancla" para un organismo interno DFL sin dominio publico propio; si vale adoptar el conformance-tool de ARD como inspiracion para un validador de dfl.yaml independiente de adoptar el resto de ARD.
-
-ARD queda CERRADO como research (no como decision -- cerrado en el sentido de "ya autopsiado a fondo", no "elegido"). Siguiente frente YA AUTORIZADO por Jorge para arrancar en la proxima sesion/turno: autopsia profunda de A2A completo, foco especifico en task lifecycle/invocation (el lado que ARD deliberadamente no cubre), misma disciplina de evidencia.
-
-NEXT AGENT: si retomas esta cadena, el siguiente paso es A2A, no re-visitar ARD ni Monoid. No asumir que A2A ya se autopsio a este nivel -- el research de interoperabilidad 2026 (obs #525) solo cubrio un resumen de A2A discovery+lifecycle via fuentes secundarias, no spec+codigo+runtime real como se hizo aqui con ARD.
 
 ---
 
@@ -660,4 +614,4 @@ NEXT AGENT: si retomas esta cadena, el siguiente paso es A2A, no re-visitar ARD 
 
 ---
 
-*Mirror auto-generated 2026-08-19T15:51:00Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T16:16:37Z | La Garra → DFLghub/amos-context*
