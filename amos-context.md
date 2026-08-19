@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T14:16:47Z  
+**Generated:** 2026-08-19T14:17:52Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -285,25 +285,20 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### Institucionalización: SocialFlow AI/WA_CRM/dump-56 registrados en Asset Index real + patrón de activación extraído (2026-08-19)
-**Type:** architecture  
+### Preferencia de canal de notificación: Telegram confirmado, Pixel push silencioso (2026-08-19)
+**Type:** fact  
 **Project:** dfl  
 
-TOPIC: dfl/saas-factory/asset-index-institutionalization-2026-08-19
+TOPIC: dfl/notifications/telegram-vs-pixel-push-2026-08-19
 STATUS: closed
-DATE: 2026-08-19
 
-WHAT: Jorge pidio convertir la sesion de activacion de SocialFlow AI (obs #520/#521) en capacidad institucional recuperable, no aprendizaje de sesion. Se uso el mecanismo REAL de discovery de DFL (tools/asset-index/, dfl.yaml co-localizados + discover.mjs + query.mjs), no solo Engram/IRONMAN (que ya tenian la narrativa pero no eran "buscables" por un agente futuro sin saber que buscar).
+WHAT: Jorge pidio un mecanismo para que le avise cuando necesite su atencion mientras maneja. Se probaron 2 canales reales:
+1. PushNotification tool (Remote Control -> Pixel): "Mobile push requested" confirmado del lado del agente, pero Jorge reporto CERO sonido/vibracion, solo una luz/banner muy rapido sin registro visible -- probablemente canal de notificacion de la app Claude en Android sin sonido/vibracion habilitados, o modo conduccion/Do Not Disturb de Android Auto silenciando el banner. No verificable ni arreglable desde la VM (100% client-side).
+2. Telegram bot (@DFL_BOS_bot, tools/telegram-bos/, asset ya registrado como dfl.telegram-bos-adapter en el asset-index) via sendMessage directo a la API de Telegram (chat_id 8776472165, token en /home/dflagent/.config/dfl/telegram-bos.token) -- Jorge confirmo explicitamente "tu notificacion por telegram fue perfecta".
 
-4 dfl.yaml nuevos, todos co-localizados con su asset real (nunca un registro remoto):
-1. dfl.mercader.socialflow-ai.v0-1 en mercader-bos/activated-assets/socialflow-ai/dfl.yaml -- status active, describe explicitamente la distincion NO_OPERATIVO (3 defectos de codigo reales, ya reparados) vs NO_CONFIGURADO/NO_INTEGRADO (bloqueos externos: OPENROUTER_API_KEY ausente, alta OAuth pendiente) en el campo description, con evidencia real citada (comandos, obs ids).
-2. dfl.external.varios-sfv5.wacrm.v0 en saas-factory/tools/asset-index/external-catalog/varios-sfv5-businessos-wacrm/dfl.yaml -- status draft, clasificado honestamente como "muestreado, NO activado" (git log + ausencia de node_modules/.env.local verificados; npm install/build/E2E NUNCA corridos) -- deliberadamente NO se le da el mismo nivel de confianza que a socialflow-ai.
-3. dfl.external.varios-sfv5.businessos-dump.v0 en saas-factory/tools/asset-index/external-catalog/varios-sfv5-businessos-dump/dfl.yaml -- status draft, inventario de EXISTENCIA (no de estado) de los 56 nombres de directorio reales del dump "Varios para SFV5/BusinessOS/", marcando cuales 2 tienen evidencia real (BOS v6 y WA_CRM) y dejando los 54 restantes explicitamente sin auditar -- decision deliberada de Jorge: "no lo inventaríes superficialmente" se cumplio listando SOLO nombres verificables con `ls`, nunca afirmaciones de funcionalidad.
-4. dfl.pattern.external-asset-activation.v0-1 en saas-factory/docs/patterns/external-asset-activation/{dfl.yaml,METHOD.md} -- el patron reusable en 6 pasos (asset externo -> BOS/agente -> diagnostico -> reparacion/config -> prueba -> capacidad operativa), cada paso citando el bloqueo real y el comando real que lo resolvio en el caso de origen, no teoria abstracta. Principio Claim != Evidence explicito como regla rectora del metodo.
+DECISION: Para cualquier notificacion futura que realmente necesite la atencion de Jorge (no solo progreso rutinario), preferir Telegram (curl directo a api.telegram.org/bot<token>/sendMessage, chat_id 8776472165) sobre el PushNotification tool hacia el Pixel, que quedo demostrado como no confiable en este dispositivo/config actual. Nota: el bot de telegram-bos esta disenado primariamente para flujo ENTRANTE (humano -> cola de trabajo); usarlo para salida (agente -> humano) es un uso valido pero no es su proposito documentado original -- no confundir con el daemon de polling, solo se uso la API HTTP de Telegram directamente con el mismo token.
 
-MECANICA: `node tools/asset-index/discover.mjs tools docs /opt/saas-factory-setup/mercader-bos <...roots previos...> --out tools/asset-index/index.json` -- se ampliaron los roots escaneados (antes solo `tools`, ahora tambien `docs` y `mercader-bos`) para cubrir los 3 assets nuevos fuera de `saas-factory/tools/`. Parser de dfl.yaml es deliberadamente NO-YAML real (flat key:value linea por linea, sin bloques multilinea) -- primer intento de escribir description como bloque YAML con `'...'` multilinea fallo el parser ("unparsable line, no ':'"); leccion para el proximo agente que escriba un dfl.yaml: TODO campo debe ser una sola linea fisica, sin newlines internos, aunque el valor sea largo. 21 assets indexados, 0 errores, 7/7 tests del asset-index en verde, verificado con `query.mjs search` que los 4 assets nuevos son efectivamente descubribles por texto libre.
-
-NEXT AGENT: este registro (dfl.external.varios-sfv5.businessos-dump.v0) es el punto de entrada correcto para "que mas hay en los regalos de Ricardo/makeflowia-lab" -- no re-hacer `find` desde cero. Si se activa cualquiera de los 54 repos restantes, seguir dfl.pattern.external-asset-activation.v0-1 y crear un dfl.yaml propio para ese asset (co-localizado en su workspace activado, como se hizo con socialflow-ai) -- NUNCA editar businessos-dump.v0 para "marcarlo como activado", ese manifest es inventario del dump completo, no del asset individual.
+NEXT AGENT: si Jorge vuelve a pedir "avisame de alguna forma", usar Telegram primero. Si en el futuro el Pixel push se reconfigura y empieza a sonar, actualizar esta memoria -- no asumir que sigue roto para siempre sin volver a probar.
 
 ---
 
@@ -487,6 +482,21 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Preferencia de canal de notificación: Telegram confirmado, Pixel push silencioso (2026-08-19)
+**Type:** fact  
+**Project:** dfl  
+
+TOPIC: dfl/notifications/telegram-vs-pixel-push-2026-08-19
+STATUS: closed
+
+WHAT: Jorge pidio un mecanismo para que le avise cuando necesite su atencion mientras maneja. Se probaron 2 canales reales:
+1. PushNotification tool (Remote Control -> Pixel): "Mobile push requested" confirmado del lado del agente, pero Jorge reporto CERO sonido/vibracion, solo una luz/banner muy rapido sin registro visible -- probablemente canal de notificacion de la app Claude en Android sin sonido/vibracion habilitados, o modo conduccion/Do Not Disturb de Android Auto silenciando el banner. No verificable ni arreglable desde la VM (100% client-side).
+2. Telegram bot (@DFL_BOS_bot, tools/telegram-bos/, asset ya registrado como dfl.telegram-bos-adapter en el asset-index) via sendMessage directo a la API de Telegram (chat_id 8776472165, token en /home/dflagent/.config/dfl/telegram-bos.token) -- Jorge confirmo explicitamente "tu notificacion por telegram fue perfecta".
+
+DECISION: Para cualquier notificacion futura que realmente necesite la atencion de Jorge (no solo progreso rutinario), preferir Telegram (curl directo a api.telegram.org/bot<token>/sendMessage, chat_id 8776472165) sobre el PushNotification tool hacia el Pixel, que quedo demostrado como no confiable en este dispositivo/config actual. Nota: el bot de telegram-bos esta disenado primariamente para flujo ENTRANTE (humano -> cola de trabajo); usarlo para salida (agente -> humano) es un uso valido pero no es su proposito documentado original -- no confundir con el daemon de polling, solo se uso la API HTTP de Telegram directamente con el mismo token.
+
+NEXT AGENT: si Jorge vuelve a pedir "avisame de alguna forma", usar Telegram primero. Si en el futuro el Pixel push se reconfigura y empieza a sonar, actualizar esta memoria -- no asumir que sigue roto para siempre sin volver a probar.
+
 ### Institucionalización: SocialFlow AI/WA_CRM/dump-56 registrados en Asset Index real + patrón de activación extraído (2026-08-19)
 **Type:** architecture  
 **Project:** dfl  
@@ -506,22 +516,6 @@ WHAT: Jorge pidio convertir la sesion de activacion de SocialFlow AI (obs #520/#
 MECANICA: `node tools/asset-index/discover.mjs tools docs /opt/saas-factory-setup/mercader-bos <...roots previos...> --out tools/asset-index/index.json` -- se ampliaron los roots escaneados (antes solo `tools`, ahora tambien `docs` y `mercader-bos`) para cubrir los 3 assets nuevos fuera de `saas-factory/tools/`. Parser de dfl.yaml es deliberadamente NO-YAML real (flat key:value linea por linea, sin bloques multilinea) -- primer intento de escribir description como bloque YAML con `'...'` multilinea fallo el parser ("unparsable line, no ':'"); leccion para el proximo agente que escriba un dfl.yaml: TODO campo debe ser una sola linea fisica, sin newlines internos, aunque el valor sea largo. 21 assets indexados, 0 errores, 7/7 tests del asset-index en verde, verificado con `query.mjs search` que los 4 assets nuevos son efectivamente descubribles por texto libre.
 
 NEXT AGENT: este registro (dfl.external.varios-sfv5.businessos-dump.v0) es el punto de entrada correcto para "que mas hay en los regalos de Ricardo/makeflowia-lab" -- no re-hacer `find` desde cero. Si se activa cualquiera de los 54 repos restantes, seguir dfl.pattern.external-asset-activation.v0-1 y crear un dfl.yaml propio para ese asset (co-localizado en su workspace activado, como se hizo con socialflow-ai) -- NUNCA editar businessos-dump.v0 para "marcarlo como activado", ese manifest es inventario del dump completo, no del asset individual.
-
-### Causa raíz de fricción de permisos eliminada + confirmado BOS v6 = mismo core que v5/mercader-bos + fix portado (2026-08-19)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/fewer-permission-prompts-and-bos-v6-comparison-2026-08-19
-STATUS: closed
-DATE: 2026-08-19
-
-WHAT 1 (autonomía): Jorge pidió eliminar la causa raíz de las interrupciones repetidas por autorización, no solo dejar de preguntar. Corrida skill fewer-permission-prompts: escaneados 50 transcripts recientes, extraídas frecuencias reales de Bash/MCP. Causa raíz real: la mayoría de comandos usados (git status/log/diff/branch/rev-parse/remote/show, ps, lsof, grep, sed, find, cat, wc) YA estaban auto-permitidos por el harness -- la fricción real venía de un set chico de patrones no cubiertos (curl a servicios internos :8091/:7437, mcp__engram__search_memory y otras MCP read-only sin regla). Agregadas 13 reglas nuevas a saas-factory/.claude/settings.json (permissions.allow, antes inexistente): 6 Bash (curl a 127.0.0.1:8091/* y :7437/*, curl a health checks locales, export de 2 env vars de AQA/XDG, column) + 7 MCP read-only (search_memory, Drive search/read/download, Supabase get_project_url/list_tables/list_migrations). Excluido deliberadamente pese a alta frecuencia: mcp__supabase__execute_sql (128 usos, pero ejecuta SQL arbitrario -- puede escribir), docker exec, engram search (CLI bare, ya documentado como store equivocado), bash push_mirror.sh (hace commit/push real). No se tocó permissions.deny/ask ni ningún otro campo.
-
-WHAT 2 (pregunta de Jorge sobre BOS v6): Verificado con diff real -- BOS v5/agent-server y BOS v6/bussinesO/agent-server tienen el mismo set de archivos, prácticamente idénticos (una sola diferencia real en agent.ts). El "salto" de v6 no es el orquestador -- es que v6 empaqueta verticales ya construidas (Automatización de Redes Sociales = SocialFlow AI, SaaS B2B para Agencias, meta-google) junto al mismo core. mercader-bos (el BOS real y vivo de MERCADER) ya corre ese mismo core (confirmado archivo por archivo), con extensiones propias de MERCADER encima (phase-4-automation, bot-mercader, routes-mercader, etc.) -- o sea, activar SocialFlow AI en mercader-bos (hecho en la tarea anterior, obs #520) ya captura el valor real de v6 sin necesitar migrar de core.
-
-Único delta real de código encontrado entre v5 y v6: agent.ts de v6 reintenta UNA vez con sesión nueva cuando el sessionId guardado ya no existe en disco ("No conversation found with session ID"), en vez de fallar duro. mercader-bos NO lo tenía -- portado a mercader-bos/agent-server/src/agent.ts, typecheck + build limpios, es exactamente el código que corre el mecanismo AGENT_PROJECTS que se acaba de activar para SocialFlow AI.
-
-NEXT AGENT: si Jorge vuelve a preguntar por diffs entre versiones de BOS del dump "Varios para SFV5/BusinessOS/", el core agent-server es esencialmente el mismo en v2-v7 salvo parches puntuales -- comparar antes de asumir que una versión "funciona mejor" arquitectónicamente; en este caso la diferencia real era el bundle de verticales, no el motor.
 
 ---
 
@@ -632,4 +626,4 @@ NEXT AGENT: si Jorge vuelve a preguntar por diffs entre versiones de BOS del dum
 
 ---
 
-*Mirror auto-generated 2026-08-19T14:16:47Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T14:17:52Z | La Garra → DFLghub/amos-context*
