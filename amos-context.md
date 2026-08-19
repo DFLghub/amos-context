@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T13:24:19Z  
+**Generated:** 2026-08-19T14:01:14Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -285,21 +285,25 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### @$fin — Cierre de sesión 2026-08-19 (constitucional + MERCADER + iMac)
-**Type:** fact  
+### Institucionalización: SocialFlow AI/WA_CRM/dump-56 registrados en Asset Index real + patrón de activación extraído (2026-08-19)
+**Type:** architecture  
 **Project:** dfl  
 
-Cierre de sesión larga (2026-08-19), tres frentes trabajados, ninguno cerrado como CLOSED — los tres quedan CHECKPOINTED a propósito, con instrucción explícita de leer el checkpoint antes de retomar.
+TOPIC: dfl/saas-factory/asset-index-institutionalization-2026-08-19
+STATUS: closed
+DATE: 2026-08-19
 
-1. DFL Constitutional QUIERO->REQUIERO: Acta Fundacional amOS v1.1 (ratificada) vs. DFL v2 Constitucion Hibrida vs. DFL v2 Constitucion v0.3 (candidata, sin firmar) comparadas linea por linea. Hallazgo documental clave: la propia Acta se autoprogramo una sucesion (no enmienda) via una futura "Constitution v1.0" condicionada a G-009, nunca confirmada como completa; ningun documento posterior cita el otro por nombre. R12 (precedencia Acta vs v0.3) queda deliberadamente sin decidir por instruccion de Jorge, pendiente de investigacion externa (management moderno, modelos organizacionales, DDD, modelos orientales) antes de decidir la proxima generacion constitucional. Checkpoint: saas-factory/.claude/CHECKPOINT-DFL-CONSTITUTIONAL-DIAGNOSTIC-2026-08-19.md.
+WHAT: Jorge pidio convertir la sesion de activacion de SocialFlow AI (obs #520/#521) en capacidad institucional recuperable, no aprendizaje de sesion. Se uso el mecanismo REAL de discovery de DFL (tools/asset-index/, dfl.yaml co-localizados + discover.mjs + query.mjs), no solo Engram/IRONMAN (que ya tenian la narrativa pero no eran "buscables" por un agente futuro sin saber que buscar).
 
-2. MERCADER Q/R-RGSA revenue diagnostic: aplicado el algoritmo Q/R recien institucionalizado (ver obs #518) a Q0="MERCADER produce sus primeros USD 1000". ~15 pasadas de agentes encadenadas construyeron y probaron en sandbox: parser texto-libre->estructurado, modulo de margen viable, generalizacion del SLA de Challenge Manager, webhook+normalizador de recepcion (command-center), entrega automatizada del producto pagado (reusando patron de maquina-contacto-en-frio), y checkout Polar en modo mock -- todo con evidencia real de ejecucion, no solo lectura de codigo. Q0 permanece UNSATISFIED (cero pago real, por limite explicito del usuario toda la sesion: cero contacto real, cero dinero real, cero credencial nueva). Hallazgo final y mas importante: DFL no tiene organismo real de fulfillment (intake->priorizacion->compromiso->fabricacion->AQA->entrega->accountability) para lo que MERCADER venda -- Workforce Registry Unit (WRU), el candidato obvio, es 100% diseno, 0% implementado segun su propio plan (fechado 2026-07-31). Registrado como REQUIERO institucional de DFL, no solo de MERCADER -- misma categoria que el hallazgo de arquitectura de informacion del frente constitucional. Checkpoint: saas-factory/.claude/CHECKPOINT-MERCADER-QR-2026-08-19.md.
+4 dfl.yaml nuevos, todos co-localizados con su asset real (nunca un registro remoto):
+1. dfl.mercader.socialflow-ai.v0-1 en mercader-bos/activated-assets/socialflow-ai/dfl.yaml -- status active, describe explicitamente la distincion NO_OPERATIVO (3 defectos de codigo reales, ya reparados) vs NO_CONFIGURADO/NO_INTEGRADO (bloqueos externos: OPENROUTER_API_KEY ausente, alta OAuth pendiente) en el campo description, con evidencia real citada (comandos, obs ids).
+2. dfl.external.varios-sfv5.wacrm.v0 en saas-factory/tools/asset-index/external-catalog/varios-sfv5-businessos-wacrm/dfl.yaml -- status draft, clasificado honestamente como "muestreado, NO activado" (git log + ausencia de node_modules/.env.local verificados; npm install/build/E2E NUNCA corridos) -- deliberadamente NO se le da el mismo nivel de confianza que a socialflow-ai.
+3. dfl.external.varios-sfv5.businessos-dump.v0 en saas-factory/tools/asset-index/external-catalog/varios-sfv5-businessos-dump/dfl.yaml -- status draft, inventario de EXISTENCIA (no de estado) de los 56 nombres de directorio reales del dump "Varios para SFV5/BusinessOS/", marcando cuales 2 tienen evidencia real (BOS v6 y WA_CRM) y dejando los 54 restantes explicitamente sin auditar -- decision deliberada de Jorge: "no lo inventaríes superficialmente" se cumplio listando SOLO nombres verificables con `ls`, nunca afirmaciones de funcionalidad.
+4. dfl.pattern.external-asset-activation.v0-1 en saas-factory/docs/patterns/external-asset-activation/{dfl.yaml,METHOD.md} -- el patron reusable en 6 pasos (asset externo -> BOS/agente -> diagnostico -> reparacion/config -> prueba -> capacidad operativa), cada paso citando el bloqueo real y el comando real que lo resolvio en el caso de origen, no teoria abstracta. Principio Claim != Evidence explicito como regla rectora del metodo.
 
-3. Acceso SSH inverso a iMac (~/Downloads, ~7.8GB): tunel confirmado ESTABLISHED (127.0.0.1:22022), autenticacion FALLIDA con llave dedicada (~/.ssh/id_ed25519_imac) que el usuario dice haber agregado a authorized_keys del Mac. Pausado por prioridad del usuario, no retomar proactivamente. Checkpoint: saas-factory/.claude/CHECKPOINT-IMAC-REVERSE-SSH-ACCESS-2026-08-19.md.
+MECANICA: `node tools/asset-index/discover.mjs tools docs /opt/saas-factory-setup/mercader-bos <...roots previos...> --out tools/asset-index/index.json` -- se ampliaron los roots escaneados (antes solo `tools`, ahora tambien `docs` y `mercader-bos`) para cubrir los 3 assets nuevos fuera de `saas-factory/tools/`. Parser de dfl.yaml es deliberadamente NO-YAML real (flat key:value linea por linea, sin bloques multilinea) -- primer intento de escribir description como bloque YAML con `'...'` multilinea fallo el parser ("unparsable line, no ':'"); leccion para el proximo agente que escriba un dfl.yaml: TODO campo debe ser una sola linea fisica, sin newlines internos, aunque el valor sea largo. 21 assets indexados, 0 errores, 7/7 tests del asset-index en verde, verificado con `query.mjs search` que los 4 assets nuevos son efectivamente descubribles por texto libre.
 
-Ademas, esta misma sesion formalizo e institucionalizo la doctrina DFL Q/R Recursive Goal-Satisfaction Algorithm (Q/R-RGSA v1.0), candidate_only en dfl-knowledge/04_Candidate_Vault/pending_review/, ver obs #518 -- ese es el metodo que se aplico en los frentes 1 y 2 de este cierre.
-
-Ninguna observacion previa queda invalidada por este cierre; no hay archivado que hacer. Ningun commit a git en esta sesion -- todo el trabajo vive en los tres archivos de checkpoint listados arriba mas la memoria persistente del agente (MEMORY.md).
+NEXT AGENT: este registro (dfl.external.varios-sfv5.businessos-dump.v0) es el punto de entrada correcto para "que mas hay en los regalos de Ricardo/makeflowia-lab" -- no re-hacer `find` desde cero. Si se activa cualquiera de los 54 repos restantes, seguir dfl.pattern.external-asset-activation.v0-1 y crear un dfl.yaml propio para ese asset (co-localizado en su workspace activado, como se hizo con socialflow-ai) -- NUNCA editar businessos-dump.v0 para "marcarlo como activado", ese manifest es inventario del dump completo, no del asset individual.
 
 ---
 
@@ -483,6 +487,26 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Institucionalización: SocialFlow AI/WA_CRM/dump-56 registrados en Asset Index real + patrón de activación extraído (2026-08-19)
+**Type:** architecture  
+**Project:** dfl  
+
+TOPIC: dfl/saas-factory/asset-index-institutionalization-2026-08-19
+STATUS: closed
+DATE: 2026-08-19
+
+WHAT: Jorge pidio convertir la sesion de activacion de SocialFlow AI (obs #520/#521) en capacidad institucional recuperable, no aprendizaje de sesion. Se uso el mecanismo REAL de discovery de DFL (tools/asset-index/, dfl.yaml co-localizados + discover.mjs + query.mjs), no solo Engram/IRONMAN (que ya tenian la narrativa pero no eran "buscables" por un agente futuro sin saber que buscar).
+
+4 dfl.yaml nuevos, todos co-localizados con su asset real (nunca un registro remoto):
+1. dfl.mercader.socialflow-ai.v0-1 en mercader-bos/activated-assets/socialflow-ai/dfl.yaml -- status active, describe explicitamente la distincion NO_OPERATIVO (3 defectos de codigo reales, ya reparados) vs NO_CONFIGURADO/NO_INTEGRADO (bloqueos externos: OPENROUTER_API_KEY ausente, alta OAuth pendiente) en el campo description, con evidencia real citada (comandos, obs ids).
+2. dfl.external.varios-sfv5.wacrm.v0 en saas-factory/tools/asset-index/external-catalog/varios-sfv5-businessos-wacrm/dfl.yaml -- status draft, clasificado honestamente como "muestreado, NO activado" (git log + ausencia de node_modules/.env.local verificados; npm install/build/E2E NUNCA corridos) -- deliberadamente NO se le da el mismo nivel de confianza que a socialflow-ai.
+3. dfl.external.varios-sfv5.businessos-dump.v0 en saas-factory/tools/asset-index/external-catalog/varios-sfv5-businessos-dump/dfl.yaml -- status draft, inventario de EXISTENCIA (no de estado) de los 56 nombres de directorio reales del dump "Varios para SFV5/BusinessOS/", marcando cuales 2 tienen evidencia real (BOS v6 y WA_CRM) y dejando los 54 restantes explicitamente sin auditar -- decision deliberada de Jorge: "no lo inventaríes superficialmente" se cumplio listando SOLO nombres verificables con `ls`, nunca afirmaciones de funcionalidad.
+4. dfl.pattern.external-asset-activation.v0-1 en saas-factory/docs/patterns/external-asset-activation/{dfl.yaml,METHOD.md} -- el patron reusable en 6 pasos (asset externo -> BOS/agente -> diagnostico -> reparacion/config -> prueba -> capacidad operativa), cada paso citando el bloqueo real y el comando real que lo resolvio en el caso de origen, no teoria abstracta. Principio Claim != Evidence explicito como regla rectora del metodo.
+
+MECANICA: `node tools/asset-index/discover.mjs tools docs /opt/saas-factory-setup/mercader-bos <...roots previos...> --out tools/asset-index/index.json` -- se ampliaron los roots escaneados (antes solo `tools`, ahora tambien `docs` y `mercader-bos`) para cubrir los 3 assets nuevos fuera de `saas-factory/tools/`. Parser de dfl.yaml es deliberadamente NO-YAML real (flat key:value linea por linea, sin bloques multilinea) -- primer intento de escribir description como bloque YAML con `'...'` multilinea fallo el parser ("unparsable line, no ':'"); leccion para el proximo agente que escriba un dfl.yaml: TODO campo debe ser una sola linea fisica, sin newlines internos, aunque el valor sea largo. 21 assets indexados, 0 errores, 7/7 tests del asset-index en verde, verificado con `query.mjs search` que los 4 assets nuevos son efectivamente descubribles por texto libre.
+
+NEXT AGENT: este registro (dfl.external.varios-sfv5.businessos-dump.v0) es el punto de entrada correcto para "que mas hay en los regalos de Ricardo/makeflowia-lab" -- no re-hacer `find` desde cero. Si se activa cualquiera de los 54 repos restantes, seguir dfl.pattern.external-asset-activation.v0-1 y crear un dfl.yaml propio para ese asset (co-localizado en su workspace activado, como se hizo con socialflow-ai) -- NUNCA editar businessos-dump.v0 para "marcarlo como activado", ese manifest es inventario del dump completo, no del asset individual.
+
 ### Causa raíz de fricción de permisos eliminada + confirmado BOS v6 = mismo core que v5/mercader-bos + fix portado (2026-08-19)
 **Type:** decision  
 **Project:** dfl  
@@ -498,36 +522,6 @@ WHAT 2 (pregunta de Jorge sobre BOS v6): Verificado con diff real -- BOS v5/agen
 Único delta real de código encontrado entre v5 y v6: agent.ts de v6 reintenta UNA vez con sesión nueva cuando el sessionId guardado ya no existe en disco ("No conversation found with session ID"), en vez de fallar duro. mercader-bos NO lo tenía -- portado a mercader-bos/agent-server/src/agent.ts, typecheck + build limpios, es exactamente el código que corre el mecanismo AGENT_PROJECTS que se acaba de activar para SocialFlow AI.
 
 NEXT AGENT: si Jorge vuelve a preguntar por diffs entre versiones de BOS del dump "Varios para SFV5/BusinessOS/", el core agent-server es esencialmente el mismo en v2-v7 salvo parches puntuales -- comparar antes de asumir que una versión "funciona mejor" arquitectónicamente; en este caso la diferencia real era el bundle de verticales, no el motor.
-
-### SocialFlow AI activado vía BOS para MERCADER — E2E real parcial, 2 bloqueos externos identificados (2026-08-19)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/mercader/socialflow-ai-bos-activation-2026-08-19
-STATUS: E2E_PASS_PARTIAL
-DATE: 2026-08-19
-LIFECYCLE: active
-
-WHAT: Mission de Jorge: validar hipótesis de Ricardo (assets/regalos de SaaS Factory, especialmente automatizadores de redes sociales, no operativos por config/BOS pendiente, no por defecto) y dejar SocialFlow AI realmente operativo vía BOS con prueba E2E, aplicando loop QUIERO->bloqueo->REQUIERO hasta PASS o bloqueo externo genuino.
-
-EVIDENCIA (todo verificado en vivo esta sesión, said-vm2-la-garra):
-1. Asset real: "Automatización de Redes Sociales" = SocialFlow AI, dump en saas-factory/Varios para SFV5/BusinessOS/BOS v6/ (duplicado byte-a-byte en business-os-v6/), git author makeflowia-lab, un solo commit 650e135 2026-08-04. Producto completo: 16 modelos Prisma, OAuth 6 plataformas, Stripe, worker BullMQ, Docker.
-2. Confirmado el mecanismo real de BOS: mercader-bos/agent-server (BOS real ya corriendo para MERCADER) tiene AGENT_PROJECTS (mapa nombre->path absoluto) + endpoint HTTP /chat que corre una sesión Claude Agent SDK con cwd=path del proyecto -- exactamente lo que Ricardo describió, pre-existente en el código pero nunca activado/usado.
-3. Bloqueos reales encontrados y resueltos, en orden (loop QUIERO/REQUIERO aplicado):
-   - EACCES: dump root-owned, dflagent sin sudo -> copiado a mercader-bos/activated-assets/socialflow-ai/ (workspace escribible, convención nueva para próximos assets).
-   - BOM UTF-8 en package.json y prisma/schema.prisma rompía npm install/prisma generate -> stripped.
-   - features/workspace/{service,store}.ts + app/api/workspace/route.ts NUNCA fueron entregados (0 en git history) pese a que 10+ archivos los importan -- defecto real de entrega, no config. Reconstruidos desde los call-sites + prisma schema (Workspace/Profile/WorkspaceMember), typecheck 0 errores, build production completo (29 páginas).
-   - supabase/migrations/ mezclaba una migración (credentials_rls.sql) que depende de tablas creadas por `prisma db push` con las auto-aplicadas por `supabase start` -- crashea el arranque local. Movida a supabase/post-prisma/ con README explicando el orden correcto. Bug real, afecta a cualquiera que intente levantar este asset.
-   - Prisma CLI no lee .env.local (solo Next.js lo hace) -- creado también .env (mismo contenido) para que ambos convivan.
-4. E2E real logrado: signup real vía Supabase Auth LOCAL (Docker, no el Supabase cloud de DFL -- respeta NO_TOUCH) -> GET /api/workspace auto-provisiona workspace (código reconstruido) -> POST /api/brands crea marca real -> GET /api/agent/status (superficie BOS-facing, auth Bearer AGENT_API_TOKEN, ya construida en el asset pero nunca antes ejercitada) devuelve datos reales; sin token -> 401 correcto. Cierre del loop: POST /chat de mercader-bos/agent-server con {project:"socialflow", message:"corre curl contra /api/agent/status..."} ejecutó una sesión de agente real con cwd en el asset y devolvió el JSON real -- BOS operando el asset sin intervención técnica humana, confirmado en vivo, no solo en teoría.
-5. Recursos: VM2 llegó a 348MB libres / swap 1.5GB en uso con el stack Supabase local completo arriba -- se detuvo todo (containers + next dev + mc-server) al cerrar para no arriesgar producción compartida (n8n, engram, otras sesiones). Datos del test quedan en un volumen Docker persistente, relanzable con `npx supabase start` desde mercader-bos/activated-assets/socialflow-ai/.
-
-BLOQUEOS EXTERNOS REALES (no resueltos a propósito, no falseables por un agente):
-- OPENROUTER_API_KEY institucional: el archivo tmpfs /dev/shm/dfl-openrouter-key que bootstrap-sfv5-startup.sh espera no existe en esta sesión -- sin él no hay generación IA real (/api/agent/generate). Requiere que Jorge o el proceso que lo provisiona lo deje disponible.
-- Publicación real a Meta/LinkedIn/TikTok/YouTube/Google Ads: requiere alta de app OAuth + revisión humana de 2-4 semanas por plataforma, documentado por el propio asset (PROJECT_OVERVIEW.md). Techo duro, no técnico.
-- Decisión de infraestructura pendiente de Jorge: Supabase dedicado vs. local-siempre-activo en VM2 para uso real de MERCADER (no se tocó Supabase cloud de DFL en ningún momento).
-
-NEXT AGENT: no reabrir OpenRouter/OAuth como si fueran bugs -- son bloqueos externos ya documentados. Si se retoma, `npx supabase start` en mercader-bos/activated-assets/socialflow-ai/ revive el mismo estado (mismo volumen Docker). AGENT_PROJECTS y SOCIALFLOW_* ya están wireados en mercader-bos/agent-server/.env, backup pre-cambio en .env.bak-pre-socialflow-wiring.
 
 ---
 
@@ -638,4 +632,4 @@ NEXT AGENT: no reabrir OpenRouter/OAuth como si fueran bugs -- son bloqueos exte
 
 ---
 
-*Mirror auto-generated 2026-08-19T13:24:19Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T14:01:14Z | La Garra → DFLghub/amos-context*
