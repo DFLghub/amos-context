@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T22:45:03Z  
+**Generated:** 2026-08-19T23:41:44Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,12 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### TCX — DFL gate reauthorized and MERCADER R1/R2 autonomous path proven
+**Type:** decision  
+**Project:** dfl  
+
+2026-08-19: Repaired the live @$go control-plane projection for TCX after root-causing E_AUTH_EXPIRED/E_DISPATCH_STALE to the stale provisional-routing-state snapshot (generated 2026-08-18, beyond the 86400s validator window) and the absence of a live renewal projection for the inherited mission. dfl-context-proxy transports/verifies; dispatch_gate is transport-and-verify-only; DCSA is the intended authority but no active renewer was wired to this snapshot. Jorge directly reauthorized TCX for mission MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19. Live /go now returns routing PASS, dispatch PASS, execute_permitted=true, expiry 2026-08-19T23:35:00Z. R1 reused the existing peer-work queue and activate-peer.sh headless cron, with MERCADER bridge target configurable and default TCX. R2 added tools/mercader-autonomy/ack_callback.py, which verifies authority/correlation, completes pending ACKs through peer_work.py, and idempotently updates mercader_leads.order_status. Synthetic live proof: lead-1787179288964-amokp -> MERCADER-ORDER-EXT-BUY-2026-08-19T224128969Z -> pw-a14969e5de8e COMPLETED by TCX; AQA-1 CRUD_LIFECYCLE PASS; real OnePager/delivery token; ACK pw-1f006af20139c COMPLETED by R2; SQLite order_status=ACKED; second callback pass already_acked. No second queue, Scheduler, Capacity Registry, PDP, cloning, Supabase, or Vercel changes.
+
 ### Vertical slice real MERCADER↔FÁBRICA E2E: 1 pedido, ciclo completo, CERRADO (2026-08-19)
 **Type:** decision  
 **Project:** dfl  
@@ -150,22 +156,6 @@ Que sigue siendo bespoke: NADA especifico a MERCADER<->FABRICA -- MERCADER hablo
 Blocker real: ninguno aparecio en este ciclo -- brief simple, deliverable producible con capacidad ya existente, sin credencial externa faltante. QUIERO->bloqueo->REQUIERO no se activo porque no hizo falta, no se forzo artificialmente.
 
 NEXT AGENT: el circuito de 1 pedido esta PROBADO y REUTILIZABLE (mismo peer-work, mismo AQA, mismo patron de delivery sirven para el siguiente pedido sin modificacion). La siguiente mision autorizada por Jorge (NO ejecutada aca) es repetir con multiples pedidos simultaneos para tensionar elasticidad real -- ahi es donde recien aparecera si Scheduler/Capacity Registry/provisioning son necesarios de verdad, no antes.
-
-### Causa raíz de fricción de permisos eliminada + confirmado BOS v6 = mismo core que v5/mercader-bos + fix portado (2026-08-19)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/fewer-permission-prompts-and-bos-v6-comparison-2026-08-19
-STATUS: closed
-DATE: 2026-08-19
-
-WHAT 1 (autonomía): Jorge pidió eliminar la causa raíz de las interrupciones repetidas por autorización, no solo dejar de preguntar. Corrida skill fewer-permission-prompts: escaneados 50 transcripts recientes, extraídas frecuencias reales de Bash/MCP. Causa raíz real: la mayoría de comandos usados (git status/log/diff/branch/rev-parse/remote/show, ps, lsof, grep, sed, find, cat, wc) YA estaban auto-permitidos por el harness -- la fricción real venía de un set chico de patrones no cubiertos (curl a servicios internos :8091/:7437, mcp__engram__search_memory y otras MCP read-only sin regla). Agregadas 13 reglas nuevas a saas-factory/.claude/settings.json (permissions.allow, antes inexistente): 6 Bash (curl a 127.0.0.1:8091/* y :7437/*, curl a health checks locales, export de 2 env vars de AQA/XDG, column) + 7 MCP read-only (search_memory, Drive search/read/download, Supabase get_project_url/list_tables/list_migrations). Excluido deliberadamente pese a alta frecuencia: mcp__supabase__execute_sql (128 usos, pero ejecuta SQL arbitrario -- puede escribir), docker exec, engram search (CLI bare, ya documentado como store equivocado), bash push_mirror.sh (hace commit/push real). No se tocó permissions.deny/ask ni ningún otro campo.
-
-WHAT 2 (pregunta de Jorge sobre BOS v6): Verificado con diff real -- BOS v5/agent-server y BOS v6/bussinesO/agent-server tienen el mismo set de archivos, prácticamente idénticos (una sola diferencia real en agent.ts). El "salto" de v6 no es el orquestador -- es que v6 empaqueta verticales ya construidas (Automatización de Redes Sociales = SocialFlow AI, SaaS B2B para Agencias, meta-google) junto al mismo core. mercader-bos (el BOS real y vivo de MERCADER) ya corre ese mismo core (confirmado archivo por archivo), con extensiones propias de MERCADER encima (phase-4-automation, bot-mercader, routes-mercader, etc.) -- o sea, activar SocialFlow AI en mercader-bos (hecho en la tarea anterior, obs #520) ya captura el valor real de v6 sin necesitar migrar de core.
-
-Único delta real de código encontrado entre v5 y v6: agent.ts de v6 reintenta UNA vez con sesión nueva cuando el sessionId guardado ya no existe en disco ("No conversation found with session ID"), en vez de fallar duro. mercader-bos NO lo tenía -- portado a mercader-bos/agent-server/src/agent.ts, typecheck + build limpios, es exactamente el código que corre el mecanismo AGENT_PROJECTS que se acaba de activar para SocialFlow AI.
-
-NEXT AGENT: si Jorge vuelve a preguntar por diffs entre versiones de BOS del dump "Varios para SFV5/BusinessOS/", el core agent-server es esencialmente el mismo en v2-v7 salvo parches puntuales -- comparar antes de asumir que una versión "funciona mejor" arquitectónicamente; en este caso la diferencia real era el bundle de verticales, no el motor.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -256,21 +246,11 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### Fix: recurring Settings Warning from invalid mid-string wildcard curl permission rule
-**Type:** bugfix  
+### DCSA 30-day authorization auto-renew lifecycle live proof 2026-08-19
+**Type:** fact  
 **Project:** dfl  
 
-Symptom: Claude Code showed a recurring Settings Warning at session start on /opt/saas-factory-setup/saas-factory/.claude/settings.json, flagging invalid permissions.allow rules (Bash(curl -s ..., Bash(curl -s http://localhost:*/health)). User reported "Fix with Claude" appeared to work each time but the warning always returned in a later session.
-
-Root cause: the rule `Bash(curl -s http://localhost:*/health)` used a wildcard in the middle of the string (port position) followed by more path (`/health`). Claude Code's Bash(...) permission matcher only supports a trailing wildcard (prefix match) — a mid-string `*` makes the whole rule invalid and it is silently skipped. This is a modeling mistake (an LLM generalizing several per-port curl rules into one line without knowing the trailing-only constraint), not caused by any script, template, bootstrap process, or sync mechanism — none was found anywhere in the repo, in ~/.claude/settings.json (global, no permissions block), or in managed/enterprise settings (none exist on this host).
-
-Second finding: the entire `permissions` block in saas-factory/.claude/settings.json had never been committed to git before this fix — git log/diff showed it only ever existed as an uncommitted working-tree diff. That is why prior "Fix with Claude" passes never stuck: each fix lived only in that session's working tree and could be lost/overwritten by the next session's edit, with git having no record to fall back to.
-
-Fix: changed the rule to `Bash(curl -s http://localhost:*)` (trailing wildcard only, valid syntax), preserving all other legitimate rules unchanged. Committed to git for the first time: commit b18963b on branch fase-3-5-jpi-real-sfv5-bridge, "fix(settings): correct invalid mid-string wildcard in curl permission rule". Verified: JSON valid in both settings.json and settings.local.json; settings.local.json already had valid explicit per-port rules and was not the source of the bug; no other settings scope contained the invalid pattern.
-
-Also saved as a standing feedback memory (auto-memory: feedback-permission-rule-wildcard-syntax.md) so future sessions don't reintroduce a mid-string wildcard when consolidating Bash permission rules.
-
-Verification pending user action: user needs to restart Claude Code on this directory to confirm the warning no longer appears (cannot be verified from within a running session — no CLI subcommand replicates the session-start settings validation check; `claude doctor` checks a different thing).
+DCSA authorization lifecycle durable pattern implemented 2026-08-19 for MERCADER TCX: /opt/dfl-knowledge/governance/dispatch/authorization_renewal.py + notify helper + renewal-policy.json + append-only AUTHORIZATION-RENEWAL-LEDGER.jsonl. 30-day authorization renewed immediately preserving active gate; policy AUTO, notice <24h exact Jorge text with Sí/No actions, no response auto-renews before expiry using existing 10-minute autonomous peer activation cadence, explicit NO lets expire, REVOKED wins. Projection freshness remains 24h critical and is auto-refreshed without extending scope. dispatch_gate hardened for executor/scope mismatch, explicit revocation, authorization body hash. 25 unit tests PASS; real activate-peer TCX smoke PASS; live /go: routing PASS, dispatch PASS, execute_permitted=true, expires 2026-09-18T23:19:01Z. Evidence audit includes prior expiry, explicit decision/reason, new expiry, projection refresh. No Supabase/Vercel/secrets touched. User-space systemd timer was not installed because user bus unavailable; lifecycle is attached to existing crontab activation cadence via activate-peer.sh flock hook.
 
 ---
 
@@ -454,48 +434,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### Fix: recurring Settings Warning from invalid mid-string wildcard curl permission rule
-**Type:** bugfix  
+### DCSA 30-day authorization auto-renew lifecycle live proof 2026-08-19
+**Type:** fact  
 **Project:** dfl  
 
-Symptom: Claude Code showed a recurring Settings Warning at session start on /opt/saas-factory-setup/saas-factory/.claude/settings.json, flagging invalid permissions.allow rules (Bash(curl -s ..., Bash(curl -s http://localhost:*/health)). User reported "Fix with Claude" appeared to work each time but the warning always returned in a later session.
+DCSA authorization lifecycle durable pattern implemented 2026-08-19 for MERCADER TCX: /opt/dfl-knowledge/governance/dispatch/authorization_renewal.py + notify helper + renewal-policy.json + append-only AUTHORIZATION-RENEWAL-LEDGER.jsonl. 30-day authorization renewed immediately preserving active gate; policy AUTO, notice <24h exact Jorge text with Sí/No actions, no response auto-renews before expiry using existing 10-minute autonomous peer activation cadence, explicit NO lets expire, REVOKED wins. Projection freshness remains 24h critical and is auto-refreshed without extending scope. dispatch_gate hardened for executor/scope mismatch, explicit revocation, authorization body hash. 25 unit tests PASS; real activate-peer TCX smoke PASS; live /go: routing PASS, dispatch PASS, execute_permitted=true, expires 2026-09-18T23:19:01Z. Evidence audit includes prior expiry, explicit decision/reason, new expiry, projection refresh. No Supabase/Vercel/secrets touched. User-space systemd timer was not installed because user bus unavailable; lifecycle is attached to existing crontab activation cadence via activate-peer.sh flock hook.
 
-Root cause: the rule `Bash(curl -s http://localhost:*/health)` used a wildcard in the middle of the string (port position) followed by more path (`/health`). Claude Code's Bash(...) permission matcher only supports a trailing wildcard (prefix match) — a mid-string `*` makes the whole rule invalid and it is silently skipped. This is a modeling mistake (an LLM generalizing several per-port curl rules into one line without knowing the trailing-only constraint), not caused by any script, template, bootstrap process, or sync mechanism — none was found anywhere in the repo, in ~/.claude/settings.json (global, no permissions block), or in managed/enterprise settings (none exist on this host).
-
-Second finding: the entire `permissions` block in saas-factory/.claude/settings.json had never been committed to git before this fix — git log/diff showed it only ever existed as an uncommitted working-tree diff. That is why prior "Fix with Claude" passes never stuck: each fix lived only in that session's working tree and could be lost/overwritten by the next session's edit, with git having no record to fall back to.
-
-Fix: changed the rule to `Bash(curl -s http://localhost:*)` (trailing wildcard only, valid syntax), preserving all other legitimate rules unchanged. Committed to git for the first time: commit b18963b on branch fase-3-5-jpi-real-sfv5-bridge, "fix(settings): correct invalid mid-string wildcard in curl permission rule". Verified: JSON valid in both settings.json and settings.local.json; settings.local.json already had valid explicit per-port rules and was not the source of the bug; no other settings scope contained the invalid pattern.
-
-Also saved as a standing feedback memory (auto-memory: feedback-permission-rule-wildcard-syntax.md) so future sessions don't reintroduce a mid-string wildcard when consolidating Bash permission rules.
-
-Verification pending user action: user needs to restart Claude Code on this directory to confirm the warning no longer appears (cannot be verified from within a running session — no CLI subcommand replicates the session-start settings validation check; `claude doctor` checks a different thing).
-
-### EXTERIOR->MERCADER->FABRICA->MERCADER: primera transicion completa demostrada (2026-08-19)
-**Type:** architecture  
+### TCC provider resilience decision and safe selector 2026-08-19
+**Type:** fact  
 **Project:** dfl  
 
-ESTADO: EXTERNAL BUY -> MERCADER ORDER -> FABRICA -> AQA PASS -> DELIVER -> MERCADER ACK PATH VALIDATED. NO declarado: ciclo autonomo -- R1/R2 pendientes (deuda exacta, ver abajo).
-
-CONTEXTO: conecta por primera vez el tramo EXTERIOR->MERCADER (POST /api/mercader/leads, mercader-bos/agent-server, contrato intent_type: BUY|LEAD) con el ciclo MERCADER<->FABRICA ya validado por separado (obs #529/#530/#531, docs/patterns/mercader-fabrica-concurrent-validation-2026/), sin reconstruir ninguno de los dos tramos.
-
-MECANISMO: hook sincrono maybeTransitionBuyToOrder() (mercader-bos/agent-server/src/mercader-fabrica-bridge.ts), invocado en el mismo proceso justo despues del hook onLeadCaptured() ya existente, solo si el lead no fue auto-rechazado. Regla LEAD: intent_type!=='BUY' -> no-op, nunca genera ORDER. Idempotencia real (no solo logica): claimOrderForLead() hace UPDATE mercader_leads SET order_id=?,order_status='PENDING' WHERE id=? AND order_id IS NULL, atomico en el proceso Node de un solo hilo (better-sqlite3 sincrono). Si gana, invoca tools/peer-work/peer_work.py create con authority_ref=human=telegram:8776472165 (mismo esquema humano ya usado en el circuito interno, sin mission DCSA nueva).
-
-BUG REAL encontrado y corregido en el camino: el INSERT de createLead() en db.ts omitia la columna intent_type -- cada alta caia silenciosamente al DEFAULT 'LEAD' del schema aunque la respuesta HTTP (construida en memoria, no releida de la DB) mostrara el valor correcto. Detectado verificando SQLite directo, nunca confiando en la respuesta HTTP echoada.
-
-CASO REAL: lead_id=lead-1787159739207-0xo1f -> ORDER_ID=MERCADER-ORDER-EXT-BUY-2026-08-19T171539212Z -> ORDER peer-work=pw-4a1770ac152e (COMPLETED) -> ACK peer-work=pw-9891d9f4c9c3 (COMPLETED). AQA-1/CRUD_LIFECYCLE real PASS (tools/aqa-kit/evidence/mercader-e2e-exterior-buy/MERCADER-ORDER-EXT-BUY-2026-08-19T171539212Z/27811cb/2026-08-19T17-16-28-524Z/receipt.json). DELIVER con token real. order_status='ACKED' confirmado por lectura directa de SQLite.
-
-NEGATIVO LEAD confirmado real: lead-1787159835753-h7aa8 (intent_type=LEAD) persistio con order_id/order_request_id/order_status=NULL, cero items en el Ledger para ese lead_id.
-
-IDEMPOTENCIA bajo reintento confirmada: llamada repetida a maybeTransitionBuyToOrder para el mismo lead_id devolvio el order_id/request_id ya existente sin crear un segundo item -- exactamente 1 MERCADER_ORDER + 1 MERCADER_ACK en el Ledger para ese lead_id, verificado contando.
-
-ALCANCE: cero integracion bespoke EXTERIOR<->FABRICA -- el exterior solo conoce POST /api/mercader/leads, no sabe de peer-work/DCSA/AQA/Scheduler/Capacity Registry. No se construyo CRM, gateway publico, A2A/MCP, Scheduler, Capacity Registry, PDP ni cloning -- ninguno fue necesario.
-
-QUE QUEDO MANUAL (deuda exacta para la proxima mision, NO resuelta aca):
-- R1 Executor automatico: nadie escucha MERCADER_ORDER PENDING en el Ledger; TCC ejecuto claim->produce->AQA->deliver->complete a mano.
-- R2 Callback de cierre: al completar MERCADER_ACK, el order_status='ACKED' en mercader_leads se escribio con un UPDATE manual, no hay callback automatico peer-work->SQLite.
-Siguiente QUIERO: eliminar R1 y R2, demostrar el ciclo EXTERIOR->MERCADER->FABRICA->MERCADER->EXTERIOR completamente autonomo, sin reconstruir tramos ya validados, sin Scheduler/Capacity Registry/PDP/cloning salvo blocker real.
-
-INSTITUCIONALIZACION: nuevo asset dfl.validation.exterior-mercader-fabrica-e2e-2026.v0 (docs/patterns/exterior-mercader-fabrica-e2e-2026/{VALIDATION.md,dfl.yaml}, status active), descubierto y verificado via query.mjs search. Design Candidate v0 (docs/patterns/design-candidate-v0-elastic-capacity/DESIGN.md) actualizado con puntero a esta validacion, sin promover ninguna hipotesis a hecho. IRONMAN.md: nueva fila en el Tablero de hilos. Asset Index regenerado: 28 assets, 0 errores; 7/7 tests de asset-index en verde. Commit local (no pusheado a origin) en mercader-bos: e0565e0 "feat(mercader): EXTERIOR->MERCADER->FABRICA transition (BUY only)" -- 5 archivos (db.ts, server.ts, bot-mercader.ts, routes-mercader.ts, mercader-fabrica-bridge.ts nuevo). Repo saas-factory: docs/patterns/exterior-mercader-fabrica-e2e-2026/, docs/patterns/design-candidate-v0-elastic-capacity/DESIGN.md, IRONMAN.md, tools/asset-index/index.json quedaron en working tree sin commit (mismo patron ya usado para las validaciones hermanas de esta misma cadena, ninguna de ellas tiene commit tampoco).
+TCC provider resilience 2026-08-19: inspected /home/dflagent/reference/BusinessOS/free-claude-code. It is an Anthropic-compatible Claude Code proxy with static provider/model routing (OpenRouter supported), no Anthropic primary, no cross-provider automatic fallback/failback, and retries 429 within a provider. Automatic Anthropic->OpenRouter failover is unsafe after streaming/tool effects and is not enabled. Added saas-factory/tools/tcc-provider/tcc-provider and docs/TCC-PROVIDER-RESILIENCE.md: persistent one-action selector, Anthropic direct default, OpenRouter only with a separately authorized TCC key file and explicit open_router/<provider>/<model>, fail closed on missing/ambiguous credentials, metadata-only observability. SFV5 app OPENROUTER_API_KEY is explicitly not reused. Current host has no separate TCC OpenRouter key configured, so real provider spend E2E B is correctly blocked until credential provisioning; no secrets exposed. Shell syntax PASS; focused free-claude-code tests could not start because pydantic_settings is absent in that reference environment. Live /go remains PASS for executor TCX with execute_permitted=true for MERCADER mission, checked 2026-08-19T23:05:18Z.
 
 ---
 
@@ -606,4 +555,4 @@ INSTITUCIONALIZACION: nuevo asset dfl.validation.exterior-mercader-fabrica-e2e-2
 
 ---
 
-*Mirror auto-generated 2026-08-19T22:45:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T23:41:44Z | La Garra → DFLghub/amos-context*
