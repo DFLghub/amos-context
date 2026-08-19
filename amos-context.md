@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T13:18:53Z  
+**Generated:** 2026-08-19T13:24:19Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,22 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Causa raíz de fricción de permisos eliminada + confirmado BOS v6 = mismo core que v5/mercader-bos + fix portado (2026-08-19)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/saas-factory/fewer-permission-prompts-and-bos-v6-comparison-2026-08-19
+STATUS: closed
+DATE: 2026-08-19
+
+WHAT 1 (autonomía): Jorge pidió eliminar la causa raíz de las interrupciones repetidas por autorización, no solo dejar de preguntar. Corrida skill fewer-permission-prompts: escaneados 50 transcripts recientes, extraídas frecuencias reales de Bash/MCP. Causa raíz real: la mayoría de comandos usados (git status/log/diff/branch/rev-parse/remote/show, ps, lsof, grep, sed, find, cat, wc) YA estaban auto-permitidos por el harness -- la fricción real venía de un set chico de patrones no cubiertos (curl a servicios internos :8091/:7437, mcp__engram__search_memory y otras MCP read-only sin regla). Agregadas 13 reglas nuevas a saas-factory/.claude/settings.json (permissions.allow, antes inexistente): 6 Bash (curl a 127.0.0.1:8091/* y :7437/*, curl a health checks locales, export de 2 env vars de AQA/XDG, column) + 7 MCP read-only (search_memory, Drive search/read/download, Supabase get_project_url/list_tables/list_migrations). Excluido deliberadamente pese a alta frecuencia: mcp__supabase__execute_sql (128 usos, pero ejecuta SQL arbitrario -- puede escribir), docker exec, engram search (CLI bare, ya documentado como store equivocado), bash push_mirror.sh (hace commit/push real). No se tocó permissions.deny/ask ni ningún otro campo.
+
+WHAT 2 (pregunta de Jorge sobre BOS v6): Verificado con diff real -- BOS v5/agent-server y BOS v6/bussinesO/agent-server tienen el mismo set de archivos, prácticamente idénticos (una sola diferencia real en agent.ts). El "salto" de v6 no es el orquestador -- es que v6 empaqueta verticales ya construidas (Automatización de Redes Sociales = SocialFlow AI, SaaS B2B para Agencias, meta-google) junto al mismo core. mercader-bos (el BOS real y vivo de MERCADER) ya corre ese mismo core (confirmado archivo por archivo), con extensiones propias de MERCADER encima (phase-4-automation, bot-mercader, routes-mercader, etc.) -- o sea, activar SocialFlow AI en mercader-bos (hecho en la tarea anterior, obs #520) ya captura el valor real de v6 sin necesitar migrar de core.
+
+Único delta real de código encontrado entre v5 y v6: agent.ts de v6 reintenta UNA vez con sesión nueva cuando el sessionId guardado ya no existe en disco ("No conversation found with session ID"), en vez de fallar duro. mercader-bos NO lo tenía -- portado a mercader-bos/agent-server/src/agent.ts, typecheck + build limpios, es exactamente el código que corre el mecanismo AGENT_PROJECTS que se acaba de activar para SocialFlow AI.
+
+NEXT AGENT: si Jorge vuelve a preguntar por diffs entre versiones de BOS del dump "Varios para SFV5/BusinessOS/", el core agent-server es esencialmente el mismo en v2-v7 salvo parches puntuales -- comparar antes de asumir que una versión "funciona mejor" arquitectónicamente; en este caso la diferencia real era el bundle de verticales, no el motor.
+
 ### SocialFlow AI activado vía BOS para MERCADER — E2E real parcial, 2 bloqueos externos identificados (2026-08-19)
 **Type:** decision  
 **Project:** dfl  
@@ -145,19 +161,6 @@ BLOQUEOS EXTERNOS REALES (no resueltos a propósito, no falseables por un agente
 - Decisión de infraestructura pendiente de Jorge: Supabase dedicado vs. local-siempre-activo en VM2 para uso real de MERCADER (no se tocó Supabase cloud de DFL en ningún momento).
 
 NEXT AGENT: no reabrir OpenRouter/OAuth como si fueran bugs -- son bloqueos externos ya documentados. Si se retoma, `npx supabase start` en mercader-bos/activated-assets/socialflow-ai/ revive el mismo estado (mismo volumen Docker). AGENT_PROJECTS y SOCIALFLOW_* ya están wireados en mercader-bos/agent-server/.env, backup pre-cambio en .env.bak-pre-socialflow-wiring.
-
-### Q/R-RGSA v1.0 canonically formalized and registered — candidate_only
-**Type:** decision  
-**Project:** dfl  
-
-DFL Q/R — Recursive Goal-Satisfaction Algorithm (Q/R-RGSA) v1.0 formalized 2026-08-19. Full original algorithm specification authored directly by HI (Jorge Tigreros) in session; Claude contrasted it against DFL patrimony (local dfl-knowledge, Drive doctrine, and this institutional Engram store — only prior hit was obs #505, an informal consistent application, not a competing formal spec), found no prior canonical name/spec to avoid duplicating, and formalized it as a durable artifact.
-
-Canonical artifact: /opt/dfl-knowledge/04_Candidate_Vault/pending_review/DOCTRINA_QR_RECURSIVE_GOAL_SATISFACTION_v1.0_CANDIDATE.md
-Registered: /opt/dfl-knowledge/01_System_Governance/Index/ARTIFACT_REGISTRY.md/ARTIFACT_REGISTRY.md, Artifact ID DOCTRINA-QR-RGSA-v1.0, state candidate_only (HI/REVISOR promotion to 02_Doctrine_Core/ still pending — not auto-promoted despite HI authoring it directly, per registry's own state definitions).
-
-Core semantics preserved verbatim from HI's spec: Q=GOAL / R=REQUIREMENT nodes, states OPEN/SATISFIED/UNSATISFIED/UNKNOWN/BLOCKED, AND/OR requirement logic, recursive descent (UNSATISFIED(R) -> child Q -> SOLVE -> VERIFY -> UNWIND -> re-verify parent, never assume transitively), hierarchical deterministic IDs (Q0.R0.2.Q1...), Claim != Evidence, Reuse > Rebuild (principle of minimum satisfaction), mandatory redecomposition if all R satisfied but Q still false, BLOCKED only when truly unresolvable. One formal (non-semantic) clarification added: explicit handling for R remaining UNKNOWN after a failed RESOLVE_EVIDENCE attempt, so it isn't silently collapsed into UNSATISFIED before an action/descent decision.
-
-Explicitly out of scope for this pass (per HI's instruction): no Q/R engine was built or implemented. This is doctrine institutionalization only, reusable by TCC, TCX, Factory, BOS, NEXUS, and any DFL agent/organism as the canonical reference for QUIERO->REQUIERO diagnostics — including the DFL constitutional diagnostic and the MERCADER revenue diagnostic already run informally with this same method earlier in this same session, before this formalization existed as a named artifact.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -480,6 +483,22 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Causa raíz de fricción de permisos eliminada + confirmado BOS v6 = mismo core que v5/mercader-bos + fix portado (2026-08-19)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/saas-factory/fewer-permission-prompts-and-bos-v6-comparison-2026-08-19
+STATUS: closed
+DATE: 2026-08-19
+
+WHAT 1 (autonomía): Jorge pidió eliminar la causa raíz de las interrupciones repetidas por autorización, no solo dejar de preguntar. Corrida skill fewer-permission-prompts: escaneados 50 transcripts recientes, extraídas frecuencias reales de Bash/MCP. Causa raíz real: la mayoría de comandos usados (git status/log/diff/branch/rev-parse/remote/show, ps, lsof, grep, sed, find, cat, wc) YA estaban auto-permitidos por el harness -- la fricción real venía de un set chico de patrones no cubiertos (curl a servicios internos :8091/:7437, mcp__engram__search_memory y otras MCP read-only sin regla). Agregadas 13 reglas nuevas a saas-factory/.claude/settings.json (permissions.allow, antes inexistente): 6 Bash (curl a 127.0.0.1:8091/* y :7437/*, curl a health checks locales, export de 2 env vars de AQA/XDG, column) + 7 MCP read-only (search_memory, Drive search/read/download, Supabase get_project_url/list_tables/list_migrations). Excluido deliberadamente pese a alta frecuencia: mcp__supabase__execute_sql (128 usos, pero ejecuta SQL arbitrario -- puede escribir), docker exec, engram search (CLI bare, ya documentado como store equivocado), bash push_mirror.sh (hace commit/push real). No se tocó permissions.deny/ask ni ningún otro campo.
+
+WHAT 2 (pregunta de Jorge sobre BOS v6): Verificado con diff real -- BOS v5/agent-server y BOS v6/bussinesO/agent-server tienen el mismo set de archivos, prácticamente idénticos (una sola diferencia real en agent.ts). El "salto" de v6 no es el orquestador -- es que v6 empaqueta verticales ya construidas (Automatización de Redes Sociales = SocialFlow AI, SaaS B2B para Agencias, meta-google) junto al mismo core. mercader-bos (el BOS real y vivo de MERCADER) ya corre ese mismo core (confirmado archivo por archivo), con extensiones propias de MERCADER encima (phase-4-automation, bot-mercader, routes-mercader, etc.) -- o sea, activar SocialFlow AI en mercader-bos (hecho en la tarea anterior, obs #520) ya captura el valor real de v6 sin necesitar migrar de core.
+
+Único delta real de código encontrado entre v5 y v6: agent.ts de v6 reintenta UNA vez con sesión nueva cuando el sessionId guardado ya no existe en disco ("No conversation found with session ID"), en vez de fallar duro. mercader-bos NO lo tenía -- portado a mercader-bos/agent-server/src/agent.ts, typecheck + build limpios, es exactamente el código que corre el mecanismo AGENT_PROJECTS que se acaba de activar para SocialFlow AI.
+
+NEXT AGENT: si Jorge vuelve a preguntar por diffs entre versiones de BOS del dump "Varios para SFV5/BusinessOS/", el core agent-server es esencialmente el mismo en v2-v7 salvo parches puntuales -- comparar antes de asumir que una versión "funciona mejor" arquitectónicamente; en este caso la diferencia real era el bundle de verticales, no el motor.
+
 ### SocialFlow AI activado vía BOS para MERCADER — E2E real parcial, 2 bloqueos externos identificados (2026-08-19)
 **Type:** decision  
 **Project:** dfl  
@@ -509,22 +528,6 @@ BLOQUEOS EXTERNOS REALES (no resueltos a propósito, no falseables por un agente
 - Decisión de infraestructura pendiente de Jorge: Supabase dedicado vs. local-siempre-activo en VM2 para uso real de MERCADER (no se tocó Supabase cloud de DFL en ningún momento).
 
 NEXT AGENT: no reabrir OpenRouter/OAuth como si fueran bugs -- son bloqueos externos ya documentados. Si se retoma, `npx supabase start` en mercader-bos/activated-assets/socialflow-ai/ revive el mismo estado (mismo volumen Docker). AGENT_PROJECTS y SOCIALFLOW_* ya están wireados en mercader-bos/agent-server/.env, backup pre-cambio en .env.bak-pre-socialflow-wiring.
-
-### @$fin — Cierre de sesión 2026-08-19 (constitucional + MERCADER + iMac)
-**Type:** fact  
-**Project:** dfl  
-
-Cierre de sesión larga (2026-08-19), tres frentes trabajados, ninguno cerrado como CLOSED — los tres quedan CHECKPOINTED a propósito, con instrucción explícita de leer el checkpoint antes de retomar.
-
-1. DFL Constitutional QUIERO->REQUIERO: Acta Fundacional amOS v1.1 (ratificada) vs. DFL v2 Constitucion Hibrida vs. DFL v2 Constitucion v0.3 (candidata, sin firmar) comparadas linea por linea. Hallazgo documental clave: la propia Acta se autoprogramo una sucesion (no enmienda) via una futura "Constitution v1.0" condicionada a G-009, nunca confirmada como completa; ningun documento posterior cita el otro por nombre. R12 (precedencia Acta vs v0.3) queda deliberadamente sin decidir por instruccion de Jorge, pendiente de investigacion externa (management moderno, modelos organizacionales, DDD, modelos orientales) antes de decidir la proxima generacion constitucional. Checkpoint: saas-factory/.claude/CHECKPOINT-DFL-CONSTITUTIONAL-DIAGNOSTIC-2026-08-19.md.
-
-2. MERCADER Q/R-RGSA revenue diagnostic: aplicado el algoritmo Q/R recien institucionalizado (ver obs #518) a Q0="MERCADER produce sus primeros USD 1000". ~15 pasadas de agentes encadenadas construyeron y probaron en sandbox: parser texto-libre->estructurado, modulo de margen viable, generalizacion del SLA de Challenge Manager, webhook+normalizador de recepcion (command-center), entrega automatizada del producto pagado (reusando patron de maquina-contacto-en-frio), y checkout Polar en modo mock -- todo con evidencia real de ejecucion, no solo lectura de codigo. Q0 permanece UNSATISFIED (cero pago real, por limite explicito del usuario toda la sesion: cero contacto real, cero dinero real, cero credencial nueva). Hallazgo final y mas importante: DFL no tiene organismo real de fulfillment (intake->priorizacion->compromiso->fabricacion->AQA->entrega->accountability) para lo que MERCADER venda -- Workforce Registry Unit (WRU), el candidato obvio, es 100% diseno, 0% implementado segun su propio plan (fechado 2026-07-31). Registrado como REQUIERO institucional de DFL, no solo de MERCADER -- misma categoria que el hallazgo de arquitectura de informacion del frente constitucional. Checkpoint: saas-factory/.claude/CHECKPOINT-MERCADER-QR-2026-08-19.md.
-
-3. Acceso SSH inverso a iMac (~/Downloads, ~7.8GB): tunel confirmado ESTABLISHED (127.0.0.1:22022), autenticacion FALLIDA con llave dedicada (~/.ssh/id_ed25519_imac) que el usuario dice haber agregado a authorized_keys del Mac. Pausado por prioridad del usuario, no retomar proactivamente. Checkpoint: saas-factory/.claude/CHECKPOINT-IMAC-REVERSE-SSH-ACCESS-2026-08-19.md.
-
-Ademas, esta misma sesion formalizo e institucionalizo la doctrina DFL Q/R Recursive Goal-Satisfaction Algorithm (Q/R-RGSA v1.0), candidate_only en dfl-knowledge/04_Candidate_Vault/pending_review/, ver obs #518 -- ese es el metodo que se aplico en los frentes 1 y 2 de este cierre.
-
-Ninguna observacion previa queda invalidada por este cierre; no hay archivado que hacer. Ningun commit a git en esta sesion -- todo el trabajo vive en los tres archivos de checkpoint listados arriba mas la memoria persistente del agente (MEMORY.md).
 
 ---
 
@@ -635,4 +638,4 @@ Ninguna observacion previa queda invalidada por este cierre; no hay archivado qu
 
 ---
 
-*Mirror auto-generated 2026-08-19T13:18:53Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T13:24:19Z | La Garra → DFLghub/amos-context*
