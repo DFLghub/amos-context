@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T14:41:48Z  
+**Generated:** 2026-08-19T15:12:33Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -285,25 +285,27 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### Institucionalizada autopsia de Monoid — 12 hallazgos + preguntas abiertas, discovery/research validated (2026-08-19)
+### Institucionalizado reconocimiento del terreno: interoperabilidad de agentes 2026 (MCP/A2A/ACP/ARD/China/auth) — discovery/research validated (2026-08-19)
 **Type:** architecture  
 **Project:** dfl  
 
-TOPIC: dfl/research/monoid-capability-invocation-2026-08-19
-STATUS: closed (como institucionalizacion) / OPEN (como conocimiento -- no es diseno aprobado)
+TOPIC: dfl/research/agent-interop-landscape-2026
+STATUS: closed (como institucionalizacion) / OPEN (como conocimiento -- no es diseno aprobado, no elige protocolo)
 DATE: 2026-08-19
 
-WHAT: Jorge pidio autopsia profunda de github.com/munkim/monoid (commit ecf3fa34087ac1045b82e6999bdb30b8b7cd7af9) para responder: dado que DFL ya tiene discovery institucional (tools/asset-index/), que falta para pasar a invocation/consumption/delivery uniforme entre organismos DFL. Se clono el repo real y se leyo codigo (no solo README): db_models/api_action.py, action_config_model.py, react_agent.py, monoid/action/utils.py, api/v1/api_action.py, llm_utils.py.
+WHAT: Continuacion directa de dfl.research.monoid-capability-invocation.v0 (obs #524). Jorge pidio investigar como resuelve el mundo real (no solo Monoid) el problema de discovery+invocation+consumption+delivery de capacidades entre agentes, con enfasis en no casarse con MCP/A2A por moda y ampliar el campo competitivo de patrones antes de decidir arquitectura.
 
-Institucionalizado en docs/patterns/monoid-capability-invocation-research/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.monoid-capability-invocation.v0, status DRAFT explicito (no active) para marcar que es investigacion, no patron listo para usar. Indexado: 22 assets totales, 0 errores, 7/7 tests, verificado descubrible por 4 queries de texto libre distintas.
+Institucionalizado en docs/patterns/agent-interop-landscape-research-2026/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.agent-interop-landscape-2026.v0, status DRAFT explicito. Indexado: 23 assets totales (subio de 22), 0 errores, 7/7 tests, descubribilidad verificada por 5 queries de texto libre (3 directas, 2 con desajuste idiomatico ES/EN en la query que se confirmo NO era problema de indexacion sino de fraseo -- re-testeado con terminos que calzan literal y funciono).
 
-12 hallazgos con evidencia de archivo real (detalle completo en RESEARCH.md, no repetido aca): (1) standardized executable capability envelope via FunctionCallConfig compartido entre api_config y expert_agent_config; (2) ArgumentProvider={creator,agent,user} como autoridad granular POR PARAMETRO, no por accion completa; (3) FunctionCallKeysToPaths como capa de indireccion entre nombre-que-ve-el-LLM y ubicacion-real-en-la-API; (4) simetria humano/agente confirmada en codigo -- test_api (UI) y react_agent.py (dispatcher) llaman la MISMA funcion call_api(); (5) Agent-as-Action via recursion literal de run_agent_stream sobre si misma; (6) AgentConfig como dato JSON puro, agente reconstruible sin codigo; (7) event log estructurado por invocacion CON nesting_level (trazabilidad mas fina que Engram por-sesion); (8) cycle/depth guard de Monoid es ingenuo (nesting_level==3 hardcodeado, NO detecta ciclos A->B->A, solo corta por profundidad) -- necesidad futura de DFL, no aplica hoy; (9) Claim!=Evidence DENTRO de Monoid: LLMOption declara multi-vendor (OpenAI/Anthropic/Llama) pero openai_function_call() esta hardcodeado a OpenAI, nunca implementado el resto -- hallazgo metodologico, no solo tecnico; (10) "Action Sandbox" de Monoid NO es aislamiento de seguridad (mismo call_api sin allowlist/timeout, es solo alcance de prueba reducido a 1 accion en una UI) -- nombre enganoso si se cita como referencia de seguridad; (11) Hub/registry de Monoid (is_public boolean + tabla SQL) es INFERIOR al Asset Index real de DFL (git-versionado, con evidence/status/consumer_hint) -- explicitamente NO proponer como reemplazo de nada; (12) metabolizar patrones, nunca el stack (FastAPI/SQLAlchemy/Postgres/Next.js) -- DFL ya tiene equivalentes superiores (Prisma/Supabase, agent-server en TS sobre Claude Agent SDK real).
+Investigacion real (WebSearch+WebFetch, no memoria de entrenamiento): MCP spec 2026-07-28 fetcheada directo (tools/list+tools/call, inputSchema/outputSchema, handles opacos para estado sin sesion de protocolo, Input Required/MRTR para pausar una tool, errores en 2 capas protocol-vs-execution); A2A (Agent Card en /.well-known/agent.json, task lifecycle de 9 estados incl. AUTH_REQUIRED como pausa de primera clase que DCSA no tiene, streaming SSE); ACP de IBM/BeeAI via Linux Foundation (alternativa REST); ARD de Google+coalicion grande -- julio 2026, muy reciente, discovery federado bajo dominio propio complementario a MCP/OpenAPI, arquitectura de 2 capas muy alineada con lo que DFL ya intuye (asset-index=discovery, falta ejecucion); iniciativa china CAC/WAIC 2026 de gobernanza de identidad+ciclo de vida de agentes (encontrada por FUENTE UNICA, marcada explicitamente para verificar, no tratada como autoridad); OpenAI Agents SDK Handoffs (transferencia completa de control, filosofia distinta a accion-que-retorna); LangGraph Send/subagents (fan-out paralelo, patron nuevo no visto en Monoid); Qwen-Agent (descartado explicitamente para interop universal, es acoplamiento fuerte a un vendor); panorama de auth entre agentes (OAuth 2.1+PKCE, IETF draft agent_assertion, AuthZEN de OpenID -- confirma que ArgumentProvider de Monoid es convergencia real de industria, no idea aislada).
 
-Preguntas dejadas EXPLICITAMENTE abiertas, no resueltas, no inferibles de este documento: (a) pregunta central -- el futuro contrato ejecutable extiende dfl.yaml, vive como asset separado, o en otra capa; (b) dueno/ubicacion futura del dispatcher (agent-server central generalizado vs uno por BOS); (c) autoridad de parametros cuando creator/consumer/provider son organismos DFL, no humanos (probablemente necesita algo tipo Contrato constitucional, no un enum de 3 valores); (d) deteccion de ciclos real y trazabilidad E2E para invocacion recursiva entre organismos.
+Disciplina de evidencia aplicada rigurosamente: cada hallazgo del documento esta etiquetado [SPEC]/[CODIGO]/[MULTIPLES-FUENTES]/[FUENTE-UNICA]/[RUNTIME]. Declarado explicito: NINGUN hallazgo tiene evidencia [RUNTIME] propia -- todo es lectura de spec/codigo estatico o reporte de terceros, nunca ejecucion propia. Esto es limitacion declarada, no oculta.
 
-LIMITACION encontrada: la copia clonada de Monoid es efimera (/tmp/.../scratchpad), no sobrevive la sesion -- la referencia durable es el commit hash contra el repo publico, no un path local. Solo se audito el backend en profundidad, no el frontend (UX del Hub/Sandbox no inspeccionada).
+Preguntas abiertas: las 4 de la investigacion de Monoid se preservaron integras SIN resolver (pregunta central dfl.yaml-vs-asset-separado-vs-otra-capa; dueno del dispatcher; autoridad de parametros entre organismos; deteccion de ciclos). Se agregaron 3 nuevas sin resolver: autorizacion a nivel mision (DCSA) vs a nivel invocacion individual (tipo AuthZEN); manifest publico (A2A/ARD) vs discovery cerrado al repo; handoff (transferencia de control) vs accion-que-retorna (Monoid/MCP) segun caso de uso.
 
-NEXT AGENT: NO tratar este documento como autorizacion para construir el envelope/dispatcher. Es DISCOVERY. Si Jorge pide avanzar a diseno, ese es un hilo nuevo que debe resolver las 4 preguntas abiertas explicitamente, no asumir respuestas de aca.
+4 candidatos registrados para autopsia profunda posterior, NINGUNO ejecutado todavia: ARD (spec completa sin leer linea por linea), A2A spec/schemas completos (solo se leyo el resumen de discovery/lifecycle), MCP Authorization/OAuth/AuthZEN integracion formal (solo referenciada por fuentes secundarias), fuentes primarias orientales (la iniciativa CAC es fuente unica, documento oficial no leido).
+
+NEXT AGENT: NO tratar este documento ni el de Monoid como autorizacion para elegir protocolo o construir nada. Ambos son DISCOVERY. Si Jorge pide avanzar a diseno o a la siguiente ronda de autopsia (los 4 candidatos), ese es un hilo nuevo -- no asumir que este research ya decidio algo.
 
 ---
 
@@ -487,6 +489,28 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Institucionalizado reconocimiento del terreno: interoperabilidad de agentes 2026 (MCP/A2A/ACP/ARD/China/auth) — discovery/research validated (2026-08-19)
+**Type:** architecture  
+**Project:** dfl  
+
+TOPIC: dfl/research/agent-interop-landscape-2026
+STATUS: closed (como institucionalizacion) / OPEN (como conocimiento -- no es diseno aprobado, no elige protocolo)
+DATE: 2026-08-19
+
+WHAT: Continuacion directa de dfl.research.monoid-capability-invocation.v0 (obs #524). Jorge pidio investigar como resuelve el mundo real (no solo Monoid) el problema de discovery+invocation+consumption+delivery de capacidades entre agentes, con enfasis en no casarse con MCP/A2A por moda y ampliar el campo competitivo de patrones antes de decidir arquitectura.
+
+Institucionalizado en docs/patterns/agent-interop-landscape-research-2026/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.agent-interop-landscape-2026.v0, status DRAFT explicito. Indexado: 23 assets totales (subio de 22), 0 errores, 7/7 tests, descubribilidad verificada por 5 queries de texto libre (3 directas, 2 con desajuste idiomatico ES/EN en la query que se confirmo NO era problema de indexacion sino de fraseo -- re-testeado con terminos que calzan literal y funciono).
+
+Investigacion real (WebSearch+WebFetch, no memoria de entrenamiento): MCP spec 2026-07-28 fetcheada directo (tools/list+tools/call, inputSchema/outputSchema, handles opacos para estado sin sesion de protocolo, Input Required/MRTR para pausar una tool, errores en 2 capas protocol-vs-execution); A2A (Agent Card en /.well-known/agent.json, task lifecycle de 9 estados incl. AUTH_REQUIRED como pausa de primera clase que DCSA no tiene, streaming SSE); ACP de IBM/BeeAI via Linux Foundation (alternativa REST); ARD de Google+coalicion grande -- julio 2026, muy reciente, discovery federado bajo dominio propio complementario a MCP/OpenAPI, arquitectura de 2 capas muy alineada con lo que DFL ya intuye (asset-index=discovery, falta ejecucion); iniciativa china CAC/WAIC 2026 de gobernanza de identidad+ciclo de vida de agentes (encontrada por FUENTE UNICA, marcada explicitamente para verificar, no tratada como autoridad); OpenAI Agents SDK Handoffs (transferencia completa de control, filosofia distinta a accion-que-retorna); LangGraph Send/subagents (fan-out paralelo, patron nuevo no visto en Monoid); Qwen-Agent (descartado explicitamente para interop universal, es acoplamiento fuerte a un vendor); panorama de auth entre agentes (OAuth 2.1+PKCE, IETF draft agent_assertion, AuthZEN de OpenID -- confirma que ArgumentProvider de Monoid es convergencia real de industria, no idea aislada).
+
+Disciplina de evidencia aplicada rigurosamente: cada hallazgo del documento esta etiquetado [SPEC]/[CODIGO]/[MULTIPLES-FUENTES]/[FUENTE-UNICA]/[RUNTIME]. Declarado explicito: NINGUN hallazgo tiene evidencia [RUNTIME] propia -- todo es lectura de spec/codigo estatico o reporte de terceros, nunca ejecucion propia. Esto es limitacion declarada, no oculta.
+
+Preguntas abiertas: las 4 de la investigacion de Monoid se preservaron integras SIN resolver (pregunta central dfl.yaml-vs-asset-separado-vs-otra-capa; dueno del dispatcher; autoridad de parametros entre organismos; deteccion de ciclos). Se agregaron 3 nuevas sin resolver: autorizacion a nivel mision (DCSA) vs a nivel invocacion individual (tipo AuthZEN); manifest publico (A2A/ARD) vs discovery cerrado al repo; handoff (transferencia de control) vs accion-que-retorna (Monoid/MCP) segun caso de uso.
+
+4 candidatos registrados para autopsia profunda posterior, NINGUNO ejecutado todavia: ARD (spec completa sin leer linea por linea), A2A spec/schemas completos (solo se leyo el resumen de discovery/lifecycle), MCP Authorization/OAuth/AuthZEN integracion formal (solo referenciada por fuentes secundarias), fuentes primarias orientales (la iniciativa CAC es fuente unica, documento oficial no leido).
+
+NEXT AGENT: NO tratar este documento ni el de Monoid como autorizacion para elegir protocolo o construir nada. Ambos son DISCOVERY. Si Jorge pide avanzar a diseno o a la siguiente ronda de autopsia (los 4 candidatos), ese es un hilo nuevo -- no asumir que este research ya decidio algo.
+
 ### Institucionalizada autopsia de Monoid — 12 hallazgos + preguntas abiertas, discovery/research validated (2026-08-19)
 **Type:** architecture  
 **Project:** dfl  
@@ -506,21 +530,6 @@ Preguntas dejadas EXPLICITAMENTE abiertas, no resueltas, no inferibles de este d
 LIMITACION encontrada: la copia clonada de Monoid es efimera (/tmp/.../scratchpad), no sobrevive la sesion -- la referencia durable es el commit hash contra el repo publico, no un path local. Solo se audito el backend en profundidad, no el frontend (UX del Hub/Sandbox no inspeccionada).
 
 NEXT AGENT: NO tratar este documento como autorizacion para construir el envelope/dispatcher. Es DISCOVERY. Si Jorge pide avanzar a diseno, ese es un hilo nuevo que debe resolver las 4 preguntas abiertas explicitamente, no asumir respuestas de aca.
-
-### Preferencia de canal de notificación: Telegram confirmado, Pixel push silencioso (2026-08-19)
-**Type:** fact  
-**Project:** dfl  
-
-TOPIC: dfl/notifications/telegram-vs-pixel-push-2026-08-19
-STATUS: closed
-
-WHAT: Jorge pidio un mecanismo para que le avise cuando necesite su atencion mientras maneja. Se probaron 2 canales reales:
-1. PushNotification tool (Remote Control -> Pixel): "Mobile push requested" confirmado del lado del agente, pero Jorge reporto CERO sonido/vibracion, solo una luz/banner muy rapido sin registro visible -- probablemente canal de notificacion de la app Claude en Android sin sonido/vibracion habilitados, o modo conduccion/Do Not Disturb de Android Auto silenciando el banner. No verificable ni arreglable desde la VM (100% client-side).
-2. Telegram bot (@DFL_BOS_bot, tools/telegram-bos/, asset ya registrado como dfl.telegram-bos-adapter en el asset-index) via sendMessage directo a la API de Telegram (chat_id 8776472165, token en /home/dflagent/.config/dfl/telegram-bos.token) -- Jorge confirmo explicitamente "tu notificacion por telegram fue perfecta".
-
-DECISION: Para cualquier notificacion futura que realmente necesite la atencion de Jorge (no solo progreso rutinario), preferir Telegram (curl directo a api.telegram.org/bot<token>/sendMessage, chat_id 8776472165) sobre el PushNotification tool hacia el Pixel, que quedo demostrado como no confiable en este dispositivo/config actual. Nota: el bot de telegram-bos esta disenado primariamente para flujo ENTRANTE (humano -> cola de trabajo); usarlo para salida (agente -> humano) es un uso valido pero no es su proposito documentado original -- no confundir con el daemon de polling, solo se uso la API HTTP de Telegram directamente con el mismo token.
-
-NEXT AGENT: si Jorge vuelve a pedir "avisame de alguna forma", usar Telegram primero. Si en el futuro el Pixel push se reconfigura y empieza a sonar, actualizar esta memoria -- no asumir que sigue roto para siempre sin volver a probar.
 
 ---
 
@@ -631,4 +640,4 @@ NEXT AGENT: si Jorge vuelve a pedir "avisame de alguna forma", usar Telegram pri
 
 ---
 
-*Mirror auto-generated 2026-08-19T14:41:48Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T15:12:33Z | La Garra → DFLghub/amos-context*
