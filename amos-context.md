@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T15:27:49Z  
+**Generated:** 2026-08-19T15:51:00Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -285,33 +285,33 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### Institucionalizada autopsia profunda de ARD — spec+código+runtime real, discovery/research validated (2026-08-19)
+### Institucionalizada autopsia final de identidad/autoridad/delegación agéntica 2026 — RESEARCH CLOSED (2026-08-19)
 **Type:** architecture  
 **Project:** dfl  
 
-TOPIC: dfl/research/ard-deep-autopsy-2026
-STATUS: closed (como institucionalizacion) / OPEN (como conocimiento -- no elige ARD, no autoriza nada)
+TOPIC: dfl/research/agent-identity-authority-delegation-2026
+STATUS: closed (institucionalizacion) / RESEARCH CLOSED (declarado explicito -- cierra la cadena completa de 4 rondas antes de sintesis)
 DATE: 2026-08-19
 
-WHAT: Tercera pieza de la cadena de research (Monoid obs#524 -> panorama interop obs#525 -> ARD deep-autopsy obs#526). Jorge pidio autopsia profunda de ARD especificamente, con fuentes primarias reales (spec+codigo+runtime, no resumenes), foco en si "discovery federado separado de ejecucion" aporta algo durable y como tensiona/confirma/contradice tools/asset-index/.
+WHAT: Quinta y ultima pieza de la cadena de research (Monoid obs#524 -> interop-2026 obs#525 -> ARD obs#526 -> A2A en chat, no institucionalizado por separado -> esta, identidad/autoridad/delegacion). Jorge pidio el ultimo frente antes de sintesis: quien es el agente, en nombre de quien, quien dio autoridad, que puede invocar, con que parametros, cuantos saltos, como se verifica sin confianza ciega.
 
-Institucionalizado en docs/patterns/ard-deep-autopsy-2026/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.ard-deep-autopsy.v0, status DRAFT. Indexado: 24 assets (subio de 23), 0 errores, 7/7 tests, descubribilidad verificada con 4 queries (3 directas + 1 confirmada tras ajuste ES/EN, mismo patron ya documentado, no gap nuevo).
+Institucionalizado en docs/patterns/agent-identity-authority-delegation-2026/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.agent-identity-authority-delegation-2026.v0, status DRAFT. Indexado: 25 assets (subio de 24), 0 errores, 7/7 tests.
 
-Metodologia real, no lectura pasiva: se clono github.com/ards-project/ard-spec (432 estrellas, repo real), se leyeron 9 ADRs reales (decisiones de diseno documentadas, ej. ADR-0004 justifica por que /search y /agents estan separados, ADR-0009 documenta un cambio de wire-format urn:ai:->urn:air: por invalidez IETF), y **se EJECUTO el CLI de conformidad real** (./bin/run-conformance-demo): valido 3 manifiestos reales contra JSON Schema, levanto un mock registry server real en 127.0.0.1:9010, disparo peticiones HTTP reales (GET /agents, POST /search, POST /explore), resultado real PASS. Esto es evidencia [RUNTIME] genuina, no [SPEC] ni [CLAIM] -- primera vez en esta cadena de research que se llega a ese nivel.
+Fuentes primarias reales: spec de autorizacion MCP 2026-07-28 completa (RFC8707 Resource Indicators, RFC9207 Issuer Identification, RFC9728 Protected Resource Metadata, step-up authorization); modelcontextprotocol/ext-auth (extension EMA/ID-JAG marcada "stable"); AuthZEN Authorization API 1.0 -- CONFIRMADO estandar FINAL (votado dic-2025/ene-2026), correccion de precision sobre lo dicho en el research de interop-2026 que no distinguia ese detalle de madurez; draft-ietf-oauth-identity-assertion-authz-grant (ya en WG IETF); draft-mcguinness-oauth-ai-agent-instance (claims exactos: agent_instance_id, agent_platform, agent_model, agent_runtime -- el propio doc declara "not endorsed by IETF, no formal standing", individual draft, la pieza menos madura de toda la ronda); A2A AUTH_REQUIRED (re-auth deliberadamente out-of-band).
 
-Correccion importante sobre el research anterior: la spec ARD es v0.9/Proposal fechada 2026-05-28 (no "julio 2026" como se penso -- esa era la fecha del anuncio de blog, no de la spec). Deuda explicita preservada: sigue siendo borrador, no estandar asentado.
+Hallazgo estructural: NINGUN estandar resuelve el problema completo -- todos delegan a extensiones o mecanismos out-of-band (mismo patron ya visto en MCP/A2A/ARD en rondas anteriores). Hallazgo mas importante para DFL: NINGUN estandar de 4 rondas de research modela "mission authorization" (autorizar un esfuerzo multi-paso completo) -- DCSA de DFL (8 bloqueos con test+mutante cada uno) no tiene equivalente externo encontrado, ventaja real confirmada, no gap.
 
-Hallazgo mas importante de toda la autopsia: la "busqueda semantica" que la prosa de ARD sugiere (mencion de "vector embeddings" como ejemplo posible) es ASPIRACIONAL en su propia implementacion de referencia -- verificado linea por linea en examples/basic/registry-server.py: es matching por substring con pesos fijos (score base 50, +30/+40 segun campo, tope 100), funcionalmente EQUIVALENTE al AND-of-words de query.mjs de DFL, no superior. Claim!=Evidence confirmado con codigo real, no solo sospechado.
+Taxonomia identity!=authority!=delegation verificada con evidencia, con 2 capas agregadas mas alla de las propuestas por Jorge: invocation authorization (scopes OAuth+step-up, ESTABLE) y parameter authority (AuthZEN tecnicamente capaz, pero SIN integracion formal con MCP, solo issue de discusion abierto ext-auth#14 sin resolver).
 
-Otros hallazgos con nivel de evidencia explicito: separacion discovery/execution (type=IANA media type dirige a MCP/A2A/OpenAPI, ARD nunca ejecuta) [SPEC]; url XOR data estricto [SPEC+CODE+RUNTIME]; URN anclado a dominio [SPEC]; federacion auto/referrals/none [SPEC, NO ejecutada -- mock server no la implementa, unico candidato a experimento runtime futuro]; ausencia total de heartbeat/invalidacion real -- DCSA de DFL (E_STALE, verificacion activa) es ESTRICTAMENTE MAS riguroso, DFL ya superior en esa dimension puntual; conformance tooling como parte del propio estandar [CODE+RUNTIME]; riesgo real de re-centralizacion de facto (GitHub Agent Finder + HuggingFace Discover Tool ya lanzados a 3 meses de la spec, pese a diseno nominal descentralizado).
+Gaps DFL confirmados contra codigo real: AGENT_API_TOKEN de SocialFlow sin audience binding (verificado contra auth.ts real de la activacion, obs#520); sin PDP separado en ningun punto DFL; sin instancia de agente atestiguada (Engram identifica sesion/proyecto, no runtime/modelo con evidencia criptografica).
 
-Disciplina de evidencia [SPEC]->[CODE]->[RUNTIME]->[CLAIM] aplicada rigurosamente y adoptada EXPLICITAMENTE como estandar para autopsias futuras -- sin elevar nunca una categoria a otra.
+DEUDA DE DESCUBRIBILIDAD encontrada y documentada con precision durante la verificacion (no la misma que en rondas anteriores): la busqueda del asset-index SOLO indexa el texto de dfl.yaml, NUNCA el RESEARCH.md completo enlazado -- terminos que solo aparecen en el documento profundo (ej. "PEP" nunca se escribio en el yaml, solo "PDP"; "confused-deputy" quedo con guion en RESEARCH.md, no como 2 palabras separadas) no son encontrables via query.mjs aunque el concepto SI este documentado. Queries de 1-2 palabras que SI aparecen literal en el yaml funcionan bien (AuthZEN, ID-JAG, "agent instance", "mission authorization DCSA ventaja" con 4 palabras funciono). No es un bug del asset-index -- es una caracteristica de diseño (busca solo el manifest, no el contenido completo) que vale la pena que cualquier agente futuro conozca antes de asumir que algo "no esta documentado" solo porque una query no lo encontro.
 
-Preguntas: las 7 heredadas (4 Monoid + 3 interop-2026) preservadas integras sin resolver. 2 nuevas: como se verificaria "dominio ancla" para un organismo interno DFL sin dominio publico propio; si vale adoptar el conformance-tool de ARD como inspiracion para un validador de dfl.yaml independiente de adoptar el resto de ARD.
+Preguntas: las 9 heredadas (4 Monoid + 3 interop-2026 + 2 ARD) preservadas integras sin resolver. 2 nuevas de esta ronda: quien seria el "Agent Attester" si DFL adoptara agent_instance_id; si DCSA y un futuro PDP tipo AuthZEN deberian ser el mismo componente o capas separadas.
 
-ARD queda CERRADO como research (no como decision -- cerrado en el sentido de "ya autopsiado a fondo", no "elegido"). Siguiente frente YA AUTORIZADO por Jorge para arrancar en la proxima sesion/turno: autopsia profunda de A2A completo, foco especifico en task lifecycle/invocation (el lado que ARD deliberadamente no cubre), misma disciplina de evidencia.
+RESEARCH CLOSED declarado explicito. El gap material pendiente (fuentes orientales primarias, FUENTE-UNICA desde la primera ronda) NO bloquea sintesis -- es enriquecimiento posible, no invalidacion.
 
-NEXT AGENT: si retomas esta cadena, el siguiente paso es A2A, no re-visitar ARD ni Monoid. No asumir que A2A ya se autopsio a este nivel -- el research de interoperabilidad 2026 (obs #525) solo cubrio un resumen de A2A discovery+lifecycle via fuentes secundarias, no spec+codigo+runtime real como se hizo aqui con ARD.
+NEXT AGENT: la cadena de research (5 documentos: Monoid, interop-2026, ARD, A2A-en-chat, este) queda cerrada. La siguiente mision natural es SINTESIS/DISENO, no mas autopsia -- no reabrir estos temas desde cero. Si se institucionaliza la autopsia de A2A (quedo solo en chat, no en docs/patterns/), hacerlo como pieza separada enlazada a esta cadena, no fusionarla con esta.
 
 ---
 
@@ -495,6 +495,34 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Institucionalizada autopsia final de identidad/autoridad/delegación agéntica 2026 — RESEARCH CLOSED (2026-08-19)
+**Type:** architecture  
+**Project:** dfl  
+
+TOPIC: dfl/research/agent-identity-authority-delegation-2026
+STATUS: closed (institucionalizacion) / RESEARCH CLOSED (declarado explicito -- cierra la cadena completa de 4 rondas antes de sintesis)
+DATE: 2026-08-19
+
+WHAT: Quinta y ultima pieza de la cadena de research (Monoid obs#524 -> interop-2026 obs#525 -> ARD obs#526 -> A2A en chat, no institucionalizado por separado -> esta, identidad/autoridad/delegacion). Jorge pidio el ultimo frente antes de sintesis: quien es el agente, en nombre de quien, quien dio autoridad, que puede invocar, con que parametros, cuantos saltos, como se verifica sin confianza ciega.
+
+Institucionalizado en docs/patterns/agent-identity-authority-delegation-2026/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.agent-identity-authority-delegation-2026.v0, status DRAFT. Indexado: 25 assets (subio de 24), 0 errores, 7/7 tests.
+
+Fuentes primarias reales: spec de autorizacion MCP 2026-07-28 completa (RFC8707 Resource Indicators, RFC9207 Issuer Identification, RFC9728 Protected Resource Metadata, step-up authorization); modelcontextprotocol/ext-auth (extension EMA/ID-JAG marcada "stable"); AuthZEN Authorization API 1.0 -- CONFIRMADO estandar FINAL (votado dic-2025/ene-2026), correccion de precision sobre lo dicho en el research de interop-2026 que no distinguia ese detalle de madurez; draft-ietf-oauth-identity-assertion-authz-grant (ya en WG IETF); draft-mcguinness-oauth-ai-agent-instance (claims exactos: agent_instance_id, agent_platform, agent_model, agent_runtime -- el propio doc declara "not endorsed by IETF, no formal standing", individual draft, la pieza menos madura de toda la ronda); A2A AUTH_REQUIRED (re-auth deliberadamente out-of-band).
+
+Hallazgo estructural: NINGUN estandar resuelve el problema completo -- todos delegan a extensiones o mecanismos out-of-band (mismo patron ya visto en MCP/A2A/ARD en rondas anteriores). Hallazgo mas importante para DFL: NINGUN estandar de 4 rondas de research modela "mission authorization" (autorizar un esfuerzo multi-paso completo) -- DCSA de DFL (8 bloqueos con test+mutante cada uno) no tiene equivalente externo encontrado, ventaja real confirmada, no gap.
+
+Taxonomia identity!=authority!=delegation verificada con evidencia, con 2 capas agregadas mas alla de las propuestas por Jorge: invocation authorization (scopes OAuth+step-up, ESTABLE) y parameter authority (AuthZEN tecnicamente capaz, pero SIN integracion formal con MCP, solo issue de discusion abierto ext-auth#14 sin resolver).
+
+Gaps DFL confirmados contra codigo real: AGENT_API_TOKEN de SocialFlow sin audience binding (verificado contra auth.ts real de la activacion, obs#520); sin PDP separado en ningun punto DFL; sin instancia de agente atestiguada (Engram identifica sesion/proyecto, no runtime/modelo con evidencia criptografica).
+
+DEUDA DE DESCUBRIBILIDAD encontrada y documentada con precision durante la verificacion (no la misma que en rondas anteriores): la busqueda del asset-index SOLO indexa el texto de dfl.yaml, NUNCA el RESEARCH.md completo enlazado -- terminos que solo aparecen en el documento profundo (ej. "PEP" nunca se escribio en el yaml, solo "PDP"; "confused-deputy" quedo con guion en RESEARCH.md, no como 2 palabras separadas) no son encontrables via query.mjs aunque el concepto SI este documentado. Queries de 1-2 palabras que SI aparecen literal en el yaml funcionan bien (AuthZEN, ID-JAG, "agent instance", "mission authorization DCSA ventaja" con 4 palabras funciono). No es un bug del asset-index -- es una caracteristica de diseño (busca solo el manifest, no el contenido completo) que vale la pena que cualquier agente futuro conozca antes de asumir que algo "no esta documentado" solo porque una query no lo encontro.
+
+Preguntas: las 9 heredadas (4 Monoid + 3 interop-2026 + 2 ARD) preservadas integras sin resolver. 2 nuevas de esta ronda: quien seria el "Agent Attester" si DFL adoptara agent_instance_id; si DCSA y un futuro PDP tipo AuthZEN deberian ser el mismo componente o capas separadas.
+
+RESEARCH CLOSED declarado explicito. El gap material pendiente (fuentes orientales primarias, FUENTE-UNICA desde la primera ronda) NO bloquea sintesis -- es enriquecimiento posible, no invalidacion.
+
+NEXT AGENT: la cadena de research (5 documentos: Monoid, interop-2026, ARD, A2A-en-chat, este) queda cerrada. La siguiente mision natural es SINTESIS/DISENO, no mas autopsia -- no reabrir estos temas desde cero. Si se institucionaliza la autopsia de A2A (quedo solo en chat, no en docs/patterns/), hacerlo como pieza separada enlazada a esta cadena, no fusionarla con esta.
+
 ### Institucionalizada autopsia profunda de ARD — spec+código+runtime real, discovery/research validated (2026-08-19)
 **Type:** architecture  
 **Project:** dfl  
@@ -522,28 +550,6 @@ Preguntas: las 7 heredadas (4 Monoid + 3 interop-2026) preservadas integras sin 
 ARD queda CERRADO como research (no como decision -- cerrado en el sentido de "ya autopsiado a fondo", no "elegido"). Siguiente frente YA AUTORIZADO por Jorge para arrancar en la proxima sesion/turno: autopsia profunda de A2A completo, foco especifico en task lifecycle/invocation (el lado que ARD deliberadamente no cubre), misma disciplina de evidencia.
 
 NEXT AGENT: si retomas esta cadena, el siguiente paso es A2A, no re-visitar ARD ni Monoid. No asumir que A2A ya se autopsio a este nivel -- el research de interoperabilidad 2026 (obs #525) solo cubrio un resumen de A2A discovery+lifecycle via fuentes secundarias, no spec+codigo+runtime real como se hizo aqui con ARD.
-
-### Institucionalizado reconocimiento del terreno: interoperabilidad de agentes 2026 (MCP/A2A/ACP/ARD/China/auth) — discovery/research validated (2026-08-19)
-**Type:** architecture  
-**Project:** dfl  
-
-TOPIC: dfl/research/agent-interop-landscape-2026
-STATUS: closed (como institucionalizacion) / OPEN (como conocimiento -- no es diseno aprobado, no elige protocolo)
-DATE: 2026-08-19
-
-WHAT: Continuacion directa de dfl.research.monoid-capability-invocation.v0 (obs #524). Jorge pidio investigar como resuelve el mundo real (no solo Monoid) el problema de discovery+invocation+consumption+delivery de capacidades entre agentes, con enfasis en no casarse con MCP/A2A por moda y ampliar el campo competitivo de patrones antes de decidir arquitectura.
-
-Institucionalizado en docs/patterns/agent-interop-landscape-research-2026/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.agent-interop-landscape-2026.v0, status DRAFT explicito. Indexado: 23 assets totales (subio de 22), 0 errores, 7/7 tests, descubribilidad verificada por 5 queries de texto libre (3 directas, 2 con desajuste idiomatico ES/EN en la query que se confirmo NO era problema de indexacion sino de fraseo -- re-testeado con terminos que calzan literal y funciono).
-
-Investigacion real (WebSearch+WebFetch, no memoria de entrenamiento): MCP spec 2026-07-28 fetcheada directo (tools/list+tools/call, inputSchema/outputSchema, handles opacos para estado sin sesion de protocolo, Input Required/MRTR para pausar una tool, errores en 2 capas protocol-vs-execution); A2A (Agent Card en /.well-known/agent.json, task lifecycle de 9 estados incl. AUTH_REQUIRED como pausa de primera clase que DCSA no tiene, streaming SSE); ACP de IBM/BeeAI via Linux Foundation (alternativa REST); ARD de Google+coalicion grande -- julio 2026, muy reciente, discovery federado bajo dominio propio complementario a MCP/OpenAPI, arquitectura de 2 capas muy alineada con lo que DFL ya intuye (asset-index=discovery, falta ejecucion); iniciativa china CAC/WAIC 2026 de gobernanza de identidad+ciclo de vida de agentes (encontrada por FUENTE UNICA, marcada explicitamente para verificar, no tratada como autoridad); OpenAI Agents SDK Handoffs (transferencia completa de control, filosofia distinta a accion-que-retorna); LangGraph Send/subagents (fan-out paralelo, patron nuevo no visto en Monoid); Qwen-Agent (descartado explicitamente para interop universal, es acoplamiento fuerte a un vendor); panorama de auth entre agentes (OAuth 2.1+PKCE, IETF draft agent_assertion, AuthZEN de OpenID -- confirma que ArgumentProvider de Monoid es convergencia real de industria, no idea aislada).
-
-Disciplina de evidencia aplicada rigurosamente: cada hallazgo del documento esta etiquetado [SPEC]/[CODIGO]/[MULTIPLES-FUENTES]/[FUENTE-UNICA]/[RUNTIME]. Declarado explicito: NINGUN hallazgo tiene evidencia [RUNTIME] propia -- todo es lectura de spec/codigo estatico o reporte de terceros, nunca ejecucion propia. Esto es limitacion declarada, no oculta.
-
-Preguntas abiertas: las 4 de la investigacion de Monoid se preservaron integras SIN resolver (pregunta central dfl.yaml-vs-asset-separado-vs-otra-capa; dueno del dispatcher; autoridad de parametros entre organismos; deteccion de ciclos). Se agregaron 3 nuevas sin resolver: autorizacion a nivel mision (DCSA) vs a nivel invocacion individual (tipo AuthZEN); manifest publico (A2A/ARD) vs discovery cerrado al repo; handoff (transferencia de control) vs accion-que-retorna (Monoid/MCP) segun caso de uso.
-
-4 candidatos registrados para autopsia profunda posterior, NINGUNO ejecutado todavia: ARD (spec completa sin leer linea por linea), A2A spec/schemas completos (solo se leyo el resumen de discovery/lifecycle), MCP Authorization/OAuth/AuthZEN integracion formal (solo referenciada por fuentes secundarias), fuentes primarias orientales (la iniciativa CAC es fuente unica, documento oficial no leido).
-
-NEXT AGENT: NO tratar este documento ni el de Monoid como autorizacion para elegir protocolo o construir nada. Ambos son DISCOVERY. Si Jorge pide avanzar a diseno o a la siguiente ronda de autopsia (los 4 candidatos), ese es un hilo nuevo -- no asumir que este research ya decidio algo.
 
 ---
 
@@ -654,4 +660,4 @@ NEXT AGENT: NO tratar este documento ni el de Monoid como autorizacion para eleg
 
 ---
 
-*Mirror auto-generated 2026-08-19T15:27:49Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T15:51:00Z | La Garra → DFLghub/amos-context*
