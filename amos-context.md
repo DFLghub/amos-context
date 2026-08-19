@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T04:26:49Z  
+**Generated:** 2026-08-19T13:16:29Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -608,4 +608,4 @@ Explicitly out of scope for this pass (per HI's instruction): no Q/R engine was 
 
 ---
 
-*Mirror auto-generated 2026-08-19T04:26:49Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T13:16:29Z | La Garra → DFLghub/amos-context*
