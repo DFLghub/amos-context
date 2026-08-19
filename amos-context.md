@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T03:05:02Z  
+**Generated:** 2026-08-19T04:26:49Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -272,25 +272,21 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### Session closure (@$fin) — peer-work/Telegram-BOS/Challenge-Manager mission, 2026-08-18
+### @$fin — Cierre de sesión 2026-08-19 (constitucional + MERCADER + iMac)
 **Type:** fact  
 **Project:** dfl  
 
-TCC session closure, CIERRE mode (default, not CHECKPOINT). Full detail lives in IRONMAN.md rows (all dated 2026-08-18) and two new docs -- this is a pointer/summary, not a duplicate.
+Cierre de sesión larga (2026-08-19), tres frentes trabajados, ninguno cerrado como CLOSED — los tres quedan CHECKPOINTED a propósito, con instrucción explícita de leer el checkpoint antes de retomar.
 
-WHAT WAS BUILT, REAL AND VERIFIED LIVE:
-1. tools/peer-work/ -- file-based dispatch queue for TCC<->TCX/CC/CX/human work, with authority genuinely separated from specification (verify-authority re-checks live against /go's projected routing_receipts.mission.role, or against a live Telegram allowlist for human-originated work). Headless cron activation (codex exec/claude -p, zero window), stale-claim recovery (requeue_stale, a dead claimant's items un-stick automatically), real exit-code capture. Proven with real TCC<->TCX round trips and real dispatched/completed production work (Engram #508's Challenge Intake package, and a real technical-assessment dispatch from the Challenge Manager).
-2. tools/telegram-bos/ -- real, live Telegram bot (@DFL_BOS_bot) bridging Jorge's phone to the Factory via the same queue, no container/inbound networking needed. Two real production incidents found and fixed live during actual use (a delivery-dedup re-send loop; a 3-concurrent-process race from restart racing), both Jorge-confirmed resolved in his real Telegram chat.
-3. functions/challenge-intake/tools/manager.mjs + AUTHORITY_ENVELOPE.md -- real process ownership for DFL Website Challenges (previously nobody owned a case after submit). Policy-bounded autonomy / escalate-by-exception governance, actually enforced in code (concurrency ceiling, decline-reason allowlist), not just documented. Ran against all 7 real production Challenge submissions; drove one the full lifecycle including a real peer-work-dispatched technical assessment.
-4. Asset Registry: 3 new dfl.yaml manifests (dfl.peer-work-queue, dfl.telegram-bos-adapter, dfl.challenge-process-manager), index regenerated 14->17 assets, all independently query-verified discoverable.
-5. Two durable docs: .claude/HANDOFF-TCC-TCX-PEER-COLLABORATION-2026-08-18.md (full mechanics + standing lessons for whoever operates this next) and .claude/BUSINESSOS-CORPUS-INVENTORY-2026-08-18.md (real inventory of the ~55-project BusinessOS corpus for manager/staff patterns, MCP libraries, WhatsApp/Telegram/marketing/video automation -- concrete REUSE/CUSTOMIZE/INSTALL/METABOLIZE/IGNORE/RETIRE calls, not vague).
-6. TCX notified via both a real peer-work FYI item (claimed, read, acknowledged -- pw-4daa4bec5196) and Engram obs #515.
+1. DFL Constitutional QUIERO->REQUIERO: Acta Fundacional amOS v1.1 (ratificada) vs. DFL v2 Constitucion Hibrida vs. DFL v2 Constitucion v0.3 (candidata, sin firmar) comparadas linea por linea. Hallazgo documental clave: la propia Acta se autoprogramo una sucesion (no enmienda) via una futura "Constitution v1.0" condicionada a G-009, nunca confirmada como completa; ningun documento posterior cita el otro por nombre. R12 (precedencia Acta vs v0.3) queda deliberadamente sin decidir por instruccion de Jorge, pendiente de investigacion externa (management moderno, modelos organizacionales, DDD, modelos orientales) antes de decidir la proxima generacion constitucional. Checkpoint: saas-factory/.claude/CHECKPOINT-DFL-CONSTITUTIONAL-DIAGNOSTIC-2026-08-19.md.
 
-PUSH/DURABILITY STATE (final Gate 4B-relevant fact): all of the above is pushed to the correct origins and remote-verified (saas-factory-setup@fase-3-5-jpi-real-sfv5-bridge commit 27811cb; same repo's project/dfl-website-t3 commit 0227f73). One exception, not a loss: dfl-knowledge's feat/dfl-high-certainty-harness-v0.1 branch (carrying real work from OTHER, prior sessions, not this one) is blocked from pushing by two >100MB files in a pre-existing commit unrelated to this session -- this session's one real dfl-knowledge commit (the /go role-field authorization fix, ee0b315) was cherry-picked clean onto a new branch fix/tcx-go-role-visibility-2026-08-18 (commit 475155c) and pushed successfully instead. Nothing from this session is local-only/unreachable.
+2. MERCADER Q/R-RGSA revenue diagnostic: aplicado el algoritmo Q/R recien institucionalizado (ver obs #518) a Q0="MERCADER produce sus primeros USD 1000". ~15 pasadas de agentes encadenadas construyeron y probaron en sandbox: parser texto-libre->estructurado, modulo de margen viable, generalizacion del SLA de Challenge Manager, webhook+normalizador de recepcion (command-center), entrega automatizada del producto pagado (reusando patron de maquina-contacto-en-frio), y checkout Polar en modo mock -- todo con evidencia real de ejecucion, no solo lectura de codigo. Q0 permanece UNSATISFIED (cero pago real, por limite explicito del usuario toda la sesion: cero contacto real, cero dinero real, cero credencial nueva). Hallazgo final y mas importante: DFL no tiene organismo real de fulfillment (intake->priorizacion->compromiso->fabricacion->AQA->entrega->accountability) para lo que MERCADER venda -- Workforce Registry Unit (WRU), el candidato obvio, es 100% diseno, 0% implementado segun su propio plan (fechado 2026-07-31). Registrado como REQUIERO institucional de DFL, no solo de MERCADER -- misma categoria que el hallazgo de arquitectura de informacion del frente constitucional. Checkpoint: saas-factory/.claude/CHECKPOINT-MERCADER-QR-2026-08-19.md.
 
-STANDING INFRASTRUCTURE LEFT RUNNING (do not stop): @DFL_BOS_bot (run.sh+bot.mjs, supervised, single-instance-locked), 3 cron entries (TCX/TCC peer-work activation every 10min, Telegram supervisor liveness every 5min).
+3. Acceso SSH inverso a iMac (~/Downloads, ~7.8GB): tunel confirmado ESTABLISHED (127.0.0.1:22022), autenticacion FALLIDA con llave dedicada (~/.ssh/id_ed25519_imac) que el usuario dice haber agregado a authorized_keys del Mac. Pausado por prioridad del usuario, no retomar proactivamente. Checkpoint: saas-factory/.claude/CHECKPOINT-IMAC-REVERSE-SSH-ACCESS-2026-08-19.md.
 
-Cleanup performed: verified zero stray processes, zero non-terminal queue items, zero orphaned worktrees, zero leftover scratch files from this session before closing.
+Ademas, esta misma sesion formalizo e institucionalizo la doctrina DFL Q/R Recursive Goal-Satisfaction Algorithm (Q/R-RGSA v1.0), candidate_only en dfl-knowledge/04_Candidate_Vault/pending_review/, ver obs #518 -- ese es el metodo que se aplico en los frentes 1 y 2 de este cierre.
+
+Ninguna observacion previa queda invalidada por este cierre; no hay archivado que hacer. Ningun commit a git en esta sesion -- todo el trabajo vive en los tres archivos de checkpoint listados arriba mas la memoria persistente del agente (MEMORY.md).
 
 ---
 
@@ -474,6 +470,22 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### @$fin — Cierre de sesión 2026-08-19 (constitucional + MERCADER + iMac)
+**Type:** fact  
+**Project:** dfl  
+
+Cierre de sesión larga (2026-08-19), tres frentes trabajados, ninguno cerrado como CLOSED — los tres quedan CHECKPOINTED a propósito, con instrucción explícita de leer el checkpoint antes de retomar.
+
+1. DFL Constitutional QUIERO->REQUIERO: Acta Fundacional amOS v1.1 (ratificada) vs. DFL v2 Constitucion Hibrida vs. DFL v2 Constitucion v0.3 (candidata, sin firmar) comparadas linea por linea. Hallazgo documental clave: la propia Acta se autoprogramo una sucesion (no enmienda) via una futura "Constitution v1.0" condicionada a G-009, nunca confirmada como completa; ningun documento posterior cita el otro por nombre. R12 (precedencia Acta vs v0.3) queda deliberadamente sin decidir por instruccion de Jorge, pendiente de investigacion externa (management moderno, modelos organizacionales, DDD, modelos orientales) antes de decidir la proxima generacion constitucional. Checkpoint: saas-factory/.claude/CHECKPOINT-DFL-CONSTITUTIONAL-DIAGNOSTIC-2026-08-19.md.
+
+2. MERCADER Q/R-RGSA revenue diagnostic: aplicado el algoritmo Q/R recien institucionalizado (ver obs #518) a Q0="MERCADER produce sus primeros USD 1000". ~15 pasadas de agentes encadenadas construyeron y probaron en sandbox: parser texto-libre->estructurado, modulo de margen viable, generalizacion del SLA de Challenge Manager, webhook+normalizador de recepcion (command-center), entrega automatizada del producto pagado (reusando patron de maquina-contacto-en-frio), y checkout Polar en modo mock -- todo con evidencia real de ejecucion, no solo lectura de codigo. Q0 permanece UNSATISFIED (cero pago real, por limite explicito del usuario toda la sesion: cero contacto real, cero dinero real, cero credencial nueva). Hallazgo final y mas importante: DFL no tiene organismo real de fulfillment (intake->priorizacion->compromiso->fabricacion->AQA->entrega->accountability) para lo que MERCADER venda -- Workforce Registry Unit (WRU), el candidato obvio, es 100% diseno, 0% implementado segun su propio plan (fechado 2026-07-31). Registrado como REQUIERO institucional de DFL, no solo de MERCADER -- misma categoria que el hallazgo de arquitectura de informacion del frente constitucional. Checkpoint: saas-factory/.claude/CHECKPOINT-MERCADER-QR-2026-08-19.md.
+
+3. Acceso SSH inverso a iMac (~/Downloads, ~7.8GB): tunel confirmado ESTABLISHED (127.0.0.1:22022), autenticacion FALLIDA con llave dedicada (~/.ssh/id_ed25519_imac) que el usuario dice haber agregado a authorized_keys del Mac. Pausado por prioridad del usuario, no retomar proactivamente. Checkpoint: saas-factory/.claude/CHECKPOINT-IMAC-REVERSE-SSH-ACCESS-2026-08-19.md.
+
+Ademas, esta misma sesion formalizo e institucionalizo la doctrina DFL Q/R Recursive Goal-Satisfaction Algorithm (Q/R-RGSA v1.0), candidate_only en dfl-knowledge/04_Candidate_Vault/pending_review/, ver obs #518 -- ese es el metodo que se aplico en los frentes 1 y 2 de este cierre.
+
+Ninguna observacion previa queda invalidada por este cierre; no hay archivado que hacer. Ningun commit a git en esta sesion -- todo el trabajo vive en los tres archivos de checkpoint listados arriba mas la memoria persistente del agente (MEMORY.md).
+
 ### Q/R-RGSA v1.0 canonically formalized and registered — candidate_only
 **Type:** decision  
 **Project:** dfl  
@@ -486,26 +498,6 @@ Registered: /opt/dfl-knowledge/01_System_Governance/Index/ARTIFACT_REGISTRY.md/A
 Core semantics preserved verbatim from HI's spec: Q=GOAL / R=REQUIREMENT nodes, states OPEN/SATISFIED/UNSATISFIED/UNKNOWN/BLOCKED, AND/OR requirement logic, recursive descent (UNSATISFIED(R) -> child Q -> SOLVE -> VERIFY -> UNWIND -> re-verify parent, never assume transitively), hierarchical deterministic IDs (Q0.R0.2.Q1...), Claim != Evidence, Reuse > Rebuild (principle of minimum satisfaction), mandatory redecomposition if all R satisfied but Q still false, BLOCKED only when truly unresolvable. One formal (non-semantic) clarification added: explicit handling for R remaining UNKNOWN after a failed RESOLVE_EVIDENCE attempt, so it isn't silently collapsed into UNSATISFIED before an action/descent decision.
 
 Explicitly out of scope for this pass (per HI's instruction): no Q/R engine was built or implemented. This is doctrine institutionalization only, reusable by TCC, TCX, Factory, BOS, NEXUS, and any DFL agent/organism as the canonical reference for QUIERO->REQUIERO diagnostics — including the DFL constitutional diagnostic and the MERCADER revenue diagnostic already run informally with this same method earlier in this same session, before this formalization existed as a named artifact.
-
-### Sesión Remote Control TCC — cierre ordenado, iMac queda como único vivo (2026-08-18)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/remote-control/imac-vs-pixel-handoff-2026-08-18
-STATUS: closed
-DATE: 2026-08-18
-AUTHORITY: session evidence only
-LIFECYCLE: active
-
-WHAT: Sesión Claude Code "DFL Factory TCC" (--remote-control, PID 1340066, session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c) en said-vm2-la-garra (DigitalOcean 67.205.166.199), lanzada originalmente vía cliente ET del iMac de Jorge. Se probó y confirmó en vivo que la sesión sobrevive: cierre del cliente ET local (Terminal.app "Terminate"), pérdida de conexión, y apagado del iMac -- todos inocuos porque el cómputo real corre en la VM (etserver systemd daemon + etterminal, independiente del cliente) y el proceso claude mantiene sus propias conexiones TLS directas a Anthropic, no proxied por la tty.
-
-Jorge después abrió una sesión nueva en el iMac ("otro TCC", PID separado, sin --resume) -- la cerró para no tener 2 fábricas. Luego pidió continuar ESTA MISMA conversación desde el iMac. Vía `sudo -iu dflagent bash -lc 'cd /opt/saas-factory-setup/saas-factory && claude --resume 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c'` + `/resume` interactivo, logró resumir el MISMO session_id en un proceso nuevo en el iMac (PID 1358709). Esto creó doble escritor concurrente sobre el mismo .jsonl (confirmado: el archivo saltó de ~1MB a 3.67MB al resumir). Se le informó el riesgo y eligió Opción A: cerrar el proceso Remote Control (este) y quedarse en el iMac (pantalla 27" vs Pixel <7").
-
-WHY: Preferencia de UX/ergonomía de Jorge, no un problema tecnico -- ambos caminos eran viables, eligió pantalla grande.
-
-CIERRE: @$fin modo CIERRE ejecutado desde el proceso Remote Control (PID 1340066) para liberar el lock del session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c y dejar al proceso del iMac (PID 1358709) como único escritor activo.
-
-NEXT AGENT: si alguien retoma session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c de nuevo vía Remote Control mientras el iMac sigue vivo, va a recrear el mismo conflicto de doble escritor -- avisar antes de resumir, no asumir que es seguro.
 
 ---
 
@@ -616,4 +608,4 @@ NEXT AGENT: si alguien retoma session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c de
 
 ---
 
-*Mirror auto-generated 2026-08-19T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T04:26:49Z | La Garra → DFLghub/amos-context*
