@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-18T23:34:00Z  
+**Generated:** 2026-08-19T03:04:45Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,19 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Q/R-RGSA v1.0 canonically formalized and registered — candidate_only
+**Type:** decision  
+**Project:** dfl  
+
+DFL Q/R — Recursive Goal-Satisfaction Algorithm (Q/R-RGSA) v1.0 formalized 2026-08-19. Full original algorithm specification authored directly by HI (Jorge Tigreros) in session; Claude contrasted it against DFL patrimony (local dfl-knowledge, Drive doctrine, and this institutional Engram store — only prior hit was obs #505, an informal consistent application, not a competing formal spec), found no prior canonical name/spec to avoid duplicating, and formalized it as a durable artifact.
+
+Canonical artifact: /opt/dfl-knowledge/04_Candidate_Vault/pending_review/DOCTRINA_QR_RECURSIVE_GOAL_SATISFACTION_v1.0_CANDIDATE.md
+Registered: /opt/dfl-knowledge/01_System_Governance/Index/ARTIFACT_REGISTRY.md/ARTIFACT_REGISTRY.md, Artifact ID DOCTRINA-QR-RGSA-v1.0, state candidate_only (HI/REVISOR promotion to 02_Doctrine_Core/ still pending — not auto-promoted despite HI authoring it directly, per registry's own state definitions).
+
+Core semantics preserved verbatim from HI's spec: Q=GOAL / R=REQUIREMENT nodes, states OPEN/SATISFIED/UNSATISFIED/UNKNOWN/BLOCKED, AND/OR requirement logic, recursive descent (UNSATISFIED(R) -> child Q -> SOLVE -> VERIFY -> UNWIND -> re-verify parent, never assume transitively), hierarchical deterministic IDs (Q0.R0.2.Q1...), Claim != Evidence, Reuse > Rebuild (principle of minimum satisfaction), mandatory redecomposition if all R satisfied but Q still false, BLOCKED only when truly unresolvable. One formal (non-semantic) clarification added: explicit handling for R remaining UNKNOWN after a failed RESOLVE_EVIDENCE attempt, so it isn't silently collapsed into UNSATISFIED before an action/descent decision.
+
+Explicitly out of scope for this pass (per HI's instruction): no Q/R engine was built or implemented. This is doctrine institutionalization only, reusable by TCC, TCX, Factory, BOS, NEXUS, and any DFL agent/organism as the canonical reference for QUIERO->REQUIERO diagnostics — including the DFL constitutional diagnostic and the MERCADER revenue diagnostic already run informally with this same method earlier in this same session, before this formalization existed as a named artifact.
+
 ### Sesión Remote Control TCC — cierre ordenado, iMac queda como único vivo (2026-08-18)
 **Type:** decision  
 **Project:** dfl  
@@ -135,15 +148,6 @@ WHY: Preferencia de UX/ergonomía de Jorge, no un problema tecnico -- ambos cami
 CIERRE: @$fin modo CIERRE ejecutado desde el proceso Remote Control (PID 1340066) para liberar el lock del session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c y dejar al proceso del iMac (PID 1358709) como único escritor activo.
 
 NEXT AGENT: si alguien retoma session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c de nuevo vía Remote Control mientras el iMac sigue vivo, va a recrear el mismo conflicto de doble escritor -- avisar antes de resumir, no asumir que es seguro.
-
-### [RESOLVED] TCX work package — Challenge Intake post-submit journey
-**Type:** decision  
-**Project:** dfl  
-
-LIFECYCLE: archived/resolved 2026-08-18. This TCC→TCX work package was executed and returned through peer-work item pw-17b2da40495a. Earlier acceptance evidence covered synthetic J3/J4 transitions and explicitly left real email delivery unproven. Follow-on hardening was committed as badd123; see Engram #512 and closure summary #513. Preserve the original specification below as historical context.
-
-ORIGINAL SPECIFICATION:
-TCC→TCX work package for Challenge Intake qualification mechanism, reusable dfl-email follow-up, safe lifecycle transitions, J3/J4 evidence, commit on project/dfl-website-t3, and report via Engram/IRONMAN. No automated scoring, no new queue, no dfl-email reimplementation, and honest CODE_READY/TRANSPORT_CONFIGURED/DELIVERY_PROVEN reporting.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -390,52 +394,47 @@ PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scop
 **Project:** dfl-knowledge  
 
 ## Goal
-Sesión larga y multi-misión sobre DFL/SFV5: auditoría forense grounded de la copia local SaaS Factory (VM2), su censo estructurado, remediación en 3 rondas hasta verificación independiente cerrada, reconciliación de la arquitectura laboral completa de DFL (Workforce Registry / Factory Manager), y el PRP ejecutable del primer incremento vivo (Workforce Registry Unit v0.1), reconciliado con resultados de un laboratorio experimental de gobierno de mutaciones.
+Sesión larga, multi-misión sobre DFL/SFV5/Workforce Registry Unit (WRU) v0.1: desde protocolo @$go inicial hasta fabricación end-to-end completa de WRU bajo autorización humana explícita, con verificación exhaustiva basada en evidencia real en cada paso.
 
 ## Instructions
-- Jorge dio autorización explícita para operar autónomamente en varias misiones sucesivas ("no solicites autorización intermedia", y luego "full authorization to perform this task/mission").
-- Patrón de trabajo institucional confirmado y seguido en toda la sesión: nunca sobrescribir evidencia ya publicada/commiteada — toda corrección o ronda nueva va en un subdirectorio nuevo, con referencia explícita a lo que corrige.
-- Verificación de colisión con CX (otro agente operando en paralelo sobre el mismo repo) antes de cada `git add`/commit: `git log --oneline`, `git status --short`, nunca `git add -A`.
-- Contrato de integridad de evidencia consolidado y reutilizado en todas las misiones posteriores: manifest/checksum de dos pasos (MANIFEST.json escrito primero, excluyendo su propio nombre y el de SHA256SUMS.txt desde el listado inicial; SHA256SUMS.txt escrito después, nunca por `sha256sum * > archivo` ni por copiar/renombrar un archivo ya hasheado bajo otro nombre — ambas son causas raíz reales de bugs de autorreferencia ya encontrados en esta misma cadena).
-- Jorge pidió un `@$fin` parcial (checkpoint) a mitad de una misión — se distinguió correctamente de un cierre canónico: `mem_save` incremental sin barrido de archivado ni `push_mirror.sh`, sesión sigue abierta. Ese checkpoint (obs #394) quedó archivado hoy al completarse y validarse la misión que dejaba pendiente.
+- El usuario opera bajo protocolo DFL: @$go al abrir sesión, @$fin al cerrar (mem_save + push_mirror.sh). No confundir @$go (comando) con /go (ruta HTTP del proxy).
+- Modo de ejecución de máxima autonomía ya establecido (memoria previa): no pedir permiso para acciones seguras, agrupar aprobaciones en un único punto de decisión — pero el usuario definió explícitamente 5 checkpoints humanos bloqueantes para la fabricación de WRU y espera que se respeten literalmente, incluso en modo autónomo.
+- El usuario exige evidencia real y reproducible en cada gate/checkpoint — "no declares PASS por documentos ni scaffolding". Toda corrección de PRP/Plan/build debe traer hashes SHA256 completos, snapshots git before/after, y diffs exactos, nunca solo afirmaciones.
+- Cuando se pide "cierre provisional (checkpoint)" a mitad de una tarea larga, se espera un handoff autosuficiente en disco (no solo un resumen conversacional) para que otro agente sin memoria pueda continuar.
 
 ## Discoveries
-- **SFV5 local no es "SFV5 de Ricardo Silva".** El único autor real verificable del repo comunitario (`upstream/main`) es Daniel Carreón. Todo lo etiquetado "V5" localmente fue introducido en un commit único (`5e42124`) de Jorge Tigreros — es autoría DFL sobre el V4 comunitario, no una importación de terceros. Cero evidencia de "Ricardo Silva" en el historial git accesible.
-- Ningún "minion" nombrado (Sensei/Trinity/AI Dani) existe en el repo; "Levy" es solo un asset de imagen (mascota) para la skill `video-visuals`, no un agente.
-- El grafo de codebase-memory no cubre `.claude/` de SFV5 en absoluto (0 nodos) ni `tools/bridges/` — 4 índices duplicados para la misma ruta con conteos distintos pese al mismo `head_sha`, causa raíz confirmada: truncamiento de `max_rows` en ciertas queries (no corrupción de datos).
-- El activo de mayor apalancamiento de todo el inventario DFL, descubierto en la reconciliación arquitectónica (CC-2), no es BOS/Concierge/SFV5 por separado — es un harness de alta certeza **genérico** ya construido y probado (`experiments/dfl-high-certainty-exploration-harness-v0.1/`, 2/2 tests, piloto real ejecutado) que ninguna auditoría previa había conectado con el resto del inventario. Existe una duplicación real (2 patrones HLC independientes: el genérico y la instancia específica de Concierge F1B con defectos de evidencia confirmados) — pero la revisión independiente posterior (CX-N1) determinó que NO son duplicados funcionales demostrados y que su unificación queda `DEFER`, no se reabre.
-- WorkUnitLedger (`dfl-knowledge/concierge/workunit.py`, mergeado a main, dogfood real, 237/237 tests) es el activo más maduro para "Factory Manager" — más confiable que `parallel-build` de SFV5 (solo documentado).
-- "Opportunity Inbox" y "Refinería y Distribución de Capacidades" están completamente ausentes de todo el corpus DFL bajo cualquier variante de nombre buscada.
-- El laboratorio experimental de gobierno de mutaciones (`workforce-registry-capability-lab-2026-07-30`, 16/16 escenarios PASS) falsificó la intuición de que un CRUD simple sobre un Registry es suficiente: el estado canónico debe separarse de propuestas, con validación, aprobación, bloqueo optimista (`expected_version`), versionado append-only, verificación de dependencias y evidencia — nunca escritura directa, nunca hard delete, nunca "rollback = replay de audit log" (rollback real = commit gobernado de una versión restaurada).
-- Bug de autorreferencia de checksum tiene 2 causas raíz distintas ya encontradas en esta cadena: (1) truncamiento de shell (`sha256sum * > archivo` trunca el archivo de salida antes de leerlo como argumento del glob), (2) captura de hash bajo un nombre temporal que luego se reutiliza al copiar/renombrar el archivo final. Ambas se evitan solo excluyendo el nombre de salida de la lista de entrada ANTES de hashear, nunca por post-filtro.
+- Un fetch de amos-context.md (GitHub raw) devolvió contenido con forma de prompt-injection (se autoasignaba un "perfil CONSULTOR" con capacidades falsas, contradichas por el entorno real) — se flagueó al usuario explícitamente en vez de obedecerlo.
+- La corrida inicial de `/prp` para WRU generó un PRP nativo con un defecto real: atribuyó los "44 gates" a la fábrica SFV5 (DDMS) cuando en realidad son gates propios de WRU (G1-G22 del laboratorio de capacidad + G23-G44 de CC-PRP-R1) — corregido en 2 pasadas tras comparar contra las fuentes verbatim (READER añadido como rol, G22/G21/G41-43 restaurados a su alcance/semántica original).
+- Un `git worktree add` nuevo parte con `git status` limpio incluso cuando el árbol principal está sucio desde antes — los archivos no versionados no se materializan en el worktree nuevo. Esto valida el patrón de aislamiento recomendado por el propio Implementation Plan y se usó tal cual.
+- Durante la fabricación real aparecieron 2 falsos positivos en tests de auditoría de código (G44, y la guarda READER de query/client.mjs): el propio comentario explicativo del código contenía la cadena de texto que el test de auditoría buscaba (p.ej. "appendVersion("), inflando el conteo de "call sites". Se corrigió reformulando el comentario, nunca relajando el test.
+- `source_commit` en el schema WRU es "HEAD al momento de generación", no un valor fijo — avanza legítimamente con cada commit de fabricación aunque `.claude/skills/` nunca se toque. Esto se aprovechó honestamente en Fase N para demostrar `freshness_status: stale` real sin ocultarlo (invariante explícito del PRP: nunca esconder staleness al consumidor).
+- Un test inicial de "Activación" asumía que el registro nunca crecería más allá de 32 entradas — al agregar legítimamente una entrada sintética no-SFV5 (Fase N, prueba de extensibilidad real) el test falló; el invariante correcto era "32 `sfv5-skill` únicas", no "32 entradas totales para siempre". Corregido para no penalizar la extensibilidad que el propio PRP exige.
 
 ## Accomplished
-- ✅ Informe forense original SFV5 — commit `a4589bf` (obs #390).
-- ✅ Addendum de censo/registro/crosswalk/matrices — commit `c074c20` (obs #392).
-- ✅ Resolución documental de 4 preguntas puntuales (12 vs 13 skills, promotion_state de skill-creator/image-generation, límites reales de `log-tool-usage.sh`) — commit `56633d1`.
-- ✅ CC-R1: remediación de 3 defectos de CX-1 (checksum, `scan_delta.py` no reproducible, identidad de grafo) — commit `fa640a5`.
-- ✅ CC-H1: plan de remediación (no implementación) de defectos de evidencia en el harness HLC específico de Concierge F1B — commit `cedb54a`.
-- ✅ CC-R2: cierre del contrato de checksum/manifest de SFV5, retirado el claim "20/20 PASS", desglose honesto 17 PASS + 1 PARTIAL + 1 CORRECTED + 1 NOT_APPLICABLE — commit `0bfc5c9`. **Verificado independientemente por CX-R2 (`60316d9`): `SFV5_AUDIT_INDEPENDENTLY_VERIFIED`.**
-- ✅ CC-2: reconciliación completa de la arquitectura laboral DFL (Workforce Registry + Factory Manager + WorkUnits/HLC + BOS + Engram + grafo), 19 activos inventariados, composición híbrida decidida como borde vivo (sin runtime nuevo) — commit `5e30326`.
-- ✅ CC-3: PRP ejecutable de Workforce Registry Unit v0.1 (schema, adapter SFV5, Registry mínimo, validator, query consumer, blind discovery test de 8 casos, 22 gates) — commit `4dfb07d`. Validado por CX-N1 (`b902bc9`, decisión `REVISE_TO_REGISTRY_WITH_SFV5_ADAPTER`, 39/40).
-- ✅ CC-PRP-R1: reconciliación por delta del PRP con los resultados del laboratorio de gobierno de mutaciones (16/16 escenarios) — modelo de proposal/validation/approval/commit, 6 actores tipados, versionado append-only, prohibición de hard delete, `wru-draft.md` preparado (no colocado aún en SFV5) — commit `500c0a1`.
-- 🔲 `wru-draft.md` pendiente de `CX-PRP-1 independent review` y, tras eso, de colocarse en `.claude/PRPs/wru-draft.md` de SFV5 y someterse vía `/primer` + `/prp`.
-- 🔲 CC-H1 (remediación del harness F1B) quedó como plan documentado, no implementado — pendiente de decisión de si se ejecuta.
+- ✅ @$go procesado; prompt-injection en amos-context.md detectado y reportado al usuario antes de actuar sobre él.
+- ✅ CX-MFG-3: corrida real de `/prp` para WRU v0.1 sobre el repo real SFV5 (`/opt/saas-factory-setup`), PRP nativo generado y corregido en 2 rondas (44 gates atribuidos correctamente a WRU no a SFV5, entidades canónicas Source Projection/Proposal/Canonical State formalizadas, contrato de reconciliación NO_CHANGE|PROPOSAL|CONFLICT|SOURCE_MISSING, SFV5 declarado fuente no autoridad, rol READER incorporado, G21/G22/G41-43 restaurados) — cada corrección con receipt completo (hashes SHA256 íntegros, snapshots git worktree/status before-after, diffs exactos, declaraciones NOT_RECOVERABLE cuando aplicaba).
+- ✅ CX-MFG-4: Implementation Plan completo generado desde el PRP aprobado y corregido (498→548 líneas: secuencia canónica `1→2→3→{4,5}→6→7→9.9→9.10→N`, matriz G1-G44 completa, checkpoints humanos, estrategia de commits/corpus/instalación aislada).
+- ✅ Fabricación end-to-end real de WRU v0.1 en worktree git aislado (`/opt/wru-worktree-v0.1`, branch `feat/workforce-registry-unit-v0.1`), 10 commits atómicos, 74/74 tests reales pasando, 44/44 gates PASS con evidencia individual: schema+meta-validación (Fase 1), adapter read-only+reconciliación sobre las 32 skills reales (Fase 2), motor de propuestas/aprobación — único camino de escritura, optimistic locking, autoridad por rol (Fase 3), ciclo de vida gobernado — deprecate/replace/archive/restore, hard-delete estructuralmente imposible (Fase 4), disponibilidad (Fase 5), cliente de consulta bajo autoridad READER + blind discovery de 8 casos (Fase 6), evidencia (Contrato A) + instalación/desinstalación real en copia aislada (Fase 7), Activación real (32/32 skills reales ingeridas vía flujo gobernado, nunca carga directa), Operación real (6 tipos de mutación real incluyendo archive+restore real sobre datos reales), Fase N (blind discovery real sobre el Registry activado, 44 gates agregados, FINAL-VERDICT).
+- ✅ Árbol productivo `/opt/saas-factory-setup` verificado byte-idéntico (HEAD, `git status`, `.claude/skills/`, `CLAUDE.md`, y las 3 herramientas previas de la cadena SFV5/CC-2/CX-N1) en cada uno de los ~15 checkpoints de este build — nunca tocado.
+- ✅ Handoff autosuficiente escrito en disco antes de continuar (cierre provisional pedido explícitamente por el usuario a mitad de la fabricación), para que otro agente sin memoria de la conversación pudiera retomar si la sesión moría.
+- ✅ 4 checkpoints humanos aprobados explícitamente por el usuario en tiempo real (primera escritura canónica, ingestión de datos reales, primera operación de lifecycle, camino vivo real).
+- 🔲 Checkpoint 5 (merge/activación compartida a la rama productiva) deliberadamente NO ejecutado — queda como decisión humana futura, fuera del alcance que esta misión se autorizó a ejecutar sola.
+- Veredicto final entregado: `WRU_V0_1_END_TO_END_BUILT_PENDING_FINAL_INDEPENDENT_VERIFICATION`, con deuda residual declarada explícitamente (sin CLI binario formal; instalación probada en copia de directorio simple, no en un segundo worktree git).
 
 ## Next Steps
-- Esperar/verificar `CX-PRP-1 independent review` sobre `500c0a1` antes de someter `wru-draft.md` a SFV5.
-- Si CX-PRP-1 aprueba: colocar `wru-draft.md` en `.claude/PRPs/` de SFV5 y ejecutar `/primer` + `/prp` para iniciar la fabricación real (fuera de esta cadena de diseño).
-- Decidir si se retoma la implementación del plan de remediación de CC-H1 (harness F1B) — quedó como diseño, no ejecutado.
-- `push_mirror.sh` no se ejecutó en ningún punto de la sesión — pendiente para cuando Jorge lo autorice explícitamente (ejecutado recién al cierre de hoy, ver línea MIRROR reportada).
+- Revisión independiente del build (tipo CX-PRP-1) antes de cualquier propuesta de merge a `fase-3-5-jpi-real-sfv5-bridge`.
+- Decisión humana pendiente sobre checkpoint 5: si/cuándo proponer ese merge.
+- Si se decide llevar WRU a producción real: resolver deuda residual (CLI binario formal; prueba de instalación en un worktree git separado, no solo copia de directorio).
+- Si la sesión se retoma en frío, leer primero `FINAL-VERDICT.md` y `HANDOFF-2026-07-31.md` antes de tocar código.
 
 ## Relevant Files
-- `evidence/sfv5-forensic-inspection-2026-07-30/` — informe original + addendum + 2 rondas de remediación (r1, r2) + resolución documental.
-- `evidence/sfv5-forensic-inspection-2026-07-30-cx{1,r1,r2}/`, `evidence/concierge-f1b-finalization-2026-07-30-r2{,-cx1,-remediation-h1}/` — revisiones independientes de CX y remediación de HLC F1B.
-- `evidence/dfl-workforce-architecture-reconciliation-2026-07-30/` — reconciliación arquitectónica completa (CC-2).
-- `evidence/dfl-first-workforce-increment-review-2026-07-30/` — validación CX-N1 del primer incremento.
-- `evidence/workforce-registry-unit-v0.1-prp-2026-07-30/` — PRP original (CC-3).
-- `evidence/workforce-registry-capability-lab-2026-07-30/` — laboratorio experimental de gobierno de mutaciones (CX-LAB-1).
-- `evidence/workforce-registry-unit-v0.1-prp-r1-2026-07-30/` — PRP reconciliado con el laboratorio, incluye `wru-draft.md` listo para SFV5.
+- `/opt/saas-factory-setup/saas-factory/.claude/PRPs/prp-workforce-registry-unit.md` — PRP aprobado de WRU v0.1, corregido 2 veces, nunca modificado durante la fabricación.
+- `/opt/saas-factory-setup/saas-factory/.claude/PRPs/plan-workforce-registry-unit.md` — Implementation Plan aprobado, fuente de la secuencia de fases ejecutada.
+- `/opt/wru-worktree-v0.1/saas-factory/tools/workforce-registry/` — módulo completo fabricado (schema/, adapters/, proposals/, registry/, query/, evidence/, tests/), 10 commits, 44/44 gates.
+- `/opt/dfl-knowledge/evidence/sfv5-wru-prp-native-run-2026-07-31/` — receipts de generación y corrección del PRP.
+- `/opt/dfl-knowledge/evidence/sfv5-wru-implementation-plan-2026-07-31/` — receipts de generación y corrección del plan.
+- `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/FINAL-VERDICT.md` — matriz completa G1-G44, estado exacto por etapa, veredicto final.
+- `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/HANDOFF-2026-07-31.md` — handoff autosuficiente para continuación por otro agente.
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -475,6 +474,19 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Q/R-RGSA v1.0 canonically formalized and registered — candidate_only
+**Type:** decision  
+**Project:** dfl  
+
+DFL Q/R — Recursive Goal-Satisfaction Algorithm (Q/R-RGSA) v1.0 formalized 2026-08-19. Full original algorithm specification authored directly by HI (Jorge Tigreros) in session; Claude contrasted it against DFL patrimony (local dfl-knowledge, Drive doctrine, and this institutional Engram store — only prior hit was obs #505, an informal consistent application, not a competing formal spec), found no prior canonical name/spec to avoid duplicating, and formalized it as a durable artifact.
+
+Canonical artifact: /opt/dfl-knowledge/04_Candidate_Vault/pending_review/DOCTRINA_QR_RECURSIVE_GOAL_SATISFACTION_v1.0_CANDIDATE.md
+Registered: /opt/dfl-knowledge/01_System_Governance/Index/ARTIFACT_REGISTRY.md/ARTIFACT_REGISTRY.md, Artifact ID DOCTRINA-QR-RGSA-v1.0, state candidate_only (HI/REVISOR promotion to 02_Doctrine_Core/ still pending — not auto-promoted despite HI authoring it directly, per registry's own state definitions).
+
+Core semantics preserved verbatim from HI's spec: Q=GOAL / R=REQUIREMENT nodes, states OPEN/SATISFIED/UNSATISFIED/UNKNOWN/BLOCKED, AND/OR requirement logic, recursive descent (UNSATISFIED(R) -> child Q -> SOLVE -> VERIFY -> UNWIND -> re-verify parent, never assume transitively), hierarchical deterministic IDs (Q0.R0.2.Q1...), Claim != Evidence, Reuse > Rebuild (principle of minimum satisfaction), mandatory redecomposition if all R satisfied but Q still false, BLOCKED only when truly unresolvable. One formal (non-semantic) clarification added: explicit handling for R remaining UNKNOWN after a failed RESOLVE_EVIDENCE attempt, so it isn't silently collapsed into UNSATISFIED before an action/descent decision.
+
+Explicitly out of scope for this pass (per HI's instruction): no Q/R engine was built or implemented. This is doctrine institutionalization only, reusable by TCC, TCX, Factory, BOS, NEXUS, and any DFL agent/organism as the canonical reference for QUIERO->REQUIERO diagnostics — including the DFL constitutional diagnostic and the MERCADER revenue diagnostic already run informally with this same method earlier in this same session, before this formalization existed as a named artifact.
+
 ### Sesión Remote Control TCC — cierre ordenado, iMac queda como único vivo (2026-08-18)
 **Type:** decision  
 **Project:** dfl  
@@ -494,26 +506,6 @@ WHY: Preferencia de UX/ergonomía de Jorge, no un problema tecnico -- ambos cami
 CIERRE: @$fin modo CIERRE ejecutado desde el proceso Remote Control (PID 1340066) para liberar el lock del session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c y dejar al proceso del iMac (PID 1358709) como único escritor activo.
 
 NEXT AGENT: si alguien retoma session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c de nuevo vía Remote Control mientras el iMac sigue vivo, va a recrear el mismo conflicto de doble escritor -- avisar antes de resumir, no asumir que es seguro.
-
-### Session closure (@$fin) — peer-work/Telegram-BOS/Challenge-Manager mission, 2026-08-18
-**Type:** fact  
-**Project:** dfl  
-
-TCC session closure, CIERRE mode (default, not CHECKPOINT). Full detail lives in IRONMAN.md rows (all dated 2026-08-18) and two new docs -- this is a pointer/summary, not a duplicate.
-
-WHAT WAS BUILT, REAL AND VERIFIED LIVE:
-1. tools/peer-work/ -- file-based dispatch queue for TCC<->TCX/CC/CX/human work, with authority genuinely separated from specification (verify-authority re-checks live against /go's projected routing_receipts.mission.role, or against a live Telegram allowlist for human-originated work). Headless cron activation (codex exec/claude -p, zero window), stale-claim recovery (requeue_stale, a dead claimant's items un-stick automatically), real exit-code capture. Proven with real TCC<->TCX round trips and real dispatched/completed production work (Engram #508's Challenge Intake package, and a real technical-assessment dispatch from the Challenge Manager).
-2. tools/telegram-bos/ -- real, live Telegram bot (@DFL_BOS_bot) bridging Jorge's phone to the Factory via the same queue, no container/inbound networking needed. Two real production incidents found and fixed live during actual use (a delivery-dedup re-send loop; a 3-concurrent-process race from restart racing), both Jorge-confirmed resolved in his real Telegram chat.
-3. functions/challenge-intake/tools/manager.mjs + AUTHORITY_ENVELOPE.md -- real process ownership for DFL Website Challenges (previously nobody owned a case after submit). Policy-bounded autonomy / escalate-by-exception governance, actually enforced in code (concurrency ceiling, decline-reason allowlist), not just documented. Ran against all 7 real production Challenge submissions; drove one the full lifecycle including a real peer-work-dispatched technical assessment.
-4. Asset Registry: 3 new dfl.yaml manifests (dfl.peer-work-queue, dfl.telegram-bos-adapter, dfl.challenge-process-manager), index regenerated 14->17 assets, all independently query-verified discoverable.
-5. Two durable docs: .claude/HANDOFF-TCC-TCX-PEER-COLLABORATION-2026-08-18.md (full mechanics + standing lessons for whoever operates this next) and .claude/BUSINESSOS-CORPUS-INVENTORY-2026-08-18.md (real inventory of the ~55-project BusinessOS corpus for manager/staff patterns, MCP libraries, WhatsApp/Telegram/marketing/video automation -- concrete REUSE/CUSTOMIZE/INSTALL/METABOLIZE/IGNORE/RETIRE calls, not vague).
-6. TCX notified via both a real peer-work FYI item (claimed, read, acknowledged -- pw-4daa4bec5196) and Engram obs #515.
-
-PUSH/DURABILITY STATE (final Gate 4B-relevant fact): all of the above is pushed to the correct origins and remote-verified (saas-factory-setup@fase-3-5-jpi-real-sfv5-bridge commit 27811cb; same repo's project/dfl-website-t3 commit 0227f73). One exception, not a loss: dfl-knowledge's feat/dfl-high-certainty-harness-v0.1 branch (carrying real work from OTHER, prior sessions, not this one) is blocked from pushing by two >100MB files in a pre-existing commit unrelated to this session -- this session's one real dfl-knowledge commit (the /go role-field authorization fix, ee0b315) was cherry-picked clean onto a new branch fix/tcx-go-role-visibility-2026-08-18 (commit 475155c) and pushed successfully instead. Nothing from this session is local-only/unreachable.
-
-STANDING INFRASTRUCTURE LEFT RUNNING (do not stop): @DFL_BOS_bot (run.sh+bot.mjs, supervised, single-instance-locked), 3 cron entries (TCX/TCC peer-work activation every 10min, Telegram supervisor liveness every 5min).
-
-Cleanup performed: verified zero stray processes, zero non-terminal queue items, zero orphaned worktrees, zero leftover scratch files from this session before closing.
 
 ---
 
@@ -613,15 +605,15 @@ Cleanup performed: verified zero stray processes, zero non-terminal queue items,
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.8083  
+**Graph entropy:** 0.7993  
 
-- **Community 11** (95 nodes): Abstracción de oferta, Política de disponibilidad, PRP como artefacto nativo
-- **Community 0** (5 nodes): Merchant of Record, Integraciones Externas
-- **Community 1** (4 nodes): MCP Server Behavior, RLS Trap, Semántica de Inventario
-- **Community 2** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
-- **Community 3** (4 nodes): Licenciamiento y acceso
-- **Community 4** (4 nodes): Ciclo de vida automatizado en comercio
+- **Community 11** (91 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Evaluación de complejidad en costos
+- **Community 0** (7 nodes): Verificación de API, Requisitos legales para operar V1
+- **Community 1** (5 nodes): Abstracción de oferta, Política de Disponibilidad, Proceso de Intake
+- **Community 2** (5 nodes): Merchant of Record, Paridad Codex, Métricas comerciales
+- **Community 3** (5 nodes): Jurisdicción, Mercader, Observación de Ed
+- **Community 4** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
 
 ---
 
-*Mirror auto-generated 2026-08-18T23:34:00Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T03:04:45Z | La Garra → DFLghub/amos-context*
