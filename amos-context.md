@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T14:17:52Z  
+**Generated:** 2026-08-19T14:41:48Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -285,20 +285,25 @@ Preregister the canonical PATCH_RISK policy for classifying SF upstream / Factor
 - evidence/patch-risk-policy-preregistration-2026-08-01/tests/patch-risk-policy.test.mjs — 14/14 green coverage
 - evidence/patch-risk-policy-preregistration-2026-08-01/receipts/preregistration-receipt.json — attributable receipt
 
-### Preferencia de canal de notificación: Telegram confirmado, Pixel push silencioso (2026-08-19)
-**Type:** fact  
+### Institucionalizada autopsia de Monoid — 12 hallazgos + preguntas abiertas, discovery/research validated (2026-08-19)
+**Type:** architecture  
 **Project:** dfl  
 
-TOPIC: dfl/notifications/telegram-vs-pixel-push-2026-08-19
-STATUS: closed
+TOPIC: dfl/research/monoid-capability-invocation-2026-08-19
+STATUS: closed (como institucionalizacion) / OPEN (como conocimiento -- no es diseno aprobado)
+DATE: 2026-08-19
 
-WHAT: Jorge pidio un mecanismo para que le avise cuando necesite su atencion mientras maneja. Se probaron 2 canales reales:
-1. PushNotification tool (Remote Control -> Pixel): "Mobile push requested" confirmado del lado del agente, pero Jorge reporto CERO sonido/vibracion, solo una luz/banner muy rapido sin registro visible -- probablemente canal de notificacion de la app Claude en Android sin sonido/vibracion habilitados, o modo conduccion/Do Not Disturb de Android Auto silenciando el banner. No verificable ni arreglable desde la VM (100% client-side).
-2. Telegram bot (@DFL_BOS_bot, tools/telegram-bos/, asset ya registrado como dfl.telegram-bos-adapter en el asset-index) via sendMessage directo a la API de Telegram (chat_id 8776472165, token en /home/dflagent/.config/dfl/telegram-bos.token) -- Jorge confirmo explicitamente "tu notificacion por telegram fue perfecta".
+WHAT: Jorge pidio autopsia profunda de github.com/munkim/monoid (commit ecf3fa34087ac1045b82e6999bdb30b8b7cd7af9) para responder: dado que DFL ya tiene discovery institucional (tools/asset-index/), que falta para pasar a invocation/consumption/delivery uniforme entre organismos DFL. Se clono el repo real y se leyo codigo (no solo README): db_models/api_action.py, action_config_model.py, react_agent.py, monoid/action/utils.py, api/v1/api_action.py, llm_utils.py.
 
-DECISION: Para cualquier notificacion futura que realmente necesite la atencion de Jorge (no solo progreso rutinario), preferir Telegram (curl directo a api.telegram.org/bot<token>/sendMessage, chat_id 8776472165) sobre el PushNotification tool hacia el Pixel, que quedo demostrado como no confiable en este dispositivo/config actual. Nota: el bot de telegram-bos esta disenado primariamente para flujo ENTRANTE (humano -> cola de trabajo); usarlo para salida (agente -> humano) es un uso valido pero no es su proposito documentado original -- no confundir con el daemon de polling, solo se uso la API HTTP de Telegram directamente con el mismo token.
+Institucionalizado en docs/patterns/monoid-capability-invocation-research/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.monoid-capability-invocation.v0, status DRAFT explicito (no active) para marcar que es investigacion, no patron listo para usar. Indexado: 22 assets totales, 0 errores, 7/7 tests, verificado descubrible por 4 queries de texto libre distintas.
 
-NEXT AGENT: si Jorge vuelve a pedir "avisame de alguna forma", usar Telegram primero. Si en el futuro el Pixel push se reconfigura y empieza a sonar, actualizar esta memoria -- no asumir que sigue roto para siempre sin volver a probar.
+12 hallazgos con evidencia de archivo real (detalle completo en RESEARCH.md, no repetido aca): (1) standardized executable capability envelope via FunctionCallConfig compartido entre api_config y expert_agent_config; (2) ArgumentProvider={creator,agent,user} como autoridad granular POR PARAMETRO, no por accion completa; (3) FunctionCallKeysToPaths como capa de indireccion entre nombre-que-ve-el-LLM y ubicacion-real-en-la-API; (4) simetria humano/agente confirmada en codigo -- test_api (UI) y react_agent.py (dispatcher) llaman la MISMA funcion call_api(); (5) Agent-as-Action via recursion literal de run_agent_stream sobre si misma; (6) AgentConfig como dato JSON puro, agente reconstruible sin codigo; (7) event log estructurado por invocacion CON nesting_level (trazabilidad mas fina que Engram por-sesion); (8) cycle/depth guard de Monoid es ingenuo (nesting_level==3 hardcodeado, NO detecta ciclos A->B->A, solo corta por profundidad) -- necesidad futura de DFL, no aplica hoy; (9) Claim!=Evidence DENTRO de Monoid: LLMOption declara multi-vendor (OpenAI/Anthropic/Llama) pero openai_function_call() esta hardcodeado a OpenAI, nunca implementado el resto -- hallazgo metodologico, no solo tecnico; (10) "Action Sandbox" de Monoid NO es aislamiento de seguridad (mismo call_api sin allowlist/timeout, es solo alcance de prueba reducido a 1 accion en una UI) -- nombre enganoso si se cita como referencia de seguridad; (11) Hub/registry de Monoid (is_public boolean + tabla SQL) es INFERIOR al Asset Index real de DFL (git-versionado, con evidence/status/consumer_hint) -- explicitamente NO proponer como reemplazo de nada; (12) metabolizar patrones, nunca el stack (FastAPI/SQLAlchemy/Postgres/Next.js) -- DFL ya tiene equivalentes superiores (Prisma/Supabase, agent-server en TS sobre Claude Agent SDK real).
+
+Preguntas dejadas EXPLICITAMENTE abiertas, no resueltas, no inferibles de este documento: (a) pregunta central -- el futuro contrato ejecutable extiende dfl.yaml, vive como asset separado, o en otra capa; (b) dueno/ubicacion futura del dispatcher (agent-server central generalizado vs uno por BOS); (c) autoridad de parametros cuando creator/consumer/provider son organismos DFL, no humanos (probablemente necesita algo tipo Contrato constitucional, no un enum de 3 valores); (d) deteccion de ciclos real y trazabilidad E2E para invocacion recursiva entre organismos.
+
+LIMITACION encontrada: la copia clonada de Monoid es efimera (/tmp/.../scratchpad), no sobrevive la sesion -- la referencia durable es el commit hash contra el repo publico, no un path local. Solo se audito el backend en profundidad, no el frontend (UX del Hub/Sandbox no inspeccionada).
+
+NEXT AGENT: NO tratar este documento como autorizacion para construir el envelope/dispatcher. Es DISCOVERY. Si Jorge pide avanzar a diseno, ese es un hilo nuevo que debe resolver las 4 preguntas abiertas explicitamente, no asumir respuestas de aca.
 
 ---
 
@@ -482,6 +487,26 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Institucionalizada autopsia de Monoid — 12 hallazgos + preguntas abiertas, discovery/research validated (2026-08-19)
+**Type:** architecture  
+**Project:** dfl  
+
+TOPIC: dfl/research/monoid-capability-invocation-2026-08-19
+STATUS: closed (como institucionalizacion) / OPEN (como conocimiento -- no es diseno aprobado)
+DATE: 2026-08-19
+
+WHAT: Jorge pidio autopsia profunda de github.com/munkim/monoid (commit ecf3fa34087ac1045b82e6999bdb30b8b7cd7af9) para responder: dado que DFL ya tiene discovery institucional (tools/asset-index/), que falta para pasar a invocation/consumption/delivery uniforme entre organismos DFL. Se clono el repo real y se leyo codigo (no solo README): db_models/api_action.py, action_config_model.py, react_agent.py, monoid/action/utils.py, api/v1/api_action.py, llm_utils.py.
+
+Institucionalizado en docs/patterns/monoid-capability-invocation-research/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.monoid-capability-invocation.v0, status DRAFT explicito (no active) para marcar que es investigacion, no patron listo para usar. Indexado: 22 assets totales, 0 errores, 7/7 tests, verificado descubrible por 4 queries de texto libre distintas.
+
+12 hallazgos con evidencia de archivo real (detalle completo en RESEARCH.md, no repetido aca): (1) standardized executable capability envelope via FunctionCallConfig compartido entre api_config y expert_agent_config; (2) ArgumentProvider={creator,agent,user} como autoridad granular POR PARAMETRO, no por accion completa; (3) FunctionCallKeysToPaths como capa de indireccion entre nombre-que-ve-el-LLM y ubicacion-real-en-la-API; (4) simetria humano/agente confirmada en codigo -- test_api (UI) y react_agent.py (dispatcher) llaman la MISMA funcion call_api(); (5) Agent-as-Action via recursion literal de run_agent_stream sobre si misma; (6) AgentConfig como dato JSON puro, agente reconstruible sin codigo; (7) event log estructurado por invocacion CON nesting_level (trazabilidad mas fina que Engram por-sesion); (8) cycle/depth guard de Monoid es ingenuo (nesting_level==3 hardcodeado, NO detecta ciclos A->B->A, solo corta por profundidad) -- necesidad futura de DFL, no aplica hoy; (9) Claim!=Evidence DENTRO de Monoid: LLMOption declara multi-vendor (OpenAI/Anthropic/Llama) pero openai_function_call() esta hardcodeado a OpenAI, nunca implementado el resto -- hallazgo metodologico, no solo tecnico; (10) "Action Sandbox" de Monoid NO es aislamiento de seguridad (mismo call_api sin allowlist/timeout, es solo alcance de prueba reducido a 1 accion en una UI) -- nombre enganoso si se cita como referencia de seguridad; (11) Hub/registry de Monoid (is_public boolean + tabla SQL) es INFERIOR al Asset Index real de DFL (git-versionado, con evidence/status/consumer_hint) -- explicitamente NO proponer como reemplazo de nada; (12) metabolizar patrones, nunca el stack (FastAPI/SQLAlchemy/Postgres/Next.js) -- DFL ya tiene equivalentes superiores (Prisma/Supabase, agent-server en TS sobre Claude Agent SDK real).
+
+Preguntas dejadas EXPLICITAMENTE abiertas, no resueltas, no inferibles de este documento: (a) pregunta central -- el futuro contrato ejecutable extiende dfl.yaml, vive como asset separado, o en otra capa; (b) dueno/ubicacion futura del dispatcher (agent-server central generalizado vs uno por BOS); (c) autoridad de parametros cuando creator/consumer/provider son organismos DFL, no humanos (probablemente necesita algo tipo Contrato constitucional, no un enum de 3 valores); (d) deteccion de ciclos real y trazabilidad E2E para invocacion recursiva entre organismos.
+
+LIMITACION encontrada: la copia clonada de Monoid es efimera (/tmp/.../scratchpad), no sobrevive la sesion -- la referencia durable es el commit hash contra el repo publico, no un path local. Solo se audito el backend en profundidad, no el frontend (UX del Hub/Sandbox no inspeccionada).
+
+NEXT AGENT: NO tratar este documento como autorizacion para construir el envelope/dispatcher. Es DISCOVERY. Si Jorge pide avanzar a diseno, ese es un hilo nuevo que debe resolver las 4 preguntas abiertas explicitamente, no asumir respuestas de aca.
+
 ### Preferencia de canal de notificación: Telegram confirmado, Pixel push silencioso (2026-08-19)
 **Type:** fact  
 **Project:** dfl  
@@ -496,26 +521,6 @@ WHAT: Jorge pidio un mecanismo para que le avise cuando necesite su atencion mie
 DECISION: Para cualquier notificacion futura que realmente necesite la atencion de Jorge (no solo progreso rutinario), preferir Telegram (curl directo a api.telegram.org/bot<token>/sendMessage, chat_id 8776472165) sobre el PushNotification tool hacia el Pixel, que quedo demostrado como no confiable en este dispositivo/config actual. Nota: el bot de telegram-bos esta disenado primariamente para flujo ENTRANTE (humano -> cola de trabajo); usarlo para salida (agente -> humano) es un uso valido pero no es su proposito documentado original -- no confundir con el daemon de polling, solo se uso la API HTTP de Telegram directamente con el mismo token.
 
 NEXT AGENT: si Jorge vuelve a pedir "avisame de alguna forma", usar Telegram primero. Si en el futuro el Pixel push se reconfigura y empieza a sonar, actualizar esta memoria -- no asumir que sigue roto para siempre sin volver a probar.
-
-### Institucionalización: SocialFlow AI/WA_CRM/dump-56 registrados en Asset Index real + patrón de activación extraído (2026-08-19)
-**Type:** architecture  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/asset-index-institutionalization-2026-08-19
-STATUS: closed
-DATE: 2026-08-19
-
-WHAT: Jorge pidio convertir la sesion de activacion de SocialFlow AI (obs #520/#521) en capacidad institucional recuperable, no aprendizaje de sesion. Se uso el mecanismo REAL de discovery de DFL (tools/asset-index/, dfl.yaml co-localizados + discover.mjs + query.mjs), no solo Engram/IRONMAN (que ya tenian la narrativa pero no eran "buscables" por un agente futuro sin saber que buscar).
-
-4 dfl.yaml nuevos, todos co-localizados con su asset real (nunca un registro remoto):
-1. dfl.mercader.socialflow-ai.v0-1 en mercader-bos/activated-assets/socialflow-ai/dfl.yaml -- status active, describe explicitamente la distincion NO_OPERATIVO (3 defectos de codigo reales, ya reparados) vs NO_CONFIGURADO/NO_INTEGRADO (bloqueos externos: OPENROUTER_API_KEY ausente, alta OAuth pendiente) en el campo description, con evidencia real citada (comandos, obs ids).
-2. dfl.external.varios-sfv5.wacrm.v0 en saas-factory/tools/asset-index/external-catalog/varios-sfv5-businessos-wacrm/dfl.yaml -- status draft, clasificado honestamente como "muestreado, NO activado" (git log + ausencia de node_modules/.env.local verificados; npm install/build/E2E NUNCA corridos) -- deliberadamente NO se le da el mismo nivel de confianza que a socialflow-ai.
-3. dfl.external.varios-sfv5.businessos-dump.v0 en saas-factory/tools/asset-index/external-catalog/varios-sfv5-businessos-dump/dfl.yaml -- status draft, inventario de EXISTENCIA (no de estado) de los 56 nombres de directorio reales del dump "Varios para SFV5/BusinessOS/", marcando cuales 2 tienen evidencia real (BOS v6 y WA_CRM) y dejando los 54 restantes explicitamente sin auditar -- decision deliberada de Jorge: "no lo inventaríes superficialmente" se cumplio listando SOLO nombres verificables con `ls`, nunca afirmaciones de funcionalidad.
-4. dfl.pattern.external-asset-activation.v0-1 en saas-factory/docs/patterns/external-asset-activation/{dfl.yaml,METHOD.md} -- el patron reusable en 6 pasos (asset externo -> BOS/agente -> diagnostico -> reparacion/config -> prueba -> capacidad operativa), cada paso citando el bloqueo real y el comando real que lo resolvio en el caso de origen, no teoria abstracta. Principio Claim != Evidence explicito como regla rectora del metodo.
-
-MECANICA: `node tools/asset-index/discover.mjs tools docs /opt/saas-factory-setup/mercader-bos <...roots previos...> --out tools/asset-index/index.json` -- se ampliaron los roots escaneados (antes solo `tools`, ahora tambien `docs` y `mercader-bos`) para cubrir los 3 assets nuevos fuera de `saas-factory/tools/`. Parser de dfl.yaml es deliberadamente NO-YAML real (flat key:value linea por linea, sin bloques multilinea) -- primer intento de escribir description como bloque YAML con `'...'` multilinea fallo el parser ("unparsable line, no ':'"); leccion para el proximo agente que escriba un dfl.yaml: TODO campo debe ser una sola linea fisica, sin newlines internos, aunque el valor sea largo. 21 assets indexados, 0 errores, 7/7 tests del asset-index en verde, verificado con `query.mjs search` que los 4 assets nuevos son efectivamente descubribles por texto libre.
-
-NEXT AGENT: este registro (dfl.external.varios-sfv5.businessos-dump.v0) es el punto de entrada correcto para "que mas hay en los regalos de Ricardo/makeflowia-lab" -- no re-hacer `find` desde cero. Si se activa cualquiera de los 54 repos restantes, seguir dfl.pattern.external-asset-activation.v0-1 y crear un dfl.yaml propio para ese asset (co-localizado en su workspace activado, como se hizo con socialflow-ai) -- NUNCA editar businessos-dump.v0 para "marcarlo como activado", ese manifest es inventario del dump completo, no del asset individual.
 
 ---
 
@@ -626,4 +631,4 @@ NEXT AGENT: este registro (dfl.external.varios-sfv5.businessos-dump.v0) es el pu
 
 ---
 
-*Mirror auto-generated 2026-08-19T14:17:52Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T14:41:48Z | La Garra → DFLghub/amos-context*
