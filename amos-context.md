@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T13:16:29Z  
+**Generated:** 2026-08-19T13:18:53Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,36 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### SocialFlow AI activado vía BOS para MERCADER — E2E real parcial, 2 bloqueos externos identificados (2026-08-19)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/mercader/socialflow-ai-bos-activation-2026-08-19
+STATUS: E2E_PASS_PARTIAL
+DATE: 2026-08-19
+LIFECYCLE: active
+
+WHAT: Mission de Jorge: validar hipótesis de Ricardo (assets/regalos de SaaS Factory, especialmente automatizadores de redes sociales, no operativos por config/BOS pendiente, no por defecto) y dejar SocialFlow AI realmente operativo vía BOS con prueba E2E, aplicando loop QUIERO->bloqueo->REQUIERO hasta PASS o bloqueo externo genuino.
+
+EVIDENCIA (todo verificado en vivo esta sesión, said-vm2-la-garra):
+1. Asset real: "Automatización de Redes Sociales" = SocialFlow AI, dump en saas-factory/Varios para SFV5/BusinessOS/BOS v6/ (duplicado byte-a-byte en business-os-v6/), git author makeflowia-lab, un solo commit 650e135 2026-08-04. Producto completo: 16 modelos Prisma, OAuth 6 plataformas, Stripe, worker BullMQ, Docker.
+2. Confirmado el mecanismo real de BOS: mercader-bos/agent-server (BOS real ya corriendo para MERCADER) tiene AGENT_PROJECTS (mapa nombre->path absoluto) + endpoint HTTP /chat que corre una sesión Claude Agent SDK con cwd=path del proyecto -- exactamente lo que Ricardo describió, pre-existente en el código pero nunca activado/usado.
+3. Bloqueos reales encontrados y resueltos, en orden (loop QUIERO/REQUIERO aplicado):
+   - EACCES: dump root-owned, dflagent sin sudo -> copiado a mercader-bos/activated-assets/socialflow-ai/ (workspace escribible, convención nueva para próximos assets).
+   - BOM UTF-8 en package.json y prisma/schema.prisma rompía npm install/prisma generate -> stripped.
+   - features/workspace/{service,store}.ts + app/api/workspace/route.ts NUNCA fueron entregados (0 en git history) pese a que 10+ archivos los importan -- defecto real de entrega, no config. Reconstruidos desde los call-sites + prisma schema (Workspace/Profile/WorkspaceMember), typecheck 0 errores, build production completo (29 páginas).
+   - supabase/migrations/ mezclaba una migración (credentials_rls.sql) que depende de tablas creadas por `prisma db push` con las auto-aplicadas por `supabase start` -- crashea el arranque local. Movida a supabase/post-prisma/ con README explicando el orden correcto. Bug real, afecta a cualquiera que intente levantar este asset.
+   - Prisma CLI no lee .env.local (solo Next.js lo hace) -- creado también .env (mismo contenido) para que ambos convivan.
+4. E2E real logrado: signup real vía Supabase Auth LOCAL (Docker, no el Supabase cloud de DFL -- respeta NO_TOUCH) -> GET /api/workspace auto-provisiona workspace (código reconstruido) -> POST /api/brands crea marca real -> GET /api/agent/status (superficie BOS-facing, auth Bearer AGENT_API_TOKEN, ya construida en el asset pero nunca antes ejercitada) devuelve datos reales; sin token -> 401 correcto. Cierre del loop: POST /chat de mercader-bos/agent-server con {project:"socialflow", message:"corre curl contra /api/agent/status..."} ejecutó una sesión de agente real con cwd en el asset y devolvió el JSON real -- BOS operando el asset sin intervención técnica humana, confirmado en vivo, no solo en teoría.
+5. Recursos: VM2 llegó a 348MB libres / swap 1.5GB en uso con el stack Supabase local completo arriba -- se detuvo todo (containers + next dev + mc-server) al cerrar para no arriesgar producción compartida (n8n, engram, otras sesiones). Datos del test quedan en un volumen Docker persistente, relanzable con `npx supabase start` desde mercader-bos/activated-assets/socialflow-ai/.
+
+BLOQUEOS EXTERNOS REALES (no resueltos a propósito, no falseables por un agente):
+- OPENROUTER_API_KEY institucional: el archivo tmpfs /dev/shm/dfl-openrouter-key que bootstrap-sfv5-startup.sh espera no existe en esta sesión -- sin él no hay generación IA real (/api/agent/generate). Requiere que Jorge o el proceso que lo provisiona lo deje disponible.
+- Publicación real a Meta/LinkedIn/TikTok/YouTube/Google Ads: requiere alta de app OAuth + revisión humana de 2-4 semanas por plataforma, documentado por el propio asset (PROJECT_OVERVIEW.md). Techo duro, no técnico.
+- Decisión de infraestructura pendiente de Jorge: Supabase dedicado vs. local-siempre-activo en VM2 para uso real de MERCADER (no se tocó Supabase cloud de DFL en ningún momento).
+
+NEXT AGENT: no reabrir OpenRouter/OAuth como si fueran bugs -- son bloqueos externos ya documentados. Si se retoma, `npx supabase start` en mercader-bos/activated-assets/socialflow-ai/ revive el mismo estado (mismo volumen Docker). AGENT_PROJECTS y SOCIALFLOW_* ya están wireados en mercader-bos/agent-server/.env, backup pre-cambio en .env.bak-pre-socialflow-wiring.
+
 ### Q/R-RGSA v1.0 canonically formalized and registered — candidate_only
 **Type:** decision  
 **Project:** dfl  
@@ -128,26 +158,6 @@ Registered: /opt/dfl-knowledge/01_System_Governance/Index/ARTIFACT_REGISTRY.md/A
 Core semantics preserved verbatim from HI's spec: Q=GOAL / R=REQUIREMENT nodes, states OPEN/SATISFIED/UNSATISFIED/UNKNOWN/BLOCKED, AND/OR requirement logic, recursive descent (UNSATISFIED(R) -> child Q -> SOLVE -> VERIFY -> UNWIND -> re-verify parent, never assume transitively), hierarchical deterministic IDs (Q0.R0.2.Q1...), Claim != Evidence, Reuse > Rebuild (principle of minimum satisfaction), mandatory redecomposition if all R satisfied but Q still false, BLOCKED only when truly unresolvable. One formal (non-semantic) clarification added: explicit handling for R remaining UNKNOWN after a failed RESOLVE_EVIDENCE attempt, so it isn't silently collapsed into UNSATISFIED before an action/descent decision.
 
 Explicitly out of scope for this pass (per HI's instruction): no Q/R engine was built or implemented. This is doctrine institutionalization only, reusable by TCC, TCX, Factory, BOS, NEXUS, and any DFL agent/organism as the canonical reference for QUIERO->REQUIERO diagnostics — including the DFL constitutional diagnostic and the MERCADER revenue diagnostic already run informally with this same method earlier in this same session, before this formalization existed as a named artifact.
-
-### Sesión Remote Control TCC — cierre ordenado, iMac queda como único vivo (2026-08-18)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/remote-control/imac-vs-pixel-handoff-2026-08-18
-STATUS: closed
-DATE: 2026-08-18
-AUTHORITY: session evidence only
-LIFECYCLE: active
-
-WHAT: Sesión Claude Code "DFL Factory TCC" (--remote-control, PID 1340066, session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c) en said-vm2-la-garra (DigitalOcean 67.205.166.199), lanzada originalmente vía cliente ET del iMac de Jorge. Se probó y confirmó en vivo que la sesión sobrevive: cierre del cliente ET local (Terminal.app "Terminate"), pérdida de conexión, y apagado del iMac -- todos inocuos porque el cómputo real corre en la VM (etserver systemd daemon + etterminal, independiente del cliente) y el proceso claude mantiene sus propias conexiones TLS directas a Anthropic, no proxied por la tty.
-
-Jorge después abrió una sesión nueva en el iMac ("otro TCC", PID separado, sin --resume) -- la cerró para no tener 2 fábricas. Luego pidió continuar ESTA MISMA conversación desde el iMac. Vía `sudo -iu dflagent bash -lc 'cd /opt/saas-factory-setup/saas-factory && claude --resume 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c'` + `/resume` interactivo, logró resumir el MISMO session_id en un proceso nuevo en el iMac (PID 1358709). Esto creó doble escritor concurrente sobre el mismo .jsonl (confirmado: el archivo saltó de ~1MB a 3.67MB al resumir). Se le informó el riesgo y eligió Opción A: cerrar el proceso Remote Control (este) y quedarse en el iMac (pantalla 27" vs Pixel <7").
-
-WHY: Preferencia de UX/ergonomía de Jorge, no un problema tecnico -- ambos caminos eran viables, eligió pantalla grande.
-
-CIERRE: @$fin modo CIERRE ejecutado desde el proceso Remote Control (PID 1340066) para liberar el lock del session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c y dejar al proceso del iMac (PID 1358709) como único escritor activo.
-
-NEXT AGENT: si alguien retoma session_id 0ceb51c8-76ef-43de-8c06-7f7553fb0b1c de nuevo vía Remote Control mientras el iMac sigue vivo, va a recrear el mismo conflicto de doble escritor -- avisar antes de resumir, no asumir que es seguro.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -470,6 +480,36 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### SocialFlow AI activado vía BOS para MERCADER — E2E real parcial, 2 bloqueos externos identificados (2026-08-19)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/mercader/socialflow-ai-bos-activation-2026-08-19
+STATUS: E2E_PASS_PARTIAL
+DATE: 2026-08-19
+LIFECYCLE: active
+
+WHAT: Mission de Jorge: validar hipótesis de Ricardo (assets/regalos de SaaS Factory, especialmente automatizadores de redes sociales, no operativos por config/BOS pendiente, no por defecto) y dejar SocialFlow AI realmente operativo vía BOS con prueba E2E, aplicando loop QUIERO->bloqueo->REQUIERO hasta PASS o bloqueo externo genuino.
+
+EVIDENCIA (todo verificado en vivo esta sesión, said-vm2-la-garra):
+1. Asset real: "Automatización de Redes Sociales" = SocialFlow AI, dump en saas-factory/Varios para SFV5/BusinessOS/BOS v6/ (duplicado byte-a-byte en business-os-v6/), git author makeflowia-lab, un solo commit 650e135 2026-08-04. Producto completo: 16 modelos Prisma, OAuth 6 plataformas, Stripe, worker BullMQ, Docker.
+2. Confirmado el mecanismo real de BOS: mercader-bos/agent-server (BOS real ya corriendo para MERCADER) tiene AGENT_PROJECTS (mapa nombre->path absoluto) + endpoint HTTP /chat que corre una sesión Claude Agent SDK con cwd=path del proyecto -- exactamente lo que Ricardo describió, pre-existente en el código pero nunca activado/usado.
+3. Bloqueos reales encontrados y resueltos, en orden (loop QUIERO/REQUIERO aplicado):
+   - EACCES: dump root-owned, dflagent sin sudo -> copiado a mercader-bos/activated-assets/socialflow-ai/ (workspace escribible, convención nueva para próximos assets).
+   - BOM UTF-8 en package.json y prisma/schema.prisma rompía npm install/prisma generate -> stripped.
+   - features/workspace/{service,store}.ts + app/api/workspace/route.ts NUNCA fueron entregados (0 en git history) pese a que 10+ archivos los importan -- defecto real de entrega, no config. Reconstruidos desde los call-sites + prisma schema (Workspace/Profile/WorkspaceMember), typecheck 0 errores, build production completo (29 páginas).
+   - supabase/migrations/ mezclaba una migración (credentials_rls.sql) que depende de tablas creadas por `prisma db push` con las auto-aplicadas por `supabase start` -- crashea el arranque local. Movida a supabase/post-prisma/ con README explicando el orden correcto. Bug real, afecta a cualquiera que intente levantar este asset.
+   - Prisma CLI no lee .env.local (solo Next.js lo hace) -- creado también .env (mismo contenido) para que ambos convivan.
+4. E2E real logrado: signup real vía Supabase Auth LOCAL (Docker, no el Supabase cloud de DFL -- respeta NO_TOUCH) -> GET /api/workspace auto-provisiona workspace (código reconstruido) -> POST /api/brands crea marca real -> GET /api/agent/status (superficie BOS-facing, auth Bearer AGENT_API_TOKEN, ya construida en el asset pero nunca antes ejercitada) devuelve datos reales; sin token -> 401 correcto. Cierre del loop: POST /chat de mercader-bos/agent-server con {project:"socialflow", message:"corre curl contra /api/agent/status..."} ejecutó una sesión de agente real con cwd en el asset y devolvió el JSON real -- BOS operando el asset sin intervención técnica humana, confirmado en vivo, no solo en teoría.
+5. Recursos: VM2 llegó a 348MB libres / swap 1.5GB en uso con el stack Supabase local completo arriba -- se detuvo todo (containers + next dev + mc-server) al cerrar para no arriesgar producción compartida (n8n, engram, otras sesiones). Datos del test quedan en un volumen Docker persistente, relanzable con `npx supabase start` desde mercader-bos/activated-assets/socialflow-ai/.
+
+BLOQUEOS EXTERNOS REALES (no resueltos a propósito, no falseables por un agente):
+- OPENROUTER_API_KEY institucional: el archivo tmpfs /dev/shm/dfl-openrouter-key que bootstrap-sfv5-startup.sh espera no existe en esta sesión -- sin él no hay generación IA real (/api/agent/generate). Requiere que Jorge o el proceso que lo provisiona lo deje disponible.
+- Publicación real a Meta/LinkedIn/TikTok/YouTube/Google Ads: requiere alta de app OAuth + revisión humana de 2-4 semanas por plataforma, documentado por el propio asset (PROJECT_OVERVIEW.md). Techo duro, no técnico.
+- Decisión de infraestructura pendiente de Jorge: Supabase dedicado vs. local-siempre-activo en VM2 para uso real de MERCADER (no se tocó Supabase cloud de DFL en ningún momento).
+
+NEXT AGENT: no reabrir OpenRouter/OAuth como si fueran bugs -- son bloqueos externos ya documentados. Si se retoma, `npx supabase start` en mercader-bos/activated-assets/socialflow-ai/ revive el mismo estado (mismo volumen Docker). AGENT_PROJECTS y SOCIALFLOW_* ya están wireados en mercader-bos/agent-server/.env, backup pre-cambio en .env.bak-pre-socialflow-wiring.
+
 ### @$fin — Cierre de sesión 2026-08-19 (constitucional + MERCADER + iMac)
 **Type:** fact  
 **Project:** dfl  
@@ -485,19 +525,6 @@ Cierre de sesión larga (2026-08-19), tres frentes trabajados, ninguno cerrado c
 Ademas, esta misma sesion formalizo e institucionalizo la doctrina DFL Q/R Recursive Goal-Satisfaction Algorithm (Q/R-RGSA v1.0), candidate_only en dfl-knowledge/04_Candidate_Vault/pending_review/, ver obs #518 -- ese es el metodo que se aplico en los frentes 1 y 2 de este cierre.
 
 Ninguna observacion previa queda invalidada por este cierre; no hay archivado que hacer. Ningun commit a git en esta sesion -- todo el trabajo vive en los tres archivos de checkpoint listados arriba mas la memoria persistente del agente (MEMORY.md).
-
-### Q/R-RGSA v1.0 canonically formalized and registered — candidate_only
-**Type:** decision  
-**Project:** dfl  
-
-DFL Q/R — Recursive Goal-Satisfaction Algorithm (Q/R-RGSA) v1.0 formalized 2026-08-19. Full original algorithm specification authored directly by HI (Jorge Tigreros) in session; Claude contrasted it against DFL patrimony (local dfl-knowledge, Drive doctrine, and this institutional Engram store — only prior hit was obs #505, an informal consistent application, not a competing formal spec), found no prior canonical name/spec to avoid duplicating, and formalized it as a durable artifact.
-
-Canonical artifact: /opt/dfl-knowledge/04_Candidate_Vault/pending_review/DOCTRINA_QR_RECURSIVE_GOAL_SATISFACTION_v1.0_CANDIDATE.md
-Registered: /opt/dfl-knowledge/01_System_Governance/Index/ARTIFACT_REGISTRY.md/ARTIFACT_REGISTRY.md, Artifact ID DOCTRINA-QR-RGSA-v1.0, state candidate_only (HI/REVISOR promotion to 02_Doctrine_Core/ still pending — not auto-promoted despite HI authoring it directly, per registry's own state definitions).
-
-Core semantics preserved verbatim from HI's spec: Q=GOAL / R=REQUIREMENT nodes, states OPEN/SATISFIED/UNSATISFIED/UNKNOWN/BLOCKED, AND/OR requirement logic, recursive descent (UNSATISFIED(R) -> child Q -> SOLVE -> VERIFY -> UNWIND -> re-verify parent, never assume transitively), hierarchical deterministic IDs (Q0.R0.2.Q1...), Claim != Evidence, Reuse > Rebuild (principle of minimum satisfaction), mandatory redecomposition if all R satisfied but Q still false, BLOCKED only when truly unresolvable. One formal (non-semantic) clarification added: explicit handling for R remaining UNKNOWN after a failed RESOLVE_EVIDENCE attempt, so it isn't silently collapsed into UNSATISFIED before an action/descent decision.
-
-Explicitly out of scope for this pass (per HI's instruction): no Q/R engine was built or implemented. This is doctrine institutionalization only, reusable by TCC, TCX, Factory, BOS, NEXUS, and any DFL agent/organism as the canonical reference for QUIERO->REQUIERO diagnostics — including the DFL constitutional diagnostic and the MERCADER revenue diagnostic already run informally with this same method earlier in this same session, before this formalization existed as a named artifact.
 
 ---
 
@@ -608,4 +635,4 @@ Explicitly out of scope for this pass (per HI's instruction): no Q/R engine was 
 
 ---
 
-*Mirror auto-generated 2026-08-19T13:16:29Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T13:18:53Z | La Garra → DFLghub/amos-context*
