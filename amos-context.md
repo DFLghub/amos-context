@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T16:16:37Z  
+**Generated:** 2026-08-19T16:29:37Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,41 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Vertical slice real MERCADER↔FÁBRICA E2E: 1 pedido, ciclo completo, CERRADO (2026-08-19)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/mercader/vertical-slice-e2e-2026-08-19
+STATUS: CERRADO
+DATE: 2026-08-19
+
+WHAT: Primera prueba real (no simulada) del ciclo MERCADER ORDER -> FABRICA RECEIVE -> COMMIT -> PRODUCE -> AQA -> DELIVER -> MERCADER RECEIVE/ACK, usando el Design Candidate v0 (obs #528) como referencia, NO como obligacion de implementar todas sus piezas. Regla de Jorge: reutilizar todo lo existente, construir solo el delta que el E2E demuestre necesario, no adelantarse a elasticidad multiple.
+
+ORDER_ID real: MERCADER-ORDER-TEST-20260819T162514Z (pedido de PRUEBA explicito, prospecto TEST, no cliente real -- consistente con el limite ya establecido hoy en CHECKPOINT-MERCADER-QR-2026-08-19.md de cero contacto real).
+
+Mecanismos EXISTENTES reutilizados intactos, sin modificar:
+- tools/peer-work/ (peer_work.py) como transporte generico REQUEST/COMMIT/STATUS/DELIVER -- MERCADER emitio el ORDER como un item mas de la misma cola que usa cualquier otro trabajo DFL, sin integracion bespoke. authority_ref="human=telegram:8776472165" verificado en vivo contra el allowlist real antes de crear el primer item.
+- El patron real de r-d-delivery/delivery.mjs (construido y probado HOY MISMO por otra sesion en /tmp/mercader-verify-fork/, 6/6 aserciones) -- reusado (mismas funciones, mismo invariante "un orderId = una entrega"), no reescrito desde cero.
+- AQA Kit real (tools/aqa-kit/bin/aqa.mjs) -- corrido de verdad, nivel AQA-1, perfil CRUD_LIFECYCLE, con ALLOW (creacion de entrega, min-length del documento, correlacion de order_id) y DENY (duplicado correctamente rechazado) reales. Resultado real: PASS, profiles covered=[CRUD_LIFECYCLE], missing=[].
+
+Delta minimo construido (solo lo que el E2E demostro necesario):
+- deliver.mjs: version exportable/reusable del patron ya probado (mismas funciones, agregado solo un guard de duplicado persistido en disco via delivery-record.json, porque la version anterior era in-memory y no servia para un DENY check real de AQA).
+- onepager.md real: contenido real generado (no placeholder de texto "ok"), siguiendo la estructura ya documentada de MERCADER Distill (AI_Product_Distillation_OnePager_v0_1.md).
+
+NO se construyo: Scheduler, Capacity Registry, PDP de autorizacion por parametro, cloning de Fabricas, ni ninguna otra pieza del Design Candidate v0 -- correctamente, porque un solo pedido no las necesito. Confirma en la practica lo que la regla de Jorge predijo: "si 1 pedido no cruza completo, no tiene sentido probar 10" -- 1 SI cruzo completo, con piezas existentes casi sin delta.
+
+Evidencia real verificable:
+- peer-work request_id pw-e27f05cf50e6 (ORDER, COMMITTED->COMPLETED) y pw-f73e9583f3ab (ACK, COMPLETED), ambos con inputs.order_id=MERCADER-ORDER-TEST-20260819T162514Z -- correlacion confirmada por lectura directa post-hoc, no asumida.
+- AQA receipt real: tools/aqa-kit/evidence/mercader-e2e-vertical-slice/MERCADER-ORDER-TEST-20260819T162514Z/27811cb/2026-08-19T16-27-41-951Z/receipt.json, status=PASS.
+- delivery-record.json real con token real (jLiSu6pxXqTILGrAecLlX5juJOaN9KLF) y link real (https://deepfeelingslabs.com/entrega/<token>) -- el link no fue navegado/publicado (dominio real de DFL, no se hizo ninguna llamada de red hacia el).
+- onepager.md real, con contenido explicito marcando que es un pedido de prueba, ningun dato de cliente real usado.
+
+Que sigue siendo bespoke: NADA especifico a MERCADER<->FABRICA -- MERCADER hablo con el mismo peer-work que cualquier otro origen (TELEGRAM, otros agentes), FABRICA (TCC) recibio como target_executor generico, DELIVER volvio por el mismo mecanismo (complete() del item original), sin ningun canal o codigo exclusivo de este par de organismos. NO_POINT_TO_POINT confirmado en la practica, no solo en diseno.
+
+Blocker real: ninguno aparecio en este ciclo -- brief simple, deliverable producible con capacidad ya existente, sin credencial externa faltante. QUIERO->bloqueo->REQUIERO no se activo porque no hizo falta, no se forzo artificialmente.
+
+NEXT AGENT: el circuito de 1 pedido esta PROBADO y REUTILIZABLE (mismo peer-work, mismo AQA, mismo patron de delivery sirven para el siguiente pedido sin modificacion). La siguiente mision autorizada por Jorge (NO ejecutada aca) es repetir con multiples pedidos simultaneos para tensionar elasticidad real -- ahi es donde recien aparecera si Scheduler/Capacity Registry/provisioning son necesarios de verdad, no antes.
+
 ### Causa raíz de fricción de permisos eliminada + confirmado BOS v6 = mismo core que v5/mercader-bos + fix portado (2026-08-19)
 **Type:** decision  
 **Project:** dfl  
@@ -131,36 +166,6 @@ WHAT 2 (pregunta de Jorge sobre BOS v6): Verificado con diff real -- BOS v5/agen
 Único delta real de código encontrado entre v5 y v6: agent.ts de v6 reintenta UNA vez con sesión nueva cuando el sessionId guardado ya no existe en disco ("No conversation found with session ID"), en vez de fallar duro. mercader-bos NO lo tenía -- portado a mercader-bos/agent-server/src/agent.ts, typecheck + build limpios, es exactamente el código que corre el mecanismo AGENT_PROJECTS que se acaba de activar para SocialFlow AI.
 
 NEXT AGENT: si Jorge vuelve a preguntar por diffs entre versiones de BOS del dump "Varios para SFV5/BusinessOS/", el core agent-server es esencialmente el mismo en v2-v7 salvo parches puntuales -- comparar antes de asumir que una versión "funciona mejor" arquitectónicamente; en este caso la diferencia real era el bundle de verticales, no el motor.
-
-### SocialFlow AI activado vía BOS para MERCADER — E2E real parcial, 2 bloqueos externos identificados (2026-08-19)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/mercader/socialflow-ai-bos-activation-2026-08-19
-STATUS: E2E_PASS_PARTIAL
-DATE: 2026-08-19
-LIFECYCLE: active
-
-WHAT: Mission de Jorge: validar hipótesis de Ricardo (assets/regalos de SaaS Factory, especialmente automatizadores de redes sociales, no operativos por config/BOS pendiente, no por defecto) y dejar SocialFlow AI realmente operativo vía BOS con prueba E2E, aplicando loop QUIERO->bloqueo->REQUIERO hasta PASS o bloqueo externo genuino.
-
-EVIDENCIA (todo verificado en vivo esta sesión, said-vm2-la-garra):
-1. Asset real: "Automatización de Redes Sociales" = SocialFlow AI, dump en saas-factory/Varios para SFV5/BusinessOS/BOS v6/ (duplicado byte-a-byte en business-os-v6/), git author makeflowia-lab, un solo commit 650e135 2026-08-04. Producto completo: 16 modelos Prisma, OAuth 6 plataformas, Stripe, worker BullMQ, Docker.
-2. Confirmado el mecanismo real de BOS: mercader-bos/agent-server (BOS real ya corriendo para MERCADER) tiene AGENT_PROJECTS (mapa nombre->path absoluto) + endpoint HTTP /chat que corre una sesión Claude Agent SDK con cwd=path del proyecto -- exactamente lo que Ricardo describió, pre-existente en el código pero nunca activado/usado.
-3. Bloqueos reales encontrados y resueltos, en orden (loop QUIERO/REQUIERO aplicado):
-   - EACCES: dump root-owned, dflagent sin sudo -> copiado a mercader-bos/activated-assets/socialflow-ai/ (workspace escribible, convención nueva para próximos assets).
-   - BOM UTF-8 en package.json y prisma/schema.prisma rompía npm install/prisma generate -> stripped.
-   - features/workspace/{service,store}.ts + app/api/workspace/route.ts NUNCA fueron entregados (0 en git history) pese a que 10+ archivos los importan -- defecto real de entrega, no config. Reconstruidos desde los call-sites + prisma schema (Workspace/Profile/WorkspaceMember), typecheck 0 errores, build production completo (29 páginas).
-   - supabase/migrations/ mezclaba una migración (credentials_rls.sql) que depende de tablas creadas por `prisma db push` con las auto-aplicadas por `supabase start` -- crashea el arranque local. Movida a supabase/post-prisma/ con README explicando el orden correcto. Bug real, afecta a cualquiera que intente levantar este asset.
-   - Prisma CLI no lee .env.local (solo Next.js lo hace) -- creado también .env (mismo contenido) para que ambos convivan.
-4. E2E real logrado: signup real vía Supabase Auth LOCAL (Docker, no el Supabase cloud de DFL -- respeta NO_TOUCH) -> GET /api/workspace auto-provisiona workspace (código reconstruido) -> POST /api/brands crea marca real -> GET /api/agent/status (superficie BOS-facing, auth Bearer AGENT_API_TOKEN, ya construida en el asset pero nunca antes ejercitada) devuelve datos reales; sin token -> 401 correcto. Cierre del loop: POST /chat de mercader-bos/agent-server con {project:"socialflow", message:"corre curl contra /api/agent/status..."} ejecutó una sesión de agente real con cwd en el asset y devolvió el JSON real -- BOS operando el asset sin intervención técnica humana, confirmado en vivo, no solo en teoría.
-5. Recursos: VM2 llegó a 348MB libres / swap 1.5GB en uso con el stack Supabase local completo arriba -- se detuvo todo (containers + next dev + mc-server) al cerrar para no arriesgar producción compartida (n8n, engram, otras sesiones). Datos del test quedan en un volumen Docker persistente, relanzable con `npx supabase start` desde mercader-bos/activated-assets/socialflow-ai/.
-
-BLOQUEOS EXTERNOS REALES (no resueltos a propósito, no falseables por un agente):
-- OPENROUTER_API_KEY institucional: el archivo tmpfs /dev/shm/dfl-openrouter-key que bootstrap-sfv5-startup.sh espera no existe en esta sesión -- sin él no hay generación IA real (/api/agent/generate). Requiere que Jorge o el proceso que lo provisiona lo deje disponible.
-- Publicación real a Meta/LinkedIn/TikTok/YouTube/Google Ads: requiere alta de app OAuth + revisión humana de 2-4 semanas por plataforma, documentado por el propio asset (PROJECT_OVERVIEW.md). Techo duro, no técnico.
-- Decisión de infraestructura pendiente de Jorge: Supabase dedicado vs. local-siempre-activo en VM2 para uso real de MERCADER (no se tocó Supabase cloud de DFL en ningún momento).
-
-NEXT AGENT: no reabrir OpenRouter/OAuth como si fueran bugs -- son bloqueos externos ya documentados. Si se retoma, `npx supabase start` en mercader-bos/activated-assets/socialflow-ai/ revive el mismo estado (mismo volumen Docker). AGENT_PROJECTS y SOCIALFLOW_* ya están wireados en mercader-bos/agent-server/.env, backup pre-cambio en .env.bak-pre-socialflow-wiring.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -455,6 +460,41 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Vertical slice real MERCADER↔FÁBRICA E2E: 1 pedido, ciclo completo, CERRADO (2026-08-19)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/mercader/vertical-slice-e2e-2026-08-19
+STATUS: CERRADO
+DATE: 2026-08-19
+
+WHAT: Primera prueba real (no simulada) del ciclo MERCADER ORDER -> FABRICA RECEIVE -> COMMIT -> PRODUCE -> AQA -> DELIVER -> MERCADER RECEIVE/ACK, usando el Design Candidate v0 (obs #528) como referencia, NO como obligacion de implementar todas sus piezas. Regla de Jorge: reutilizar todo lo existente, construir solo el delta que el E2E demuestre necesario, no adelantarse a elasticidad multiple.
+
+ORDER_ID real: MERCADER-ORDER-TEST-20260819T162514Z (pedido de PRUEBA explicito, prospecto TEST, no cliente real -- consistente con el limite ya establecido hoy en CHECKPOINT-MERCADER-QR-2026-08-19.md de cero contacto real).
+
+Mecanismos EXISTENTES reutilizados intactos, sin modificar:
+- tools/peer-work/ (peer_work.py) como transporte generico REQUEST/COMMIT/STATUS/DELIVER -- MERCADER emitio el ORDER como un item mas de la misma cola que usa cualquier otro trabajo DFL, sin integracion bespoke. authority_ref="human=telegram:8776472165" verificado en vivo contra el allowlist real antes de crear el primer item.
+- El patron real de r-d-delivery/delivery.mjs (construido y probado HOY MISMO por otra sesion en /tmp/mercader-verify-fork/, 6/6 aserciones) -- reusado (mismas funciones, mismo invariante "un orderId = una entrega"), no reescrito desde cero.
+- AQA Kit real (tools/aqa-kit/bin/aqa.mjs) -- corrido de verdad, nivel AQA-1, perfil CRUD_LIFECYCLE, con ALLOW (creacion de entrega, min-length del documento, correlacion de order_id) y DENY (duplicado correctamente rechazado) reales. Resultado real: PASS, profiles covered=[CRUD_LIFECYCLE], missing=[].
+
+Delta minimo construido (solo lo que el E2E demostro necesario):
+- deliver.mjs: version exportable/reusable del patron ya probado (mismas funciones, agregado solo un guard de duplicado persistido en disco via delivery-record.json, porque la version anterior era in-memory y no servia para un DENY check real de AQA).
+- onepager.md real: contenido real generado (no placeholder de texto "ok"), siguiendo la estructura ya documentada de MERCADER Distill (AI_Product_Distillation_OnePager_v0_1.md).
+
+NO se construyo: Scheduler, Capacity Registry, PDP de autorizacion por parametro, cloning de Fabricas, ni ninguna otra pieza del Design Candidate v0 -- correctamente, porque un solo pedido no las necesito. Confirma en la practica lo que la regla de Jorge predijo: "si 1 pedido no cruza completo, no tiene sentido probar 10" -- 1 SI cruzo completo, con piezas existentes casi sin delta.
+
+Evidencia real verificable:
+- peer-work request_id pw-e27f05cf50e6 (ORDER, COMMITTED->COMPLETED) y pw-f73e9583f3ab (ACK, COMPLETED), ambos con inputs.order_id=MERCADER-ORDER-TEST-20260819T162514Z -- correlacion confirmada por lectura directa post-hoc, no asumida.
+- AQA receipt real: tools/aqa-kit/evidence/mercader-e2e-vertical-slice/MERCADER-ORDER-TEST-20260819T162514Z/27811cb/2026-08-19T16-27-41-951Z/receipt.json, status=PASS.
+- delivery-record.json real con token real (jLiSu6pxXqTILGrAecLlX5juJOaN9KLF) y link real (https://deepfeelingslabs.com/entrega/<token>) -- el link no fue navegado/publicado (dominio real de DFL, no se hizo ninguna llamada de red hacia el).
+- onepager.md real, con contenido explicito marcando que es un pedido de prueba, ningun dato de cliente real usado.
+
+Que sigue siendo bespoke: NADA especifico a MERCADER<->FABRICA -- MERCADER hablo con el mismo peer-work que cualquier otro origen (TELEGRAM, otros agentes), FABRICA (TCC) recibio como target_executor generico, DELIVER volvio por el mismo mecanismo (complete() del item original), sin ningun canal o codigo exclusivo de este par de organismos. NO_POINT_TO_POINT confirmado en la practica, no solo en diseno.
+
+Blocker real: ninguno aparecio en este ciclo -- brief simple, deliverable producible con capacidad ya existente, sin credencial externa faltante. QUIERO->bloqueo->REQUIERO no se activo porque no hizo falta, no se forzo artificialmente.
+
+NEXT AGENT: el circuito de 1 pedido esta PROBADO y REUTILIZABLE (mismo peer-work, mismo AQA, mismo patron de delivery sirven para el siguiente pedido sin modificacion). La siguiente mision autorizada por Jorge (NO ejecutada aca) es repetir con multiples pedidos simultaneos para tensionar elasticidad real -- ahi es donde recien aparecera si Scheduler/Capacity Registry/provisioning son necesarios de verdad, no antes.
+
 ### Design Candidate v0 institucionalizado — arquitectura mínima elástica DFL, corregida, READY FOR REAL-WORLD VALIDATION (2026-08-19)
 **Type:** architecture  
 **Project:** dfl  
@@ -476,34 +516,6 @@ Correccion explicita de instruccion directa de Jorge, reemplaza conclusion previ
 Contrastado explicitamente contra evidencia operativa real independiente del mismo dia: CHECKPOINT-MERCADER-QR-2026-08-19.md (hallazgos R-F1..R-F8) -- el gap que este diseno intenta cerrar fue confirmado dos veces, por research externo de 5 rondas Y por diagnostico operativo real de MERCADER, coincidencia no fabricada.
 
 NEXT AGENT: DESIGN CANDIDATE v0 INSTITUTIONALIZED -- READY FOR REAL-WORLD VALIDATION. La siguiente mision autorizada (no ejecutada aca) es el vertical slice real: MERCADER ORDER -> FABRICA RECEIVE -> COMMIT -> PRODUCE -> AQA -> DELIVER -> MERCADER RECEIVE/ACK -> REPEAT, primero con 1 pedido, luego repetido con multiples pedidos simultaneos para tensionar elasticidad real (no simulada). Ese ciclo es el que debe descubrir que piezas de este Design Candidate necesitan existir de verdad y en que orden -- no re-disenar desde cero, no re-investigar. No confundir esta institucionalizacion con autorizacion de implementar toda la arquitectura de una vez -- sigue siendo DRAFT.
-
-### Institucionalizada autopsia final de identidad/autoridad/delegación agéntica 2026 — RESEARCH CLOSED (2026-08-19)
-**Type:** architecture  
-**Project:** dfl  
-
-TOPIC: dfl/research/agent-identity-authority-delegation-2026
-STATUS: closed (institucionalizacion) / RESEARCH CLOSED (declarado explicito -- cierra la cadena completa de 4 rondas antes de sintesis)
-DATE: 2026-08-19
-
-WHAT: Quinta y ultima pieza de la cadena de research (Monoid obs#524 -> interop-2026 obs#525 -> ARD obs#526 -> A2A en chat, no institucionalizado por separado -> esta, identidad/autoridad/delegacion). Jorge pidio el ultimo frente antes de sintesis: quien es el agente, en nombre de quien, quien dio autoridad, que puede invocar, con que parametros, cuantos saltos, como se verifica sin confianza ciega.
-
-Institucionalizado en docs/patterns/agent-identity-authority-delegation-2026/{RESEARCH.md,dfl.yaml}, asset_id dfl.research.agent-identity-authority-delegation-2026.v0, status DRAFT. Indexado: 25 assets (subio de 24), 0 errores, 7/7 tests.
-
-Fuentes primarias reales: spec de autorizacion MCP 2026-07-28 completa (RFC8707 Resource Indicators, RFC9207 Issuer Identification, RFC9728 Protected Resource Metadata, step-up authorization); modelcontextprotocol/ext-auth (extension EMA/ID-JAG marcada "stable"); AuthZEN Authorization API 1.0 -- CONFIRMADO estandar FINAL (votado dic-2025/ene-2026), correccion de precision sobre lo dicho en el research de interop-2026 que no distinguia ese detalle de madurez; draft-ietf-oauth-identity-assertion-authz-grant (ya en WG IETF); draft-mcguinness-oauth-ai-agent-instance (claims exactos: agent_instance_id, agent_platform, agent_model, agent_runtime -- el propio doc declara "not endorsed by IETF, no formal standing", individual draft, la pieza menos madura de toda la ronda); A2A AUTH_REQUIRED (re-auth deliberadamente out-of-band).
-
-Hallazgo estructural: NINGUN estandar resuelve el problema completo -- todos delegan a extensiones o mecanismos out-of-band (mismo patron ya visto en MCP/A2A/ARD en rondas anteriores). Hallazgo mas importante para DFL: NINGUN estandar de 4 rondas de research modela "mission authorization" (autorizar un esfuerzo multi-paso completo) -- DCSA de DFL (8 bloqueos con test+mutante cada uno) no tiene equivalente externo encontrado, ventaja real confirmada, no gap.
-
-Taxonomia identity!=authority!=delegation verificada con evidencia, con 2 capas agregadas mas alla de las propuestas por Jorge: invocation authorization (scopes OAuth+step-up, ESTABLE) y parameter authority (AuthZEN tecnicamente capaz, pero SIN integracion formal con MCP, solo issue de discusion abierto ext-auth#14 sin resolver).
-
-Gaps DFL confirmados contra codigo real: AGENT_API_TOKEN de SocialFlow sin audience binding (verificado contra auth.ts real de la activacion, obs#520); sin PDP separado en ningun punto DFL; sin instancia de agente atestiguada (Engram identifica sesion/proyecto, no runtime/modelo con evidencia criptografica).
-
-DEUDA DE DESCUBRIBILIDAD encontrada y documentada con precision durante la verificacion (no la misma que en rondas anteriores): la busqueda del asset-index SOLO indexa el texto de dfl.yaml, NUNCA el RESEARCH.md completo enlazado -- terminos que solo aparecen en el documento profundo (ej. "PEP" nunca se escribio en el yaml, solo "PDP"; "confused-deputy" quedo con guion en RESEARCH.md, no como 2 palabras separadas) no son encontrables via query.mjs aunque el concepto SI este documentado. Queries de 1-2 palabras que SI aparecen literal en el yaml funcionan bien (AuthZEN, ID-JAG, "agent instance", "mission authorization DCSA ventaja" con 4 palabras funciono). No es un bug del asset-index -- es una caracteristica de diseño (busca solo el manifest, no el contenido completo) que vale la pena que cualquier agente futuro conozca antes de asumir que algo "no esta documentado" solo porque una query no lo encontro.
-
-Preguntas: las 9 heredadas (4 Monoid + 3 interop-2026 + 2 ARD) preservadas integras sin resolver. 2 nuevas de esta ronda: quien seria el "Agent Attester" si DFL adoptara agent_instance_id; si DCSA y un futuro PDP tipo AuthZEN deberian ser el mismo componente o capas separadas.
-
-RESEARCH CLOSED declarado explicito. El gap material pendiente (fuentes orientales primarias, FUENTE-UNICA desde la primera ronda) NO bloquea sintesis -- es enriquecimiento posible, no invalidacion.
-
-NEXT AGENT: la cadena de research (5 documentos: Monoid, interop-2026, ARD, A2A-en-chat, este) queda cerrada. La siguiente mision natural es SINTESIS/DISENO, no mas autopsia -- no reabrir estos temas desde cero. Si se institucionaliza la autopsia de A2A (quedo solo en chat, no en docs/patterns/), hacerlo como pieza separada enlazada a esta cadena, no fusionarla con esta.
 
 ---
 
@@ -614,4 +626,4 @@ NEXT AGENT: la cadena de research (5 documentos: Monoid, interop-2026, ARD, A2A-
 
 ---
 
-*Mirror auto-generated 2026-08-19T16:16:37Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T16:29:37Z | La Garra → DFLghub/amos-context*
