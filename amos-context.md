@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T16:29:37Z  
+**Generated:** 2026-08-19T16:41:04Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -256,27 +256,30 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### Design Candidate v0 institucionalizado — arquitectura mínima elástica DFL, corregida, READY FOR REAL-WORLD VALIDATION (2026-08-19)
-**Type:** architecture  
+### Prueba de concurrencia real MERCADER↔FÁBRICA: blocker real encontrado y corregido en peer-work, 6 pedidos concurrentes CERRADOS (2026-08-19)
+**Type:** bugfix  
 **Project:** dfl  
 
-TOPIC: dfl/design/elastic-capacity-interop-v0
-STATUS: closed (institucionalizacion) / DESIGN CANDIDATE READY FOR REAL-WORLD VALIDATION (no implementado, no runtime tocado)
-DATE: 2026-08-19
+TOPIC: dfl/mercader/vertical-slice-concurrency-2026-08-19
+STATUS: CERRADO
 
-WHAT: Sintesis final de la sesion completa. Jorge cerro la cadena RESEARCH CLOSED (Monoid obs#524, interop-2026 obs#525, ARD obs#526, A2A en chat, identidad/autoridad/delegacion obs#527) pidiendo sintetizar (no investigar mas) la arquitectura minima fractal propia de DFL para interoperabilidad universal entre organismos sin integracion punto-a-punto. Primera version tuvo una correccion de principio critica de Jorge ("todo trabajo valido y autorizado debe hacerse, la falta de capacidad NO es causal de rechazo") que obligo a repensar ACCEPT/capacity-awareness. Luego una correccion quirurgica final (P11) sobre 4 confusiones reales que TCC seguia cometiendo: (1) elasticidad limitada a un solo nivel worker/executor en vez de fractal (worker->celula->Fabrica->n Fabricas); (2) Capacity Registry cristalizado prematuramente como busy/free en vez de contrato abierto extensible; (3) claim sin evidencia de que AGENT_PROJECTS "equivale a" clonar una Fabrica -- retirado, reemplazado por separacion explicita PROBADO/HIPOTESIS/POR-DEMOSTRAR; (4) "ACCEPT incondicional" confundiendo compromiso organizacional con readiness/ejecutabilidad inmediata -- corregido a COMMITMENT != READINESS con 6 responsabilidades distintas (commitment, readiness, scheduling, provisioning, ejecucion, blocker real).
+WHAT: Continuacion del vertical slice E2E de 1 pedido (obs #529). Jorge pidio generar demanda concurrente real ANTES de construir la arquitectura elastica del Design Candidate v0, para observar que rompe primero. Regla explicita: no Scheduler/Capacity Registry/PDP/cloning por adelantado, solo el REQUIERO minimo que un blocker real demuestre necesario.
 
-Institucionalizado en docs/patterns/design-candidate-v0-elastic-capacity/{DESIGN.md,dfl.yaml}, asset_id dfl.design-candidate.elastic-capacity-interop.v0, capability_type=design-candidate (distinto de "research" -- es sintesis de diseno, no autopsia), status DRAFT explicito -- NO active, NO estandar institucional, NO autorizacion de construccion en bloque. Indexado: 26 assets (subio de 25), 0 errores, 7/7 tests, descubribilidad verificada con 5 queries directas, todas exitosas sin problema de fraseo esta vez.
+RONDA 1 (3 pedidos concurrentes reales, A/B/C, procesos OS en paralelo genuino via peer-work): encontrado un BLOCKER REAL, no hipotetico -- tools/peer-work/peer_work.py hacia _load()->mutar->_save() sobre queue.json SIN ningun lock. Bajo escritura concurrente real de 3 procesos, el pedido A perdio la captura de su request_id en el momento de creacion (fallo de lectura/parseo durante una escritura concurrente ajena) y quedo huerfano en estado PENDING -- su claim/complete fallaron con NOT_FOUND en el proceso de A, aunque el ITEM SI sobrevivio en la cola (constatado por lectura directa posterior: pw-cc3c003b67ca, status PENDING, datos correctos). Pedidos B y C completaron su ciclo normalmente. Este es el REQUIERO minimo real que la prueba goto documentar.
 
-7 invariantes finales preservados integros: NO DROP, COMMITMENT!=READINESS, ELASTIC CAPACITY IS FRACTAL, FAIL->REASSIGN/RECOVER (fundamentado explicitamente en el Axioma A4 de la Constitucion DFL v2 leida temprano en esta misma sesion -- crash-only, el sucesor lee Ledger+contrato y continua, no inventado, doctrina DFL ya existente), TEMPORARY SCALE-DOWN, NO POINT-TO-POINT, BLOCKER!=TERMINAL (nuevo en esta ronda).
+FIX aplicado (delta minimo, sin nueva infraestructura): agregado flock (fcntl, stdlib, sin dependencia nueva) como exclusion mutua real alrededor de TODO el ciclo _load()->mutar->_save() en create/claim/complete/requeue_stale de peer_work.py. Tambien tmp filename de _save() hecho unico por PID como defensa adicional. Sin cambios al contrato publico del CLI ni al formato de datos. Verificado con py_compile + smoke test manual antes de re-probar concurrencia.
 
-Arquitectura minima: reusa intacto Asset Index/dfl.yaml, DCSA (mission authorization, confirmado en el research anterior como SIN equivalente externo encontrado en toda la industria), patron manager.mjs (ACCEPT generalizado), AGENT_PROJECTS/Claude Agent SDK (alcance de la prueba real corregido -- solo crea/ejecuta sesion con cwd, NO demostrado que equivale a clonar Fabrica), AQA (DELIVER, sin cambios), bloqueo optimista del workforce-registry-capability-lab (16/16 escenarios ya validados, citado para que el Scheduler no sea chokepoint). Piezas nuevas minimas: Workload Ledger (extension de peer-work), Capacity Registry (contrato abierto, NO busy/free definitivo), Scheduler (matching no bloqueante, resuelve REQUIERO horizontal o vertical sin nivel fijo), PDP minimo de AUTHORIZE-invocation, RECEIVE/ACK generico.
+RECUPERACION del pedido A real (FAIL->REASSIGN/RECOVER demostrado en vivo, no solo en teoria): reclamado pw-cc3c003b67ca (status PENDING intacto desde ronda 1), producido su OnePager real, AQA-1/CRUD_LIFECYCLE PASS real, entregado con token real, completado, y ACK emitido -- el compromiso original NUNCA desaparecio pese al fallo de proceso, exactamente el invariante BLOCKER!=TERMINAL sostenido con evidencia, no solo declarado.
 
-Correccion explicita de instruccion directa de Jorge, reemplaza conclusion previa: NO es requisito cerrar la fila "CAPACIDAD QUE FALTA DEMOSTRAR" (aislamiento entre clones, continuidad tras teardown, costo/tiempo real, si Fabrica es la unidad clonable correcta) antes de implementar -- esas hipotesis se validan cuando un outcome real las obligue via QUIERO->bloqueo->REQUIERO, no se abre investigacion nueva por adelantado.
+RONDA 2 (3 pedidos concurrentes nuevos, D/E/F, mismo mecanismo, CON el fix aplicado): 0 errores, 0 NOT_FOUND, 0 JSONDecodeError en los 3 logs. Los 6 items (3 ORDER + 3 ACK) terminaron COMPLETED, verificado por lectura directa de queue.json. AQA-1 PASS real para los 3. Timestamps casi identicos (16:39:15/16) confirman concurrencia real, no secuencial.
 
-Contrastado explicitamente contra evidencia operativa real independiente del mismo dia: CHECKPOINT-MERCADER-QR-2026-08-19.md (hallazgos R-F1..R-F8) -- el gap que este diseno intenta cerrar fue confirmado dos veces, por research externo de 5 rondas Y por diagnostico operativo real de MERCADER, coincidencia no fabricada.
+TOTAL: 6 pedidos concurrentes demostrados con exito end-to-end (A recuperado + B + C de ronda 1, D + E + F de ronda 2), todos con evidencia real AQA+delivery+ACK correlacionado por order_id, NINGUNO descartado por saturacion, CERO codigo especial MERCADER<->FABRICA (todos usaron el mismo peer-work generico).
 
-NEXT AGENT: DESIGN CANDIDATE v0 INSTITUTIONALIZED -- READY FOR REAL-WORLD VALIDATION. La siguiente mision autorizada (no ejecutada aca) es el vertical slice real: MERCADER ORDER -> FABRICA RECEIVE -> COMMIT -> PRODUCE -> AQA -> DELIVER -> MERCADER RECEIVE/ACK -> REPEAT, primero con 1 pedido, luego repetido con multiples pedidos simultaneos para tensionar elasticidad real (no simulada). Ese ciclo es el que debe descubrir que piezas de este Design Candidate necesitan existir de verdad y en que orden -- no re-disenar desde cero, no re-investigar. No confundir esta institucionalizacion con autorizacion de implementar toda la arquitectura de una vez -- sigue siendo DRAFT.
+QUE NO SE CONSTRUYO, correctamente: Scheduler, Capacity Registry, PDP de autorizacion por parametro, cloning de Fabricas -- el blocker real encontrado fue de CORRECCION (concurrencia segura de un mecanismo ya existente), no de CAPACIDAD (nunca se agoto el executor unico "TCC" procesando 3 pedidos a la vez -- la ejecucion de PRODUCE/AQA/DELIVER de cada pedido es liviana y no compitio por recursos reales, solo la ESCRITURA a la cola compartida corria riesgo).
+
+Impacto sobre Design Candidate v0 (obs #528): NO contradice ninguno de sus invariantes -- los CONFIRMA con evidencia real (NO_DROP sostenido incluso bajo fallo real; COMMITMENT!=READINESS demostrado -- A quedo comprometido pese a no estar "listo" por un rato; FAIL->REASSIGN/RECOVER demostrado, no solo diseñado; NO_POINT_TO_POINT sostenido, 0 codigo especial). Lo que SI aporta de nuevo: confirma que el primer blocker real de escala en DFL no fue de CAPACIDAD (necesitar mas Fabricas) sino de CORRECCION (el mecanismo compartido no era seguro para escritura concurrente) -- una categoria de REQUIERO que el Design Candidate v0 no habia anticipado explicitamente (estaba enfocado en capacidad/provisioning, no en seguridad de concurrencia del propio Ledger).
+
+NEXT AGENT: peer_work.py ahora usa flock real -- cualquier fork/proceso que lo invoque debe seguir usando el mismo CLI (create/claim/complete), no bypasear con lectura/escritura directa de queue.json, o el lock no protege nada. 3 executors concurrentes (procesos OS reales) ya probados sanos; no se probo mas de 3 simultaneos ni saturacion real del executor TCC -- eso sigue siendo hipotesis para una prueba futura si Jorge la pide.
 
 ---
 
@@ -460,6 +463,31 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Prueba de concurrencia real MERCADER↔FÁBRICA: blocker real encontrado y corregido en peer-work, 6 pedidos concurrentes CERRADOS (2026-08-19)
+**Type:** bugfix  
+**Project:** dfl  
+
+TOPIC: dfl/mercader/vertical-slice-concurrency-2026-08-19
+STATUS: CERRADO
+
+WHAT: Continuacion del vertical slice E2E de 1 pedido (obs #529). Jorge pidio generar demanda concurrente real ANTES de construir la arquitectura elastica del Design Candidate v0, para observar que rompe primero. Regla explicita: no Scheduler/Capacity Registry/PDP/cloning por adelantado, solo el REQUIERO minimo que un blocker real demuestre necesario.
+
+RONDA 1 (3 pedidos concurrentes reales, A/B/C, procesos OS en paralelo genuino via peer-work): encontrado un BLOCKER REAL, no hipotetico -- tools/peer-work/peer_work.py hacia _load()->mutar->_save() sobre queue.json SIN ningun lock. Bajo escritura concurrente real de 3 procesos, el pedido A perdio la captura de su request_id en el momento de creacion (fallo de lectura/parseo durante una escritura concurrente ajena) y quedo huerfano en estado PENDING -- su claim/complete fallaron con NOT_FOUND en el proceso de A, aunque el ITEM SI sobrevivio en la cola (constatado por lectura directa posterior: pw-cc3c003b67ca, status PENDING, datos correctos). Pedidos B y C completaron su ciclo normalmente. Este es el REQUIERO minimo real que la prueba goto documentar.
+
+FIX aplicado (delta minimo, sin nueva infraestructura): agregado flock (fcntl, stdlib, sin dependencia nueva) como exclusion mutua real alrededor de TODO el ciclo _load()->mutar->_save() en create/claim/complete/requeue_stale de peer_work.py. Tambien tmp filename de _save() hecho unico por PID como defensa adicional. Sin cambios al contrato publico del CLI ni al formato de datos. Verificado con py_compile + smoke test manual antes de re-probar concurrencia.
+
+RECUPERACION del pedido A real (FAIL->REASSIGN/RECOVER demostrado en vivo, no solo en teoria): reclamado pw-cc3c003b67ca (status PENDING intacto desde ronda 1), producido su OnePager real, AQA-1/CRUD_LIFECYCLE PASS real, entregado con token real, completado, y ACK emitido -- el compromiso original NUNCA desaparecio pese al fallo de proceso, exactamente el invariante BLOCKER!=TERMINAL sostenido con evidencia, no solo declarado.
+
+RONDA 2 (3 pedidos concurrentes nuevos, D/E/F, mismo mecanismo, CON el fix aplicado): 0 errores, 0 NOT_FOUND, 0 JSONDecodeError en los 3 logs. Los 6 items (3 ORDER + 3 ACK) terminaron COMPLETED, verificado por lectura directa de queue.json. AQA-1 PASS real para los 3. Timestamps casi identicos (16:39:15/16) confirman concurrencia real, no secuencial.
+
+TOTAL: 6 pedidos concurrentes demostrados con exito end-to-end (A recuperado + B + C de ronda 1, D + E + F de ronda 2), todos con evidencia real AQA+delivery+ACK correlacionado por order_id, NINGUNO descartado por saturacion, CERO codigo especial MERCADER<->FABRICA (todos usaron el mismo peer-work generico).
+
+QUE NO SE CONSTRUYO, correctamente: Scheduler, Capacity Registry, PDP de autorizacion por parametro, cloning de Fabricas -- el blocker real encontrado fue de CORRECCION (concurrencia segura de un mecanismo ya existente), no de CAPACIDAD (nunca se agoto el executor unico "TCC" procesando 3 pedidos a la vez -- la ejecucion de PRODUCE/AQA/DELIVER de cada pedido es liviana y no compitio por recursos reales, solo la ESCRITURA a la cola compartida corria riesgo).
+
+Impacto sobre Design Candidate v0 (obs #528): NO contradice ninguno de sus invariantes -- los CONFIRMA con evidencia real (NO_DROP sostenido incluso bajo fallo real; COMMITMENT!=READINESS demostrado -- A quedo comprometido pese a no estar "listo" por un rato; FAIL->REASSIGN/RECOVER demostrado, no solo diseñado; NO_POINT_TO_POINT sostenido, 0 codigo especial). Lo que SI aporta de nuevo: confirma que el primer blocker real de escala en DFL no fue de CAPACIDAD (necesitar mas Fabricas) sino de CORRECCION (el mecanismo compartido no era seguro para escritura concurrente) -- una categoria de REQUIERO que el Design Candidate v0 no habia anticipado explicitamente (estaba enfocado en capacidad/provisioning, no en seguridad de concurrencia del propio Ledger).
+
+NEXT AGENT: peer_work.py ahora usa flock real -- cualquier fork/proceso que lo invoque debe seguir usando el mismo CLI (create/claim/complete), no bypasear con lectura/escritura directa de queue.json, o el lock no protege nada. 3 executors concurrentes (procesos OS reales) ya probados sanos; no se probo mas de 3 simultaneos ni saturacion real del executor TCC -- eso sigue siendo hipotesis para una prueba futura si Jorge la pide.
+
 ### Vertical slice real MERCADER↔FÁBRICA E2E: 1 pedido, ciclo completo, CERRADO (2026-08-19)
 **Type:** decision  
 **Project:** dfl  
@@ -494,28 +522,6 @@ Que sigue siendo bespoke: NADA especifico a MERCADER<->FABRICA -- MERCADER hablo
 Blocker real: ninguno aparecio en este ciclo -- brief simple, deliverable producible con capacidad ya existente, sin credencial externa faltante. QUIERO->bloqueo->REQUIERO no se activo porque no hizo falta, no se forzo artificialmente.
 
 NEXT AGENT: el circuito de 1 pedido esta PROBADO y REUTILIZABLE (mismo peer-work, mismo AQA, mismo patron de delivery sirven para el siguiente pedido sin modificacion). La siguiente mision autorizada por Jorge (NO ejecutada aca) es repetir con multiples pedidos simultaneos para tensionar elasticidad real -- ahi es donde recien aparecera si Scheduler/Capacity Registry/provisioning son necesarios de verdad, no antes.
-
-### Design Candidate v0 institucionalizado — arquitectura mínima elástica DFL, corregida, READY FOR REAL-WORLD VALIDATION (2026-08-19)
-**Type:** architecture  
-**Project:** dfl  
-
-TOPIC: dfl/design/elastic-capacity-interop-v0
-STATUS: closed (institucionalizacion) / DESIGN CANDIDATE READY FOR REAL-WORLD VALIDATION (no implementado, no runtime tocado)
-DATE: 2026-08-19
-
-WHAT: Sintesis final de la sesion completa. Jorge cerro la cadena RESEARCH CLOSED (Monoid obs#524, interop-2026 obs#525, ARD obs#526, A2A en chat, identidad/autoridad/delegacion obs#527) pidiendo sintetizar (no investigar mas) la arquitectura minima fractal propia de DFL para interoperabilidad universal entre organismos sin integracion punto-a-punto. Primera version tuvo una correccion de principio critica de Jorge ("todo trabajo valido y autorizado debe hacerse, la falta de capacidad NO es causal de rechazo") que obligo a repensar ACCEPT/capacity-awareness. Luego una correccion quirurgica final (P11) sobre 4 confusiones reales que TCC seguia cometiendo: (1) elasticidad limitada a un solo nivel worker/executor en vez de fractal (worker->celula->Fabrica->n Fabricas); (2) Capacity Registry cristalizado prematuramente como busy/free en vez de contrato abierto extensible; (3) claim sin evidencia de que AGENT_PROJECTS "equivale a" clonar una Fabrica -- retirado, reemplazado por separacion explicita PROBADO/HIPOTESIS/POR-DEMOSTRAR; (4) "ACCEPT incondicional" confundiendo compromiso organizacional con readiness/ejecutabilidad inmediata -- corregido a COMMITMENT != READINESS con 6 responsabilidades distintas (commitment, readiness, scheduling, provisioning, ejecucion, blocker real).
-
-Institucionalizado en docs/patterns/design-candidate-v0-elastic-capacity/{DESIGN.md,dfl.yaml}, asset_id dfl.design-candidate.elastic-capacity-interop.v0, capability_type=design-candidate (distinto de "research" -- es sintesis de diseno, no autopsia), status DRAFT explicito -- NO active, NO estandar institucional, NO autorizacion de construccion en bloque. Indexado: 26 assets (subio de 25), 0 errores, 7/7 tests, descubribilidad verificada con 5 queries directas, todas exitosas sin problema de fraseo esta vez.
-
-7 invariantes finales preservados integros: NO DROP, COMMITMENT!=READINESS, ELASTIC CAPACITY IS FRACTAL, FAIL->REASSIGN/RECOVER (fundamentado explicitamente en el Axioma A4 de la Constitucion DFL v2 leida temprano en esta misma sesion -- crash-only, el sucesor lee Ledger+contrato y continua, no inventado, doctrina DFL ya existente), TEMPORARY SCALE-DOWN, NO POINT-TO-POINT, BLOCKER!=TERMINAL (nuevo en esta ronda).
-
-Arquitectura minima: reusa intacto Asset Index/dfl.yaml, DCSA (mission authorization, confirmado en el research anterior como SIN equivalente externo encontrado en toda la industria), patron manager.mjs (ACCEPT generalizado), AGENT_PROJECTS/Claude Agent SDK (alcance de la prueba real corregido -- solo crea/ejecuta sesion con cwd, NO demostrado que equivale a clonar Fabrica), AQA (DELIVER, sin cambios), bloqueo optimista del workforce-registry-capability-lab (16/16 escenarios ya validados, citado para que el Scheduler no sea chokepoint). Piezas nuevas minimas: Workload Ledger (extension de peer-work), Capacity Registry (contrato abierto, NO busy/free definitivo), Scheduler (matching no bloqueante, resuelve REQUIERO horizontal o vertical sin nivel fijo), PDP minimo de AUTHORIZE-invocation, RECEIVE/ACK generico.
-
-Correccion explicita de instruccion directa de Jorge, reemplaza conclusion previa: NO es requisito cerrar la fila "CAPACIDAD QUE FALTA DEMOSTRAR" (aislamiento entre clones, continuidad tras teardown, costo/tiempo real, si Fabrica es la unidad clonable correcta) antes de implementar -- esas hipotesis se validan cuando un outcome real las obligue via QUIERO->bloqueo->REQUIERO, no se abre investigacion nueva por adelantado.
-
-Contrastado explicitamente contra evidencia operativa real independiente del mismo dia: CHECKPOINT-MERCADER-QR-2026-08-19.md (hallazgos R-F1..R-F8) -- el gap que este diseno intenta cerrar fue confirmado dos veces, por research externo de 5 rondas Y por diagnostico operativo real de MERCADER, coincidencia no fabricada.
-
-NEXT AGENT: DESIGN CANDIDATE v0 INSTITUTIONALIZED -- READY FOR REAL-WORLD VALIDATION. La siguiente mision autorizada (no ejecutada aca) es el vertical slice real: MERCADER ORDER -> FABRICA RECEIVE -> COMMIT -> PRODUCE -> AQA -> DELIVER -> MERCADER RECEIVE/ACK -> REPEAT, primero con 1 pedido, luego repetido con multiples pedidos simultaneos para tensionar elasticidad real (no simulada). Ese ciclo es el que debe descubrir que piezas de este Design Candidate necesitan existir de verdad y en que orden -- no re-disenar desde cero, no re-investigar. No confundir esta institucionalizacion con autorizacion de implementar toda la arquitectura de una vez -- sigue siendo DRAFT.
 
 ---
 
@@ -626,4 +632,4 @@ NEXT AGENT: DESIGN CANDIDATE v0 INSTITUTIONALIZED -- READY FOR REAL-WORLD VALIDA
 
 ---
 
-*Mirror auto-generated 2026-08-19T16:29:37Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T16:41:04Z | La Garra → DFLghub/amos-context*
