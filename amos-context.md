@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T22:17:31Z  
+**Generated:** 2026-08-19T22:18:17Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -256,32 +256,21 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### EXTERIOR->MERCADER->FABRICA->MERCADER: primera transicion completa demostrada (2026-08-19)
-**Type:** architecture  
+### Fix: recurring Settings Warning from invalid mid-string wildcard curl permission rule
+**Type:** bugfix  
 **Project:** dfl  
 
-ESTADO: EXTERNAL BUY -> MERCADER ORDER -> FABRICA -> AQA PASS -> DELIVER -> MERCADER ACK PATH VALIDATED. NO declarado: ciclo autonomo -- R1/R2 pendientes (deuda exacta, ver abajo).
+Symptom: Claude Code showed a recurring Settings Warning at session start on /opt/saas-factory-setup/saas-factory/.claude/settings.json, flagging invalid permissions.allow rules (Bash(curl -s ..., Bash(curl -s http://localhost:*/health)). User reported "Fix with Claude" appeared to work each time but the warning always returned in a later session.
 
-CONTEXTO: conecta por primera vez el tramo EXTERIOR->MERCADER (POST /api/mercader/leads, mercader-bos/agent-server, contrato intent_type: BUY|LEAD) con el ciclo MERCADER<->FABRICA ya validado por separado (obs #529/#530/#531, docs/patterns/mercader-fabrica-concurrent-validation-2026/), sin reconstruir ninguno de los dos tramos.
+Root cause: the rule `Bash(curl -s http://localhost:*/health)` used a wildcard in the middle of the string (port position) followed by more path (`/health`). Claude Code's Bash(...) permission matcher only supports a trailing wildcard (prefix match) — a mid-string `*` makes the whole rule invalid and it is silently skipped. This is a modeling mistake (an LLM generalizing several per-port curl rules into one line without knowing the trailing-only constraint), not caused by any script, template, bootstrap process, or sync mechanism — none was found anywhere in the repo, in ~/.claude/settings.json (global, no permissions block), or in managed/enterprise settings (none exist on this host).
 
-MECANISMO: hook sincrono maybeTransitionBuyToOrder() (mercader-bos/agent-server/src/mercader-fabrica-bridge.ts), invocado en el mismo proceso justo despues del hook onLeadCaptured() ya existente, solo si el lead no fue auto-rechazado. Regla LEAD: intent_type!=='BUY' -> no-op, nunca genera ORDER. Idempotencia real (no solo logica): claimOrderForLead() hace UPDATE mercader_leads SET order_id=?,order_status='PENDING' WHERE id=? AND order_id IS NULL, atomico en el proceso Node de un solo hilo (better-sqlite3 sincrono). Si gana, invoca tools/peer-work/peer_work.py create con authority_ref=human=telegram:8776472165 (mismo esquema humano ya usado en el circuito interno, sin mission DCSA nueva).
+Second finding: the entire `permissions` block in saas-factory/.claude/settings.json had never been committed to git before this fix — git log/diff showed it only ever existed as an uncommitted working-tree diff. That is why prior "Fix with Claude" passes never stuck: each fix lived only in that session's working tree and could be lost/overwritten by the next session's edit, with git having no record to fall back to.
 
-BUG REAL encontrado y corregido en el camino: el INSERT de createLead() en db.ts omitia la columna intent_type -- cada alta caia silenciosamente al DEFAULT 'LEAD' del schema aunque la respuesta HTTP (construida en memoria, no releida de la DB) mostrara el valor correcto. Detectado verificando SQLite directo, nunca confiando en la respuesta HTTP echoada.
+Fix: changed the rule to `Bash(curl -s http://localhost:*)` (trailing wildcard only, valid syntax), preserving all other legitimate rules unchanged. Committed to git for the first time: commit b18963b on branch fase-3-5-jpi-real-sfv5-bridge, "fix(settings): correct invalid mid-string wildcard in curl permission rule". Verified: JSON valid in both settings.json and settings.local.json; settings.local.json already had valid explicit per-port rules and was not the source of the bug; no other settings scope contained the invalid pattern.
 
-CASO REAL: lead_id=lead-1787159739207-0xo1f -> ORDER_ID=MERCADER-ORDER-EXT-BUY-2026-08-19T171539212Z -> ORDER peer-work=pw-4a1770ac152e (COMPLETED) -> ACK peer-work=pw-9891d9f4c9c3 (COMPLETED). AQA-1/CRUD_LIFECYCLE real PASS (tools/aqa-kit/evidence/mercader-e2e-exterior-buy/MERCADER-ORDER-EXT-BUY-2026-08-19T171539212Z/27811cb/2026-08-19T17-16-28-524Z/receipt.json). DELIVER con token real. order_status='ACKED' confirmado por lectura directa de SQLite.
+Also saved as a standing feedback memory (auto-memory: feedback-permission-rule-wildcard-syntax.md) so future sessions don't reintroduce a mid-string wildcard when consolidating Bash permission rules.
 
-NEGATIVO LEAD confirmado real: lead-1787159835753-h7aa8 (intent_type=LEAD) persistio con order_id/order_request_id/order_status=NULL, cero items en el Ledger para ese lead_id.
-
-IDEMPOTENCIA bajo reintento confirmada: llamada repetida a maybeTransitionBuyToOrder para el mismo lead_id devolvio el order_id/request_id ya existente sin crear un segundo item -- exactamente 1 MERCADER_ORDER + 1 MERCADER_ACK en el Ledger para ese lead_id, verificado contando.
-
-ALCANCE: cero integracion bespoke EXTERIOR<->FABRICA -- el exterior solo conoce POST /api/mercader/leads, no sabe de peer-work/DCSA/AQA/Scheduler/Capacity Registry. No se construyo CRM, gateway publico, A2A/MCP, Scheduler, Capacity Registry, PDP ni cloning -- ninguno fue necesario.
-
-QUE QUEDO MANUAL (deuda exacta para la proxima mision, NO resuelta aca):
-- R1 Executor automatico: nadie escucha MERCADER_ORDER PENDING en el Ledger; TCC ejecuto claim->produce->AQA->deliver->complete a mano.
-- R2 Callback de cierre: al completar MERCADER_ACK, el order_status='ACKED' en mercader_leads se escribio con un UPDATE manual, no hay callback automatico peer-work->SQLite.
-Siguiente QUIERO: eliminar R1 y R2, demostrar el ciclo EXTERIOR->MERCADER->FABRICA->MERCADER->EXTERIOR completamente autonomo, sin reconstruir tramos ya validados, sin Scheduler/Capacity Registry/PDP/cloning salvo blocker real.
-
-INSTITUCIONALIZACION: nuevo asset dfl.validation.exterior-mercader-fabrica-e2e-2026.v0 (docs/patterns/exterior-mercader-fabrica-e2e-2026/{VALIDATION.md,dfl.yaml}, status active), descubierto y verificado via query.mjs search. Design Candidate v0 (docs/patterns/design-candidate-v0-elastic-capacity/DESIGN.md) actualizado con puntero a esta validacion, sin promover ninguna hipotesis a hecho. IRONMAN.md: nueva fila en el Tablero de hilos. Asset Index regenerado: 28 assets, 0 errores; 7/7 tests de asset-index en verde. Commit local (no pusheado a origin) en mercader-bos: e0565e0 "feat(mercader): EXTERIOR->MERCADER->FABRICA transition (BUY only)" -- 5 archivos (db.ts, server.ts, bot-mercader.ts, routes-mercader.ts, mercader-fabrica-bridge.ts nuevo). Repo saas-factory: docs/patterns/exterior-mercader-fabrica-e2e-2026/, docs/patterns/design-candidate-v0-elastic-capacity/DESIGN.md, IRONMAN.md, tools/asset-index/index.json quedaron en working tree sin commit (mismo patron ya usado para las validaciones hermanas de esta misma cadena, ninguna de ellas tiene commit tampoco).
+Verification pending user action: user needs to restart Claude Code on this directory to confirm the warning no longer appears (cannot be verified from within a running session — no CLI subcommand replicates the session-start settings validation check; `claude doctor` checks a different thing).
 
 ---
 
@@ -465,6 +454,22 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### Fix: recurring Settings Warning from invalid mid-string wildcard curl permission rule
+**Type:** bugfix  
+**Project:** dfl  
+
+Symptom: Claude Code showed a recurring Settings Warning at session start on /opt/saas-factory-setup/saas-factory/.claude/settings.json, flagging invalid permissions.allow rules (Bash(curl -s ..., Bash(curl -s http://localhost:*/health)). User reported "Fix with Claude" appeared to work each time but the warning always returned in a later session.
+
+Root cause: the rule `Bash(curl -s http://localhost:*/health)` used a wildcard in the middle of the string (port position) followed by more path (`/health`). Claude Code's Bash(...) permission matcher only supports a trailing wildcard (prefix match) — a mid-string `*` makes the whole rule invalid and it is silently skipped. This is a modeling mistake (an LLM generalizing several per-port curl rules into one line without knowing the trailing-only constraint), not caused by any script, template, bootstrap process, or sync mechanism — none was found anywhere in the repo, in ~/.claude/settings.json (global, no permissions block), or in managed/enterprise settings (none exist on this host).
+
+Second finding: the entire `permissions` block in saas-factory/.claude/settings.json had never been committed to git before this fix — git log/diff showed it only ever existed as an uncommitted working-tree diff. That is why prior "Fix with Claude" passes never stuck: each fix lived only in that session's working tree and could be lost/overwritten by the next session's edit, with git having no record to fall back to.
+
+Fix: changed the rule to `Bash(curl -s http://localhost:*)` (trailing wildcard only, valid syntax), preserving all other legitimate rules unchanged. Committed to git for the first time: commit b18963b on branch fase-3-5-jpi-real-sfv5-bridge, "fix(settings): correct invalid mid-string wildcard in curl permission rule". Verified: JSON valid in both settings.json and settings.local.json; settings.local.json already had valid explicit per-port rules and was not the source of the bug; no other settings scope contained the invalid pattern.
+
+Also saved as a standing feedback memory (auto-memory: feedback-permission-rule-wildcard-syntax.md) so future sessions don't reintroduce a mid-string wildcard when consolidating Bash permission rules.
+
+Verification pending user action: user needs to restart Claude Code on this directory to confirm the warning no longer appears (cannot be verified from within a running session — no CLI subcommand replicates the session-start settings validation check; `claude doctor` checks a different thing).
+
 ### EXTERIOR->MERCADER->FABRICA->MERCADER: primera transicion completa demostrada (2026-08-19)
 **Type:** architecture  
 **Project:** dfl  
@@ -491,24 +496,6 @@ QUE QUEDO MANUAL (deuda exacta para la proxima mision, NO resuelta aca):
 Siguiente QUIERO: eliminar R1 y R2, demostrar el ciclo EXTERIOR->MERCADER->FABRICA->MERCADER->EXTERIOR completamente autonomo, sin reconstruir tramos ya validados, sin Scheduler/Capacity Registry/PDP/cloning salvo blocker real.
 
 INSTITUCIONALIZACION: nuevo asset dfl.validation.exterior-mercader-fabrica-e2e-2026.v0 (docs/patterns/exterior-mercader-fabrica-e2e-2026/{VALIDATION.md,dfl.yaml}, status active), descubierto y verificado via query.mjs search. Design Candidate v0 (docs/patterns/design-candidate-v0-elastic-capacity/DESIGN.md) actualizado con puntero a esta validacion, sin promover ninguna hipotesis a hecho. IRONMAN.md: nueva fila en el Tablero de hilos. Asset Index regenerado: 28 assets, 0 errores; 7/7 tests de asset-index en verde. Commit local (no pusheado a origin) en mercader-bos: e0565e0 "feat(mercader): EXTERIOR->MERCADER->FABRICA transition (BUY only)" -- 5 archivos (db.ts, server.ts, bot-mercader.ts, routes-mercader.ts, mercader-fabrica-bridge.ts nuevo). Repo saas-factory: docs/patterns/exterior-mercader-fabrica-e2e-2026/, docs/patterns/design-candidate-v0-elastic-capacity/DESIGN.md, IRONMAN.md, tools/asset-index/index.json quedaron en working tree sin commit (mismo patron ya usado para las validaciones hermanas de esta misma cadena, ninguna de ellas tiene commit tampoco).
-
-### Institucionalizada validación real MERCADER↔FÁBRICA (single-order + concurrent-order) + Design Candidate v0 actualizado con NO LOST COMMITMENT UNDER CONCURRENCY (2026-08-19)
-**Type:** architecture  
-**Project:** dfl  
-
-TOPIC: dfl/mercader/concurrent-validation-institutionalization-2026-08-19
-STATUS: closed
-DATE: 2026-08-19
-
-WHAT: Institucionalizacion de la validacion real de concurrencia MERCADER<->FABRICA (obs #529 pedido unico, obs #530 concurrencia+fix). Dos acciones: (1) actualizado el Design Candidate v0 existente (dfl.design-candidate.elastic-capacity-interop.v0, sigue DRAFT) solo donde la evidencia runtime lo exigio -- nada reescrito innecesariamente; (2) nuevo asset dedicado al reporte de validacion en si, status ACTIVE (evidencia real cerrada, no especulativa, mismo precedente que SocialFlow AI).
-
-Cambios reales al Design Candidate v0 (docs/patterns/design-candidate-v0-elastic-capacity/DESIGN.md): agregado invariante nuevo NO LOST COMMITMENT UNDER CONCURRENCY, distinguido explicitamente de NO DROP (uno protege lifecycle del trabajo, el otro la correccion de mutaciones concurrentes sobre el estado compartido que lo representa) -- distincion pedida explicita por Jorge, no inventada libremente. Agregada seccion "Hallazgo de diseño: CONCURRENT CORRECTNESS precede a CAPACITY SCALING" con tabla explicita de alcance de evidencia (columna afirmacion / nivel [RUNTIME] vs NO afirmado vs NO probado) -- disciplina de evidencia aplicada tambien a este documento de sintesis, no solo a los research anteriores. Explicitamente NO se elevo flock a arquitectura universal de concurrencia DFL -- alcance marcado como especifico a peer-work bajo esta carga.
-
-Nuevo asset: docs/patterns/mercader-fabrica-concurrent-validation-2026/{VALIDATION.md,dfl.yaml}, asset_id dfl.validation.mercader-fabrica-concurrent-2026.v0, capability_type=validation-report (categoria nueva, distinta de research/design-candidate), status ACTIVE. Declara explicito el estado pedido por Jorge: "MERCADER<->FABRICA: SINGLE-ORDER + CONCURRENT-ORDER PATH VALIDATED" -- y explicitamente NO declara validada elasticidad por expansion de capacidad (no fue necesaria, no se probo).
-
-Indexado: 27 assets (subio de 26), 0 errores, 7/7 tests. Descubribilidad verificada con 5 queries conceptuales, 4/5 directas, 1 (con termino en ingles "race condition" no presente literal en el texto) confirmada sana con terminos alternativos -- mismo patron de limitacion ya documentado en rondas anteriores, no nuevo.
-
-NEXT AGENT: el siguiente frente ya anunciado por Jorge (no ejecutado en esta mision) es EXTERIOR->MERCADER -- que un humano/lead externo/partner/otro agente pueda entrar por una puerta general sin conocer la maquinaria interna de DFL. Este par de documentos (Design Candidate v0 actualizado + esta validacion) es el punto de partida real para ese frente, no una arquitectura ya cerrada. No re-litigar la distincion NO DROP vs NO LOST COMMITMENT UNDER CONCURRENCY -- ya esta resuelta y documentada con evidencia real, citarla, no re-derivarla.
 
 ---
 
@@ -619,4 +606,4 @@ NEXT AGENT: el siguiente frente ya anunciado por Jorge (no ejecutado en esta mis
 
 ---
 
-*Mirror auto-generated 2026-08-19T22:17:31Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-19T22:18:17Z | La Garra → DFLghub/amos-context*
