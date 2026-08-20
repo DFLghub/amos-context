@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T03:06:29Z  
+**Generated:** 2026-08-20T03:59:17Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -254,17 +254,11 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### MERCADER first-revenue gap: commercial contract and messaging seam
+### MERCADER messaging seam: Meta WhatsApp adapter ready for credential
 **Type:** architecture  
 **Project:** dfl  
 
-2026-08-20 live checkpoint. TCX excavation via peer-work pw-ebf8df5202c6 found: LEAD intake PROVEN; offer/package NONEXISTENT; quote/price/customer acceptance NONEXISTENT; billing BUILT_NOT_E2E (SocialFlow Stripe asset only, not connected); fulfillment BUILT_NOT_E2E for real revenue (synthetic/test only); outbound prospect messaging absent/provider-neutral seam absent. Telegram/BOS is PROVEN only for operator phone↔Factory, not prospect outreach.
-
-TCX built provider-neutral messaging seam in tools/mercader-autonomy/{messaging_contract.mjs,messaging_store.mjs,MESSAGING_SEAM.md,test/messaging.test.mjs}: durable additive mercader_message_outbox in existing local SQLite, QUEUED/SENDING/SENT/DELIVERED/FAILED/BLOCKED, idempotency, atomic claim, provider message ID, retry classification, exact canary allowlist, consentRef, dry-run and no-secret fail-closed. Real schema created additively; 3/3 tests PASS.
-
-TCX built minimal provider-neutral commercial contract in tools/mercader-autonomy/{commercial_contract.mjs,commercial_store.mjs,COMMERCIAL_CONTRACT.md,test/commercial.test.mjs}: lead/correlation/package/amount_minor/currency, DRAFT→OFFERED→ACCEPTED→PAYMENT_REQUIRED→PAYMENT_PENDING→PAID→FULFILLMENT_PENDING→FULFILLED; customer acceptance ref and verified payment ref mandatory; no Mercury/Stripe/bank/money assumed. Additive local SQLite table mercader_commercial_offers, idempotent and durable after reopen. 2/2 tests PASS. AQA-2 PASS receipt: tools/aqa-kit/evidence/mercader-revenue-seams/messaging-and-commercial-contract/working-tree/2026-08-20T02-23-06-088Z.
-
-Handoff to TCC: pw-8e49c093db4a, requested minimal integration in MERCADER agent-server preserving /convert compatibility, no R1/R2/provider/bank changes. TCC activation attempted but Claude monthly spend limit blocked before claim; item remains PENDING, no integration claimed. External blockers: Jorge must provision real prospect channel credential/consent; Stripe/provider account/config or Mercury readiness; no live contact/payment proven. No secrets or contacts used.
+2026-08-20 TCX recognition and implementation. Live /go was TCX PASS with execute_permitted=true. Existing MERCADER provider-neutral messaging contract and mercader_message_outbox were preserved: atomic claim, idempotency, retry classes, provider IDs, delivery states, dry-run/canary gate. Ricardo/WA_CRM donor was confirmed as real code but institutionally NO_CONFIGURADO/NO_PROBADO; only its Meta WhatsApp provider boundary patterns were harvested, without copying Supabase/UI/CRM/broadcasts/MCP or creating a second platform. Added tools/mercader-autonomy/messaging_meta_whatsapp.mjs (fail-closed credential boundary, health/send, Meta provider message ID, X-Hub-Signature-256 verification, inbound/delivery normalization) and additive mercader_message_inbox in messaging_store.mjs. Inbound reply correlation is explicit-only through provider context.id; no context remains UNMATCHED and no lead is guessed. Full MERCADER autonomy tests 25/25 PASS; real-schema AQA REAL_SCHEMA_SEAMS_PASS against local MERCADER SQLite, no external message sent. Recommended first commercial channel is Meta WhatsApp Cloud API; Telegram/BOS remains operator↔Factory only. Current live blocker is external: dedicated Meta/WhatsApp credential, public HTTPS webhook/app verification, and consented exact canary recipient. Institutional docs: docs/patterns/mercader-messaging-channel-2026/VALIDATION.md, dfl.yaml; handoff .claude/HANDOFF-TCX-MERCADER-MESSAGING-2026-08-20.md. Commit b9c6409.
 
 ---
 
@@ -448,6 +442,12 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### MERCADER messaging seam: Meta WhatsApp adapter ready for credential
+**Type:** architecture  
+**Project:** dfl  
+
+2026-08-20 TCX recognition and implementation. Live /go was TCX PASS with execute_permitted=true. Existing MERCADER provider-neutral messaging contract and mercader_message_outbox were preserved: atomic claim, idempotency, retry classes, provider IDs, delivery states, dry-run/canary gate. Ricardo/WA_CRM donor was confirmed as real code but institutionally NO_CONFIGURADO/NO_PROBADO; only its Meta WhatsApp provider boundary patterns were harvested, without copying Supabase/UI/CRM/broadcasts/MCP or creating a second platform. Added tools/mercader-autonomy/messaging_meta_whatsapp.mjs (fail-closed credential boundary, health/send, Meta provider message ID, X-Hub-Signature-256 verification, inbound/delivery normalization) and additive mercader_message_inbox in messaging_store.mjs. Inbound reply correlation is explicit-only through provider context.id; no context remains UNMATCHED and no lead is guessed. Full MERCADER autonomy tests 25/25 PASS; real-schema AQA REAL_SCHEMA_SEAMS_PASS against local MERCADER SQLite, no external message sent. Recommended first commercial channel is Meta WhatsApp Cloud API; Telegram/BOS remains operator↔Factory only. Current live blocker is external: dedicated Meta/WhatsApp credential, public HTTPS webhook/app verification, and consented exact canary recipient. Institutional docs: docs/patterns/mercader-messaging-channel-2026/VALIDATION.md, dfl.yaml; handoff .claude/HANDOFF-TCX-MERCADER-MESSAGING-2026-08-20.md. Commit b9c6409.
+
 ### MERCADER first-revenue gap: commercial contract and messaging seam
 **Type:** architecture  
 **Project:** dfl  
@@ -459,14 +459,6 @@ TCX built provider-neutral messaging seam in tools/mercader-autonomy/{messaging_
 TCX built minimal provider-neutral commercial contract in tools/mercader-autonomy/{commercial_contract.mjs,commercial_store.mjs,COMMERCIAL_CONTRACT.md,test/commercial.test.mjs}: lead/correlation/package/amount_minor/currency, DRAFT→OFFERED→ACCEPTED→PAYMENT_REQUIRED→PAYMENT_PENDING→PAID→FULFILLMENT_PENDING→FULFILLED; customer acceptance ref and verified payment ref mandatory; no Mercury/Stripe/bank/money assumed. Additive local SQLite table mercader_commercial_offers, idempotent and durable after reopen. 2/2 tests PASS. AQA-2 PASS receipt: tools/aqa-kit/evidence/mercader-revenue-seams/messaging-and-commercial-contract/working-tree/2026-08-20T02-23-06-088Z.
 
 Handoff to TCC: pw-8e49c093db4a, requested minimal integration in MERCADER agent-server preserving /convert compatibility, no R1/R2/provider/bank changes. TCC activation attempted but Claude monthly spend limit blocked before claim; item remains PENDING, no integration claimed. External blockers: Jorge must provision real prospect channel credential/consent; Stripe/provider account/config or Mercury readiness; no live contact/payment proven. No secrets or contacts used.
-
-### MERCADER organismo bidireccional: receptor peer-work y wake-up E2E
-**Type:** architecture  
-**Project:** dfl  
-
-2026-08-20 TCX cerró el blocker estructural del circuito MERCADER↔FÁBRICA sin crear plataforma nueva. Se reutiliza tools/peer-work como ledger único y se añadieron campos aditivos correlation_id, priority, owner, idempotency_key, delivery, retry, ACK/NACK y successor wake-up. tools/mercader-autonomy/peer_receiver.py es el executor headless MERCADER: verifica autoridad viva vía peer_work.py, reclama bajo flock, acepta sólo capacidades allowlisted organism_circuit_probe/receipt, y fail-closed ante intent/capability ambiguos. activate-peer.sh ahora despierta MERCADER mediante ese receptor; TCC/TCX conservan sus activadores.
-
-Runtime E2E positivo FÁBRICA→MERCADER→FÁBRICA: request pw-bf5d08b8f244, correlation corr-tcx-mercader-20260820; TCX creó, MERCADER obtuvo owner y consumió, generó ACK pw-a5b5fbb8b7c5, wake started y TCX completó. Padre final COMPLETED/DELIVERED/ACK durable. Negativo pw-55c146b62322, correlation corr-tcx-mercader-nack-20260820: capability no allowlisted produjo MERCADER_NACK pw-bca4e48a2b61 y ack=NACK durable, sin ejecución. TCC→TCX→ACK previo pw-177e08091b3a/pw-1054b8099e2a. AQA-1 PASS en tools/aqa-kit/evidence/mercader-organism-circuit/peer-work-correlation-wakeup/working-tree/2026-08-20T01-16-21-407Z. Documentación: docs/patterns/mercader-organism-circuit-2026/VALIDATION.md e IRONMAN row 2026-08-20. No se tocaron Supabase, Vercel, env vars, templates, cron protegido ni R1/R2 funcional. Límite explícito: nuevas capacidades de negocio requieren handler allowlisted/AQA; nunca instrucciones libres.
 
 ---
 
@@ -577,4 +569,4 @@ Runtime E2E positivo FÁBRICA→MERCADER→FÁBRICA: request pw-bf5d08b8f244, co
 
 ---
 
-*Mirror auto-generated 2026-08-20T03:06:29Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T03:59:17Z | La Garra → DFLghub/amos-context*
