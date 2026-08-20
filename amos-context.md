@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T16:21:08Z  
+**Generated:** 2026-08-20T16:28:39Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -254,11 +254,23 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### [CLOSED] MERCADER commercial offer integration — agent-server complete
-**Type:** architecture  
+### TCC Remote Control recovery — DFL Factory TCC restored, causal chain closed
+**Type:** bugfix  
 **Project:** dfl  
 
-2026-08-20 TCC integration. Handoff pw-8e49c093db4a consumed (TCX ACK_REVIEWED_NOT_INTEGRATED → TCC implemented). Added mercader_commercial_offers table to mercader-bos/agent-server/store/agent-server.db (additive, no schema changes to existing tables). Added 4 HTTP endpoints: POST /api/mercader/offers, GET /api/mercader/offers, GET /api/mercader/offers/:offerId, POST /api/mercader/offers/:offerId/transition. Added maybeAcceptOfferAndRequirePayment() and onOfferPaid() bridges in mercader-fabrica-bridge.ts linking ACCEPTED→PAYMENT_REQUIRED→ORDER and PAYMENT_PENDING→PAID→fulfillment. Typecheck/build/pass tests (commercial.test.mjs 2/2). E2E synthetic: 8/8 steps. AQA receipt: tools/aqa-kit/evidence/mercader-agent-server-integration/working-tree/2026-08-20T03-20-00-000Z (PASS). Handoff pw-8e49c093db4a CLOSED with integration. Blockers externos: credencial mensajería real, cuenta Polar + llaves, cliente/pago real. Distance to first revenue: zero technical blockers. LIFECYCLE: CLOSED by TCC 2026-08-20.
+Sesión de recuperación (branch fase-3-5-jpi-real-sfv5-bridge) diagnosticó y cerró la confusión entre: (a) esta CC genérica (PID 2103311, sin --remote-control, conectada al Pixel vía "Code bridge" nativo con bridgeSessionId, mecanismo independiente del flag CLI), (b) el TCC/Tony institucional lanzado vía tools/tcc-provider/tcc-provider, y (c) un socat manual (root, TCP 36667) que resultó ser infraestructura no relacionada con ningún camino probado — nunca formó parte del transporte real de Remote Control ni de esta conversación.
+
+CAUSA RAÍZ (confirmada, no narrativa): tools/tcc-provider/tcc-provider línea ~124, función subscription_preflight(), invocaba `claude -p ... --disallowedTools '*' 'Reply only TCC_SUBSCRIPTION_PREFLIGHT_OK'` sin separador `--`. En claude-code 2.1.220, --disallowedTools es variádico y se tragaba el prompt completo como más nombres de tool, dejando el preflight sin prompt real -> siempre fallaba -> la policy "auto" caía siempre a OpenRouter aunque había una suscripción Pro válida y logueada (claude.ai OAuth firstParty, jtigre@gmail.com).
+
+HALLAZGO CAUSAL CLAVE: bajo la ruta openrouter, ANTHROPIC_BASE_URL apunta al proxy local (127.0.0.1:8082, free-claude-code) con ANTHROPIC_AUTH_TOKEN=tcc-local-proxy-token (credencial local falsa). Bajo esa ruta, el proceso Claude Code NUNCA obtiene bridgeSessionId en ~/.claude/sessions/<pid>.json (verificado con evidencia local: status queda en "idle" congelado ~1s post-arranque, sin el campo). Bajo claude_subscription (sin proxy, auth real), bridgeSessionId se asigna en <1s. Esto prueba que el bridge/Remote Control nativo requiere la identidad OAuth first-party real; el proxy OpenRouter rompe silenciosamente ese canal aunque la inferencia LLM funcione perfecto vía el proxy.
+
+FIX aplicado (una línea, commit pendiente de confirmar por Jorge): agregado `--` antes del prompt en la línea del preflight, para que subscription_preflight() reciba el prompt correctamente y "auto" cumpla la policy real "subscription primary -> openrouter fallback".
+
+ESTADO FINAL PROVEN (5/5): Tony institucional vivo bajo `tools/tcc-provider/tcc-provider run --remote-control "DFL Factory TCC" --dangerously-skip-permissions`: cmdline con ambos flags, provider=claude_subscription (sin proxy), bridgeSessionId presente, Pixel conectado y confirmado por Jorge desde el dispositivo, operación Bash inocua ejecutada sin prompt de permiso (bypass permissions on). No hay incompatibilidad conocida entre --remote-control y --dangerously-skip-permissions.
+
+RESIDUOS PENDIENTES (fuera de mi autoridad, no tocados): socat root-owned (TCP-LISTEN:36667 -> 127.0.0.1:36667, PID variable, dueño root) sigue vivo, sin consumidor activo confirmado, pero mi usuario dflagent no tiene permiso para terminarlo (Operation not permitted). Requiere que alguien con root lo retire. El fix del tcc-provider está aplicado en el working tree del repo (tools/tcc-provider/tcc-provider) pero no confirmé si Jorge quiere commitearlo.
+
+CC genérica de recuperación (PID 2103311, esta sesión) se cierra al final de esta tarea vía @$fin; no sostenía trabajo funcional propio, solo la investigación/recuperación de Tony.
 
 ---
 
@@ -442,23 +454,29 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### TCC Remote Control recovery — DFL Factory TCC restored, causal chain closed
+**Type:** bugfix  
+**Project:** dfl  
+
+Sesión de recuperación (branch fase-3-5-jpi-real-sfv5-bridge) diagnosticó y cerró la confusión entre: (a) esta CC genérica (PID 2103311, sin --remote-control, conectada al Pixel vía "Code bridge" nativo con bridgeSessionId, mecanismo independiente del flag CLI), (b) el TCC/Tony institucional lanzado vía tools/tcc-provider/tcc-provider, y (c) un socat manual (root, TCP 36667) que resultó ser infraestructura no relacionada con ningún camino probado — nunca formó parte del transporte real de Remote Control ni de esta conversación.
+
+CAUSA RAÍZ (confirmada, no narrativa): tools/tcc-provider/tcc-provider línea ~124, función subscription_preflight(), invocaba `claude -p ... --disallowedTools '*' 'Reply only TCC_SUBSCRIPTION_PREFLIGHT_OK'` sin separador `--`. En claude-code 2.1.220, --disallowedTools es variádico y se tragaba el prompt completo como más nombres de tool, dejando el preflight sin prompt real -> siempre fallaba -> la policy "auto" caía siempre a OpenRouter aunque había una suscripción Pro válida y logueada (claude.ai OAuth firstParty, jtigre@gmail.com).
+
+HALLAZGO CAUSAL CLAVE: bajo la ruta openrouter, ANTHROPIC_BASE_URL apunta al proxy local (127.0.0.1:8082, free-claude-code) con ANTHROPIC_AUTH_TOKEN=tcc-local-proxy-token (credencial local falsa). Bajo esa ruta, el proceso Claude Code NUNCA obtiene bridgeSessionId en ~/.claude/sessions/<pid>.json (verificado con evidencia local: status queda en "idle" congelado ~1s post-arranque, sin el campo). Bajo claude_subscription (sin proxy, auth real), bridgeSessionId se asigna en <1s. Esto prueba que el bridge/Remote Control nativo requiere la identidad OAuth first-party real; el proxy OpenRouter rompe silenciosamente ese canal aunque la inferencia LLM funcione perfecto vía el proxy.
+
+FIX aplicado (una línea, commit pendiente de confirmar por Jorge): agregado `--` antes del prompt en la línea del preflight, para que subscription_preflight() reciba el prompt correctamente y "auto" cumpla la policy real "subscription primary -> openrouter fallback".
+
+ESTADO FINAL PROVEN (5/5): Tony institucional vivo bajo `tools/tcc-provider/tcc-provider run --remote-control "DFL Factory TCC" --dangerously-skip-permissions`: cmdline con ambos flags, provider=claude_subscription (sin proxy), bridgeSessionId presente, Pixel conectado y confirmado por Jorge desde el dispositivo, operación Bash inocua ejecutada sin prompt de permiso (bypass permissions on). No hay incompatibilidad conocida entre --remote-control y --dangerously-skip-permissions.
+
+RESIDUOS PENDIENTES (fuera de mi autoridad, no tocados): socat root-owned (TCP-LISTEN:36667 -> 127.0.0.1:36667, PID variable, dueño root) sigue vivo, sin consumidor activo confirmado, pero mi usuario dflagent no tiene permiso para terminarlo (Operation not permitted). Requiere que alguien con root lo retire. El fix del tcc-provider está aplicado en el working tree del repo (tools/tcc-provider/tcc-provider) pero no confirmé si Jorge quiere commitearlo.
+
+CC genérica de recuperación (PID 2103311, esta sesión) se cierra al final de esta tarea vía @$fin; no sostenía trabajo funcional propio, solo la investigación/recuperación de Tony.
+
 ### [CLOSED] MERCADER commercial offer integration — agent-server complete
 **Type:** architecture  
 **Project:** dfl  
 
 2026-08-20 TCC integration. Handoff pw-8e49c093db4a consumed (TCX ACK_REVIEWED_NOT_INTEGRATED → TCC implemented). Added mercader_commercial_offers table to mercader-bos/agent-server/store/agent-server.db (additive, no schema changes to existing tables). Added 4 HTTP endpoints: POST /api/mercader/offers, GET /api/mercader/offers, GET /api/mercader/offers/:offerId, POST /api/mercader/offers/:offerId/transition. Added maybeAcceptOfferAndRequirePayment() and onOfferPaid() bridges in mercader-fabrica-bridge.ts linking ACCEPTED→PAYMENT_REQUIRED→ORDER and PAYMENT_PENDING→PAID→fulfillment. Typecheck/build/pass tests (commercial.test.mjs 2/2). E2E synthetic: 8/8 steps. AQA receipt: tools/aqa-kit/evidence/mercader-agent-server-integration/working-tree/2026-08-20T03-20-00-000Z (PASS). Handoff pw-8e49c093db4a CLOSED with integration. Blockers externos: credencial mensajería real, cuenta Polar + llaves, cliente/pago real. Distance to first revenue: zero technical blockers. LIFECYCLE: CLOSED by TCC 2026-08-20.
-
-### MERCADER first-revenue gap: commercial contract and messaging seam
-**Type:** architecture  
-**Project:** dfl  
-
-2026-08-20 live checkpoint. TCX excavation via peer-work pw-ebf8df5202c6 found: LEAD intake PROVEN; offer/package NONEXISTENT; quote/price/customer acceptance NONEXISTENT; billing BUILT_NOT_E2E (SocialFlow Stripe asset only, not connected); fulfillment BUILT_NOT_E2E for real revenue (synthetic/test only); outbound prospect messaging absent/provider-neutral seam absent. Telegram/BOS is PROVEN only for operator phone↔Factory, not prospect outreach.
-
-TCX built provider-neutral messaging seam in tools/mercader-autonomy/{messaging_contract.mjs,messaging_store.mjs,MESSAGING_SEAM.md,test/messaging.test.mjs}: durable additive mercader_message_outbox in existing local SQLite, QUEUED/SENDING/SENT/DELIVERED/FAILED/BLOCKED, idempotency, atomic claim, provider message ID, retry classification, exact canary allowlist, consentRef, dry-run and no-secret fail-closed. Real schema created additively; 3/3 tests PASS.
-
-TCX built minimal provider-neutral commercial contract in tools/mercader-autonomy/{commercial_contract.mjs,commercial_store.mjs,COMMERCIAL_CONTRACT.md,test/commercial.test.mjs}: lead/correlation/package/amount_minor/currency, DRAFT→OFFERED→ACCEPTED→PAYMENT_REQUIRED→PAYMENT_PENDING→PAID→FULFILLMENT_PENDING→FULFILLED; customer acceptance ref and verified payment ref mandatory; no Mercury/Stripe/bank/money assumed. Additive local SQLite table mercader_commercial_offers, idempotent and durable after reopen. 2/2 tests PASS. AQA-2 PASS receipt: tools/aqa-kit/evidence/mercader-revenue-seams/messaging-and-commercial-contract/working-tree/2026-08-20T02-23-06-088Z.
-
-Handoff to TCC: pw-8e49c093db4a, requested minimal integration in MERCADER agent-server preserving /convert compatibility, no R1/R2/provider/bank changes. TCC activation attempted but Claude monthly spend limit blocked before claim; item remains PENDING, no integration claimed. External blockers: Jorge must provision real prospect channel credential/consent; Stripe/provider account/config or Mercury readiness; no live contact/payment proven. No secrets or contacts used.
 
 ---
 
@@ -569,4 +587,4 @@ Handoff to TCC: pw-8e49c093db4a, requested minimal integration in MERCADER agent
 
 ---
 
-*Mirror auto-generated 2026-08-20T16:21:08Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T16:28:39Z | La Garra → DFLghub/amos-context*
