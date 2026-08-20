@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T03:05:02Z  
+**Generated:** 2026-08-20T03:05:14Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -566,15 +566,15 @@ Runtime E2E positivo FÁBRICA→MERCADER→FÁBRICA: request pw-bf5d08b8f244, co
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.7993  
+**Graph entropy:** 0.8345  
 
-- **Community 11** (91 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Evaluación de complejidad en costos
-- **Community 0** (7 nodes): Verificación de API, Requisitos legales para operar V1
-- **Community 1** (5 nodes): Abstracción de oferta, Política de Disponibilidad, Proceso de Intake
-- **Community 2** (5 nodes): Merchant of Record, Paridad Codex, Métricas comerciales
-- **Community 3** (5 nodes): Jurisdicción, Mercader, Observación de Ed
+- **Community 11** (90 nodes): Abstracción de oferta, Política de disponibilidad en servicios, PRP como artefacto nativo
+- **Community 0** (7 nodes): Verificación de API
+- **Community 1** (5 nodes): Merchant of Record, Paridad Codex, Métricas comerciales
+- **Community 2** (5 nodes): Puerta de Certidumbre, Condiciones de promoción, Auditoría en SaaS
+- **Community 3** (5 nodes): Mercader
 - **Community 4** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
 
 ---
 
-*Mirror auto-generated 2026-08-20T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T03:05:14Z | La Garra → DFLghub/amos-context*
