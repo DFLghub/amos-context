@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-19T23:50:21Z  
+**Generated:** 2026-08-20T00:59:10Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,46 +116,57 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### TCX — DFL gate reauthorized and MERCADER R1/R2 autonomous path proven
+### chatgpt-md-exporter built — core proven (13/13 tests), real E2E pending Jorge's one manual action
 **Type:** decision  
 **Project:** dfl  
 
-2026-08-19: Repaired the live @$go control-plane projection for TCX after root-causing E_AUTH_EXPIRED/E_DISPATCH_STALE to the stale provisional-routing-state snapshot (generated 2026-08-18, beyond the 86400s validator window) and the absence of a live renewal projection for the inherited mission. dfl-context-proxy transports/verifies; dispatch_gate is transport-and-verify-only; DCSA is the intended authority but no active renewer was wired to this snapshot. Jorge directly reauthorized TCX for mission MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19. Live /go now returns routing PASS, dispatch PASS, execute_permitted=true, expiry 2026-08-19T23:35:00Z. R1 reused the existing peer-work queue and activate-peer.sh headless cron, with MERCADER bridge target configurable and default TCX. R2 added tools/mercader-autonomy/ack_callback.py, which verifies authority/correlation, completes pending ACKs through peer_work.py, and idempotently updates mercader_leads.order_status. Synthetic live proof: lead-1787179288964-amokp -> MERCADER-ORDER-EXT-BUY-2026-08-19T224128969Z -> pw-a14969e5de8e COMPLETED by TCX; AQA-1 CRUD_LIFECYCLE PASS; real OnePager/delivery token; ACK pw-1f006af20139c COMPLETED by R2; SQLite order_status=ACKED; second callback pass already_acked. No second queue, Scheduler, Capacity Registry, PDP, cloning, Supabase, or Vercel changes.
-
-### Vertical slice real MERCADER↔FÁBRICA E2E: 1 pedido, ciclo completo, CERRADO (2026-08-19)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/mercader/vertical-slice-e2e-2026-08-19
-STATUS: CERRADO
+TOPIC: dfl/saas-factory/chatgpt-md-exporter
+STATUS: core done, E2E pending
 DATE: 2026-08-19
 
-WHAT: Primera prueba real (no simulada) del ciclo MERCADER ORDER -> FABRICA RECEIVE -> COMMIT -> PRODUCE -> AQA -> DELIVER -> MERCADER RECEIVE/ACK, usando el Design Candidate v0 (obs #528) como referencia, NO como obligacion de implementar todas sus piezas. Regla de Jorge: reutilizar todo lo existente, construir solo el delta que el E2E demuestre necesario, no adelantarse a elasticidad multiple.
+WHAT: Built `tools/chatgpt-md-exporter/` in saas-factory repo (branch fase-3-5-jpi-real-sfv5-bridge) per Jorge's P11: one-click export of a full ChatGPT conversation to Markdown, replacing the broken Android Print->PDF workflow (>50% blank pages on long chats).
 
-ORDER_ID real: MERCADER-ORDER-TEST-20260819T162514Z (pedido de PRUEBA explicito, prospecto TEST, no cliente real -- consistente con el limite ya establecido hoy en CHECKPOINT-MERCADER-QR-2026-08-19.md de cero contacto real).
+ARCHITECTURE DECISION: primary data source is ChatGPT's own `backend-api/conversation/<id>` endpoint (full node-graph JSON: mapping/parent/children/current_node), fetched from the browser's own already-authenticated session via a Violentmonkey userscript — not DOM scraping, not the OpenAI API, not any external service. Walking parent chain from current_node to root reconstructs exactly the branch the user is viewing, sidestepping ChatGPT's DOM virtualization on long chats entirely (no scrolling needed). Delivery chosen as userscript (not WebExtension) specifically because Firefox blocks unsigned .xpi installs by default — userscript avoids that friction.
 
-Mecanismos EXISTENTES reutilizados intactos, sin modificar:
-- tools/peer-work/ (peer_work.py) como transporte generico REQUEST/COMMIT/STATUS/DELIVER -- MERCADER emitio el ORDER como un item mas de la misma cola que usa cualquier otro trabajo DFL, sin integracion bespoke. authority_ref="human=telegram:8776472165" verificado en vivo contra el allowlist real antes de crear el primer item.
-- El patron real de r-d-delivery/delivery.mjs (construido y probado HOY MISMO por otra sesion en /tmp/mercader-verify-fork/, 6/6 aserciones) -- reusado (mismas funciones, mismo invariante "un orderId = una entrega"), no reescrito desde cero.
-- AQA Kit real (tools/aqa-kit/bin/aqa.mjs) -- corrido de verdad, nivel AQA-1, perfil CRUD_LIFECYCLE, con ALLOW (creacion de entrega, min-length del documento, correlacion de order_id) y DENY (duplicado correctamente rechazado) reales. Resultado real: PASS, profiles covered=[CRUD_LIFECYCLE], missing=[].
+FILES:
+- src/core.js — pure logic (tree walk, integrity validation, markdown rendering, filename convention), CommonJS, no browser APIs. Directly required by tests.
+- src/browser-glue.js — all fetch/DOM/download code, concatenated after core.js.
+- build.mjs — concatenates into dist/chatgpt-md-exporter.user.js (single-file install artifact).
+- test/fixture-builder.cjs + test/core.test.cjs — 13 node:test cases against synthetic fixtures shaped exactly like real backend-api responses.
+- README.md — install (Linux Mint + Firefox + Violentmonkey), usage, integrity semantics, filename convention, maintenance notes.
 
-Delta minimo construido (solo lo que el E2E demostro necesario):
-- deliver.mjs: version exportable/reusable del patron ya probado (mismas funciones, agregado solo un guard de duplicado persistido en disco via delivery-record.json, porque la version anterior era in-memory y no servia para un DENY check real de AQA).
-- onepager.md real: contenido real generado (no placeholder de texto "ok"), siguiendo la estructura ya documentada de MERCADER Distill (AI_Product_Distillation_OnePager_v0_1.md).
+INTEGRITY DESIGN (central requirement, "FAIL VISIBLE not silent"): hard FAIL on dangling parent refs, cycles, duplicate message ids on the chain, zero turns, last-message still in_progress (mid-stream capture), or empty content on a "finished" message. Confirmed via 3 dedicated deliberate-FAIL tests that no .md is produced under any of these conditions.
 
-NO se construyo: Scheduler, Capacity Registry, PDP de autorizacion por parametro, cloning de Fabricas, ni ninguna otra pieza del Design Candidate v0 -- correctamente, porque un solo pedido no las necesito. Confirma en la practica lo que la regla de Jorge predijo: "si 1 pedido no cruza completo, no tiene sentido probar 10" -- 1 SI cruzo completo, con piezas existentes casi sin delta.
+TEST RESULTS: `node --test test/core.test.cjs` -> 13/13 pass, including a 500-turn synthetic "long chat" fully recovered (the exact scenario Print->PDF fails on) and 5 distinct FAIL-path tests.
 
-Evidencia real verificable:
-- peer-work request_id pw-e27f05cf50e6 (ORDER, COMMITTED->COMPLETED) y pw-f73e9583f3ab (ACK, COMPLETED), ambos con inputs.order_id=MERCADER-ORDER-TEST-20260819T162514Z -- correlacion confirmada por lectura directa post-hoc, no asumida.
-- AQA receipt real: tools/aqa-kit/evidence/mercader-e2e-vertical-slice/MERCADER-ORDER-TEST-20260819T162514Z/27811cb/2026-08-19T16-27-41-951Z/receipt.json, status=PASS.
-- delivery-record.json real con token real (jLiSu6pxXqTILGrAecLlX5juJOaN9KLF) y link real (https://deepfeelingslabs.com/entrega/<token>) -- el link no fue navegado/publicado (dominio real de DFL, no se hizo ninguna llamada de red hacia el).
-- onepager.md real, con contenido explicito marcando que es un pedido de prueba, ningun dato de cliente real usado.
+NOT DONE YET / explicitly deferred: real E2E against a live chatgpt.com session. This requires Jorge's own authenticated browser tab (session/cookies this agent correctly does not have and should not be given, per NO_TOUCH "no exponer cookies/tokens/secrets"). Asked Jorge to install the userscript and click export once on a real long conversation, then report: turn count, first/last message, filename, OK/FAILED status. Optional HTML/PDF export explicitly NOT built yet, per Jorge's own scope note ("solo despues de .md PROVEN").
 
-Que sigue siendo bespoke: NADA especifico a MERCADER<->FABRICA -- MERCADER hablo con el mismo peer-work que cualquier otro origen (TELEGRAM, otros agentes), FABRICA (TCC) recibio como target_executor generico, DELIVER volvio por el mismo mecanismo (complete() del item original), sin ningun canal o codigo exclusivo de este par de organismos. NO_POINT_TO_POINT confirmado en la practica, no solo en diseno.
+No git commit made (not requested). No Supabase/Vercel/MERCADER/SFV5-app credentials touched. Distinct topic from the already-CLOSED tcc-provider/OpenRouter work (obs #538) — do not conflate the two in future sessions.
 
-Blocker real: ninguno aparecio en este ciclo -- brief simple, deliverable producible con capacidad ya existente, sin credencial externa faltante. QUIERO->bloqueo->REQUIERO no se activo porque no hizo falta, no se forzo artificialmente.
+### CC verified OpenRouter/Qwen E2E for tcc-provider (dfl-tony key), independent of TCX's report
+**Type:** decision  
+**Project:** dfl  
 
-NEXT AGENT: el circuito de 1 pedido esta PROBADO y REUTILIZABLE (mismo peer-work, mismo AQA, mismo patron de delivery sirven para el siguiente pedido sin modificacion). La siguiente mision autorizada por Jorge (NO ejecutada aca) es repetir con multiples pedidos simultaneos para tensionar elasticidad real -- ahi es donde recien aparecera si Scheduler/Capacity Registry/provisioning son necesarios de verdad, no antes.
+TOPIC: dfl/saas-factory/tcc-provider-openrouter-e2e
+STATUS: closed
+DATE: 2026-08-19
+
+WHAT: CC (this session, resumed after credit exhaustion) independently re-verified the OpenRouter/Qwen E2E capability that TCX built and reported earlier the same day (HANDOFF-TCC-PROVIDER-OPENROUTER-ACTIVATION-2026-08-19.md), per Jorge's explicit instruction to close the E2E test now with evidence, not configuration, and per standing rule "verify, don't trust" (re-execute, never re-validate from a prior report alone).
+
+VERIFIED FRESH (own execution, own timestamps, distinct from TCX's runs):
+1. provider=openrouter, model=open_router/qwen/qwen3-coder-next, credential=dedicated — `tcc-provider status` before and after.
+2. Ran `tcc-provider run -p 'Responde unicamente: TCC_OPENROUTER_E2E_CC_VERIFY_1'` — correct output, proxy POST /v1/messages 200 OK.
+3. Confirmed via free-claude-code's server.log (JSON, separate from tcc-provider's proxy.log/provider.log): OPENROUTER_UPSTREAM_ACCEPTED status=200 generation_id=gen-1787183353-45z8l6ZLtnlrLQ0PM4RZ, model=qwen/qwen3-coder-next throughout, zero Anthropic markers.
+4. Queried OpenRouter API directly (GET /api/v1/generation?id=...) for that generation_id: model=qwen/qwen3-coder-next-2025-02-03, provider=Parasail, status 200, total_cost=0.0029268, finish_reason=stop — independent proof, not just local logs.
+5. Checked key usage via GET /api/v1/auth/key on the dedicated Tony key (never printed the raw key, only masked label + JSON usage fields): usage rose from 0.0099818 (TCX's baseline) after this session's calls.
+6. Ran a second, separate `tcc-provider run` with `--allowedTools "Bash(echo:*)"` asking it to invoke the Bash tool for a trivial non-destructive `echo` — real tool-call executed, second generation_id=gen-1787183418-eZWEnCOiFzv6lgr1JvYC independently confirmed via OpenRouter API (cost 0.00356472, provider Parasail, status 200) — satisfies the "minimal safe tool-call" criterion.
+7. Ran `tcc-provider status` again after both `run` invocations (each a fresh `claude` process) — provider/model/credential persisted correctly across restarts, no drift back to anthropic.
+
+NOT DONE / not claimed: no failover automation added, no change to `dfl-tcc` vs `dfl-tony` namespace split (TCX left config/state dirs as `dfl-tcc`, only key_file path is `dfl-tony` — cosmetic, non-blocking, flagged to Jorge but not touched), no modification to Supabase/Vercel/MERCADER/SFV5 app credentials, no reuse of the SFV5 bootstrap OPENROUTER_API_KEY.
+
+WHY IT MATTERS: This is the second independent confirmation (CC after TCX) that the OpenRouter/Qwen route for tcc-provider is real, live, and safe to use going forward for Tony/TCC capability work without touching Anthropic credit.
+
+NEXT: Jorge said after this closes, resume the ChatGPT→Markdown exporter (still cold, no spec yet — needs source format/output location/naming from Jorge before any build starts).
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -434,17 +445,57 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### TCC OpenRouter Tony route activated E2E
-**Type:** architecture  
+### chatgpt-md-exporter built — core proven (13/13 tests), real E2E pending Jorge's one manual action
+**Type:** decision  
 **Project:** dfl  
 
-Activated the TCC-only OpenRouter route using the dedicated Tony credential at the institutional path /home/dflagent/.config/dfl-tony/openrouter.key; secret value was never exposed. Selector policy persists provider=openrouter with model open_router/qwen/qwen3-coder-next and reports credential=dedicated. Fresh tcc-provider runs returned TCC_OPENROUTER_E2E_OK and TCC_OPENROUTER_RESTART_OK. OpenRouter generation metadata and usage delta confirmed real upstream consumption. No Anthropic route, SFV5 app credential, Supabase, Vercel, or MERCADER routing was changed. Automatic hot failover remains intentionally unsupported; switching is by new process.
+TOPIC: dfl/saas-factory/chatgpt-md-exporter
+STATUS: core done, E2E pending
+DATE: 2026-08-19
 
-### DCSA 30-day authorization auto-renew lifecycle live proof 2026-08-19
-**Type:** fact  
+WHAT: Built `tools/chatgpt-md-exporter/` in saas-factory repo (branch fase-3-5-jpi-real-sfv5-bridge) per Jorge's P11: one-click export of a full ChatGPT conversation to Markdown, replacing the broken Android Print->PDF workflow (>50% blank pages on long chats).
+
+ARCHITECTURE DECISION: primary data source is ChatGPT's own `backend-api/conversation/<id>` endpoint (full node-graph JSON: mapping/parent/children/current_node), fetched from the browser's own already-authenticated session via a Violentmonkey userscript — not DOM scraping, not the OpenAI API, not any external service. Walking parent chain from current_node to root reconstructs exactly the branch the user is viewing, sidestepping ChatGPT's DOM virtualization on long chats entirely (no scrolling needed). Delivery chosen as userscript (not WebExtension) specifically because Firefox blocks unsigned .xpi installs by default — userscript avoids that friction.
+
+FILES:
+- src/core.js — pure logic (tree walk, integrity validation, markdown rendering, filename convention), CommonJS, no browser APIs. Directly required by tests.
+- src/browser-glue.js — all fetch/DOM/download code, concatenated after core.js.
+- build.mjs — concatenates into dist/chatgpt-md-exporter.user.js (single-file install artifact).
+- test/fixture-builder.cjs + test/core.test.cjs — 13 node:test cases against synthetic fixtures shaped exactly like real backend-api responses.
+- README.md — install (Linux Mint + Firefox + Violentmonkey), usage, integrity semantics, filename convention, maintenance notes.
+
+INTEGRITY DESIGN (central requirement, "FAIL VISIBLE not silent"): hard FAIL on dangling parent refs, cycles, duplicate message ids on the chain, zero turns, last-message still in_progress (mid-stream capture), or empty content on a "finished" message. Confirmed via 3 dedicated deliberate-FAIL tests that no .md is produced under any of these conditions.
+
+TEST RESULTS: `node --test test/core.test.cjs` -> 13/13 pass, including a 500-turn synthetic "long chat" fully recovered (the exact scenario Print->PDF fails on) and 5 distinct FAIL-path tests.
+
+NOT DONE YET / explicitly deferred: real E2E against a live chatgpt.com session. This requires Jorge's own authenticated browser tab (session/cookies this agent correctly does not have and should not be given, per NO_TOUCH "no exponer cookies/tokens/secrets"). Asked Jorge to install the userscript and click export once on a real long conversation, then report: turn count, first/last message, filename, OK/FAILED status. Optional HTML/PDF export explicitly NOT built yet, per Jorge's own scope note ("solo despues de .md PROVEN").
+
+No git commit made (not requested). No Supabase/Vercel/MERCADER/SFV5-app credentials touched. Distinct topic from the already-CLOSED tcc-provider/OpenRouter work (obs #538) — do not conflate the two in future sessions.
+
+### CC verified OpenRouter/Qwen E2E for tcc-provider (dfl-tony key), independent of TCX's report
+**Type:** decision  
 **Project:** dfl  
 
-DCSA authorization lifecycle durable pattern implemented 2026-08-19 for MERCADER TCX: /opt/dfl-knowledge/governance/dispatch/authorization_renewal.py + notify helper + renewal-policy.json + append-only AUTHORIZATION-RENEWAL-LEDGER.jsonl. 30-day authorization renewed immediately preserving active gate; policy AUTO, notice <24h exact Jorge text with Sí/No actions, no response auto-renews before expiry using existing 10-minute autonomous peer activation cadence, explicit NO lets expire, REVOKED wins. Projection freshness remains 24h critical and is auto-refreshed without extending scope. dispatch_gate hardened for executor/scope mismatch, explicit revocation, authorization body hash. 25 unit tests PASS; real activate-peer TCX smoke PASS; live /go: routing PASS, dispatch PASS, execute_permitted=true, expires 2026-09-18T23:19:01Z. Evidence audit includes prior expiry, explicit decision/reason, new expiry, projection refresh. No Supabase/Vercel/secrets touched. User-space systemd timer was not installed because user bus unavailable; lifecycle is attached to existing crontab activation cadence via activate-peer.sh flock hook.
+TOPIC: dfl/saas-factory/tcc-provider-openrouter-e2e
+STATUS: closed
+DATE: 2026-08-19
+
+WHAT: CC (this session, resumed after credit exhaustion) independently re-verified the OpenRouter/Qwen E2E capability that TCX built and reported earlier the same day (HANDOFF-TCC-PROVIDER-OPENROUTER-ACTIVATION-2026-08-19.md), per Jorge's explicit instruction to close the E2E test now with evidence, not configuration, and per standing rule "verify, don't trust" (re-execute, never re-validate from a prior report alone).
+
+VERIFIED FRESH (own execution, own timestamps, distinct from TCX's runs):
+1. provider=openrouter, model=open_router/qwen/qwen3-coder-next, credential=dedicated — `tcc-provider status` before and after.
+2. Ran `tcc-provider run -p 'Responde unicamente: TCC_OPENROUTER_E2E_CC_VERIFY_1'` — correct output, proxy POST /v1/messages 200 OK.
+3. Confirmed via free-claude-code's server.log (JSON, separate from tcc-provider's proxy.log/provider.log): OPENROUTER_UPSTREAM_ACCEPTED status=200 generation_id=gen-1787183353-45z8l6ZLtnlrLQ0PM4RZ, model=qwen/qwen3-coder-next throughout, zero Anthropic markers.
+4. Queried OpenRouter API directly (GET /api/v1/generation?id=...) for that generation_id: model=qwen/qwen3-coder-next-2025-02-03, provider=Parasail, status 200, total_cost=0.0029268, finish_reason=stop — independent proof, not just local logs.
+5. Checked key usage via GET /api/v1/auth/key on the dedicated Tony key (never printed the raw key, only masked label + JSON usage fields): usage rose from 0.0099818 (TCX's baseline) after this session's calls.
+6. Ran a second, separate `tcc-provider run` with `--allowedTools "Bash(echo:*)"` asking it to invoke the Bash tool for a trivial non-destructive `echo` — real tool-call executed, second generation_id=gen-1787183418-eZWEnCOiFzv6lgr1JvYC independently confirmed via OpenRouter API (cost 0.00356472, provider Parasail, status 200) — satisfies the "minimal safe tool-call" criterion.
+7. Ran `tcc-provider status` again after both `run` invocations (each a fresh `claude` process) — provider/model/credential persisted correctly across restarts, no drift back to anthropic.
+
+NOT DONE / not claimed: no failover automation added, no change to `dfl-tcc` vs `dfl-tony` namespace split (TCX left config/state dirs as `dfl-tcc`, only key_file path is `dfl-tony` — cosmetic, non-blocking, flagged to Jorge but not touched), no modification to Supabase/Vercel/MERCADER/SFV5 app credentials, no reuse of the SFV5 bootstrap OPENROUTER_API_KEY.
+
+WHY IT MATTERS: This is the second independent confirmation (CC after TCX) that the OpenRouter/Qwen route for tcc-provider is real, live, and safe to use going forward for Tony/TCC capability work without touching Anthropic credit.
+
+NEXT: Jorge said after this closes, resume the ChatGPT→Markdown exporter (still cold, no spec yet — needs source format/output location/naming from Jorge before any build starts).
 
 ---
 
@@ -555,4 +606,4 @@ DCSA authorization lifecycle durable pattern implemented 2026-08-19 for MERCADER
 
 ---
 
-*Mirror auto-generated 2026-08-19T23:50:21Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T00:59:10Z | La Garra → DFLghub/amos-context*
