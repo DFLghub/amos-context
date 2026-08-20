@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T15:33:14Z  
+**Generated:** 2026-08-20T15:35:53Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -569,4 +569,4 @@ Handoff to TCC: pw-8e49c093db4a, requested minimal integration in MERCADER agent
 
 ---
 
-*Mirror auto-generated 2026-08-20T15:33:14Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T15:35:53Z | La Garra → DFLghub/amos-context*
