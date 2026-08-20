@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T03:59:17Z  
+**Generated:** 2026-08-20T04:03:03Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -258,7 +258,7 @@ Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, T
 **Type:** architecture  
 **Project:** dfl  
 
-2026-08-20 TCX recognition and implementation. Live /go was TCX PASS with execute_permitted=true. Existing MERCADER provider-neutral messaging contract and mercader_message_outbox were preserved: atomic claim, idempotency, retry classes, provider IDs, delivery states, dry-run/canary gate. Ricardo/WA_CRM donor was confirmed as real code but institutionally NO_CONFIGURADO/NO_PROBADO; only its Meta WhatsApp provider boundary patterns were harvested, without copying Supabase/UI/CRM/broadcasts/MCP or creating a second platform. Added tools/mercader-autonomy/messaging_meta_whatsapp.mjs (fail-closed credential boundary, health/send, Meta provider message ID, X-Hub-Signature-256 verification, inbound/delivery normalization) and additive mercader_message_inbox in messaging_store.mjs. Inbound reply correlation is explicit-only through provider context.id; no context remains UNMATCHED and no lead is guessed. Full MERCADER autonomy tests 25/25 PASS; real-schema AQA REAL_SCHEMA_SEAMS_PASS against local MERCADER SQLite, no external message sent. Recommended first commercial channel is Meta WhatsApp Cloud API; Telegram/BOS remains operator↔Factory only. Current live blocker is external: dedicated Meta/WhatsApp credential, public HTTPS webhook/app verification, and consented exact canary recipient. Institutional docs: docs/patterns/mercader-messaging-channel-2026/VALIDATION.md, dfl.yaml; handoff .claude/HANDOFF-TCX-MERCADER-MESSAGING-2026-08-20.md. Commit b9c6409.
+2026-08-20 TCC integration. Handoff pw-8e49c093db4a consumed (TCX ACK_REVIEWED_NOT_INTEGRATED → TCC implemented). Added mercader_commercial_offers table to mercader-bos/agent-server/store/agent-server.db (additive, no schema changes to existing tables). Added 4 HTTP endpoints: POST /api/mercader/offers, GET /api/mercader/offers, GET /api/mercader/offers/:offerId, POST /api/mercader/offers/:offerId/transition. Added maybeAcceptOfferAndRequirePayment() and onOfferPaid() bridges in mercader-fabrica-bridge.ts linking ACCEPTED→PAYMENT_REQUIRED→ORDER and PAYMENT_PENDING→PAID→fulfillment. Typecheck/build/pass tests (commercial.test.mjs 2/2). E2E synthetic: 8/8 steps. AQA receipt: tools/aqa-kit/evidence/mercader-agent-server-integration/working-tree/2026-08-20T03-20-00-000Z (PASS). Handoff pw-8e49c093db4a CLOSED with integration. Blockers externos: credencial mensajería real, cuenta Polar + llaves, cliente/pago real. Distance to first revenue: zero technical blockers.
 
 ---
 
@@ -446,7 +446,7 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 **Type:** architecture  
 **Project:** dfl  
 
-2026-08-20 TCX recognition and implementation. Live /go was TCX PASS with execute_permitted=true. Existing MERCADER provider-neutral messaging contract and mercader_message_outbox were preserved: atomic claim, idempotency, retry classes, provider IDs, delivery states, dry-run/canary gate. Ricardo/WA_CRM donor was confirmed as real code but institutionally NO_CONFIGURADO/NO_PROBADO; only its Meta WhatsApp provider boundary patterns were harvested, without copying Supabase/UI/CRM/broadcasts/MCP or creating a second platform. Added tools/mercader-autonomy/messaging_meta_whatsapp.mjs (fail-closed credential boundary, health/send, Meta provider message ID, X-Hub-Signature-256 verification, inbound/delivery normalization) and additive mercader_message_inbox in messaging_store.mjs. Inbound reply correlation is explicit-only through provider context.id; no context remains UNMATCHED and no lead is guessed. Full MERCADER autonomy tests 25/25 PASS; real-schema AQA REAL_SCHEMA_SEAMS_PASS against local MERCADER SQLite, no external message sent. Recommended first commercial channel is Meta WhatsApp Cloud API; Telegram/BOS remains operator↔Factory only. Current live blocker is external: dedicated Meta/WhatsApp credential, public HTTPS webhook/app verification, and consented exact canary recipient. Institutional docs: docs/patterns/mercader-messaging-channel-2026/VALIDATION.md, dfl.yaml; handoff .claude/HANDOFF-TCX-MERCADER-MESSAGING-2026-08-20.md. Commit b9c6409.
+2026-08-20 TCC integration. Handoff pw-8e49c093db4a consumed (TCX ACK_REVIEWED_NOT_INTEGRATED → TCC implemented). Added mercader_commercial_offers table to mercader-bos/agent-server/store/agent-server.db (additive, no schema changes to existing tables). Added 4 HTTP endpoints: POST /api/mercader/offers, GET /api/mercader/offers, GET /api/mercader/offers/:offerId, POST /api/mercader/offers/:offerId/transition. Added maybeAcceptOfferAndRequirePayment() and onOfferPaid() bridges in mercader-fabrica-bridge.ts linking ACCEPTED→PAYMENT_REQUIRED→ORDER and PAYMENT_PENDING→PAID→fulfillment. Typecheck/build/pass tests (commercial.test.mjs 2/2). E2E synthetic: 8/8 steps. AQA receipt: tools/aqa-kit/evidence/mercader-agent-server-integration/working-tree/2026-08-20T03-20-00-000Z (PASS). Handoff pw-8e49c093db4a CLOSED with integration. Blockers externos: credencial mensajería real, cuenta Polar + llaves, cliente/pago real. Distance to first revenue: zero technical blockers.
 
 ### MERCADER first-revenue gap: commercial contract and messaging seam
 **Type:** architecture  
@@ -569,4 +569,4 @@ Handoff to TCC: pw-8e49c093db4a, requested minimal integration in MERCADER agent
 
 ---
 
-*Mirror auto-generated 2026-08-20T03:59:17Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T04:03:03Z | La Garra → DFLghub/amos-context*
