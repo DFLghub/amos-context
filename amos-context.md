@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T02:52:05Z  
+**Generated:** 2026-08-20T02:52:20Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -577,4 +577,4 @@ Runtime E2E positivo FÁBRICA→MERCADER→FÁBRICA: request pw-bf5d08b8f244, co
 
 ---
 
-*Mirror auto-generated 2026-08-20T02:52:05Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T02:52:20Z | La Garra → DFLghub/amos-context*
