@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T02:21:03Z  
+**Generated:** 2026-08-20T02:21:27Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -583,4 +583,4 @@ Full context, do not re-litigate: [[mercader-handoff-lenovo-to-imac-2026-08-20]]
 
 ---
 
-*Mirror auto-generated 2026-08-20T02:21:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T02:21:27Z | La Garra → DFLghub/amos-context*
