@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T04:03:03Z  
+**Generated:** 2026-08-20T04:03:47Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -254,11 +254,11 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### MERCADER messaging seam: Meta WhatsApp adapter ready for credential
+### [CLOSED] MERCADER commercial offer integration — agent-server complete
 **Type:** architecture  
 **Project:** dfl  
 
-2026-08-20 TCC integration. Handoff pw-8e49c093db4a consumed (TCX ACK_REVIEWED_NOT_INTEGRATED → TCC implemented). Added mercader_commercial_offers table to mercader-bos/agent-server/store/agent-server.db (additive, no schema changes to existing tables). Added 4 HTTP endpoints: POST /api/mercader/offers, GET /api/mercader/offers, GET /api/mercader/offers/:offerId, POST /api/mercader/offers/:offerId/transition. Added maybeAcceptOfferAndRequirePayment() and onOfferPaid() bridges in mercader-fabrica-bridge.ts linking ACCEPTED→PAYMENT_REQUIRED→ORDER and PAYMENT_PENDING→PAID→fulfillment. Typecheck/build/pass tests (commercial.test.mjs 2/2). E2E synthetic: 8/8 steps. AQA receipt: tools/aqa-kit/evidence/mercader-agent-server-integration/working-tree/2026-08-20T03-20-00-000Z (PASS). Handoff pw-8e49c093db4a CLOSED with integration. Blockers externos: credencial mensajería real, cuenta Polar + llaves, cliente/pago real. Distance to first revenue: zero technical blockers.
+2026-08-20 TCC integration. Handoff pw-8e49c093db4a consumed (TCX ACK_REVIEWED_NOT_INTEGRATED → TCC implemented). Added mercader_commercial_offers table to mercader-bos/agent-server/store/agent-server.db (additive, no schema changes to existing tables). Added 4 HTTP endpoints: POST /api/mercader/offers, GET /api/mercader/offers, GET /api/mercader/offers/:offerId, POST /api/mercader/offers/:offerId/transition. Added maybeAcceptOfferAndRequirePayment() and onOfferPaid() bridges in mercader-fabrica-bridge.ts linking ACCEPTED→PAYMENT_REQUIRED→ORDER and PAYMENT_PENDING→PAID→fulfillment. Typecheck/build/pass tests (commercial.test.mjs 2/2). E2E synthetic: 8/8 steps. AQA receipt: tools/aqa-kit/evidence/mercader-agent-server-integration/working-tree/2026-08-20T03-20-00-000Z (PASS). Handoff pw-8e49c093db4a CLOSED with integration. Blockers externos: credencial mensajería real, cuenta Polar + llaves, cliente/pago real. Distance to first revenue: zero technical blockers. LIFECYCLE: CLOSED by TCC 2026-08-20.
 
 ---
 
@@ -442,11 +442,11 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### MERCADER messaging seam: Meta WhatsApp adapter ready for credential
+### [CLOSED] MERCADER commercial offer integration — agent-server complete
 **Type:** architecture  
 **Project:** dfl  
 
-2026-08-20 TCC integration. Handoff pw-8e49c093db4a consumed (TCX ACK_REVIEWED_NOT_INTEGRATED → TCC implemented). Added mercader_commercial_offers table to mercader-bos/agent-server/store/agent-server.db (additive, no schema changes to existing tables). Added 4 HTTP endpoints: POST /api/mercader/offers, GET /api/mercader/offers, GET /api/mercader/offers/:offerId, POST /api/mercader/offers/:offerId/transition. Added maybeAcceptOfferAndRequirePayment() and onOfferPaid() bridges in mercader-fabrica-bridge.ts linking ACCEPTED→PAYMENT_REQUIRED→ORDER and PAYMENT_PENDING→PAID→fulfillment. Typecheck/build/pass tests (commercial.test.mjs 2/2). E2E synthetic: 8/8 steps. AQA receipt: tools/aqa-kit/evidence/mercader-agent-server-integration/working-tree/2026-08-20T03-20-00-000Z (PASS). Handoff pw-8e49c093db4a CLOSED with integration. Blockers externos: credencial mensajería real, cuenta Polar + llaves, cliente/pago real. Distance to first revenue: zero technical blockers.
+2026-08-20 TCC integration. Handoff pw-8e49c093db4a consumed (TCX ACK_REVIEWED_NOT_INTEGRATED → TCC implemented). Added mercader_commercial_offers table to mercader-bos/agent-server/store/agent-server.db (additive, no schema changes to existing tables). Added 4 HTTP endpoints: POST /api/mercader/offers, GET /api/mercader/offers, GET /api/mercader/offers/:offerId, POST /api/mercader/offers/:offerId/transition. Added maybeAcceptOfferAndRequirePayment() and onOfferPaid() bridges in mercader-fabrica-bridge.ts linking ACCEPTED→PAYMENT_REQUIRED→ORDER and PAYMENT_PENDING→PAID→fulfillment. Typecheck/build/pass tests (commercial.test.mjs 2/2). E2E synthetic: 8/8 steps. AQA receipt: tools/aqa-kit/evidence/mercader-agent-server-integration/working-tree/2026-08-20T03-20-00-000Z (PASS). Handoff pw-8e49c093db4a CLOSED with integration. Blockers externos: credencial mensajería real, cuenta Polar + llaves, cliente/pago real. Distance to first revenue: zero technical blockers. LIFECYCLE: CLOSED by TCC 2026-08-20.
 
 ### MERCADER first-revenue gap: commercial contract and messaging seam
 **Type:** architecture  
@@ -569,4 +569,4 @@ Handoff to TCC: pw-8e49c093db4a, requested minimal integration in MERCADER agent
 
 ---
 
-*Mirror auto-generated 2026-08-20T04:03:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T04:03:47Z | La Garra → DFLghub/amos-context*
