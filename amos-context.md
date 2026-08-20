@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T21:30:53Z  
+**Generated:** 2026-08-20T22:54:41Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -587,4 +587,4 @@ CC genérica de recuperación (PID 2103311, esta sesión) se cierra al final de 
 
 ---
 
-*Mirror auto-generated 2026-08-20T21:30:53Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T22:54:41Z | La Garra → DFLghub/amos-context*
