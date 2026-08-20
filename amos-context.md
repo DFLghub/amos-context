@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T01:12:38Z  
+**Generated:** 2026-08-20T01:14:33Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,28 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### MERCADER R-B rebuilt + hard retry cap — real code, tests, AQA, committed (ef264e7/c5ae253/ded3946)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/mercader/r-b-sla-escalation-retry-cap
+STATUS: closed
+DATE: 2026-08-20
+
+WHAT: "Fase 68" in Jorge's prompt was confirmed by Jorge himself mid-session to be an error ("fase 68 es un error. Sigue donde ibamos") -- it did not exist anywhere in Engram/IRONMAN.md/MERCADER docs before this session (verified: the only hits were inside this very session's own search transcript). Correctly did not invent a definition per the session's own rule 0; continued from the real, verified continuation point instead: mercader-handoff-lenovo-to-imac-2026-08-20.md, whose named next unblocked action (no authorization needed, per Jorge's "Fabrica decide, no pregunta" mandate in the 2026-08-19 checkpoint) was rebuilding R-B's SLA/escalation module with a hard retry cap -- the 2026-08-19 sandbox version lived only in /tmp/mercader-verify-fork/ and was lost.
+
+BUILT: tools/mercader-autonomy/sla.mjs (SLA_HOURS/isBreached adapted unmodified from tools/manager.mjs's Challenge Manager pattern, per the checkpoint's own adaptation-not-invention instruction, to a MERCADER SENT:72h/PROSPECT_REPLIED:24h/ESCALATED:12h enum) + canContact()/recordContactAttempt() (new: hard cap, default 3 contacts, moves a case to terminal MAX_CONTACTS_REACHED that no future SLA breach -- tested 1 year out -- can override) + sla_store.mjs (additive-only persistence: new mercader_sla_cases table in the real mercader-bos/agent-server/store/agent-server.db, does not touch mercader_leads or R1/R2, via node:sqlite -- no new npm dependency).
+
+EVIDENCE: 14/14 tests (node --test tools/mercader-autonomy/test/{sla,sla_store}.test.mjs), including a real E2E run against the live production DB (additive, verified mercader_leads row count unaffected, test row cleaned up after itself) and a lifecycle test proving terminal state survives a process restart and stays terminal arbitrarily far in the future. AQA: selected via `aqa select` (product=alto -> AQA-3), but AQA-3's incremental requirement (Playwright/ZAP) is genuinely not-applicable (this is a backend-only library/store with no UI or deployed URL) -- ran AQA-2/CRUD_LIFECYCLE with real checks (not stubs): status PASS, profiles covered=[CRUD_LIFECYCLE] missing=[]; recorded AQA-3 explicitly as NOT_APPLICABLE with a stated reason rather than silently skipping it or faking a --target. Receipts at tools/aqa-kit/evidence/mercader/rb-sla-retry-cap/.
+
+COOPERATION WITH TCX: inspected the real peer-work queue first (67 items, nothing PENDING/in-flight on MERCADER at session start -- no duplication risk). Delegated an independent subproblem (R-F2: machine-readable capacity/priority representation of Jorge, also named unblocked in the same handoff) to TCX via a real peer-work item (pw-0dcf05f9d193, authority_ref=human=telegram:8776472165, PENDING as of this observation -- will be picked up by the existing */10 cron activation, no further action needed from TCC or Jorge). TCC acted as the causal-path builder/integrator for R-B itself, consistent with the session's own "TCC constructor/integrador, TCX puede excavar subproblemas independientes" instruction.
+
+COMMITS (repo root /opt/saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge): ef264e7 (sla.mjs/sla_store.mjs/tests/aqa checks + committing the previously-uncommitted ack_callback.py R1/R2 module), c5ae253 (asset-index registration: dfl.mercader.sla-escalation-retry-cap.v0, 29 assets/0 errors/7-7 tests), ded3946 (IRONMAN.md row).
+
+NOT DONE / genuinely blocked, not attempted: wiring this module to a live outbound messaging channel/scheduler -- still requires the messaging credential Jorge has not yet provisioned (same blocker named in the 2026-08-19 checkpoint, unchanged). No real prospect was contacted; no money moved; Q0 for MERCADER remains unsatisfied, unchanged from the prior checkpoint. R-F2 (delegated to TCX) not yet complete as of this observation -- check pw-0dcf05f9d193's status before assuming it's done in a future session.
+
+Full context, do not re-litigate: [[mercader-handoff-lenovo-to-imac-2026-08-20]], [[mercader-qr-checkpoint-2026-08-19]].
+
 ### chatgpt-md-exporter built — core proven (13/13 tests), real E2E pending Jorge's one manual action
 **Type:** decision  
 **Project:** dfl  
@@ -142,31 +164,6 @@ TEST RESULTS: `node --test test/core.test.cjs` -> 13/13 pass, including a 500-tu
 NOT DONE YET / explicitly deferred: real E2E against a live chatgpt.com session. This requires Jorge's own authenticated browser tab (session/cookies this agent correctly does not have and should not be given, per NO_TOUCH "no exponer cookies/tokens/secrets"). Asked Jorge to install the userscript and click export once on a real long conversation, then report: turn count, first/last message, filename, OK/FAILED status. Optional HTML/PDF export explicitly NOT built yet, per Jorge's own scope note ("solo despues de .md PROVEN").
 
 No git commit made (not requested). No Supabase/Vercel/MERCADER/SFV5-app credentials touched. Distinct topic from the already-CLOSED tcc-provider/OpenRouter work (obs #538) — do not conflate the two in future sessions.
-
-### CC verified OpenRouter/Qwen E2E for tcc-provider (dfl-tony key), independent of TCX's report
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/tcc-provider-openrouter-e2e
-STATUS: closed
-DATE: 2026-08-19
-
-WHAT: CC (this session, resumed after credit exhaustion) independently re-verified the OpenRouter/Qwen E2E capability that TCX built and reported earlier the same day (HANDOFF-TCC-PROVIDER-OPENROUTER-ACTIVATION-2026-08-19.md), per Jorge's explicit instruction to close the E2E test now with evidence, not configuration, and per standing rule "verify, don't trust" (re-execute, never re-validate from a prior report alone).
-
-VERIFIED FRESH (own execution, own timestamps, distinct from TCX's runs):
-1. provider=openrouter, model=open_router/qwen/qwen3-coder-next, credential=dedicated — `tcc-provider status` before and after.
-2. Ran `tcc-provider run -p 'Responde unicamente: TCC_OPENROUTER_E2E_CC_VERIFY_1'` — correct output, proxy POST /v1/messages 200 OK.
-3. Confirmed via free-claude-code's server.log (JSON, separate from tcc-provider's proxy.log/provider.log): OPENROUTER_UPSTREAM_ACCEPTED status=200 generation_id=gen-1787183353-45z8l6ZLtnlrLQ0PM4RZ, model=qwen/qwen3-coder-next throughout, zero Anthropic markers.
-4. Queried OpenRouter API directly (GET /api/v1/generation?id=...) for that generation_id: model=qwen/qwen3-coder-next-2025-02-03, provider=Parasail, status 200, total_cost=0.0029268, finish_reason=stop — independent proof, not just local logs.
-5. Checked key usage via GET /api/v1/auth/key on the dedicated Tony key (never printed the raw key, only masked label + JSON usage fields): usage rose from 0.0099818 (TCX's baseline) after this session's calls.
-6. Ran a second, separate `tcc-provider run` with `--allowedTools "Bash(echo:*)"` asking it to invoke the Bash tool for a trivial non-destructive `echo` — real tool-call executed, second generation_id=gen-1787183418-eZWEnCOiFzv6lgr1JvYC independently confirmed via OpenRouter API (cost 0.00356472, provider Parasail, status 200) — satisfies the "minimal safe tool-call" criterion.
-7. Ran `tcc-provider status` again after both `run` invocations (each a fresh `claude` process) — provider/model/credential persisted correctly across restarts, no drift back to anthropic.
-
-NOT DONE / not claimed: no failover automation added, no change to `dfl-tcc` vs `dfl-tony` namespace split (TCX left config/state dirs as `dfl-tcc`, only key_file path is `dfl-tony` — cosmetic, non-blocking, flagged to Jorge but not touched), no modification to Supabase/Vercel/MERCADER/SFV5 app credentials, no reuse of the SFV5 bootstrap OPENROUTER_API_KEY.
-
-WHY IT MATTERS: This is the second independent confirmation (CC after TCX) that the OpenRouter/Qwen route for tcc-provider is real, live, and safe to use going forward for Tony/TCC capability work without touching Anthropic credit.
-
-NEXT: Jorge said after this closes, resume the ChatGPT→Markdown exporter (still cold, no spec yet — needs source format/output location/naming from Jorge before any build starts).
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -257,11 +254,30 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### TCC OpenRouter Tony route activated E2E
-**Type:** architecture  
+### CC verified OpenRouter/Qwen E2E for tcc-provider (dfl-tony key), independent of TCX's report
+**Type:** decision  
 **Project:** dfl  
 
-Activated the TCC-only OpenRouter route using the dedicated Tony credential at the institutional path /home/dflagent/.config/dfl-tony/openrouter.key; secret value was never exposed. Selector policy persists provider=openrouter with model open_router/qwen/qwen3-coder-next and reports credential=dedicated. Fresh tcc-provider runs returned TCC_OPENROUTER_E2E_OK and TCC_OPENROUTER_RESTART_OK. OpenRouter generation metadata and usage delta confirmed real upstream consumption. No Anthropic route, SFV5 app credential, Supabase, Vercel, or MERCADER routing was changed. Automatic hot failover remains intentionally unsupported; switching is by new process.
+TOPIC: dfl/saas-factory/tcc-provider-openrouter-e2e
+STATUS: closed
+DATE: 2026-08-19
+
+WHAT: CC (this session, resumed after credit exhaustion) independently re-verified the OpenRouter/Qwen E2E capability that TCX built and reported earlier the same day (HANDOFF-TCC-PROVIDER-OPENROUTER-ACTIVATION-2026-08-19.md), per Jorge's explicit instruction to close the E2E test now with evidence, not configuration, and per standing rule "verify, don't trust" (re-execute, never re-validate from a prior report alone).
+
+VERIFIED FRESH (own execution, own timestamps, distinct from TCX's runs):
+1. provider=openrouter, model=open_router/qwen/qwen3-coder-next, credential=dedicated — `tcc-provider status` before and after.
+2. Ran `tcc-provider run -p 'Responde unicamente: TCC_OPENROUTER_E2E_CC_VERIFY_1'` — correct output, proxy POST /v1/messages 200 OK.
+3. Confirmed via free-claude-code's server.log (JSON, separate from tcc-provider's proxy.log/provider.log): OPENROUTER_UPSTREAM_ACCEPTED status=200 generation_id=gen-1787183353-45z8l6ZLtnlrLQ0PM4RZ, model=qwen/qwen3-coder-next throughout, zero Anthropic markers.
+4. Queried OpenRouter API directly (GET /api/v1/generation?id=...) for that generation_id: model=qwen/qwen3-coder-next-2025-02-03, provider=Parasail, status 200, total_cost=0.0029268, finish_reason=stop — independent proof, not just local logs.
+5. Checked key usage via GET /api/v1/auth/key on the dedicated Tony key (never printed the raw key, only masked label + JSON usage fields): usage rose from 0.0099818 (TCX's baseline) after this session's calls.
+6. Ran a second, separate `tcc-provider run` with `--allowedTools "Bash(echo:*)"` asking it to invoke the Bash tool for a trivial non-destructive `echo` — real tool-call executed, second generation_id=gen-1787183418-eZWEnCOiFzv6lgr1JvYC independently confirmed via OpenRouter API (cost 0.00356472, provider Parasail, status 200) — satisfies the "minimal safe tool-call" criterion.
+7. Ran `tcc-provider status` again after both `run` invocations (each a fresh `claude` process) — provider/model/credential persisted correctly across restarts, no drift back to anthropic.
+
+NOT DONE / not claimed: no failover automation added, no change to `dfl-tcc` vs `dfl-tony` namespace split (TCX left config/state dirs as `dfl-tcc`, only key_file path is `dfl-tony` — cosmetic, non-blocking, flagged to Jorge but not touched), no modification to Supabase/Vercel/MERCADER/SFV5 app credentials, no reuse of the SFV5 bootstrap OPENROUTER_API_KEY.
+
+WHY IT MATTERS: This is the second independent confirmation (CC after TCX) that the OpenRouter/Qwen route for tcc-provider is real, live, and safe to use going forward for Tony/TCC capability work without touching Anthropic credit.
+
+NEXT: Jorge said after this closes, resume the ChatGPT→Markdown exporter (still cold, no spec yet — needs source format/output location/naming from Jorge before any build starts).
 
 ---
 
@@ -445,6 +461,28 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### MERCADER R-B rebuilt + hard retry cap — real code, tests, AQA, committed (ef264e7/c5ae253/ded3946)
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/mercader/r-b-sla-escalation-retry-cap
+STATUS: closed
+DATE: 2026-08-20
+
+WHAT: "Fase 68" in Jorge's prompt was confirmed by Jorge himself mid-session to be an error ("fase 68 es un error. Sigue donde ibamos") -- it did not exist anywhere in Engram/IRONMAN.md/MERCADER docs before this session (verified: the only hits were inside this very session's own search transcript). Correctly did not invent a definition per the session's own rule 0; continued from the real, verified continuation point instead: mercader-handoff-lenovo-to-imac-2026-08-20.md, whose named next unblocked action (no authorization needed, per Jorge's "Fabrica decide, no pregunta" mandate in the 2026-08-19 checkpoint) was rebuilding R-B's SLA/escalation module with a hard retry cap -- the 2026-08-19 sandbox version lived only in /tmp/mercader-verify-fork/ and was lost.
+
+BUILT: tools/mercader-autonomy/sla.mjs (SLA_HOURS/isBreached adapted unmodified from tools/manager.mjs's Challenge Manager pattern, per the checkpoint's own adaptation-not-invention instruction, to a MERCADER SENT:72h/PROSPECT_REPLIED:24h/ESCALATED:12h enum) + canContact()/recordContactAttempt() (new: hard cap, default 3 contacts, moves a case to terminal MAX_CONTACTS_REACHED that no future SLA breach -- tested 1 year out -- can override) + sla_store.mjs (additive-only persistence: new mercader_sla_cases table in the real mercader-bos/agent-server/store/agent-server.db, does not touch mercader_leads or R1/R2, via node:sqlite -- no new npm dependency).
+
+EVIDENCE: 14/14 tests (node --test tools/mercader-autonomy/test/{sla,sla_store}.test.mjs), including a real E2E run against the live production DB (additive, verified mercader_leads row count unaffected, test row cleaned up after itself) and a lifecycle test proving terminal state survives a process restart and stays terminal arbitrarily far in the future. AQA: selected via `aqa select` (product=alto -> AQA-3), but AQA-3's incremental requirement (Playwright/ZAP) is genuinely not-applicable (this is a backend-only library/store with no UI or deployed URL) -- ran AQA-2/CRUD_LIFECYCLE with real checks (not stubs): status PASS, profiles covered=[CRUD_LIFECYCLE] missing=[]; recorded AQA-3 explicitly as NOT_APPLICABLE with a stated reason rather than silently skipping it or faking a --target. Receipts at tools/aqa-kit/evidence/mercader/rb-sla-retry-cap/.
+
+COOPERATION WITH TCX: inspected the real peer-work queue first (67 items, nothing PENDING/in-flight on MERCADER at session start -- no duplication risk). Delegated an independent subproblem (R-F2: machine-readable capacity/priority representation of Jorge, also named unblocked in the same handoff) to TCX via a real peer-work item (pw-0dcf05f9d193, authority_ref=human=telegram:8776472165, PENDING as of this observation -- will be picked up by the existing */10 cron activation, no further action needed from TCC or Jorge). TCC acted as the causal-path builder/integrator for R-B itself, consistent with the session's own "TCC constructor/integrador, TCX puede excavar subproblemas independientes" instruction.
+
+COMMITS (repo root /opt/saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge): ef264e7 (sla.mjs/sla_store.mjs/tests/aqa checks + committing the previously-uncommitted ack_callback.py R1/R2 module), c5ae253 (asset-index registration: dfl.mercader.sla-escalation-retry-cap.v0, 29 assets/0 errors/7-7 tests), ded3946 (IRONMAN.md row).
+
+NOT DONE / genuinely blocked, not attempted: wiring this module to a live outbound messaging channel/scheduler -- still requires the messaging credential Jorge has not yet provisioned (same blocker named in the 2026-08-19 checkpoint, unchanged). No real prospect was contacted; no money moved; Q0 for MERCADER remains unsatisfied, unchanged from the prior checkpoint. R-F2 (delegated to TCX) not yet complete as of this observation -- check pw-0dcf05f9d193's status before assuming it's done in a future session.
+
+Full context, do not re-litigate: [[mercader-handoff-lenovo-to-imac-2026-08-20]], [[mercader-qr-checkpoint-2026-08-19]].
+
 ### chatgpt-md-exporter built — core proven (13/13 tests), real E2E pending Jorge's one manual action
 **Type:** decision  
 **Project:** dfl  
@@ -471,31 +509,6 @@ TEST RESULTS: `node --test test/core.test.cjs` -> 13/13 pass, including a 500-tu
 NOT DONE YET / explicitly deferred: real E2E against a live chatgpt.com session. This requires Jorge's own authenticated browser tab (session/cookies this agent correctly does not have and should not be given, per NO_TOUCH "no exponer cookies/tokens/secrets"). Asked Jorge to install the userscript and click export once on a real long conversation, then report: turn count, first/last message, filename, OK/FAILED status. Optional HTML/PDF export explicitly NOT built yet, per Jorge's own scope note ("solo despues de .md PROVEN").
 
 No git commit made (not requested). No Supabase/Vercel/MERCADER/SFV5-app credentials touched. Distinct topic from the already-CLOSED tcc-provider/OpenRouter work (obs #538) — do not conflate the two in future sessions.
-
-### CC verified OpenRouter/Qwen E2E for tcc-provider (dfl-tony key), independent of TCX's report
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/tcc-provider-openrouter-e2e
-STATUS: closed
-DATE: 2026-08-19
-
-WHAT: CC (this session, resumed after credit exhaustion) independently re-verified the OpenRouter/Qwen E2E capability that TCX built and reported earlier the same day (HANDOFF-TCC-PROVIDER-OPENROUTER-ACTIVATION-2026-08-19.md), per Jorge's explicit instruction to close the E2E test now with evidence, not configuration, and per standing rule "verify, don't trust" (re-execute, never re-validate from a prior report alone).
-
-VERIFIED FRESH (own execution, own timestamps, distinct from TCX's runs):
-1. provider=openrouter, model=open_router/qwen/qwen3-coder-next, credential=dedicated — `tcc-provider status` before and after.
-2. Ran `tcc-provider run -p 'Responde unicamente: TCC_OPENROUTER_E2E_CC_VERIFY_1'` — correct output, proxy POST /v1/messages 200 OK.
-3. Confirmed via free-claude-code's server.log (JSON, separate from tcc-provider's proxy.log/provider.log): OPENROUTER_UPSTREAM_ACCEPTED status=200 generation_id=gen-1787183353-45z8l6ZLtnlrLQ0PM4RZ, model=qwen/qwen3-coder-next throughout, zero Anthropic markers.
-4. Queried OpenRouter API directly (GET /api/v1/generation?id=...) for that generation_id: model=qwen/qwen3-coder-next-2025-02-03, provider=Parasail, status 200, total_cost=0.0029268, finish_reason=stop — independent proof, not just local logs.
-5. Checked key usage via GET /api/v1/auth/key on the dedicated Tony key (never printed the raw key, only masked label + JSON usage fields): usage rose from 0.0099818 (TCX's baseline) after this session's calls.
-6. Ran a second, separate `tcc-provider run` with `--allowedTools "Bash(echo:*)"` asking it to invoke the Bash tool for a trivial non-destructive `echo` — real tool-call executed, second generation_id=gen-1787183418-eZWEnCOiFzv6lgr1JvYC independently confirmed via OpenRouter API (cost 0.00356472, provider Parasail, status 200) — satisfies the "minimal safe tool-call" criterion.
-7. Ran `tcc-provider status` again after both `run` invocations (each a fresh `claude` process) — provider/model/credential persisted correctly across restarts, no drift back to anthropic.
-
-NOT DONE / not claimed: no failover automation added, no change to `dfl-tcc` vs `dfl-tony` namespace split (TCX left config/state dirs as `dfl-tcc`, only key_file path is `dfl-tony` — cosmetic, non-blocking, flagged to Jorge but not touched), no modification to Supabase/Vercel/MERCADER/SFV5 app credentials, no reuse of the SFV5 bootstrap OPENROUTER_API_KEY.
-
-WHY IT MATTERS: This is the second independent confirmation (CC after TCX) that the OpenRouter/Qwen route for tcc-provider is real, live, and safe to use going forward for Tony/TCC capability work without touching Anthropic credit.
-
-NEXT: Jorge said after this closes, resume the ChatGPT→Markdown exporter (still cold, no spec yet — needs source format/output location/naming from Jorge before any build starts).
 
 ---
 
@@ -606,4 +619,4 @@ NEXT: Jorge said after this closes, resume the ChatGPT→Markdown exporter (stil
 
 ---
 
-*Mirror auto-generated 2026-08-20T01:12:38Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T01:14:33Z | La Garra → DFLghub/amos-context*
