@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-20T02:21:27Z  
+**Generated:** 2026-08-20T02:31:30Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -254,13 +254,17 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### MERCADER organismo bidireccional: receptor peer-work y wake-up E2E
+### MERCADER first-revenue gap: commercial contract and messaging seam
 **Type:** architecture  
 **Project:** dfl  
 
-2026-08-20 TCX cerró el blocker estructural del circuito MERCADER↔FÁBRICA sin crear plataforma nueva. Se reutiliza tools/peer-work como ledger único y se añadieron campos aditivos correlation_id, priority, owner, idempotency_key, delivery, retry, ACK/NACK y successor wake-up. tools/mercader-autonomy/peer_receiver.py es el executor headless MERCADER: verifica autoridad viva vía peer_work.py, reclama bajo flock, acepta sólo capacidades allowlisted organism_circuit_probe/receipt, y fail-closed ante intent/capability ambiguos. activate-peer.sh ahora despierta MERCADER mediante ese receptor; TCC/TCX conservan sus activadores.
+2026-08-20 live checkpoint. TCX excavation via peer-work pw-ebf8df5202c6 found: LEAD intake PROVEN; offer/package NONEXISTENT; quote/price/customer acceptance NONEXISTENT; billing BUILT_NOT_E2E (SocialFlow Stripe asset only, not connected); fulfillment BUILT_NOT_E2E for real revenue (synthetic/test only); outbound prospect messaging absent/provider-neutral seam absent. Telegram/BOS is PROVEN only for operator phone↔Factory, not prospect outreach.
 
-Runtime E2E positivo FÁBRICA→MERCADER→FÁBRICA: request pw-bf5d08b8f244, correlation corr-tcx-mercader-20260820; TCX creó, MERCADER obtuvo owner y consumió, generó ACK pw-a5b5fbb8b7c5, wake started y TCX completó. Padre final COMPLETED/DELIVERED/ACK durable. Negativo pw-55c146b62322, correlation corr-tcx-mercader-nack-20260820: capability no allowlisted produjo MERCADER_NACK pw-bca4e48a2b61 y ack=NACK durable, sin ejecución. TCC→TCX→ACK previo pw-177e08091b3a/pw-1054b8099e2a. AQA-1 PASS en tools/aqa-kit/evidence/mercader-organism-circuit/peer-work-correlation-wakeup/working-tree/2026-08-20T01-16-21-407Z. Documentación: docs/patterns/mercader-organism-circuit-2026/VALIDATION.md e IRONMAN row 2026-08-20. No se tocaron Supabase, Vercel, env vars, templates, cron protegido ni R1/R2 funcional. Límite explícito: nuevas capacidades de negocio requieren handler allowlisted/AQA; nunca instrucciones libres.
+TCX built provider-neutral messaging seam in tools/mercader-autonomy/{messaging_contract.mjs,messaging_store.mjs,MESSAGING_SEAM.md,test/messaging.test.mjs}: durable additive mercader_message_outbox in existing local SQLite, QUEUED/SENDING/SENT/DELIVERED/FAILED/BLOCKED, idempotency, atomic claim, provider message ID, retry classification, exact canary allowlist, consentRef, dry-run and no-secret fail-closed. Real schema created additively; 3/3 tests PASS.
+
+TCX built minimal provider-neutral commercial contract in tools/mercader-autonomy/{commercial_contract.mjs,commercial_store.mjs,COMMERCIAL_CONTRACT.md,test/commercial.test.mjs}: lead/correlation/package/amount_minor/currency, DRAFT→OFFERED→ACCEPTED→PAYMENT_REQUIRED→PAYMENT_PENDING→PAID→FULFILLMENT_PENDING→FULFILLED; customer acceptance ref and verified payment ref mandatory; no Mercury/Stripe/bank/money assumed. Additive local SQLite table mercader_commercial_offers, idempotent and durable after reopen. 2/2 tests PASS. AQA-2 PASS receipt: tools/aqa-kit/evidence/mercader-revenue-seams/messaging-and-commercial-contract/working-tree/2026-08-20T02-23-06-088Z.
+
+Handoff to TCC: pw-8e49c093db4a, requested minimal integration in MERCADER agent-server preserving /convert compatibility, no R1/R2/provider/bank changes. TCC activation attempted but Claude monthly spend limit blocked before claim; item remains PENDING, no integration claimed. External blockers: Jorge must provision real prospect channel credential/consent; Stripe/provider account/config or Mercury readiness; no live contact/payment proven. No secrets or contacts used.
 
 ---
 
@@ -444,6 +448,18 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### MERCADER first-revenue gap: commercial contract and messaging seam
+**Type:** architecture  
+**Project:** dfl  
+
+2026-08-20 live checkpoint. TCX excavation via peer-work pw-ebf8df5202c6 found: LEAD intake PROVEN; offer/package NONEXISTENT; quote/price/customer acceptance NONEXISTENT; billing BUILT_NOT_E2E (SocialFlow Stripe asset only, not connected); fulfillment BUILT_NOT_E2E for real revenue (synthetic/test only); outbound prospect messaging absent/provider-neutral seam absent. Telegram/BOS is PROVEN only for operator phone↔Factory, not prospect outreach.
+
+TCX built provider-neutral messaging seam in tools/mercader-autonomy/{messaging_contract.mjs,messaging_store.mjs,MESSAGING_SEAM.md,test/messaging.test.mjs}: durable additive mercader_message_outbox in existing local SQLite, QUEUED/SENDING/SENT/DELIVERED/FAILED/BLOCKED, idempotency, atomic claim, provider message ID, retry classification, exact canary allowlist, consentRef, dry-run and no-secret fail-closed. Real schema created additively; 3/3 tests PASS.
+
+TCX built minimal provider-neutral commercial contract in tools/mercader-autonomy/{commercial_contract.mjs,commercial_store.mjs,COMMERCIAL_CONTRACT.md,test/commercial.test.mjs}: lead/correlation/package/amount_minor/currency, DRAFT→OFFERED→ACCEPTED→PAYMENT_REQUIRED→PAYMENT_PENDING→PAID→FULFILLMENT_PENDING→FULFILLED; customer acceptance ref and verified payment ref mandatory; no Mercury/Stripe/bank/money assumed. Additive local SQLite table mercader_commercial_offers, idempotent and durable after reopen. 2/2 tests PASS. AQA-2 PASS receipt: tools/aqa-kit/evidence/mercader-revenue-seams/messaging-and-commercial-contract/working-tree/2026-08-20T02-23-06-088Z.
+
+Handoff to TCC: pw-8e49c093db4a, requested minimal integration in MERCADER agent-server preserving /convert compatibility, no R1/R2/provider/bank changes. TCC activation attempted but Claude monthly spend limit blocked before claim; item remains PENDING, no integration claimed. External blockers: Jorge must provision real prospect channel credential/consent; Stripe/provider account/config or Mercury readiness; no live contact/payment proven. No secrets or contacts used.
+
 ### MERCADER organismo bidireccional: receptor peer-work y wake-up E2E
 **Type:** architecture  
 **Project:** dfl  
@@ -451,28 +467,6 @@ FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199).
 2026-08-20 TCX cerró el blocker estructural del circuito MERCADER↔FÁBRICA sin crear plataforma nueva. Se reutiliza tools/peer-work como ledger único y se añadieron campos aditivos correlation_id, priority, owner, idempotency_key, delivery, retry, ACK/NACK y successor wake-up. tools/mercader-autonomy/peer_receiver.py es el executor headless MERCADER: verifica autoridad viva vía peer_work.py, reclama bajo flock, acepta sólo capacidades allowlisted organism_circuit_probe/receipt, y fail-closed ante intent/capability ambiguos. activate-peer.sh ahora despierta MERCADER mediante ese receptor; TCC/TCX conservan sus activadores.
 
 Runtime E2E positivo FÁBRICA→MERCADER→FÁBRICA: request pw-bf5d08b8f244, correlation corr-tcx-mercader-20260820; TCX creó, MERCADER obtuvo owner y consumió, generó ACK pw-a5b5fbb8b7c5, wake started y TCX completó. Padre final COMPLETED/DELIVERED/ACK durable. Negativo pw-55c146b62322, correlation corr-tcx-mercader-nack-20260820: capability no allowlisted produjo MERCADER_NACK pw-bca4e48a2b61 y ack=NACK durable, sin ejecución. TCC→TCX→ACK previo pw-177e08091b3a/pw-1054b8099e2a. AQA-1 PASS en tools/aqa-kit/evidence/mercader-organism-circuit/peer-work-correlation-wakeup/working-tree/2026-08-20T01-16-21-407Z. Documentación: docs/patterns/mercader-organism-circuit-2026/VALIDATION.md e IRONMAN row 2026-08-20. No se tocaron Supabase, Vercel, env vars, templates, cron protegido ni R1/R2 funcional. Límite explícito: nuevas capacidades de negocio requieren handler allowlisted/AQA; nunca instrucciones libres.
-
-### MERCADER R-B rebuilt + hard retry cap — real code, tests, AQA, committed (ef264e7/c5ae253/ded3946)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/mercader/r-b-sla-escalation-retry-cap
-STATUS: closed
-DATE: 2026-08-20
-
-WHAT: "Fase 68" in Jorge's prompt was confirmed by Jorge himself mid-session to be an error ("fase 68 es un error. Sigue donde ibamos") -- it did not exist anywhere in Engram/IRONMAN.md/MERCADER docs before this session (verified: the only hits were inside this very session's own search transcript). Correctly did not invent a definition per the session's own rule 0; continued from the real, verified continuation point instead: mercader-handoff-lenovo-to-imac-2026-08-20.md, whose named next unblocked action (no authorization needed, per Jorge's "Fabrica decide, no pregunta" mandate in the 2026-08-19 checkpoint) was rebuilding R-B's SLA/escalation module with a hard retry cap -- the 2026-08-19 sandbox version lived only in /tmp/mercader-verify-fork/ and was lost.
-
-BUILT: tools/mercader-autonomy/sla.mjs (SLA_HOURS/isBreached adapted unmodified from tools/manager.mjs's Challenge Manager pattern, per the checkpoint's own adaptation-not-invention instruction, to a MERCADER SENT:72h/PROSPECT_REPLIED:24h/ESCALATED:12h enum) + canContact()/recordContactAttempt() (new: hard cap, default 3 contacts, moves a case to terminal MAX_CONTACTS_REACHED that no future SLA breach -- tested 1 year out -- can override) + sla_store.mjs (additive-only persistence: new mercader_sla_cases table in the real mercader-bos/agent-server/store/agent-server.db, does not touch mercader_leads or R1/R2, via node:sqlite -- no new npm dependency).
-
-EVIDENCE: 14/14 tests (node --test tools/mercader-autonomy/test/{sla,sla_store}.test.mjs), including a real E2E run against the live production DB (additive, verified mercader_leads row count unaffected, test row cleaned up after itself) and a lifecycle test proving terminal state survives a process restart and stays terminal arbitrarily far in the future. AQA: selected via `aqa select` (product=alto -> AQA-3), but AQA-3's incremental requirement (Playwright/ZAP) is genuinely not-applicable (this is a backend-only library/store with no UI or deployed URL) -- ran AQA-2/CRUD_LIFECYCLE with real checks (not stubs): status PASS, profiles covered=[CRUD_LIFECYCLE] missing=[]; recorded AQA-3 explicitly as NOT_APPLICABLE with a stated reason rather than silently skipping it or faking a --target. Receipts at tools/aqa-kit/evidence/mercader/rb-sla-retry-cap/.
-
-COOPERATION WITH TCX: inspected the real peer-work queue first (67 items, nothing PENDING/in-flight on MERCADER at session start -- no duplication risk). Delegated an independent subproblem (R-F2: machine-readable capacity/priority representation of Jorge, also named unblocked in the same handoff) to TCX via a real peer-work item (pw-0dcf05f9d193, authority_ref=human=telegram:8776472165, PENDING as of this observation -- will be picked up by the existing */10 cron activation, no further action needed from TCC or Jorge). TCC acted as the causal-path builder/integrator for R-B itself, consistent with the session's own "TCC constructor/integrador, TCX puede excavar subproblemas independientes" instruction.
-
-COMMITS (repo root /opt/saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge): ef264e7 (sla.mjs/sla_store.mjs/tests/aqa checks + committing the previously-uncommitted ack_callback.py R1/R2 module), c5ae253 (asset-index registration: dfl.mercader.sla-escalation-retry-cap.v0, 29 assets/0 errors/7-7 tests), ded3946 (IRONMAN.md row).
-
-NOT DONE / genuinely blocked, not attempted: wiring this module to a live outbound messaging channel/scheduler -- still requires the messaging credential Jorge has not yet provisioned (same blocker named in the 2026-08-19 checkpoint, unchanged). No real prospect was contacted; no money moved; Q0 for MERCADER remains unsatisfied, unchanged from the prior checkpoint. R-F2 (delegated to TCX) not yet complete as of this observation -- check pw-0dcf05f9d193's status before assuming it's done in a future session.
-
-Full context, do not re-litigate: [[mercader-handoff-lenovo-to-imac-2026-08-20]], [[mercader-qr-checkpoint-2026-08-19]].
 
 ---
 
@@ -583,4 +577,4 @@ Full context, do not re-litigate: [[mercader-handoff-lenovo-to-imac-2026-08-20]]
 
 ---
 
-*Mirror auto-generated 2026-08-20T02:21:27Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-20T02:31:30Z | La Garra → DFLghub/amos-context*
