@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-21T02:51:31Z  
+**Generated:** 2026-08-21T03:04:31Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,37 +116,31 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### Preservación ≠ ROI de residencia — criterio institucionalizado, aplicado a Varios-SFV5/BusinessOS (2026-08-21)
+### Cierre institucional 2026-08-21 — JackyClean + arquitectura de residencia VM2
 **Type:** decision  
 **Project:** dfl  
 
-Jorge pidió separar explícitamente dos decisiones que se estaban tratando como una sola: preservación ("¿podemos moverlo de VM2 sin olvidarlo?" -- la compuerta ya probada en docs/patterns/vm2-externalization/METHOD.md) vs. ROI de residencia ("¿conviene moverlo AHORA?" -- decisión del gerente de la Fábrica por evidencia, no regla automática "si está preservado, sácalo").
+Cierre de sesión completa, dos arcos reales del día, ambos con evidencia commiteada y registrada en IRONMAN.md (fca660c):
 
-Institucionalizado en METHOD.md (commit da444a2, saas-factory-setup): factores reales a pesar sin fórmula rígida -- frecuencia/uso reciente, costo real de recuperación (medido, no supuesto), presión sobre el piso de producción, si el patrón de trabajo real ya copia a otro lado antes de tocarlo, impacto en trabajo paralelo. La residencia puede cambiar en ambas direcciones con el tiempo -- un activo puede salir por bajo ROI hoy y volver a materializarse si reaparece una misión que lo explote con frecuencia, precisamente porque la compuerta de recuperación ya demostrada hace ese ida-y-vuelta barato.
+1. JackyClean: gerente digital conversacional transversal con identidad por dueño (bug real de orden de autoridad encontrado y corregido en vivo), autonomía real de campo para empleados (links personales, antes público/impersonable), separación real de credencial dueño/desarrollador (rotación verificada en vivo), regla transversal de entrega de producto (product-handoff, 7/7 checks reales), catálogo de servicios configurable por negocio (FK real, no CHECK hardcoded), y un ensayo real de onboarding de segunda compañía (<10 min, un solo acoplamiento de código real encontrado).
 
-Aplicado en vivo a Varios-SFV5/BusinessOS (56 repos, 4.6GB, ya preservado en github.com/DFLghub/varios-sfv5-donor-material desde la misión anterior): decidí por ROI, no por regla, retirarlo AHORA. Evidencia real: 54/56 piezas sin tocarse en 12 días; el único patrón de trabajo real establecido (external-asset-activation) ya copiaba el material a un workspace propio antes de tocarlo, incluso cuando el dump vivía en VM2 -- la residencia local nunca redujo la fricción real; recuperar una pieza individual ya se midió en segundos; este mismo dump fue el bloque reconstruible-sin-verificar más grande encontrado durante el incidente real de disco lleno de esta semana; IRONMAN.md lista "alguien audite uno de los 54 restantes" como condición especulativa de reapertura, no una misión programada.
+2. VM2/institucional: del incidente real de disco lleno (100%, 0 bytes) a una arquitectura completa de residencia física vs. memoria institucional -- patrón de externalización con compuerta de 5 pasos, campo `residence` en el Asset Index, regeneración automática con raíces dinámicas, gancho de descubrimiento a nivel de usuario (~/.claude/CLAUDE.md, factory-wide). Primer ciclo real (event-rsvp-waitlist) verificado por un agente independiente sin contexto de esta sesión. Doctrina nueva: preservación ≠ ROI de residencia, decisión del gerente de la Fábrica por evidencia. Aplicada al dump de Ricardo con una corrección real en vivo (sesgo de uso histórico detectado por Jorge, hallazgo real de valor sin explotar en business-os-v6) -> residencia híbrida decidida.
 
-Reiterado el pedido a Jorge por Telegram para el paso mecánico final (rm -rf, sigo sin permiso de escritura en ese árbol root:root) -- la decisión de ROI ya está tomada y documentada independientemente de cuándo se ejecute el borrado físico.
+Estado al cierre: disco en 31GB libres/61% (desde 4.2MB libres/100% al inicio del día). Un solo paso mecánico pendiente de Jorge (borrado selectivo del dump de Ricardo, permiso root). Todo lo demás real, verificado, commiteado.
 
-### Externalización del dump de Ricardo (Varios-SFV5/BusinessOS) a github.com/DFLghub/varios-sfv5-donor-material (2026-08-21)
+### Reevaluación: residencia híbrida para BusinessOS — sesgo de uso histórico corregido, business-os-v6 se queda local (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
 
-Decisión explícita de Jorge: el material de Ricardo/makeflowia-lab (56 repos, 4.6GB) ya no es "donor desconocido" sino patrimonio de conocimiento DFL con provenance hacia Ricardo. Ciclo completo de externalización (docs/patterns/vm2-externalization/METHOD.md) aplicado.
+Jorge corrigió la decisión de ROI anterior (retirar todo BusinessOS de VM2): "54/56 sin tocarse en 12 días" era una señal sesgada, porque parte de ese período el material se trató por error como poco prioritario, antes de inspeccionarlo bien.
 
-Inspección real: BusinessOS/ resultó ser totalmente legible (no root-EACCES como se creía institucionalmente hasta hoy -- el bloqueo real está en 13 subdirectorios NO relacionados de otra rama del dump, saas-factory-v5-update/.claude/skills/*). Los 56 subdirectorios son repos git reales, cada uno con remoto real en github.com/makeflowia-lab/<nombre>.
+Reevalué con evidencia prospectiva, no solo uso pasado. Hallazgo real: business-os-v6 (uno de los 2 repos previamente "inspeccionados", pero solo parcialmente) es en realidad un monorepo de 5 verticales empaquetadas: "Automatización de Redes Sociales" (la única activada, como SocialFlow AI), "SaaS B2B para Agencias" (invitación de miembros real, roles OWNER/ADMIN/MEMBER, billing -- directamente relevante al trabajo activo de esta misma semana sobre autoridad/equipo en JackyClean), "meta-google"/CampaignOS (gestor multi-tenant de campañas Meta/Google con reglas automáticas -- relevante para /acquisition), y "bussinesO". Solo 1 de 5 verticales había sido tocada. Verifiqué que este patrón NO se repite en los siblings más cercanos de la misma familia (BOS v2, v3, v4, v7) -- el hallazgo está concentrado, no es evidencia de que los 55 restantes escondan lo mismo.
 
-Verificación uno por uno contra el upstream real (git ls-remote en vivo, no supuesto): 51/56 coinciden byte-a-byte con su remoto real ahora mismo -- documentados con hash+URL en MANIFEST_TABLE.md, sin necesidad de duplicar esos bytes. 3 excepciones reales (business-os/BOS-v5: diverge del upstream; crm-erp-b2b/CRM_ERP_B2B y maquina-contacto-en-frio/Maquina_Frio: upstream privado inalcanzable) preservadas como bundles git completos y reales (no snapshots aplanados), verificados con git bundle verify + clon de prueba.
+Decisión corregida: RESIDENCIA HÍBRIDA. business-os-v6 (26MB, ~0.6% del dump) se queda materializado en VM2 mientras esas 4 verticales siguen siendo candidatas reales de inspección próxima. Los otros 55 repos (~4.57GB, incluido el duplicado "BOS v6" del mismo contenido) se retiran como se había decidido -- sin señal comparable de valor sin explotar.
 
-Hallazgo de licencia: business-os es MIT (Makeflowia Lab, sin problema). Los otros 2 sin licencia explícita -> el nuevo repo se mantiene PRIVADO, no publicado.
+Todo (incluido business-os-v6) ya está preservado y recuperable en github.com/DFLghub/varios-sfv5-donor-material -- la residencia híbrida no reduce la preservación, solo decide qué parte conviene tener a mano ahora mismo.
 
-Nuevo hogar canónico: github.com/DFLghub/varios-sfv5-donor-material (privado, creado por Jorge). Contiene README.md (provenance completa), MANIFEST_TABLE.md (56 filas con hash/upstream/estado), DONOR_TO_CAPABILITY.md (la cadena real BOS v6 -> SocialFlow AI -> comms-registry/conversational-gateway, y WA_CRM muestreado sin activar), bundles/ (los 3 casos reales).
-
-Recuperación probada DOS VECES antes de tocar VM2: (1) clone real del repo nuevo desde GitHub + clone real de uno de sus bundles desde esa copia fresca, hash exacto confirmado; (2) clone directo de wacrm desde su upstream real (github.com/makeflowia-lab/wacrm), hash exacto confirmado. Ambos caminos de recuperación (bundle propio Y upstream original) verificados, no asumidos.
-
-Descubribilidad confirmada post-registro, sin nombrar a Ricardo ni el repo: "donor material", "inventario existencia", "comunicación transversal" (la relación donor->patrón->capacidad) todos encuentran dfl.external.varios-sfv5.businessos-dump.v0; "whatsapp crm" encuentra dfl.external.varios-sfv5.wacrm.v0. Manifiestos dfl.yaml actualizados con residence real, index.json regenerado, 7/7 tests. Commit c39dbeb (saas-factory-setup).
-
-PENDIENTE: retiro físico de la copia local en VM2. No lo pude hacer yo (dflagent no tiene permiso de escritura sobre ese árbol, root:root) -- se lo pedí a Jorge por Telegram con el comando exacto (`rm -rf ".../Varios para SFV5/BusinessOS"`), aclarando que el resto de esa carpeta (.doc, DFL_AUDIT, etc.) es material distinto y no debe tocarse. Todo lo demás del ciclo ya está probado y no depende de ese paso final.
+Corregí a tiempo el pedido de borrado que le había hecho a Jorge (el comando anterior habría borrado también business-os-v6). Verificado: nada se había borrado todavía cuando llegó la corrección -- cero pérdida. Nuevo comando preciso enviado, con exclusión explícita de business-os-v6. Commit e302f32 (saas-factory-setup); doctrina actualizada en docs/patterns/vm2-externalization/METHOD.md con este caso como ejemplo de sesgo de uso histórico corregido.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -237,31 +231,17 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### Segunda pasada de externalización VM2: solo mejoras de descubribilidad, ningún activo nuevo retirado físicamente (2026-08-21)
+### Preservación ≠ ROI de residencia — criterio institucionalizado, aplicado a Varios-SFV5/BusinessOS (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
 
-Aplicando la misma compuerta que probó event-rsvp-waitlist, revisé ~15 candidatos reales adicionales (repos, donors, proyectos cerrados) buscando el segundo activo real a externalizar. Resultado honesto: NINGUNO pasó la compuerta completa hoy para retiro físico.
+Jorge pidió separar explícitamente dos decisiones que se estaban tratando como una sola: preservación ("¿podemos moverlo de VM2 sin olvidarlo?" -- la compuerta ya probada en docs/patterns/vm2-externalization/METHOD.md) vs. ROI de residencia ("¿conviene moverlo AHORA?" -- decisión del gerente de la Fábrica por evidencia, no regla automática "si está preservado, sácalo").
 
-Candidatos revisados y por qué NO pasaron:
-- /opt/jpi: 63 cambios sin commitear + 11 commits sin subir -- trabajo vivo real.
-- /opt/futbolweb-v2: sin repositorio git propio.
-- /opt/futbolweb: .git root:root, fetch con permission-denied -- no puedo verificar sincronización.
-- /opt/amos-context-mirror: es el propio mecanismo de mirror público -- rol operativo activo, no candidato.
-- /opt/dfl-context-proxy: 13 cambios reales sin commitear (rutas de enrutamiento en vivo), fetch permission-denied.
-- /opt/experiments/business-os-new-audit: remoto ajeno (daniel-carreon, no DFLghub) -- provenance no clara para externalizar ahí; además 9 archivos de auditoría real sin commitear.
-- /opt/experiments/sfv5-business-os-pilot: worktree en HEAD desprendido, 3 archivos NUNCA commiteados (business-os/, scripts) -- borrar perdería contenido real jamás guardado en git.
-- /opt/painradar: remoto de una cuenta personal ajena (jairocarrizales) -- provenance/autoridad no clara, descalificado independientemente del tamaño (1.7M, irrelevante).
-- /opt/co-001, /opt/visualizer, /opt/nq-factory, /opt/experiments/jpi-ddms, /opt/experiments/qwen-cbm-sfat: SIN remoto de GitHub configurado -- crear un repo nuevo en DFLghub es una decisión de autoridad que no tomé unilateralmente esta sesión.
-- "Varios para SFV5"/BusinessOS (4.8G, material de Ricardo/makeflowia-lab): root:root con EACCES real en la mayoría de subdirectorios -- no pude verificar integridad/estado de ningún repo individual porque literalmente no puedo leerlos. Correctamente sin tocar, ya catalogado como draft/no-auditado.
+Institucionalizado en METHOD.md (commit da444a2, saas-factory-setup): factores reales a pesar sin fórmula rígida -- frecuencia/uso reciente, costo real de recuperación (medido, no supuesto), presión sobre el piso de producción, si el patrón de trabajo real ya copia a otro lado antes de tocarlo, impacto en trabajo paralelo. La residencia puede cambiar en ambas direcciones con el tiempo -- un activo puede salir por bajo ROI hoy y volver a materializarse si reaparece una misión que lo explote con frecuencia, precisamente porque la compuerta de recuperación ya demostrada hace ese ida-y-vuelta barato.
 
-Hallazgo real y positivo: co-001 y nq-factory YA tienen preservación institucional real de una ola de remediación previa (2026-07-11, "Primera Ola de Remediación DFL", D-4/D-5) -- bundles git cifrados AES256/GPG en /opt/backups/organ-preservation/, con sha256 verificado en su propio MANIFEST.md. Cero descubribilidad (sin dfl.yaml, no en index.json). Les escribí manifiestos que apuntan a ESA preservación existente (no dupliqué el mecanismo con un segundo home distinto). NO retiré sus copias de trabajo de VM2 -- esta sesión no puede descifrar los bundles (passphrase root-only en /root/.config/dfl-organ-backups/passphrases.env) y por lo tanto no puede demostrar personalmente la recuperación (paso 4 del gate). Residencia registrada, retiro físico diferido a quien tenga la passphrase.
+Aplicado en vivo a Varios-SFV5/BusinessOS (56 repos, 4.6GB, ya preservado en github.com/DFLghub/varios-sfv5-donor-material desde la misión anterior): decidí por ROI, no por regla, retirarlo AHORA. Evidencia real: 54/56 piezas sin tocarse en 12 días; el único patrón de trabajo real establecido (external-asset-activation) ya copiaba el material a un workspace propio antes de tocarlo, incluso cuando el dump vivía en VM2 -- la residencia local nunca redujo la fricción real; recuperar una pieza individual ya se midió en segundos; este mismo dump fue el bloque reconstruible-sin-verificar más grande encontrado durante el incidente real de disco lleno de esta semana; IRONMAN.md lista "alguien audite uno de los 54 restantes" como condición especulativa de reapertura, no una misión programada.
 
-Espacio liberado esta pasada: 0 bytes adicionales (la pasada anterior con event-rsvp-waitlist ya liberó 1.2GB; el disco sigue en ~31GB libres / 61% de uso).
-
-Riesgo real de olvido que queda: cero para lo que se tocó (co-001/nq-factory ahora descubribles aunque sigan físicamente en VM2; nada se externalizó sin poder probarlo). El riesgo real pendiente es estructural, no de olvido: varios activos reales y valiosos (co-001, visualizer, nq-factory, jpi-ddms, qwen-cbm-sfat) no tienen remoto de GitHub -- mientras eso no se decida con Jorge, no pueden externalizarse de verdad aunque estén descubribles.
-
-Conclusión: la compuerta bloqueó correctamente en cada caso real -- no es un fallo en encontrar candidatos, es la disciplina funcionando. "Menos cosas en los pasillos, misma capacidad cognitiva" se mantuvo exactamente porque NO forcé ningún movimiento sin evidencia.
+Reiterado el pedido a Jorge por Telegram para el paso mecánico final (rm -rf, sigo sin permiso de escritura en ese árbol root:root) -- la decisión de ROI ya está tomada y documentada independientemente de cuándo se ejecute el borrado físico.
 
 ---
 
@@ -407,75 +387,97 @@ Sesión larga, multi-misión sobre DFL/SFV5/Workforce Registry Unit (WRU) v0.1: 
 - `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/FINAL-VERDICT.md` — matriz completa G1-G44, estado exacto por etapa, veredicto final.
 - `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/HANDOFF-2026-07-31.md` — handoff autosuficiente para continuación por otro agente.
 
-### Session summary: futbolweb-app
+### FASE 2 DECISIÓN — Opción elegida para automatización metabolismo
+**Type:** decision  
+**Project:** dfl  
+
+**What**: Fase 2 (decisión, no implementación) del mandato de actualización del sistema de navegación DFL (Engram/agTopologo/Graphify/KNL). Con base en Fase 0 (mapeo, CC) y Fase 1 (diagnóstico, Codex), se eligió OPCIÓN A: Orchestrator único (`engram-metabolismo.sh`), como wrapper delgado que llama a los scripts existentes (`daily_check.sh`, `regen_graph.sh`, `push_mirror.sh`) sin reescribirlos, agrega audit step de cobertura Engram, reporta (no ejecuta) staleness de Graphify por ausencia de componente instalado, y log único `/var/log/dfl-metabolismo.log`.
+
+metadata.option: A
+metadata.futbolweb_decision: técnica (futbolweb-app es real con 53 obs, futbolweb es legacy con 0 obs — confirmado independientemente por CC Fase 0 y Codex Fase 1)
+
+**Why**: C descartada por mandato explícito de automatización real. B descartada porque el propio diagnóstico ya muestra desincronización activa (autosync systemd + cron 5min sin contrato claro, sync cubriendo proyecto equivocado) — agregar más timers independientes multiplicaría puntos de fallo en vez de centralizarlos. A es además menor esfuerzo real: `regen_graph.sh`/`daily_check.sh` YA encadenan agTopologo→gen_summary→knl_builder→publish, es una extensión, no una reescritura.
+
+**Where**: /home/claude/DECISION_ESTRATEGIA_FASE2.md (justificación completa, riesgos, implementación a alto nivel para Fase 3)
+
+**Learned**:
+- Fix de cobertura de engram-sync-cron.sh (futbolweb→futbolweb-app, +360eventos, +tdf-01) NO requiere autorización adicional de Jorge — no está en la lista NO_TOUCH del contrato DFL (puntajeTigreKnockout, Supabase, Vercel, env vars, templates HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets). Se documenta como cambio atómico separado para Fase 3, no ejecutado en esta fase.
+- Riesgo identificado a vigilar en Fase 3: no tocar el CRON protegido de 3:05am UTC al integrar publish al orquestador — solo invocarlo, nunca reemplazarlo/reagendarlo.
+- No se resuelve en esta fase la ambigüedad autosync vs cron (binario engram cerrado, no auditable) — queda como reporte del audit step, no como fix.
+
+STATUS: active | DECISION_REQUIRED: false | Sin bloqueos. Esperando PROMPT 3 (implementación Fase 3) — no se ejecutó nada del sistema en esta fase.
+
+### Session summary: dfl-knowledge
 **Type:** session_summary  
-**Project:** futbolweb-app  
+**Project:** dfl-knowledge  
 
-## Cierre DFL/KNL/FutbolWeb — 2026-06-27
+## CIERRE DE SESIÓN: FASE 1 DEL PILOTO BOS-JPI IMPLEMENTADA
 
-### Goal
-Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar FutbolWeb limpio de dirty files y factory artifacts.
+### Objetivo
+Implementar Fase 1 del piloto BOS-JPI: infraestructura de persistencia (migraciones), dominio (Little Bosses, Minions, Factory Requests, Lessons) y especificación de contratos HTTP para Fases 2–6.
 
-### Accomplished
-- Engram #101: payload /go slim — graph_context eliminado, knl canónico único en payload
-- cc-atgo-hook.sh: header @go → @$go corregido
-- dfl-nav fmt_brief: mensaje no-match → "sin god_node — intenta la raíz del concepto"
-- FutbolWeb repo limpio: Blueprint audit movido a /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Auditorias/, graphify-out/ eliminado, .gitignore actualizado, commit 3fd5801
-- Engram #102: higiene FutbolWeb documentada
-- Bitácora creada: /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+### Descubrimientos
+- Auditoría selectiva previa validó arquitectura: 70% reutilizable de BOS-JPI, 30% nuevas capacidades
+- SFV5 tiene 32 skills (documentación dice 30) → gap identificado como MISIÓN INDEPENDIENTE (no bloqueante)
+- Rama aislada `fase-1-little-bosses-models` limpia: cero derrames a otras fases
+- Migraciones idempotentes confirmadas (2x ejecución = skipped)
+- AUTHORITY_RULES explícita previene escalamiento implícito a Jorge
 
-### Discoveries
-- graph_context era alias redundante del payload /go — eliminado sin romper consumidores
-- agProtocol_ATP-D_ROJA_v0.1-1: 3 archivos con MD5 idéntico en corpus (duplicados de indexación)
-- "estado" como nombre de god_node produce colisión léxica en español con el grafo
-- Blueprint_v0.6 audit era inconclusa (Blueprint no disponible en VM2) — conservada en Auditorias/
+### Logros
+✅ **3 Migraciones** (008-010): tablas little_bosses, minions, factory_requests, candidate_lessons — todas IF NOT EXISTS idempotentes  
+✅ **2 Modelos de dominio:** little-boss.js (158 LOC, AUTHORITY_RULES explícito, transiciones validadas), minion.js (105 LOC, ciclo lineal pending→executing→terminal)  
+✅ **1 Documento de contratos:** pilot-contracts.md (279 LOC) especificando Fases 2–6 sin implementar  
+✅ **29 Tests nuevos + 27 preexistentes:** 56/56 PASS, regresión 0  
+✅ **Revisión 4R:** PASS (Risk, Readability, Reliability, Resilience) con 1 WARN (Node 22.11+ dependency, env issue no del código)  
+✅ **Alcance estricto:** migrations, models, docs, tests — sin HTTP routes, sin FMD changes, sin SFV5, sin Solopreneur OS  
+✅ **Checkpoint obs-348** guardado en Engram
 
-### Next Steps
-1. FutbolWeb producto — runtime estable, knockout scoring deployado (91a4531)
-2. KNL próximo ciclo — nota stale graph_context en knl_builder.py, health test local, evaluar renombrar estado → context-proxy
-3. MERCADER — agregar a KNL si se activa como área de trabajo
-4. Corpus — eliminar agProtocol duplicados (-1 variants)
+### Siguientes Pasos
+1. **Revisión independiente** (code-review agent distinto del implementador, sin push)
+2. **Aprobación** sin hallazgos bloqueantes
+3. **Merge a main** (rama local, no origin todavía)
+4. **Fase 2:** rutas HTTP (Solopreneur OS, factory-integration, little-bosses)
+5. **Riesgos documentados:** escalamiento sin límite (máx 3/goal), Jorge bottleneck, SFV5 timeout (async polling), divergencia E2E (transaccionalidad)
 
-### Relevant Files
-/opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+### Archivos Relevantes
+- Implementación: /opt/360eventos/business-os/{migrations,models,docs,tests}/
+- Roadmap referencia: /opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md
+- Decisiones aplicadas: /opt/dfl-knowledge/evidence/CHECKPOINT-OBS-347-SUMMARY.md
+- SHA final: 2009533d8b4d1411693514be5febb13e3e9f1798
+- Reporte 4R: /tmp/PHASE1_FINAL_REPORT.md
 
-### Stack FutbolWeb — runtime activo
-**Type:** fact  
-**Project:** futbolweb-app  
+### Notas para Próximo Agente
+- Rama local `fase-1-little-bosses-models` en /opt/360eventos/business-os lista para revisión independiente
+- No pushear a origin/main sin revisión 4R independiente y aprobación
+- SFV5 documentation gap (misión separada obs-350) no bloquea piloto
+- Para Fase 2: revisar `docs/pilot-contracts.md` secciones 1–3 para interfaces esperadas
+- Migraciones son baseline: todas las fases posteriores dependen de estos esquemas
 
-FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
-
-### Preservación ≠ ROI de residencia — criterio institucionalizado, aplicado a Varios-SFV5/BusinessOS (2026-08-21)
+### Cierre institucional 2026-08-21 — JackyClean + arquitectura de residencia VM2
 **Type:** decision  
 **Project:** dfl  
 
-Jorge pidió separar explícitamente dos decisiones que se estaban tratando como una sola: preservación ("¿podemos moverlo de VM2 sin olvidarlo?" -- la compuerta ya probada en docs/patterns/vm2-externalization/METHOD.md) vs. ROI de residencia ("¿conviene moverlo AHORA?" -- decisión del gerente de la Fábrica por evidencia, no regla automática "si está preservado, sácalo").
+Cierre de sesión completa, dos arcos reales del día, ambos con evidencia commiteada y registrada en IRONMAN.md (fca660c):
 
-Institucionalizado en METHOD.md (commit da444a2, saas-factory-setup): factores reales a pesar sin fórmula rígida -- frecuencia/uso reciente, costo real de recuperación (medido, no supuesto), presión sobre el piso de producción, si el patrón de trabajo real ya copia a otro lado antes de tocarlo, impacto en trabajo paralelo. La residencia puede cambiar en ambas direcciones con el tiempo -- un activo puede salir por bajo ROI hoy y volver a materializarse si reaparece una misión que lo explote con frecuencia, precisamente porque la compuerta de recuperación ya demostrada hace ese ida-y-vuelta barato.
+1. JackyClean: gerente digital conversacional transversal con identidad por dueño (bug real de orden de autoridad encontrado y corregido en vivo), autonomía real de campo para empleados (links personales, antes público/impersonable), separación real de credencial dueño/desarrollador (rotación verificada en vivo), regla transversal de entrega de producto (product-handoff, 7/7 checks reales), catálogo de servicios configurable por negocio (FK real, no CHECK hardcoded), y un ensayo real de onboarding de segunda compañía (<10 min, un solo acoplamiento de código real encontrado).
 
-Aplicado en vivo a Varios-SFV5/BusinessOS (56 repos, 4.6GB, ya preservado en github.com/DFLghub/varios-sfv5-donor-material desde la misión anterior): decidí por ROI, no por regla, retirarlo AHORA. Evidencia real: 54/56 piezas sin tocarse en 12 días; el único patrón de trabajo real establecido (external-asset-activation) ya copiaba el material a un workspace propio antes de tocarlo, incluso cuando el dump vivía en VM2 -- la residencia local nunca redujo la fricción real; recuperar una pieza individual ya se midió en segundos; este mismo dump fue el bloque reconstruible-sin-verificar más grande encontrado durante el incidente real de disco lleno de esta semana; IRONMAN.md lista "alguien audite uno de los 54 restantes" como condición especulativa de reapertura, no una misión programada.
+2. VM2/institucional: del incidente real de disco lleno (100%, 0 bytes) a una arquitectura completa de residencia física vs. memoria institucional -- patrón de externalización con compuerta de 5 pasos, campo `residence` en el Asset Index, regeneración automática con raíces dinámicas, gancho de descubrimiento a nivel de usuario (~/.claude/CLAUDE.md, factory-wide). Primer ciclo real (event-rsvp-waitlist) verificado por un agente independiente sin contexto de esta sesión. Doctrina nueva: preservación ≠ ROI de residencia, decisión del gerente de la Fábrica por evidencia. Aplicada al dump de Ricardo con una corrección real en vivo (sesgo de uso histórico detectado por Jorge, hallazgo real de valor sin explotar en business-os-v6) -> residencia híbrida decidida.
 
-Reiterado el pedido a Jorge por Telegram para el paso mecánico final (rm -rf, sigo sin permiso de escritura en ese árbol root:root) -- la decisión de ROI ya está tomada y documentada independientemente de cuándo se ejecute el borrado físico.
+Estado al cierre: disco en 31GB libres/61% (desde 4.2MB libres/100% al inicio del día). Un solo paso mecánico pendiente de Jorge (borrado selectivo del dump de Ricardo, permiso root). Todo lo demás real, verificado, commiteado.
 
-### Externalización del dump de Ricardo (Varios-SFV5/BusinessOS) a github.com/DFLghub/varios-sfv5-donor-material (2026-08-21)
+### Reevaluación: residencia híbrida para BusinessOS — sesgo de uso histórico corregido, business-os-v6 se queda local (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
 
-Decisión explícita de Jorge: el material de Ricardo/makeflowia-lab (56 repos, 4.6GB) ya no es "donor desconocido" sino patrimonio de conocimiento DFL con provenance hacia Ricardo. Ciclo completo de externalización (docs/patterns/vm2-externalization/METHOD.md) aplicado.
+Jorge corrigió la decisión de ROI anterior (retirar todo BusinessOS de VM2): "54/56 sin tocarse en 12 días" era una señal sesgada, porque parte de ese período el material se trató por error como poco prioritario, antes de inspeccionarlo bien.
 
-Inspección real: BusinessOS/ resultó ser totalmente legible (no root-EACCES como se creía institucionalmente hasta hoy -- el bloqueo real está en 13 subdirectorios NO relacionados de otra rama del dump, saas-factory-v5-update/.claude/skills/*). Los 56 subdirectorios son repos git reales, cada uno con remoto real en github.com/makeflowia-lab/<nombre>.
+Reevalué con evidencia prospectiva, no solo uso pasado. Hallazgo real: business-os-v6 (uno de los 2 repos previamente "inspeccionados", pero solo parcialmente) es en realidad un monorepo de 5 verticales empaquetadas: "Automatización de Redes Sociales" (la única activada, como SocialFlow AI), "SaaS B2B para Agencias" (invitación de miembros real, roles OWNER/ADMIN/MEMBER, billing -- directamente relevante al trabajo activo de esta misma semana sobre autoridad/equipo en JackyClean), "meta-google"/CampaignOS (gestor multi-tenant de campañas Meta/Google con reglas automáticas -- relevante para /acquisition), y "bussinesO". Solo 1 de 5 verticales había sido tocada. Verifiqué que este patrón NO se repite en los siblings más cercanos de la misma familia (BOS v2, v3, v4, v7) -- el hallazgo está concentrado, no es evidencia de que los 55 restantes escondan lo mismo.
 
-Verificación uno por uno contra el upstream real (git ls-remote en vivo, no supuesto): 51/56 coinciden byte-a-byte con su remoto real ahora mismo -- documentados con hash+URL en MANIFEST_TABLE.md, sin necesidad de duplicar esos bytes. 3 excepciones reales (business-os/BOS-v5: diverge del upstream; crm-erp-b2b/CRM_ERP_B2B y maquina-contacto-en-frio/Maquina_Frio: upstream privado inalcanzable) preservadas como bundles git completos y reales (no snapshots aplanados), verificados con git bundle verify + clon de prueba.
+Decisión corregida: RESIDENCIA HÍBRIDA. business-os-v6 (26MB, ~0.6% del dump) se queda materializado en VM2 mientras esas 4 verticales siguen siendo candidatas reales de inspección próxima. Los otros 55 repos (~4.57GB, incluido el duplicado "BOS v6" del mismo contenido) se retiran como se había decidido -- sin señal comparable de valor sin explotar.
 
-Hallazgo de licencia: business-os es MIT (Makeflowia Lab, sin problema). Los otros 2 sin licencia explícita -> el nuevo repo se mantiene PRIVADO, no publicado.
+Todo (incluido business-os-v6) ya está preservado y recuperable en github.com/DFLghub/varios-sfv5-donor-material -- la residencia híbrida no reduce la preservación, solo decide qué parte conviene tener a mano ahora mismo.
 
-Nuevo hogar canónico: github.com/DFLghub/varios-sfv5-donor-material (privado, creado por Jorge). Contiene README.md (provenance completa), MANIFEST_TABLE.md (56 filas con hash/upstream/estado), DONOR_TO_CAPABILITY.md (la cadena real BOS v6 -> SocialFlow AI -> comms-registry/conversational-gateway, y WA_CRM muestreado sin activar), bundles/ (los 3 casos reales).
-
-Recuperación probada DOS VECES antes de tocar VM2: (1) clone real del repo nuevo desde GitHub + clone real de uno de sus bundles desde esa copia fresca, hash exacto confirmado; (2) clone directo de wacrm desde su upstream real (github.com/makeflowia-lab/wacrm), hash exacto confirmado. Ambos caminos de recuperación (bundle propio Y upstream original) verificados, no asumidos.
-
-Descubribilidad confirmada post-registro, sin nombrar a Ricardo ni el repo: "donor material", "inventario existencia", "comunicación transversal" (la relación donor->patrón->capacidad) todos encuentran dfl.external.varios-sfv5.businessos-dump.v0; "whatsapp crm" encuentra dfl.external.varios-sfv5.wacrm.v0. Manifiestos dfl.yaml actualizados con residence real, index.json regenerado, 7/7 tests. Commit c39dbeb (saas-factory-setup).
-
-PENDIENTE: retiro físico de la copia local en VM2. No lo pude hacer yo (dflagent no tiene permiso de escritura sobre ese árbol, root:root) -- se lo pedí a Jorge por Telegram con el comando exacto (`rm -rf ".../Varios para SFV5/BusinessOS"`), aclarando que el resto de esa carpeta (.doc, DFL_AUDIT, etc.) es material distinto y no debe tocarse. Todo lo demás del ciclo ya está probado y no depende de ese paso final.
+Corregí a tiempo el pedido de borrado que le había hecho a Jorge (el comando anterior habría borrado también business-os-v6). Verificado: nada se había borrado todavía cuando llegó la corrección -- cero pérdida. Nuevo comando preciso enviado, con exclusión explícita de business-os-v6. Commit e302f32 (saas-factory-setup); doctrina actualizada en docs/patterns/vm2-externalization/METHOD.md con este caso como ejemplo de sesgo de uso histórico corregido.
 
 ---
 
@@ -575,15 +577,15 @@ PENDIENTE: retiro físico de la copia local en VM2. No lo pude hacer yo (dflagen
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.8345  
+**Graph entropy:** 0.8735  
 
-- **Community 11** (90 nodes): Abstracción de oferta, Política de disponibilidad en servicios, PRP como artefacto nativo
-- **Community 0** (7 nodes): Verificación de API
-- **Community 1** (5 nodes): Merchant of Record, Paridad Codex, Métricas comerciales
-- **Community 2** (5 nodes): Puerta de Certidumbre, Condiciones de promoción, Auditoría en SaaS
-- **Community 3** (5 nodes): Mercader
-- **Community 4** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
+- **Community 11** (93 nodes): Abstracción de oferta, Política de disponibilidad, Dependencias de Fabricación
+- **Community 0** (6 nodes): Estrategia PRP
+- **Community 1** (5 nodes): Jurisdicción, Mercader, Observación de Ed
+- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
+- **Community 3** (4 nodes): PRP como artefacto nativo, Costos de complejidad en el desarrollo, Diferenciación entre productos digitales y servicios profesionales
+- **Community 4** (4 nodes): Cost Drivers in Engineering Projects, PRP Structure and Dependencies, Onboarding Capability Deficiencies
 
 ---
 
-*Mirror auto-generated 2026-08-21T02:51:31Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-21T03:04:31Z | La Garra → DFLghub/amos-context*
