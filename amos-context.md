@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-21T01:56:03Z  
+**Generated:** 2026-08-21T02:51:31Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,54 +116,37 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### MERCADER R-B rebuilt + hard retry cap — real code, tests, AQA, committed (ef264e7/c5ae253/ded3946)
+### Preservación ≠ ROI de residencia — criterio institucionalizado, aplicado a Varios-SFV5/BusinessOS (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
 
-TOPIC: dfl/mercader/r-b-sla-escalation-retry-cap
-STATUS: closed
-DATE: 2026-08-20
+Jorge pidió separar explícitamente dos decisiones que se estaban tratando como una sola: preservación ("¿podemos moverlo de VM2 sin olvidarlo?" -- la compuerta ya probada en docs/patterns/vm2-externalization/METHOD.md) vs. ROI de residencia ("¿conviene moverlo AHORA?" -- decisión del gerente de la Fábrica por evidencia, no regla automática "si está preservado, sácalo").
 
-WHAT: "Fase 68" in Jorge's prompt was confirmed by Jorge himself mid-session to be an error ("fase 68 es un error. Sigue donde ibamos") -- it did not exist anywhere in Engram/IRONMAN.md/MERCADER docs before this session (verified: the only hits were inside this very session's own search transcript). Correctly did not invent a definition per the session's own rule 0; continued from the real, verified continuation point instead: mercader-handoff-lenovo-to-imac-2026-08-20.md, whose named next unblocked action (no authorization needed, per Jorge's "Fabrica decide, no pregunta" mandate in the 2026-08-19 checkpoint) was rebuilding R-B's SLA/escalation module with a hard retry cap -- the 2026-08-19 sandbox version lived only in /tmp/mercader-verify-fork/ and was lost.
+Institucionalizado en METHOD.md (commit da444a2, saas-factory-setup): factores reales a pesar sin fórmula rígida -- frecuencia/uso reciente, costo real de recuperación (medido, no supuesto), presión sobre el piso de producción, si el patrón de trabajo real ya copia a otro lado antes de tocarlo, impacto en trabajo paralelo. La residencia puede cambiar en ambas direcciones con el tiempo -- un activo puede salir por bajo ROI hoy y volver a materializarse si reaparece una misión que lo explote con frecuencia, precisamente porque la compuerta de recuperación ya demostrada hace ese ida-y-vuelta barato.
 
-BUILT: tools/mercader-autonomy/sla.mjs (SLA_HOURS/isBreached adapted unmodified from tools/manager.mjs's Challenge Manager pattern, per the checkpoint's own adaptation-not-invention instruction, to a MERCADER SENT:72h/PROSPECT_REPLIED:24h/ESCALATED:12h enum) + canContact()/recordContactAttempt() (new: hard cap, default 3 contacts, moves a case to terminal MAX_CONTACTS_REACHED that no future SLA breach -- tested 1 year out -- can override) + sla_store.mjs (additive-only persistence: new mercader_sla_cases table in the real mercader-bos/agent-server/store/agent-server.db, does not touch mercader_leads or R1/R2, via node:sqlite -- no new npm dependency).
+Aplicado en vivo a Varios-SFV5/BusinessOS (56 repos, 4.6GB, ya preservado en github.com/DFLghub/varios-sfv5-donor-material desde la misión anterior): decidí por ROI, no por regla, retirarlo AHORA. Evidencia real: 54/56 piezas sin tocarse en 12 días; el único patrón de trabajo real establecido (external-asset-activation) ya copiaba el material a un workspace propio antes de tocarlo, incluso cuando el dump vivía en VM2 -- la residencia local nunca redujo la fricción real; recuperar una pieza individual ya se midió en segundos; este mismo dump fue el bloque reconstruible-sin-verificar más grande encontrado durante el incidente real de disco lleno de esta semana; IRONMAN.md lista "alguien audite uno de los 54 restantes" como condición especulativa de reapertura, no una misión programada.
 
-EVIDENCE: 14/14 tests (node --test tools/mercader-autonomy/test/{sla,sla_store}.test.mjs), including a real E2E run against the live production DB (additive, verified mercader_leads row count unaffected, test row cleaned up after itself) and a lifecycle test proving terminal state survives a process restart and stays terminal arbitrarily far in the future. AQA: selected via `aqa select` (product=alto -> AQA-3), but AQA-3's incremental requirement (Playwright/ZAP) is genuinely not-applicable (this is a backend-only library/store with no UI or deployed URL) -- ran AQA-2/CRUD_LIFECYCLE with real checks (not stubs): status PASS, profiles covered=[CRUD_LIFECYCLE] missing=[]; recorded AQA-3 explicitly as NOT_APPLICABLE with a stated reason rather than silently skipping it or faking a --target. Receipts at tools/aqa-kit/evidence/mercader/rb-sla-retry-cap/.
+Reiterado el pedido a Jorge por Telegram para el paso mecánico final (rm -rf, sigo sin permiso de escritura en ese árbol root:root) -- la decisión de ROI ya está tomada y documentada independientemente de cuándo se ejecute el borrado físico.
 
-COOPERATION WITH TCX: inspected the real peer-work queue first (67 items, nothing PENDING/in-flight on MERCADER at session start -- no duplication risk). Delegated an independent subproblem (R-F2: machine-readable capacity/priority representation of Jorge, also named unblocked in the same handoff) to TCX via a real peer-work item (pw-0dcf05f9d193, authority_ref=human=telegram:8776472165, PENDING as of this observation -- will be picked up by the existing */10 cron activation, no further action needed from TCC or Jorge). TCC acted as the causal-path builder/integrator for R-B itself, consistent with the session's own "TCC constructor/integrador, TCX puede excavar subproblemas independientes" instruction.
-
-COMMITS (repo root /opt/saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge): ef264e7 (sla.mjs/sla_store.mjs/tests/aqa checks + committing the previously-uncommitted ack_callback.py R1/R2 module), c5ae253 (asset-index registration: dfl.mercader.sla-escalation-retry-cap.v0, 29 assets/0 errors/7-7 tests), ded3946 (IRONMAN.md row).
-
-NOT DONE / genuinely blocked, not attempted: wiring this module to a live outbound messaging channel/scheduler -- still requires the messaging credential Jorge has not yet provisioned (same blocker named in the 2026-08-19 checkpoint, unchanged). No real prospect was contacted; no money moved; Q0 for MERCADER remains unsatisfied, unchanged from the prior checkpoint. R-F2 (delegated to TCX) not yet complete as of this observation -- check pw-0dcf05f9d193's status before assuming it's done in a future session.
-
-Full context, do not re-litigate: [[mercader-handoff-lenovo-to-imac-2026-08-20]], [[mercader-qr-checkpoint-2026-08-19]].
-
-### chatgpt-md-exporter built — core proven (13/13 tests), real E2E pending Jorge's one manual action
+### Externalización del dump de Ricardo (Varios-SFV5/BusinessOS) a github.com/DFLghub/varios-sfv5-donor-material (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
 
-TOPIC: dfl/saas-factory/chatgpt-md-exporter
-STATUS: core done, E2E pending
-DATE: 2026-08-19
+Decisión explícita de Jorge: el material de Ricardo/makeflowia-lab (56 repos, 4.6GB) ya no es "donor desconocido" sino patrimonio de conocimiento DFL con provenance hacia Ricardo. Ciclo completo de externalización (docs/patterns/vm2-externalization/METHOD.md) aplicado.
 
-WHAT: Built `tools/chatgpt-md-exporter/` in saas-factory repo (branch fase-3-5-jpi-real-sfv5-bridge) per Jorge's P11: one-click export of a full ChatGPT conversation to Markdown, replacing the broken Android Print->PDF workflow (>50% blank pages on long chats).
+Inspección real: BusinessOS/ resultó ser totalmente legible (no root-EACCES como se creía institucionalmente hasta hoy -- el bloqueo real está en 13 subdirectorios NO relacionados de otra rama del dump, saas-factory-v5-update/.claude/skills/*). Los 56 subdirectorios son repos git reales, cada uno con remoto real en github.com/makeflowia-lab/<nombre>.
 
-ARCHITECTURE DECISION: primary data source is ChatGPT's own `backend-api/conversation/<id>` endpoint (full node-graph JSON: mapping/parent/children/current_node), fetched from the browser's own already-authenticated session via a Violentmonkey userscript — not DOM scraping, not the OpenAI API, not any external service. Walking parent chain from current_node to root reconstructs exactly the branch the user is viewing, sidestepping ChatGPT's DOM virtualization on long chats entirely (no scrolling needed). Delivery chosen as userscript (not WebExtension) specifically because Firefox blocks unsigned .xpi installs by default — userscript avoids that friction.
+Verificación uno por uno contra el upstream real (git ls-remote en vivo, no supuesto): 51/56 coinciden byte-a-byte con su remoto real ahora mismo -- documentados con hash+URL en MANIFEST_TABLE.md, sin necesidad de duplicar esos bytes. 3 excepciones reales (business-os/BOS-v5: diverge del upstream; crm-erp-b2b/CRM_ERP_B2B y maquina-contacto-en-frio/Maquina_Frio: upstream privado inalcanzable) preservadas como bundles git completos y reales (no snapshots aplanados), verificados con git bundle verify + clon de prueba.
 
-FILES:
-- src/core.js — pure logic (tree walk, integrity validation, markdown rendering, filename convention), CommonJS, no browser APIs. Directly required by tests.
-- src/browser-glue.js — all fetch/DOM/download code, concatenated after core.js.
-- build.mjs — concatenates into dist/chatgpt-md-exporter.user.js (single-file install artifact).
-- test/fixture-builder.cjs + test/core.test.cjs — 13 node:test cases against synthetic fixtures shaped exactly like real backend-api responses.
-- README.md — install (Linux Mint + Firefox + Violentmonkey), usage, integrity semantics, filename convention, maintenance notes.
+Hallazgo de licencia: business-os es MIT (Makeflowia Lab, sin problema). Los otros 2 sin licencia explícita -> el nuevo repo se mantiene PRIVADO, no publicado.
 
-INTEGRITY DESIGN (central requirement, "FAIL VISIBLE not silent"): hard FAIL on dangling parent refs, cycles, duplicate message ids on the chain, zero turns, last-message still in_progress (mid-stream capture), or empty content on a "finished" message. Confirmed via 3 dedicated deliberate-FAIL tests that no .md is produced under any of these conditions.
+Nuevo hogar canónico: github.com/DFLghub/varios-sfv5-donor-material (privado, creado por Jorge). Contiene README.md (provenance completa), MANIFEST_TABLE.md (56 filas con hash/upstream/estado), DONOR_TO_CAPABILITY.md (la cadena real BOS v6 -> SocialFlow AI -> comms-registry/conversational-gateway, y WA_CRM muestreado sin activar), bundles/ (los 3 casos reales).
 
-TEST RESULTS: `node --test test/core.test.cjs` -> 13/13 pass, including a 500-turn synthetic "long chat" fully recovered (the exact scenario Print->PDF fails on) and 5 distinct FAIL-path tests.
+Recuperación probada DOS VECES antes de tocar VM2: (1) clone real del repo nuevo desde GitHub + clone real de uno de sus bundles desde esa copia fresca, hash exacto confirmado; (2) clone directo de wacrm desde su upstream real (github.com/makeflowia-lab/wacrm), hash exacto confirmado. Ambos caminos de recuperación (bundle propio Y upstream original) verificados, no asumidos.
 
-NOT DONE YET / explicitly deferred: real E2E against a live chatgpt.com session. This requires Jorge's own authenticated browser tab (session/cookies this agent correctly does not have and should not be given, per NO_TOUCH "no exponer cookies/tokens/secrets"). Asked Jorge to install the userscript and click export once on a real long conversation, then report: turn count, first/last message, filename, OK/FAILED status. Optional HTML/PDF export explicitly NOT built yet, per Jorge's own scope note ("solo despues de .md PROVEN").
+Descubribilidad confirmada post-registro, sin nombrar a Ricardo ni el repo: "donor material", "inventario existencia", "comunicación transversal" (la relación donor->patrón->capacidad) todos encuentran dfl.external.varios-sfv5.businessos-dump.v0; "whatsapp crm" encuentra dfl.external.varios-sfv5.wacrm.v0. Manifiestos dfl.yaml actualizados con residence real, index.json regenerado, 7/7 tests. Commit c39dbeb (saas-factory-setup).
 
-No git commit made (not requested). No Supabase/Vercel/MERCADER/SFV5-app credentials touched. Distinct topic from the already-CLOSED tcc-provider/OpenRouter work (obs #538) — do not conflate the two in future sessions.
+PENDIENTE: retiro físico de la copia local en VM2. No lo pude hacer yo (dflagent no tiene permiso de escritura sobre ese árbol, root:root) -- se lo pedí a Jorge por Telegram con el comando exacto (`rm -rf ".../Varios para SFV5/BusinessOS"`), aclarando que el resto de esa carpeta (.doc, DFL_AUDIT, etc.) es material distinto y no debe tocarse. Todo lo demás del ciclo ya está probado y no depende de ese paso final.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -254,23 +237,31 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### TCC Remote Control recovery — DFL Factory TCC restored, causal chain closed
-**Type:** bugfix  
+### Segunda pasada de externalización VM2: solo mejoras de descubribilidad, ningún activo nuevo retirado físicamente (2026-08-21)
+**Type:** decision  
 **Project:** dfl  
 
-Sesión de recuperación (branch fase-3-5-jpi-real-sfv5-bridge) diagnosticó y cerró la confusión entre: (a) esta CC genérica (PID 2103311, sin --remote-control, conectada al Pixel vía "Code bridge" nativo con bridgeSessionId, mecanismo independiente del flag CLI), (b) el TCC/Tony institucional lanzado vía tools/tcc-provider/tcc-provider, y (c) un socat manual (root, TCP 36667) que resultó ser infraestructura no relacionada con ningún camino probado — nunca formó parte del transporte real de Remote Control ni de esta conversación.
+Aplicando la misma compuerta que probó event-rsvp-waitlist, revisé ~15 candidatos reales adicionales (repos, donors, proyectos cerrados) buscando el segundo activo real a externalizar. Resultado honesto: NINGUNO pasó la compuerta completa hoy para retiro físico.
 
-CAUSA RAÍZ (confirmada, no narrativa): tools/tcc-provider/tcc-provider línea ~124, función subscription_preflight(), invocaba `claude -p ... --disallowedTools '*' 'Reply only TCC_SUBSCRIPTION_PREFLIGHT_OK'` sin separador `--`. En claude-code 2.1.220, --disallowedTools es variádico y se tragaba el prompt completo como más nombres de tool, dejando el preflight sin prompt real -> siempre fallaba -> la policy "auto" caía siempre a OpenRouter aunque había una suscripción Pro válida y logueada (claude.ai OAuth firstParty, jtigre@gmail.com).
+Candidatos revisados y por qué NO pasaron:
+- /opt/jpi: 63 cambios sin commitear + 11 commits sin subir -- trabajo vivo real.
+- /opt/futbolweb-v2: sin repositorio git propio.
+- /opt/futbolweb: .git root:root, fetch con permission-denied -- no puedo verificar sincronización.
+- /opt/amos-context-mirror: es el propio mecanismo de mirror público -- rol operativo activo, no candidato.
+- /opt/dfl-context-proxy: 13 cambios reales sin commitear (rutas de enrutamiento en vivo), fetch permission-denied.
+- /opt/experiments/business-os-new-audit: remoto ajeno (daniel-carreon, no DFLghub) -- provenance no clara para externalizar ahí; además 9 archivos de auditoría real sin commitear.
+- /opt/experiments/sfv5-business-os-pilot: worktree en HEAD desprendido, 3 archivos NUNCA commiteados (business-os/, scripts) -- borrar perdería contenido real jamás guardado en git.
+- /opt/painradar: remoto de una cuenta personal ajena (jairocarrizales) -- provenance/autoridad no clara, descalificado independientemente del tamaño (1.7M, irrelevante).
+- /opt/co-001, /opt/visualizer, /opt/nq-factory, /opt/experiments/jpi-ddms, /opt/experiments/qwen-cbm-sfat: SIN remoto de GitHub configurado -- crear un repo nuevo en DFLghub es una decisión de autoridad que no tomé unilateralmente esta sesión.
+- "Varios para SFV5"/BusinessOS (4.8G, material de Ricardo/makeflowia-lab): root:root con EACCES real en la mayoría de subdirectorios -- no pude verificar integridad/estado de ningún repo individual porque literalmente no puedo leerlos. Correctamente sin tocar, ya catalogado como draft/no-auditado.
 
-HALLAZGO CAUSAL CLAVE: bajo la ruta openrouter, ANTHROPIC_BASE_URL apunta al proxy local (127.0.0.1:8082, free-claude-code) con ANTHROPIC_AUTH_TOKEN=tcc-local-proxy-token (credencial local falsa). Bajo esa ruta, el proceso Claude Code NUNCA obtiene bridgeSessionId en ~/.claude/sessions/<pid>.json (verificado con evidencia local: status queda en "idle" congelado ~1s post-arranque, sin el campo). Bajo claude_subscription (sin proxy, auth real), bridgeSessionId se asigna en <1s. Esto prueba que el bridge/Remote Control nativo requiere la identidad OAuth first-party real; el proxy OpenRouter rompe silenciosamente ese canal aunque la inferencia LLM funcione perfecto vía el proxy.
+Hallazgo real y positivo: co-001 y nq-factory YA tienen preservación institucional real de una ola de remediación previa (2026-07-11, "Primera Ola de Remediación DFL", D-4/D-5) -- bundles git cifrados AES256/GPG en /opt/backups/organ-preservation/, con sha256 verificado en su propio MANIFEST.md. Cero descubribilidad (sin dfl.yaml, no en index.json). Les escribí manifiestos que apuntan a ESA preservación existente (no dupliqué el mecanismo con un segundo home distinto). NO retiré sus copias de trabajo de VM2 -- esta sesión no puede descifrar los bundles (passphrase root-only en /root/.config/dfl-organ-backups/passphrases.env) y por lo tanto no puede demostrar personalmente la recuperación (paso 4 del gate). Residencia registrada, retiro físico diferido a quien tenga la passphrase.
 
-FIX aplicado (una línea, commit pendiente de confirmar por Jorge): agregado `--` antes del prompt en la línea del preflight, para que subscription_preflight() reciba el prompt correctamente y "auto" cumpla la policy real "subscription primary -> openrouter fallback".
+Espacio liberado esta pasada: 0 bytes adicionales (la pasada anterior con event-rsvp-waitlist ya liberó 1.2GB; el disco sigue en ~31GB libres / 61% de uso).
 
-ESTADO FINAL PROVEN (5/5): Tony institucional vivo bajo `tools/tcc-provider/tcc-provider run --remote-control "DFL Factory TCC" --dangerously-skip-permissions`: cmdline con ambos flags, provider=claude_subscription (sin proxy), bridgeSessionId presente, Pixel conectado y confirmado por Jorge desde el dispositivo, operación Bash inocua ejecutada sin prompt de permiso (bypass permissions on). No hay incompatibilidad conocida entre --remote-control y --dangerously-skip-permissions.
+Riesgo real de olvido que queda: cero para lo que se tocó (co-001/nq-factory ahora descubribles aunque sigan físicamente en VM2; nada se externalizó sin poder probarlo). El riesgo real pendiente es estructural, no de olvido: varios activos reales y valiosos (co-001, visualizer, nq-factory, jpi-ddms, qwen-cbm-sfat) no tienen remoto de GitHub -- mientras eso no se decida con Jorge, no pueden externalizarse de verdad aunque estén descubribles.
 
-RESIDUOS PENDIENTES (fuera de mi autoridad, no tocados): socat root-owned (TCP-LISTEN:36667 -> 127.0.0.1:36667, PID variable, dueño root) sigue vivo, sin consumidor activo confirmado, pero mi usuario dflagent no tiene permiso para terminarlo (Operation not permitted). Requiere que alguien con root lo retire. El fix del tcc-provider está aplicado en el working tree del repo (tools/tcc-provider/tcc-provider) pero no confirmé si Jorge quiere commitearlo.
-
-CC genérica de recuperación (PID 2103311, esta sesión) se cierra al final de esta tarea vía @$fin; no sostenía trabajo funcional propio, solo la investigación/recuperación de Tony.
+Conclusión: la compuerta bloqueó correctamente en cada caso real -- no es un fallo en encontrar candidatos, es la disciplina funcionando. "Menos cosas en los pasillos, misma capacidad cognitiva" se mantuvo exactamente porque NO forcé ningún movimiento sin evidencia.
 
 ---
 
@@ -454,29 +445,37 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### TCC Remote Control recovery — DFL Factory TCC restored, causal chain closed
-**Type:** bugfix  
+### Preservación ≠ ROI de residencia — criterio institucionalizado, aplicado a Varios-SFV5/BusinessOS (2026-08-21)
+**Type:** decision  
 **Project:** dfl  
 
-Sesión de recuperación (branch fase-3-5-jpi-real-sfv5-bridge) diagnosticó y cerró la confusión entre: (a) esta CC genérica (PID 2103311, sin --remote-control, conectada al Pixel vía "Code bridge" nativo con bridgeSessionId, mecanismo independiente del flag CLI), (b) el TCC/Tony institucional lanzado vía tools/tcc-provider/tcc-provider, y (c) un socat manual (root, TCP 36667) que resultó ser infraestructura no relacionada con ningún camino probado — nunca formó parte del transporte real de Remote Control ni de esta conversación.
+Jorge pidió separar explícitamente dos decisiones que se estaban tratando como una sola: preservación ("¿podemos moverlo de VM2 sin olvidarlo?" -- la compuerta ya probada en docs/patterns/vm2-externalization/METHOD.md) vs. ROI de residencia ("¿conviene moverlo AHORA?" -- decisión del gerente de la Fábrica por evidencia, no regla automática "si está preservado, sácalo").
 
-CAUSA RAÍZ (confirmada, no narrativa): tools/tcc-provider/tcc-provider línea ~124, función subscription_preflight(), invocaba `claude -p ... --disallowedTools '*' 'Reply only TCC_SUBSCRIPTION_PREFLIGHT_OK'` sin separador `--`. En claude-code 2.1.220, --disallowedTools es variádico y se tragaba el prompt completo como más nombres de tool, dejando el preflight sin prompt real -> siempre fallaba -> la policy "auto" caía siempre a OpenRouter aunque había una suscripción Pro válida y logueada (claude.ai OAuth firstParty, jtigre@gmail.com).
+Institucionalizado en METHOD.md (commit da444a2, saas-factory-setup): factores reales a pesar sin fórmula rígida -- frecuencia/uso reciente, costo real de recuperación (medido, no supuesto), presión sobre el piso de producción, si el patrón de trabajo real ya copia a otro lado antes de tocarlo, impacto en trabajo paralelo. La residencia puede cambiar en ambas direcciones con el tiempo -- un activo puede salir por bajo ROI hoy y volver a materializarse si reaparece una misión que lo explote con frecuencia, precisamente porque la compuerta de recuperación ya demostrada hace ese ida-y-vuelta barato.
 
-HALLAZGO CAUSAL CLAVE: bajo la ruta openrouter, ANTHROPIC_BASE_URL apunta al proxy local (127.0.0.1:8082, free-claude-code) con ANTHROPIC_AUTH_TOKEN=tcc-local-proxy-token (credencial local falsa). Bajo esa ruta, el proceso Claude Code NUNCA obtiene bridgeSessionId en ~/.claude/sessions/<pid>.json (verificado con evidencia local: status queda en "idle" congelado ~1s post-arranque, sin el campo). Bajo claude_subscription (sin proxy, auth real), bridgeSessionId se asigna en <1s. Esto prueba que el bridge/Remote Control nativo requiere la identidad OAuth first-party real; el proxy OpenRouter rompe silenciosamente ese canal aunque la inferencia LLM funcione perfecto vía el proxy.
+Aplicado en vivo a Varios-SFV5/BusinessOS (56 repos, 4.6GB, ya preservado en github.com/DFLghub/varios-sfv5-donor-material desde la misión anterior): decidí por ROI, no por regla, retirarlo AHORA. Evidencia real: 54/56 piezas sin tocarse en 12 días; el único patrón de trabajo real establecido (external-asset-activation) ya copiaba el material a un workspace propio antes de tocarlo, incluso cuando el dump vivía en VM2 -- la residencia local nunca redujo la fricción real; recuperar una pieza individual ya se midió en segundos; este mismo dump fue el bloque reconstruible-sin-verificar más grande encontrado durante el incidente real de disco lleno de esta semana; IRONMAN.md lista "alguien audite uno de los 54 restantes" como condición especulativa de reapertura, no una misión programada.
 
-FIX aplicado (una línea, commit pendiente de confirmar por Jorge): agregado `--` antes del prompt en la línea del preflight, para que subscription_preflight() reciba el prompt correctamente y "auto" cumpla la policy real "subscription primary -> openrouter fallback".
+Reiterado el pedido a Jorge por Telegram para el paso mecánico final (rm -rf, sigo sin permiso de escritura en ese árbol root:root) -- la decisión de ROI ya está tomada y documentada independientemente de cuándo se ejecute el borrado físico.
 
-ESTADO FINAL PROVEN (5/5): Tony institucional vivo bajo `tools/tcc-provider/tcc-provider run --remote-control "DFL Factory TCC" --dangerously-skip-permissions`: cmdline con ambos flags, provider=claude_subscription (sin proxy), bridgeSessionId presente, Pixel conectado y confirmado por Jorge desde el dispositivo, operación Bash inocua ejecutada sin prompt de permiso (bypass permissions on). No hay incompatibilidad conocida entre --remote-control y --dangerously-skip-permissions.
-
-RESIDUOS PENDIENTES (fuera de mi autoridad, no tocados): socat root-owned (TCP-LISTEN:36667 -> 127.0.0.1:36667, PID variable, dueño root) sigue vivo, sin consumidor activo confirmado, pero mi usuario dflagent no tiene permiso para terminarlo (Operation not permitted). Requiere que alguien con root lo retire. El fix del tcc-provider está aplicado en el working tree del repo (tools/tcc-provider/tcc-provider) pero no confirmé si Jorge quiere commitearlo.
-
-CC genérica de recuperación (PID 2103311, esta sesión) se cierra al final de esta tarea vía @$fin; no sostenía trabajo funcional propio, solo la investigación/recuperación de Tony.
-
-### [CLOSED] MERCADER commercial offer integration — agent-server complete
-**Type:** architecture  
+### Externalización del dump de Ricardo (Varios-SFV5/BusinessOS) a github.com/DFLghub/varios-sfv5-donor-material (2026-08-21)
+**Type:** decision  
 **Project:** dfl  
 
-2026-08-20 TCC integration. Handoff pw-8e49c093db4a consumed (TCX ACK_REVIEWED_NOT_INTEGRATED → TCC implemented). Added mercader_commercial_offers table to mercader-bos/agent-server/store/agent-server.db (additive, no schema changes to existing tables). Added 4 HTTP endpoints: POST /api/mercader/offers, GET /api/mercader/offers, GET /api/mercader/offers/:offerId, POST /api/mercader/offers/:offerId/transition. Added maybeAcceptOfferAndRequirePayment() and onOfferPaid() bridges in mercader-fabrica-bridge.ts linking ACCEPTED→PAYMENT_REQUIRED→ORDER and PAYMENT_PENDING→PAID→fulfillment. Typecheck/build/pass tests (commercial.test.mjs 2/2). E2E synthetic: 8/8 steps. AQA receipt: tools/aqa-kit/evidence/mercader-agent-server-integration/working-tree/2026-08-20T03-20-00-000Z (PASS). Handoff pw-8e49c093db4a CLOSED with integration. Blockers externos: credencial mensajería real, cuenta Polar + llaves, cliente/pago real. Distance to first revenue: zero technical blockers. LIFECYCLE: CLOSED by TCC 2026-08-20.
+Decisión explícita de Jorge: el material de Ricardo/makeflowia-lab (56 repos, 4.6GB) ya no es "donor desconocido" sino patrimonio de conocimiento DFL con provenance hacia Ricardo. Ciclo completo de externalización (docs/patterns/vm2-externalization/METHOD.md) aplicado.
+
+Inspección real: BusinessOS/ resultó ser totalmente legible (no root-EACCES como se creía institucionalmente hasta hoy -- el bloqueo real está en 13 subdirectorios NO relacionados de otra rama del dump, saas-factory-v5-update/.claude/skills/*). Los 56 subdirectorios son repos git reales, cada uno con remoto real en github.com/makeflowia-lab/<nombre>.
+
+Verificación uno por uno contra el upstream real (git ls-remote en vivo, no supuesto): 51/56 coinciden byte-a-byte con su remoto real ahora mismo -- documentados con hash+URL en MANIFEST_TABLE.md, sin necesidad de duplicar esos bytes. 3 excepciones reales (business-os/BOS-v5: diverge del upstream; crm-erp-b2b/CRM_ERP_B2B y maquina-contacto-en-frio/Maquina_Frio: upstream privado inalcanzable) preservadas como bundles git completos y reales (no snapshots aplanados), verificados con git bundle verify + clon de prueba.
+
+Hallazgo de licencia: business-os es MIT (Makeflowia Lab, sin problema). Los otros 2 sin licencia explícita -> el nuevo repo se mantiene PRIVADO, no publicado.
+
+Nuevo hogar canónico: github.com/DFLghub/varios-sfv5-donor-material (privado, creado por Jorge). Contiene README.md (provenance completa), MANIFEST_TABLE.md (56 filas con hash/upstream/estado), DONOR_TO_CAPABILITY.md (la cadena real BOS v6 -> SocialFlow AI -> comms-registry/conversational-gateway, y WA_CRM muestreado sin activar), bundles/ (los 3 casos reales).
+
+Recuperación probada DOS VECES antes de tocar VM2: (1) clone real del repo nuevo desde GitHub + clone real de uno de sus bundles desde esa copia fresca, hash exacto confirmado; (2) clone directo de wacrm desde su upstream real (github.com/makeflowia-lab/wacrm), hash exacto confirmado. Ambos caminos de recuperación (bundle propio Y upstream original) verificados, no asumidos.
+
+Descubribilidad confirmada post-registro, sin nombrar a Ricardo ni el repo: "donor material", "inventario existencia", "comunicación transversal" (la relación donor->patrón->capacidad) todos encuentran dfl.external.varios-sfv5.businessos-dump.v0; "whatsapp crm" encuentra dfl.external.varios-sfv5.wacrm.v0. Manifiestos dfl.yaml actualizados con residence real, index.json regenerado, 7/7 tests. Commit c39dbeb (saas-factory-setup).
+
+PENDIENTE: retiro físico de la copia local en VM2. No lo pude hacer yo (dflagent no tiene permiso de escritura sobre ese árbol, root:root) -- se lo pedí a Jorge por Telegram con el comando exacto (`rm -rf ".../Varios para SFV5/BusinessOS"`), aclarando que el resto de esa carpeta (.doc, DFL_AUDIT, etc.) es material distinto y no debe tocarse. Todo lo demás del ciclo ya está probado y no depende de ese paso final.
 
 ---
 
@@ -587,4 +586,4 @@ CC genérica de recuperación (PID 2103311, esta sesión) se cierra al final de 
 
 ---
 
-*Mirror auto-generated 2026-08-21T01:56:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-21T02:51:31Z | La Garra → DFLghub/amos-context*
