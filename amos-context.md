@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-21T03:05:02Z  
+**Generated:** 2026-08-22T03:03:32Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,31 +116,48 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### Cierre institucional 2026-08-21 — JackyClean + arquitectura de residencia VM2
+### JPI tiene casa Git propia: DFLghub/transportes-eventos-jpi (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
 
-Cierre de sesión completa, dos arcos reales del día, ambos con evidencia commiteada y registrada en IRONMAN.md (fca660c):
+Follows obs #566. Jorge creó DFLghub/transportes-eventos-jpi (privado, vacío) en GitHub -- yo no pude crearlo (sin gh CLI, sin token API vigente). Diagnostiqué el mecanismo de credencial real (SSH key ~/.ssh/id_ed25519, identidad efectiva "DFLghub" confirmada via `ssh -T git@github.com` -> "Hi DFLghub!", no un deploy-key por-repo) antes de reportar el bloqueo -- el repo simplemente no existía todavía en el primer intento, confirmado después con el mismo comando tras la creación.
 
-1. JackyClean: gerente digital conversacional transversal con identidad por dueño (bug real de orden de autoridad encontrado y corregido en vivo), autonomía real de campo para empleados (links personales, antes público/impersonable), separación real de credencial dueño/desarrollador (rotación verificada en vivo), regla transversal de entrega de producto (product-handoff, 7/7 checks reales), catálogo de servicios configurable por negocio (FK real, no CHECK hardcoded), y un ensayo real de onboarding de segunda compañía (<10 min, un solo acoplamiento de código real encontrado).
+Ejecutado, todo verificado desde remoto, no asumido:
+- `git remote rename origin legacy-360eventos` (preserva referencia histórica intacta, sin tocarla)
+- `git remote add origin git@github.com:DFLghub/transportes-eventos-jpi.git`
+- `git push -u origin feat/jpi-fase-5-real-runtime-v0.1` -- push limpio, sin merge/rebase/rewrite
+- Verificado: HEAD local == HEAD remoto (cde6664 antes de la actualización de dfl.yaml, luego 95ae0ae), upstream configurado correctamente (`origin/feat/jpi-fase-5-real-runtime-v0.1`), working tree limpio (0 cambios), historia completa preservada (46 commits, confirmado que el commit de bootstrap original "feat: bootstrap inicial 360Eventos" y el tag jpi-phase-1-closed son ancestros reales de la rama pusheada -- no es una historia truncada/squasheada)
+- 360eventos (legacy-360eventos remote) verificado sin tocar: HEAD sigue en 2a1efe2 (Phase 4), ramas intactas
 
-2. VM2/institucional: del incidente real de disco lleno (100%, 0 bytes) a una arquitectura completa de residencia física vs. memoria institucional -- patrón de externalización con compuerta de 5 pasos, campo `residence` en el Asset Index, regeneración automática con raíces dinámicas, gancho de descubrimiento a nivel de usuario (~/.claude/CLAUDE.md, factory-wide). Primer ciclo real (event-rsvp-waitlist) verificado por un agente independiente sin contexto de esta sesión. Doctrina nueva: preservación ≠ ROI de residencia, decisión del gerente de la Fábrica por evidencia. Aplicada al dump de Ricardo con una corrección real en vivo (sesgo de uso histórico detectado por Jorge, hallazgo real de valor sin explotar en business-os-v6) -> residencia híbrida decidida.
+Actualicé la única referencia institucional necesaria: /opt/jpi/dfl.yaml, asset_id cambiado de `dfl.legacy.jpi-360eventos` (que literalmente conflacionaba JPI con el demo archivado) a `dfl.jpi.transportes-eventos`, con `residence` apuntando al nuevo repo canónico y `consumer_hint` apuntando a esta misma memoria institucional para que una futura sesión no tenga que redescubrir el historial desde cero. Commiteado (95ae0ae) y pusheado al nuevo repo. Índice central de asset-index regenerado y commiteado localmente en saas-factory-setup (commit b5d864d en fase-3-5-jpi-real-sfv5-bridge, no pusheado -- misma razón que el resto de esta sesión en esa rama: estado sucio previo no relacionado).
 
-Estado al cierre: disco en 31GB libres/61% (desde 4.2MB libres/100% al inicio del día). Un solo paso mecánico pendiente de Jorge (borrado selectivo del dump de Ricardo, permiso root). Todo lo demás real, verificado, commiteado.
+No se tocó producto, no se metabolizó business-os/FMD/amOS/Outcome-Engine, no se tocó Supabase/secrets, no se hizo merge/rebase/rewrite de historia.
 
-### Reevaluación: residencia híbrida para BusinessOS — sesgo de uso histórico corregido, business-os-v6 se queda local (2026-08-21)
+NEXT REQUIERO real pendiente (no de esta misión, la siguiente etapa): decidir el destino de las capacidades de business-os/ según la matriz ya producida (obs #565), ahora que JPI tiene casa Git propia y checkpoint remoto seguro para trabajar sobre él.
+
+### JPI .git ownership fixed + 63/64 uncommitted changes preserved in 6 organized commits (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
 
-Jorge corrigió la decisión de ROI anterior (retirar todo BusinessOS de VM2): "54/56 sin tocarse en 12 días" era una señal sesgada, porque parte de ese período el material se trató por error como poco prioritario, antes de inspeccionarlo bien.
+Follows obs #562-565. Jorge ran `sudo chown -R dflagent:dfl /opt/jpi/.git` himself (I have no sudo, confirmed). Verified: 227 root-owned files inside .git -> 0 after. Working-tree files outside .git that were root-owned (several .md reports, scripts/jpi-domain-term-guard.mjs, business-os/server.js) were already world-readable (rw-r--r--), so they never blocked git add/commit -- only .git internals did. The scoped fix (.git only) was correct and sufficient, verified before executing, not assumed.
 
-Reevalué con evidencia prospectiva, no solo uso pasado. Hallazgo real: business-os-v6 (uno de los 2 repos previamente "inspeccionados", pero solo parcialmente) es en realidad un monorepo de 5 verticales empaquetadas: "Automatización de Redes Sociales" (la única activada, como SocialFlow AI), "SaaS B2B para Agencias" (invitación de miembros real, roles OWNER/ADMIN/MEMBER, billing -- directamente relevante al trabajo activo de esta misma semana sobre autoridad/equipo en JackyClean), "meta-google"/CampaignOS (gestor multi-tenant de campañas Meta/Google con reglas automáticas -- relevante para /acquisition), y "bussinesO". Solo 1 de 5 verticales había sido tocada. Verifiqué que este patrón NO se repite en los siblings más cercanos de la misma familia (BOS v2, v3, v4, v7) -- el hallazgo está concentrado, no es evidencia de que los 55 restantes escondan lo mismo.
+Integrity verified post-chown: git status showed the same 64 changes as before (63 original + my own NOTICE file), HEAD unchanged at a241ef5, `git fsck --full --no-dangling` returned clean (zero real corruption; the --full run alone showed ~50 harmless dangling objects from an earlier aborted `git add`+`git reset` attempt, normal and inert).
 
-Decisión corregida: RESIDENCIA HÍBRIDA. business-os-v6 (26MB, ~0.6% del dump) se queda materializado en VM2 mientras esas 4 verticales siguen siendo candidatas reales de inspección próxima. Los otros 55 repos (~4.57GB, incluido el duplicado "BOS v6" del mismo contenido) se retiran como se había decidido -- sin señal comparable de valor sin explotar.
+Preserved everything in 6 separate, real commits (no mass/generic commit), each with clear provenance, nothing deleted, nothing "cleaned":
+1. fcb7c51 -- Rubén/JPI discovery documentation (docs/case-zero/, docs/discovery/, docs/mvp-v2/) -- real interview/discovery evidence with Rubén.
+2. 82d3424 -- real, tested domain/product logic: the PRECOTIZACION-eradication work (scripts/jpi-domain-term-guard.mjs, its test, package.json wiring, src/features/jpi/domain/states.mjs) matching Engram obs #370's report that was never actually committed until now, plus domain/ (decision log, factory defaults, open questions, Rubén's blocking-questions packet, the NO_INTERMEDIATE_STAGE canonical decision, ontology/runtime CSVs), docs/functional/, docs/business/.
+3. f5c7256 -- the root dfl.yaml asset-index manifest (already indexed/discoverable, just never committed).
+4. db68962 -- business-os/ historical WIP unrelated to the amOS thread (factory-request.js, fmd-runtime-factory-bridge test diff, an intent->outcome-mapping exploration with its own migrations 998/999, a Codebase Intelligence wrapper+test+dfl.yaml that happens to live nested here, several e2e test explorations) -- verified via grep that none of these are referenced by the amOS/outcome-analysis chain, kept genuinely separate.
+5. a88d44e -- WIP amOS + Outcome Analysis Engine, kept together deliberately: verified via grep that runtime.js's diff requires() all 5 new fmd/ files (amos-context-loader, outcome-verifier, correction-strategies, factory-outcome-recorder, outcome-pattern-analyzer which itself requires outcome-analysis-engine) as one entangled unit -- splitting it would have misrepresented the real state, so committed as one intertwined WIP commit instead of forcing an artificial "amOS-only" split.
+6. cde6664 -- business-os/NOTICE-DEPRECATED.md, the recovery-analysis documentation written earlier this session.
 
-Todo (incluido business-os-v6) ya está preservado y recuperable en github.com/DFLghub/varios-sfv5-donor-material -- la residencia híbrida no reduce la preservación, solo decide qué parte conviene tener a mano ahora mismo.
+No UNKNOWN bucket was needed -- every file had clear, evidence-backed provenance, nothing ambiguous survived triage.
 
-Corregí a tiempo el pedido de borrado que le había hecho a Jorge (el comando anterior habría borrado también business-os-v6). Verificado: nada se había borrado todavía cuando llegó la corrección -- cero pérdida. Nuevo comando preciso enviado, con exclusión explícita de business-os-v6. Commit e302f32 (saas-factory-setup); doctrina actualizada en docs/patterns/vm2-externalization/METHOD.md con este caso como ejemplo de sesgo de uso histórico corregido.
+Working tree is now 100% clean (`nothing to commit, working tree clean`). Branch `feat/jpi-fase-5-real-runtime-v0.1` has no upstream tracking configured and does not exist on origin (`DFLghub/360eventos.git`) at all -- confirmed via `git rev-parse @{u}` failing and no matching `origin/...` ref. Per explicit instruction and this real ambiguity, did NOT push.
+
+No product behavior changed, no tests run/fixed, no business-os/ code modified beyond adding the already-existing NOTICE-DEPRECATED.md, no Supabase/secrets touched, no metabolization work done -- purely a preserve-and-organize mission, exactly as scoped.
+
+NEXT REQUIERO: decide whether/how to push this branch (a fresh branch on origin, or merge target) -- that's a real open question given no upstream exists, not something to assume. Everything else from here is metabolization work (deciding FMD/little-bosses/amOS/Outcome-Engine fates per the capability matrix in obs #565), explicitly out of scope for this preserve-only mission.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -231,17 +248,23 @@ Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all v
 
 Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
-### Preservación ≠ ROI de residencia — criterio institucionalizado, aplicado a Varios-SFV5/BusinessOS (2026-08-21)
-**Type:** decision  
+### JPI Factory-native adaptation mission — map + real git-permission blocker found (2026-08-21)
+**Type:** architecture  
 **Project:** dfl  
 
-Jorge pidió separar explícitamente dos decisiones que se estaban tratando como una sola: preservación ("¿podemos moverlo de VM2 sin olvidarlo?" -- la compuerta ya probada en docs/patterns/vm2-externalization/METHOD.md) vs. ROI de residencia ("¿conviene moverlo AHORA?" -- decisión del gerente de la Fábrica por evidencia, no regla automática "si está preservado, sácalo").
+Follows obs #562-564 (canonical checkpoint + Jorge's 2 corrections on why JPI paused / who built it). Jorge commissioned the actual adaptation mission: PRESERVAR PRODUCTO -> ADAPTAR MECANISMO, explicitly not a rewrite, not chasing 273/273 tests, no new Eventos/Transportes features.
 
-Institucionalizado en METHOD.md (commit da444a2, saas-factory-setup): factores reales a pesar sin fórmula rígida -- frecuencia/uso reciente, costo real de recuperación (medido, no supuesto), presión sobre el piso de producción, si el patrón de trabajo real ya copia a otro lado antes de tocarlo, impacto en trabajo paralelo. La residencia puede cambiar en ambas direcciones con el tiempo -- un activo puede salir por bajo ROI hoy y volver a materializarse si reaparece una misión que lo explote con frecuencia, precisamente porque la compuerta de recuperación ya demostrada hace ese ida-y-vuelta barato.
+Classification result: business-os/ (the whole FMD/little-bosses/factory-adapter-registry/amOS system) = F. OBSOLETE/SUPERSEDED mechanism, not product. Its own CLAUDE.md self-describes as a "piloto soberano" -- deliberately separate Express+SQLite process, isolated from the real Next.js host and real Supabase. Zero PRPs, zero .claude/memory entries for it -- confirms it was built entirely off-Factory, exactly matching why-JPI-paused reasoning. 100% of 65 failing tests are inside business-os/; ZERO failures anywhere in the actual product (src/, Next.js app, domain model) -- the real product is healthy.
 
-Aplicado en vivo a Varios-SFV5/BusinessOS (56 repos, 4.6GB, ya preservado en github.com/DFLghub/varios-sfv5-donor-material desde la misión anterior): decidí por ROI, no por regla, retirarlo AHORA. Evidencia real: 54/56 piezas sin tocarse en 12 días; el único patrón de trabajo real establecido (external-asset-activation) ya copiaba el material a un workspace propio antes de tocarlo, incluso cuando el dump vivía en VM2 -- la residencia local nunca redujo la fricción real; recuperar una pieza individual ya se midió en segundos; este mismo dump fue el bloque reconstruible-sin-verificar más grande encontrado durante el incidente real de disco lleno de esta semana; IRONMAN.md lista "alguien audite uno de los 54 restantes" como condición especulativa de reapertura, no una misión programada.
+Frontend/product layer confirmed genuinely Factory-native already: package.json name is unmodified template default "saas-factory-app", full .claude/skills/ (30 skills) present, 2 real historical PRPs (PRP-001-landing-publica, PRP-002-auth-ui) prove the Next.js/auth layer was built through the proper skill process. The off-Factory divergence is business-os/ only, not the whole project -- an important correction to any assumption that "all of JPI" needs re-platforming.
 
-Reiterado el pedido a Jorge por Telegram para el paso mecánico final (rm -rf, sigo sin permiso de escritura en ese árbol root:root) -- la decisión de ROI ya está tomada y documentada independientemente de cuándo se ejecute el borrado físico.
+amOS WIP verdict: RETIRE the code (goes with its host mechanism), PRESERVE the intent as documentation. Added business-os/NOTICE-DEPRECATED.md (new file, uncommitted, explains the situation and points at this memory) rather than silently deleting or silently continuing to build on it.
+
+REAL NEW BLOCKER FOUND (not previously known precisely): git add/commit in /opt/jpi fails with "error: insufficient permission for adding an object to repository database .git/objects". 228 files inside .git itself (including .git/HEAD) are root-owned -- not just working-tree debris as the 2026-08-04 CASA LIMPIA diagnostic assumed (that diagnostic only knew about root-owned files blocking `rm`, not that .git internals themselves were also root-owned, blocking ALL commits). NO commit of any kind is possible in this repo until `sudo chown -R dflagent:dfl /opt/jpi/.git` runs as root. Nothing lost attempting it -- git add partially staged, cleanly `git reset`, working tree verified unchanged.
+
+This is the single next REQUIERO to unblock everything else in JPI: Jorge runs that one chown command, then a future session can commit the already-triaged preserved work in organized separate commits (docs/domain-knowledge group -- Rubén discovery + domain model; tested-code group -- the PRECOTIZACION-eradication script+test+package.json wiring, already passing 3/3; unrelated-asset-manifest group -- business-os/lib/dfl.yaml for an unrelated Codebase Intelligence capability that happens to live nested there; business-os-mechanism-WIP group -- the amOS files + other business-os/ changes, committed as clearly-labeled historical/experimental, not deleted).
+
+No Supabase/secrets touched. No new Eventos/Transportes features. No rewrite performed. Full detail in jpi-canonical-checkpoint-2026-08-21.md § 7 (local memory).
 
 ---
 
@@ -287,49 +310,6 @@ SIGUIENTE PASO: pedirle el INVENTARIO DE ATESTACION (entregable falsable que ell
 CAVEAT DE METODO: la fabrica es parte interesada describiendose a si misma. Los [FACT] no verificados por Claude Code son citas suyas, no evidencia. Se verificaron ~20 de mayor consecuencia.
 
 Costo total 10.50 USD, 14 invocaciones.
-
-### [AUDIT] Cabo 7 — auditoria independiente de cierre 2026-08-03: CLOSED_WITH_NONBLOCKING_SECURITY_DEBT
-**Type:** fact  
-**Project:** dfl  
-
-TOPIC: dfl/infra/cabo-7-independent-closure-audit
-TYPE: fact
-STATUS: closed
-DATE: 2026-08-03
-PRECEDENCIA: D
-AUTHORITY: evidence only — no gobierna routing ni despacho
-LIFECYCLE: active
-CONFIDENCE: high
-
-MISION: DFL_CABO_7_INDEPENDENT_CLOSURE_AUDIT (modo YOLO, verificador independiente, read-only).
-
-VEREDICTO: CABO_7_CLOSED_WITH_NONBLOCKING_SECURITY_DEBT.
-
-SINCRONIA: /opt/dfl-knowledge-workunit rama main, working tree limpio. main = origin/main = 878f09ae596b1067314925ac02b29cd122642bf9, ahead/behind 0/0, confirmado contra GitHub con git ls-remote (no solo ref local). a8269d9f44d4050568edd1a77122b2d16d7d8170 y 878f09a ambos ancestros-o-iguales de origin/main; a8269d9 es el segundo padre del merge. Ninguno firmado (%G? = N).
-
-CHECKSUMS: sha256sum -c SHA256SUMS 19/19 OK exit 0.
-
-GATES (independiente): reproducidos por mi con exit 0 — test_fixture.sh FIXTURE_PASS (G02 G03 G04 G05 G06 G09-fixture G12), test_endpoint.sh ENDPOINT_REGRESSION_PASS, aggregate.sh sobre final-reverify.receipt AGGREGATE=PASS, aggregate.sh sobre final.receipt AGGREGATE=FAIL exit 1 (G13 real). Vivo verificado por mi: G14 systemctl active + GET 127.0.0.1:8091/go http 200 69498 bytes; G11 local=publico=965d06fdd157a206d17c0af2d41ec2f3b56c799d550222e61096ab8641f63cc2; G02 /run/dfl root:dfl 2770; G07/G08 corroborados read-only (2770/0660, other sin acceso); G10 corroborado por amos-context.md = dflagent:dfl y log 01:44 con identidad git dflagent y PUSH OK.
-
-G11 RESPALDADO: log g11-resolution.log con TIMEOUT_S=90 POLL_S=5 y 19 muestras. Primer poll discrepante 01:44:52, coincidencia 01:46:19 = 87s exactos. Commit publicado d8ddc31282d5ac3eaaa81df6d63b44be111cf326, SHA de convergencia 5987ef1290944a508a222c7fd0be3810a3fbd06890b136d78337465ec751ac48. Causa raiz confirmada en log de produccion: fatal unable to auto-detect email address (dflagent@ubuntu-s-1vcpu-1gb-nyc1) — repo mirror sin identidad de commit, no consistencia eventual. Reparacion: user.name La Garra Bot local al repo mirror. Confirmacion fresca: mirror ya en 2543ded 01:57:02 y local=publico sigue coincidiendo.
-
-DEUDAS NO BLOQUEANTES:
-1. LLAVE SSH — /home/dflagent/.ssh/id_ed25519 sin passphrase (ssh-keygen -y -P '' la abre), comentario said-vm2-la-garra (identidad de host preexistente, no dflagent), sin .pub, birth 2026-08-02 18:58:21 en plena remediacion. ssh -T git@github.com responde Hi DFLghub: es llave DE CUENTA, no deploy key con scope a amos-context — dflagent tiene escritura sobre toda la organizacion. Fingerprint SHA256:UHF2r33fb2kMeEKvz7SxinRZ4212U/08fVYOvQEzBZ0. Clasificacion: no bloqueante con remediacion posterior OBLIGATORIA (deploy key con scope + rotacion). No contradice G11-RESOLUTION.md, cuyo "no SSH keys copied/rotated" cubre solo la reparacion de las 01:44.
-2. REPRODUCIBILIDAD — .gitignore excluye receipts/root-live.receipt y receipts/*.log, asi que G04..G10 NO son reproducibles desde el paquete commiteado. Demostrado: verify_live.sh sobre contenido limpio de origin/main da 7 FAIL y AGGREGATE=FAIL. Unica copia en /tmp/dfl-cx-yolo-20260802 (efimera). Remediacion posterior: commitear receipt + log.
-3. G03 SIN COMMITEAR — el fix de scripts/regen_graph.sh no esta en origin/main ni en a8269d9; ambos siguen llamando publish-amos-context.sh directo. Vive solo como modificacion sucia en /opt/dfl-knowledge rama feat/dfl-high-certainty-harness-v0.1. install.sh lo re-aplica por sed idempotente, asi que el estado vivo es correcto, pero un git restore reintroduce silenciosamente la causa raiz (CRON 2 evadiendo el lock).
-4. push_mirror.sh hace chmod 0664 sobre last-mirror-hash en cada publicacion mientras install.sh lo deja 0660; la asercion de G08 (other<2) solo se cumple post-install. Contenido es un SHA-256 no secreto. Drift cosmetico.
-5. Residuo /var/lib/dfl-publication/test-write.txt dflagent:dfl 0644 del 2026-08-02 19:13.
-6. /opt/dfl-knowledge-workunit es root:root; dflagent no puede git fetch ahi y necesita -c safe.directory para leer. Incoherente con que el principal de publicacion sea dflagent.
-7. verify_live.sh emite G01 y G12 como echo incondicional; G12 si se computa de verdad en test_fixture.sh y G13 se valida con el bad_receipt previo. Hallazgo no confirmado como defecto.
-
-CONTRADICCIONES:
-a. El 14/14 es cierto para la corrida viva pero NO reproducible desde la evidencia commiteada (demostrado, no inferido).
-b. ROOT-ACTION.md instruye correr root-live-test.sh, cuyo G10_LIVE_DFLAGENT es un pass emitido tras ejecutar push_mirror.sh COMO ROOT — no prueba el gate que nombra. El que si lo prueba es root-live-test-fixed.sh (runuser -u dflagent). El receipt no registra cual corrio. El gate igual es verdadero por via independiente. Contradiccion de procedimiento documentado, no de resultado.
-c. INVENTORY.md registra el mirror como 2775; vivo es 2770 (endurecimiento posterior).
-
-RESTRICCIONES RESPETADAS: DCSA no promovido. No se modificaron llaves, permisos, historial git ni produccion. Unicas escrituras: git fetch (refs) y fixtures hermeticos en scratchpad. NO_TOUCH intacto (puntajeTigreKnockout, Supabase, Vercel, env vars, HLC-T01/T02/T03, CRON 3:05, /etc/dfl-secrets).
-
-PROXIMO_AGENTE_DEBE: (1) rotar la llave SSH de dflagent a un deploy key con scope a DFLghub/amos-context; (2) commitear receipts/root-live.receipt y g11-resolution.log al paquete de evidencia; (3) commitear el fix de scripts/regen_graph.sh a main antes de que un git restore lo revierta.
 
 ---
 
@@ -453,31 +433,48 @@ Implementar Fase 1 del piloto BOS-JPI: infraestructura de persistencia (migracio
 - Para Fase 2: revisar `docs/pilot-contracts.md` secciones 1–3 para interfaces esperadas
 - Migraciones son baseline: todas las fases posteriores dependen de estos esquemas
 
-### Cierre institucional 2026-08-21 — JackyClean + arquitectura de residencia VM2
+### JPI tiene casa Git propia: DFLghub/transportes-eventos-jpi (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
 
-Cierre de sesión completa, dos arcos reales del día, ambos con evidencia commiteada y registrada en IRONMAN.md (fca660c):
+Follows obs #566. Jorge creó DFLghub/transportes-eventos-jpi (privado, vacío) en GitHub -- yo no pude crearlo (sin gh CLI, sin token API vigente). Diagnostiqué el mecanismo de credencial real (SSH key ~/.ssh/id_ed25519, identidad efectiva "DFLghub" confirmada via `ssh -T git@github.com` -> "Hi DFLghub!", no un deploy-key por-repo) antes de reportar el bloqueo -- el repo simplemente no existía todavía en el primer intento, confirmado después con el mismo comando tras la creación.
 
-1. JackyClean: gerente digital conversacional transversal con identidad por dueño (bug real de orden de autoridad encontrado y corregido en vivo), autonomía real de campo para empleados (links personales, antes público/impersonable), separación real de credencial dueño/desarrollador (rotación verificada en vivo), regla transversal de entrega de producto (product-handoff, 7/7 checks reales), catálogo de servicios configurable por negocio (FK real, no CHECK hardcoded), y un ensayo real de onboarding de segunda compañía (<10 min, un solo acoplamiento de código real encontrado).
+Ejecutado, todo verificado desde remoto, no asumido:
+- `git remote rename origin legacy-360eventos` (preserva referencia histórica intacta, sin tocarla)
+- `git remote add origin git@github.com:DFLghub/transportes-eventos-jpi.git`
+- `git push -u origin feat/jpi-fase-5-real-runtime-v0.1` -- push limpio, sin merge/rebase/rewrite
+- Verificado: HEAD local == HEAD remoto (cde6664 antes de la actualización de dfl.yaml, luego 95ae0ae), upstream configurado correctamente (`origin/feat/jpi-fase-5-real-runtime-v0.1`), working tree limpio (0 cambios), historia completa preservada (46 commits, confirmado que el commit de bootstrap original "feat: bootstrap inicial 360Eventos" y el tag jpi-phase-1-closed son ancestros reales de la rama pusheada -- no es una historia truncada/squasheada)
+- 360eventos (legacy-360eventos remote) verificado sin tocar: HEAD sigue en 2a1efe2 (Phase 4), ramas intactas
 
-2. VM2/institucional: del incidente real de disco lleno (100%, 0 bytes) a una arquitectura completa de residencia física vs. memoria institucional -- patrón de externalización con compuerta de 5 pasos, campo `residence` en el Asset Index, regeneración automática con raíces dinámicas, gancho de descubrimiento a nivel de usuario (~/.claude/CLAUDE.md, factory-wide). Primer ciclo real (event-rsvp-waitlist) verificado por un agente independiente sin contexto de esta sesión. Doctrina nueva: preservación ≠ ROI de residencia, decisión del gerente de la Fábrica por evidencia. Aplicada al dump de Ricardo con una corrección real en vivo (sesgo de uso histórico detectado por Jorge, hallazgo real de valor sin explotar en business-os-v6) -> residencia híbrida decidida.
+Actualicé la única referencia institucional necesaria: /opt/jpi/dfl.yaml, asset_id cambiado de `dfl.legacy.jpi-360eventos` (que literalmente conflacionaba JPI con el demo archivado) a `dfl.jpi.transportes-eventos`, con `residence` apuntando al nuevo repo canónico y `consumer_hint` apuntando a esta misma memoria institucional para que una futura sesión no tenga que redescubrir el historial desde cero. Commiteado (95ae0ae) y pusheado al nuevo repo. Índice central de asset-index regenerado y commiteado localmente en saas-factory-setup (commit b5d864d en fase-3-5-jpi-real-sfv5-bridge, no pusheado -- misma razón que el resto de esta sesión en esa rama: estado sucio previo no relacionado).
 
-Estado al cierre: disco en 31GB libres/61% (desde 4.2MB libres/100% al inicio del día). Un solo paso mecánico pendiente de Jorge (borrado selectivo del dump de Ricardo, permiso root). Todo lo demás real, verificado, commiteado.
+No se tocó producto, no se metabolizó business-os/FMD/amOS/Outcome-Engine, no se tocó Supabase/secrets, no se hizo merge/rebase/rewrite de historia.
 
-### Reevaluación: residencia híbrida para BusinessOS — sesgo de uso histórico corregido, business-os-v6 se queda local (2026-08-21)
+NEXT REQUIERO real pendiente (no de esta misión, la siguiente etapa): decidir el destino de las capacidades de business-os/ según la matriz ya producida (obs #565), ahora que JPI tiene casa Git propia y checkpoint remoto seguro para trabajar sobre él.
+
+### JPI .git ownership fixed + 63/64 uncommitted changes preserved in 6 organized commits (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
 
-Jorge corrigió la decisión de ROI anterior (retirar todo BusinessOS de VM2): "54/56 sin tocarse en 12 días" era una señal sesgada, porque parte de ese período el material se trató por error como poco prioritario, antes de inspeccionarlo bien.
+Follows obs #562-565. Jorge ran `sudo chown -R dflagent:dfl /opt/jpi/.git` himself (I have no sudo, confirmed). Verified: 227 root-owned files inside .git -> 0 after. Working-tree files outside .git that were root-owned (several .md reports, scripts/jpi-domain-term-guard.mjs, business-os/server.js) were already world-readable (rw-r--r--), so they never blocked git add/commit -- only .git internals did. The scoped fix (.git only) was correct and sufficient, verified before executing, not assumed.
 
-Reevalué con evidencia prospectiva, no solo uso pasado. Hallazgo real: business-os-v6 (uno de los 2 repos previamente "inspeccionados", pero solo parcialmente) es en realidad un monorepo de 5 verticales empaquetadas: "Automatización de Redes Sociales" (la única activada, como SocialFlow AI), "SaaS B2B para Agencias" (invitación de miembros real, roles OWNER/ADMIN/MEMBER, billing -- directamente relevante al trabajo activo de esta misma semana sobre autoridad/equipo en JackyClean), "meta-google"/CampaignOS (gestor multi-tenant de campañas Meta/Google con reglas automáticas -- relevante para /acquisition), y "bussinesO". Solo 1 de 5 verticales había sido tocada. Verifiqué que este patrón NO se repite en los siblings más cercanos de la misma familia (BOS v2, v3, v4, v7) -- el hallazgo está concentrado, no es evidencia de que los 55 restantes escondan lo mismo.
+Integrity verified post-chown: git status showed the same 64 changes as before (63 original + my own NOTICE file), HEAD unchanged at a241ef5, `git fsck --full --no-dangling` returned clean (zero real corruption; the --full run alone showed ~50 harmless dangling objects from an earlier aborted `git add`+`git reset` attempt, normal and inert).
 
-Decisión corregida: RESIDENCIA HÍBRIDA. business-os-v6 (26MB, ~0.6% del dump) se queda materializado en VM2 mientras esas 4 verticales siguen siendo candidatas reales de inspección próxima. Los otros 55 repos (~4.57GB, incluido el duplicado "BOS v6" del mismo contenido) se retiran como se había decidido -- sin señal comparable de valor sin explotar.
+Preserved everything in 6 separate, real commits (no mass/generic commit), each with clear provenance, nothing deleted, nothing "cleaned":
+1. fcb7c51 -- Rubén/JPI discovery documentation (docs/case-zero/, docs/discovery/, docs/mvp-v2/) -- real interview/discovery evidence with Rubén.
+2. 82d3424 -- real, tested domain/product logic: the PRECOTIZACION-eradication work (scripts/jpi-domain-term-guard.mjs, its test, package.json wiring, src/features/jpi/domain/states.mjs) matching Engram obs #370's report that was never actually committed until now, plus domain/ (decision log, factory defaults, open questions, Rubén's blocking-questions packet, the NO_INTERMEDIATE_STAGE canonical decision, ontology/runtime CSVs), docs/functional/, docs/business/.
+3. f5c7256 -- the root dfl.yaml asset-index manifest (already indexed/discoverable, just never committed).
+4. db68962 -- business-os/ historical WIP unrelated to the amOS thread (factory-request.js, fmd-runtime-factory-bridge test diff, an intent->outcome-mapping exploration with its own migrations 998/999, a Codebase Intelligence wrapper+test+dfl.yaml that happens to live nested here, several e2e test explorations) -- verified via grep that none of these are referenced by the amOS/outcome-analysis chain, kept genuinely separate.
+5. a88d44e -- WIP amOS + Outcome Analysis Engine, kept together deliberately: verified via grep that runtime.js's diff requires() all 5 new fmd/ files (amos-context-loader, outcome-verifier, correction-strategies, factory-outcome-recorder, outcome-pattern-analyzer which itself requires outcome-analysis-engine) as one entangled unit -- splitting it would have misrepresented the real state, so committed as one intertwined WIP commit instead of forcing an artificial "amOS-only" split.
+6. cde6664 -- business-os/NOTICE-DEPRECATED.md, the recovery-analysis documentation written earlier this session.
 
-Todo (incluido business-os-v6) ya está preservado y recuperable en github.com/DFLghub/varios-sfv5-donor-material -- la residencia híbrida no reduce la preservación, solo decide qué parte conviene tener a mano ahora mismo.
+No UNKNOWN bucket was needed -- every file had clear, evidence-backed provenance, nothing ambiguous survived triage.
 
-Corregí a tiempo el pedido de borrado que le había hecho a Jorge (el comando anterior habría borrado también business-os-v6). Verificado: nada se había borrado todavía cuando llegó la corrección -- cero pérdida. Nuevo comando preciso enviado, con exclusión explícita de business-os-v6. Commit e302f32 (saas-factory-setup); doctrina actualizada en docs/patterns/vm2-externalization/METHOD.md con este caso como ejemplo de sesgo de uso histórico corregido.
+Working tree is now 100% clean (`nothing to commit, working tree clean`). Branch `feat/jpi-fase-5-real-runtime-v0.1` has no upstream tracking configured and does not exist on origin (`DFLghub/360eventos.git`) at all -- confirmed via `git rev-parse @{u}` failing and no matching `origin/...` ref. Per explicit instruction and this real ambiguity, did NOT push.
+
+No product behavior changed, no tests run/fixed, no business-os/ code modified beyond adding the already-existing NOTICE-DEPRECATED.md, no Supabase/secrets touched, no metabolization work done -- purely a preserve-and-organize mission, exactly as scoped.
+
+NEXT REQUIERO: decide whether/how to push this branch (a fresh branch on origin, or merge target) -- that's a real open question given no upstream exists, not something to assume. Everything else from here is metabolization work (deciding FMD/little-bosses/amOS/Outcome-Engine fates per the capability matrix in obs #565), explicitly out of scope for this preserve-only mission.
 
 ---
 
@@ -577,15 +574,15 @@ Corregí a tiempo el pedido de borrado que le había hecho a Jorge (el comando a
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.8735  
+**Graph entropy:** 0.6151  
 
-- **Community 11** (93 nodes): Abstracción de oferta, Política de disponibilidad, Dependencias de Fabricación
+- **Community 11** (99 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Complejidad en la evaluación de costos
 - **Community 0** (6 nodes): Estrategia PRP
 - **Community 1** (5 nodes): Jurisdicción, Mercader, Observación de Ed
-- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
-- **Community 3** (4 nodes): PRP como artefacto nativo, Costos de complejidad en el desarrollo, Diferenciación entre productos digitales y servicios profesionales
-- **Community 4** (4 nodes): Cost Drivers in Engineering Projects, PRP Structure and Dependencies, Onboarding Capability Deficiencies
+- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Semántica de Inventario
+- **Community 3** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
+- **Community 4** (4 nodes): Versioning and Lifecycle Management, Algoritmo de Pre-vuelo
 
 ---
 
-*Mirror auto-generated 2026-08-21T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-22T03:03:32Z | La Garra → DFLghub/amos-context*
