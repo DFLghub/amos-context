@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-23T04:54:03Z  
+**Generated:** 2026-08-23T06:03:45Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,12 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Paseo TCX Full Access profile configured and verified
+**Type:** decision  
+**Project:** saas-factory-setup  
+
+Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
+
 ### JPI tiene casa Git propia: DFLghub/transportes-eventos-jpi (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
@@ -230,23 +236,6 @@ LATER (NO hacer todavia, evitar sobreingenieria):
 
 == EVIDENCIA ==
 Commits (ahora dangling, no en ninguna rama, recuperables por hash mientras no corra gc agresivo): d7480410f5702a978d54d218f1b3282f6feb7dbd, 752efb9b1cec6774e7fea5ba3be392cdaa199962, ebd014ec496d1bb2ec312207cf005d1cd437a82d. Commits en la rama principal (persistentes): 8372ec1 (IRONMAN.md creado), ed4877b (cierre Lab TCC x TCX), 84b6b7e (cierre medicion VM2 n=2). Engram obs #491-#497 (tests de concurrencia y probes). IRONMAN.md, filas "Concurrencia TCC x TCX" y "VM2: n=2 fabricas virtuales concurrentes".
-
-### @$fin CIERRE FORMAL 2026-08-15 -- Codex handoff completo publicado, MCP de Codex verificado y registrado, arco 100% cerrado
-**Type:** session_summary  
-**Project:** saas-factory-setup  
-
-Formal @$fin close of the Claude Code session that ran this entire arc (onboarding freshness, WP Competence Specimen B/C, wp_eval loophole, push_mirror.sh fix, F-ARCH-1 closure). Canonical state record remains obs #488 (FINAL CLOSE) -- this observation is the @$fin transport-layer closure on top of it, not a new content layer.
-
-What this closing pass added beyond obs #488:
-- Full agent-agnostic, non-executive-summary handoff written to the repo: saas-factory/.claude/CODEX-HANDOFF-SFV5-FIRST-OPERATION-2026-08-15.md (commit 2c7057a) -- built to let Codex reconstruct full operational state without reinterpreting anything.
-- Verified (not assumed) Codex's real capabilities on this host: codex CLI 0.146.0 present, /opt/saas-factory-setup already trust_level=trusted in ~/.codex/config.toml, .mcp.json (Claude Code's MCP config) does NOT carry over to Codex (codex mcp list was empty before this pass) -- registered engram MCP for Codex directly: `codex mcp add engram --url http://127.0.0.1:8092/mcp`, confirmed live via `codex mcp get engram` (enabled:true, transport:streamable_http). Flagged CLAUDE.md auto-load behavior for Codex as UNKNOWN/TO VERIFY since no AGENTS.md equivalent was found in this repo -- did not invent an equivalence that isn't demonstrated.
-- Re-verified end-to-end one more time before closing: /go dispatch_receipt still PASS/NO_DISPATCH_BLOCK_PRESENT, pending still [], mirror HEAD==origin/main, wp_cli_command eval still refused, breaking_news/memory_conflicts fields still present in production.
-
-Gate 4B step 2 (archival check): nothing new to archive beyond what #487->#488 already superseded. No further observations from this arc need [RESOLVED]/LIFECYCLE:archived marking.
-
-Session identity: this was a Claude Code EJECUTOR session (bash/git/Engram all verified by real execution at onboarding), operating on /opt/saas-factory-setup, branch fase-3-5-jpi-real-sfv5-bridge, final HEAD 2c7057a. Handing off to Codex per Jorge's explicit instruction (Claude Code credit running low across the arc, but the arc itself was fully closed by Claude Code before handoff -- Codex does not need to do any remaining work on THIS arc).
-
-Next work (NOT started, NOT chosen which goes first): DFL Website, JackyClean, Transportes y Eventos JPI. Jorge's decision.
 
 ### JPI Factory-native adaptation mission — map + real git-permission blocker found (2026-08-21)
 **Type:** architecture  
@@ -451,6 +440,12 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Paseo TCX Full Access profile configured and verified
+**Type:** decision  
+**Project:** saas-factory-setup  
+
+Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
+
 ### JPI tiene casa Git propia: DFLghub/transportes-eventos-jpi (2026-08-21)
 **Type:** decision  
 **Project:** dfl  
@@ -469,30 +464,6 @@ Actualicé la única referencia institucional necesaria: /opt/jpi/dfl.yaml, asse
 No se tocó producto, no se metabolizó business-os/FMD/amOS/Outcome-Engine, no se tocó Supabase/secrets, no se hizo merge/rebase/rewrite de historia.
 
 NEXT REQUIERO real pendiente (no de esta misión, la siguiente etapa): decidir el destino de las capacidades de business-os/ según la matriz ya producida (obs #565), ahora que JPI tiene casa Git propia y checkpoint remoto seguro para trabajar sobre él.
-
-### JPI .git ownership fixed + 63/64 uncommitted changes preserved in 6 organized commits (2026-08-21)
-**Type:** decision  
-**Project:** dfl  
-
-Follows obs #562-565. Jorge ran `sudo chown -R dflagent:dfl /opt/jpi/.git` himself (I have no sudo, confirmed). Verified: 227 root-owned files inside .git -> 0 after. Working-tree files outside .git that were root-owned (several .md reports, scripts/jpi-domain-term-guard.mjs, business-os/server.js) were already world-readable (rw-r--r--), so they never blocked git add/commit -- only .git internals did. The scoped fix (.git only) was correct and sufficient, verified before executing, not assumed.
-
-Integrity verified post-chown: git status showed the same 64 changes as before (63 original + my own NOTICE file), HEAD unchanged at a241ef5, `git fsck --full --no-dangling` returned clean (zero real corruption; the --full run alone showed ~50 harmless dangling objects from an earlier aborted `git add`+`git reset` attempt, normal and inert).
-
-Preserved everything in 6 separate, real commits (no mass/generic commit), each with clear provenance, nothing deleted, nothing "cleaned":
-1. fcb7c51 -- Rubén/JPI discovery documentation (docs/case-zero/, docs/discovery/, docs/mvp-v2/) -- real interview/discovery evidence with Rubén.
-2. 82d3424 -- real, tested domain/product logic: the PRECOTIZACION-eradication work (scripts/jpi-domain-term-guard.mjs, its test, package.json wiring, src/features/jpi/domain/states.mjs) matching Engram obs #370's report that was never actually committed until now, plus domain/ (decision log, factory defaults, open questions, Rubén's blocking-questions packet, the NO_INTERMEDIATE_STAGE canonical decision, ontology/runtime CSVs), docs/functional/, docs/business/.
-3. f5c7256 -- the root dfl.yaml asset-index manifest (already indexed/discoverable, just never committed).
-4. db68962 -- business-os/ historical WIP unrelated to the amOS thread (factory-request.js, fmd-runtime-factory-bridge test diff, an intent->outcome-mapping exploration with its own migrations 998/999, a Codebase Intelligence wrapper+test+dfl.yaml that happens to live nested here, several e2e test explorations) -- verified via grep that none of these are referenced by the amOS/outcome-analysis chain, kept genuinely separate.
-5. a88d44e -- WIP amOS + Outcome Analysis Engine, kept together deliberately: verified via grep that runtime.js's diff requires() all 5 new fmd/ files (amos-context-loader, outcome-verifier, correction-strategies, factory-outcome-recorder, outcome-pattern-analyzer which itself requires outcome-analysis-engine) as one entangled unit -- splitting it would have misrepresented the real state, so committed as one intertwined WIP commit instead of forcing an artificial "amOS-only" split.
-6. cde6664 -- business-os/NOTICE-DEPRECATED.md, the recovery-analysis documentation written earlier this session.
-
-No UNKNOWN bucket was needed -- every file had clear, evidence-backed provenance, nothing ambiguous survived triage.
-
-Working tree is now 100% clean (`nothing to commit, working tree clean`). Branch `feat/jpi-fase-5-real-runtime-v0.1` has no upstream tracking configured and does not exist on origin (`DFLghub/360eventos.git`) at all -- confirmed via `git rev-parse @{u}` failing and no matching `origin/...` ref. Per explicit instruction and this real ambiguity, did NOT push.
-
-No product behavior changed, no tests run/fixed, no business-os/ code modified beyond adding the already-existing NOTICE-DEPRECATED.md, no Supabase/secrets touched, no metabolization work done -- purely a preserve-and-organize mission, exactly as scoped.
-
-NEXT REQUIERO: decide whether/how to push this branch (a fresh branch on origin, or merge target) -- that's a real open question given no upstream exists, not something to assume. Everything else from here is metabolization work (deciding FMD/little-bosses/amOS/Outcome-Engine fates per the capability matrix in obs #565), explicitly out of scope for this preserve-only mission.
 
 ---
 
@@ -603,4 +574,4 @@ NEXT REQUIERO: decide whether/how to push this branch (a fresh branch on origin,
 
 ---
 
-*Mirror auto-generated 2026-08-23T04:54:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-23T06:03:45Z | La Garra → DFLghub/amos-context*
