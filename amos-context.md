@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-23T04:37:35Z  
+**Generated:** 2026-08-23T04:54:03Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -603,4 +603,4 @@ NEXT REQUIERO: decide whether/how to push this branch (a fresh branch on origin,
 
 ---
 
-*Mirror auto-generated 2026-08-23T04:37:35Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-23T04:54:03Z | La Garra → DFLghub/amos-context*
