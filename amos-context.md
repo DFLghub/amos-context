@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-22T20:10:21Z  
+**Generated:** 2026-08-23T03:03:26Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -367,71 +367,89 @@ Sesión larga, multi-misión sobre DFL/SFV5/Workforce Registry Unit (WRU) v0.1: 
 - `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/FINAL-VERDICT.md` — matriz completa G1-G44, estado exacto por etapa, veredicto final.
 - `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/HANDOFF-2026-07-31.md` — handoff autosuficiente para continuación por otro agente.
 
-### FASE 2 DECISIÓN — Opción elegida para automatización metabolismo
-**Type:** decision  
-**Project:** dfl  
-
-**What**: Fase 2 (decisión, no implementación) del mandato de actualización del sistema de navegación DFL (Engram/agTopologo/Graphify/KNL). Con base en Fase 0 (mapeo, CC) y Fase 1 (diagnóstico, Codex), se eligió OPCIÓN A: Orchestrator único (`engram-metabolismo.sh`), como wrapper delgado que llama a los scripts existentes (`daily_check.sh`, `regen_graph.sh`, `push_mirror.sh`) sin reescribirlos, agrega audit step de cobertura Engram, reporta (no ejecuta) staleness de Graphify por ausencia de componente instalado, y log único `/var/log/dfl-metabolismo.log`.
-
-metadata.option: A
-metadata.futbolweb_decision: técnica (futbolweb-app es real con 53 obs, futbolweb es legacy con 0 obs — confirmado independientemente por CC Fase 0 y Codex Fase 1)
-
-**Why**: C descartada por mandato explícito de automatización real. B descartada porque el propio diagnóstico ya muestra desincronización activa (autosync systemd + cron 5min sin contrato claro, sync cubriendo proyecto equivocado) — agregar más timers independientes multiplicaría puntos de fallo en vez de centralizarlos. A es además menor esfuerzo real: `regen_graph.sh`/`daily_check.sh` YA encadenan agTopologo→gen_summary→knl_builder→publish, es una extensión, no una reescritura.
-
-**Where**: /home/claude/DECISION_ESTRATEGIA_FASE2.md (justificación completa, riesgos, implementación a alto nivel para Fase 3)
-
-**Learned**:
-- Fix de cobertura de engram-sync-cron.sh (futbolweb→futbolweb-app, +360eventos, +tdf-01) NO requiere autorización adicional de Jorge — no está en la lista NO_TOUCH del contrato DFL (puntajeTigreKnockout, Supabase, Vercel, env vars, templates HLC-T01/T02/T03, CRON 3:05am UTC, /etc/dfl-secrets). Se documenta como cambio atómico separado para Fase 3, no ejecutado en esta fase.
-- Riesgo identificado a vigilar en Fase 3: no tocar el CRON protegido de 3:05am UTC al integrar publish al orquestador — solo invocarlo, nunca reemplazarlo/reagendarlo.
-- No se resuelve en esta fase la ambigüedad autosync vs cron (binario engram cerrado, no auditable) — queda como reporte del audit step, no como fix.
-
-STATUS: active | DECISION_REQUIRED: false | Sin bloqueos. Esperando PROMPT 3 (implementación Fase 3) — no se ejecutó nada del sistema en esta fase.
-
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
 **Project:** dfl-knowledge  
 
-## CIERRE DE SESIÓN: FASE 1 DEL PILOTO BOS-JPI IMPLEMENTADA
+## Goal
+Sesión larga y multi-misión sobre DFL/SFV5: auditoría forense grounded de la copia local SaaS Factory (VM2), su censo estructurado, remediación en 3 rondas hasta verificación independiente cerrada, reconciliación de la arquitectura laboral completa de DFL (Workforce Registry / Factory Manager), y el PRP ejecutable del primer incremento vivo (Workforce Registry Unit v0.1), reconciliado con resultados de un laboratorio experimental de gobierno de mutaciones.
 
-### Objetivo
-Implementar Fase 1 del piloto BOS-JPI: infraestructura de persistencia (migraciones), dominio (Little Bosses, Minions, Factory Requests, Lessons) y especificación de contratos HTTP para Fases 2–6.
+## Instructions
+- Jorge dio autorización explícita para operar autónomamente en varias misiones sucesivas ("no solicites autorización intermedia", y luego "full authorization to perform this task/mission").
+- Patrón de trabajo institucional confirmado y seguido en toda la sesión: nunca sobrescribir evidencia ya publicada/commiteada — toda corrección o ronda nueva va en un subdirectorio nuevo, con referencia explícita a lo que corrige.
+- Verificación de colisión con CX (otro agente operando en paralelo sobre el mismo repo) antes de cada `git add`/commit: `git log --oneline`, `git status --short`, nunca `git add -A`.
+- Contrato de integridad de evidencia consolidado y reutilizado en todas las misiones posteriores: manifest/checksum de dos pasos (MANIFEST.json escrito primero, excluyendo su propio nombre y el de SHA256SUMS.txt desde el listado inicial; SHA256SUMS.txt escrito después, nunca por `sha256sum * > archivo` ni por copiar/renombrar un archivo ya hasheado bajo otro nombre — ambas son causas raíz reales de bugs de autorreferencia ya encontrados en esta misma cadena).
+- Jorge pidió un `@$fin` parcial (checkpoint) a mitad de una misión — se distinguió correctamente de un cierre canónico: `mem_save` incremental sin barrido de archivado ni `push_mirror.sh`, sesión sigue abierta. Ese checkpoint (obs #394) quedó archivado hoy al completarse y validarse la misión que dejaba pendiente.
 
-### Descubrimientos
-- Auditoría selectiva previa validó arquitectura: 70% reutilizable de BOS-JPI, 30% nuevas capacidades
-- SFV5 tiene 32 skills (documentación dice 30) → gap identificado como MISIÓN INDEPENDIENTE (no bloqueante)
-- Rama aislada `fase-1-little-bosses-models` limpia: cero derrames a otras fases
-- Migraciones idempotentes confirmadas (2x ejecución = skipped)
-- AUTHORITY_RULES explícita previene escalamiento implícito a Jorge
+## Discoveries
+- **SFV5 local no es "SFV5 de Ricardo Silva".** El único autor real verificable del repo comunitario (`upstream/main`) es Daniel Carreón. Todo lo etiquetado "V5" localmente fue introducido en un commit único (`5e42124`) de Jorge Tigreros — es autoría DFL sobre el V4 comunitario, no una importación de terceros. Cero evidencia de "Ricardo Silva" en el historial git accesible.
+- Ningún "minion" nombrado (Sensei/Trinity/AI Dani) existe en el repo; "Levy" es solo un asset de imagen (mascota) para la skill `video-visuals`, no un agente.
+- El grafo de codebase-memory no cubre `.claude/` de SFV5 en absoluto (0 nodos) ni `tools/bridges/` — 4 índices duplicados para la misma ruta con conteos distintos pese al mismo `head_sha`, causa raíz confirmada: truncamiento de `max_rows` en ciertas queries (no corrupción de datos).
+- El activo de mayor apalancamiento de todo el inventario DFL, descubierto en la reconciliación arquitectónica (CC-2), no es BOS/Concierge/SFV5 por separado — es un harness de alta certeza **genérico** ya construido y probado (`experiments/dfl-high-certainty-exploration-harness-v0.1/`, 2/2 tests, piloto real ejecutado) que ninguna auditoría previa había conectado con el resto del inventario. Existe una duplicación real (2 patrones HLC independientes: el genérico y la instancia específica de Concierge F1B con defectos de evidencia confirmados) — pero la revisión independiente posterior (CX-N1) determinó que NO son duplicados funcionales demostrados y que su unificación queda `DEFER`, no se reabre.
+- WorkUnitLedger (`dfl-knowledge/concierge/workunit.py`, mergeado a main, dogfood real, 237/237 tests) es el activo más maduro para "Factory Manager" — más confiable que `parallel-build` de SFV5 (solo documentado).
+- "Opportunity Inbox" y "Refinería y Distribución de Capacidades" están completamente ausentes de todo el corpus DFL bajo cualquier variante de nombre buscada.
+- El laboratorio experimental de gobierno de mutaciones (`workforce-registry-capability-lab-2026-07-30`, 16/16 escenarios PASS) falsificó la intuición de que un CRUD simple sobre un Registry es suficiente: el estado canónico debe separarse de propuestas, con validación, aprobación, bloqueo optimista (`expected_version`), versionado append-only, verificación de dependencias y evidencia — nunca escritura directa, nunca hard delete, nunca "rollback = replay de audit log" (rollback real = commit gobernado de una versión restaurada).
+- Bug de autorreferencia de checksum tiene 2 causas raíz distintas ya encontradas en esta cadena: (1) truncamiento de shell (`sha256sum * > archivo` trunca el archivo de salida antes de leerlo como argumento del glob), (2) captura de hash bajo un nombre temporal que luego se reutiliza al copiar/renombrar el archivo final. Ambas se evitan solo excluyendo el nombre de salida de la lista de entrada ANTES de hashear, nunca por post-filtro.
 
-### Logros
-✅ **3 Migraciones** (008-010): tablas little_bosses, minions, factory_requests, candidate_lessons — todas IF NOT EXISTS idempotentes  
-✅ **2 Modelos de dominio:** little-boss.js (158 LOC, AUTHORITY_RULES explícito, transiciones validadas), minion.js (105 LOC, ciclo lineal pending→executing→terminal)  
-✅ **1 Documento de contratos:** pilot-contracts.md (279 LOC) especificando Fases 2–6 sin implementar  
-✅ **29 Tests nuevos + 27 preexistentes:** 56/56 PASS, regresión 0  
-✅ **Revisión 4R:** PASS (Risk, Readability, Reliability, Resilience) con 1 WARN (Node 22.11+ dependency, env issue no del código)  
-✅ **Alcance estricto:** migrations, models, docs, tests — sin HTTP routes, sin FMD changes, sin SFV5, sin Solopreneur OS  
-✅ **Checkpoint obs-348** guardado en Engram
+## Accomplished
+- ✅ Informe forense original SFV5 — commit `a4589bf` (obs #390).
+- ✅ Addendum de censo/registro/crosswalk/matrices — commit `c074c20` (obs #392).
+- ✅ Resolución documental de 4 preguntas puntuales (12 vs 13 skills, promotion_state de skill-creator/image-generation, límites reales de `log-tool-usage.sh`) — commit `56633d1`.
+- ✅ CC-R1: remediación de 3 defectos de CX-1 (checksum, `scan_delta.py` no reproducible, identidad de grafo) — commit `fa640a5`.
+- ✅ CC-H1: plan de remediación (no implementación) de defectos de evidencia en el harness HLC específico de Concierge F1B — commit `cedb54a`.
+- ✅ CC-R2: cierre del contrato de checksum/manifest de SFV5, retirado el claim "20/20 PASS", desglose honesto 17 PASS + 1 PARTIAL + 1 CORRECTED + 1 NOT_APPLICABLE — commit `0bfc5c9`. **Verificado independientemente por CX-R2 (`60316d9`): `SFV5_AUDIT_INDEPENDENTLY_VERIFIED`.**
+- ✅ CC-2: reconciliación completa de la arquitectura laboral DFL (Workforce Registry + Factory Manager + WorkUnits/HLC + BOS + Engram + grafo), 19 activos inventariados, composición híbrida decidida como borde vivo (sin runtime nuevo) — commit `5e30326`.
+- ✅ CC-3: PRP ejecutable de Workforce Registry Unit v0.1 (schema, adapter SFV5, Registry mínimo, validator, query consumer, blind discovery test de 8 casos, 22 gates) — commit `4dfb07d`. Validado por CX-N1 (`b902bc9`, decisión `REVISE_TO_REGISTRY_WITH_SFV5_ADAPTER`, 39/40).
+- ✅ CC-PRP-R1: reconciliación por delta del PRP con los resultados del laboratorio de gobierno de mutaciones (16/16 escenarios) — modelo de proposal/validation/approval/commit, 6 actores tipados, versionado append-only, prohibición de hard delete, `wru-draft.md` preparado (no colocado aún en SFV5) — commit `500c0a1`.
+- 🔲 `wru-draft.md` pendiente de `CX-PRP-1 independent review` y, tras eso, de colocarse en `.claude/PRPs/wru-draft.md` de SFV5 y someterse vía `/primer` + `/prp`.
+- 🔲 CC-H1 (remediación del harness F1B) quedó como plan documentado, no implementado — pendiente de decisión de si se ejecuta.
 
-### Siguientes Pasos
-1. **Revisión independiente** (code-review agent distinto del implementador, sin push)
-2. **Aprobación** sin hallazgos bloqueantes
-3. **Merge a main** (rama local, no origin todavía)
-4. **Fase 2:** rutas HTTP (Solopreneur OS, factory-integration, little-bosses)
-5. **Riesgos documentados:** escalamiento sin límite (máx 3/goal), Jorge bottleneck, SFV5 timeout (async polling), divergencia E2E (transaccionalidad)
+## Next Steps
+- Esperar/verificar `CX-PRP-1 independent review` sobre `500c0a1` antes de someter `wru-draft.md` a SFV5.
+- Si CX-PRP-1 aprueba: colocar `wru-draft.md` en `.claude/PRPs/` de SFV5 y ejecutar `/primer` + `/prp` para iniciar la fabricación real (fuera de esta cadena de diseño).
+- Decidir si se retoma la implementación del plan de remediación de CC-H1 (harness F1B) — quedó como diseño, no ejecutado.
+- `push_mirror.sh` no se ejecutó en ningún punto de la sesión — pendiente para cuando Jorge lo autorice explícitamente (ejecutado recién al cierre de hoy, ver línea MIRROR reportada).
 
-### Archivos Relevantes
-- Implementación: /opt/360eventos/business-os/{migrations,models,docs,tests}/
-- Roadmap referencia: /opt/dfl-knowledge/evidence/pilot-roadmap-jpi-2026-07-25.md
-- Decisiones aplicadas: /opt/dfl-knowledge/evidence/CHECKPOINT-OBS-347-SUMMARY.md
-- SHA final: 2009533d8b4d1411693514be5febb13e3e9f1798
-- Reporte 4R: /tmp/PHASE1_FINAL_REPORT.md
+## Relevant Files
+- `evidence/sfv5-forensic-inspection-2026-07-30/` — informe original + addendum + 2 rondas de remediación (r1, r2) + resolución documental.
+- `evidence/sfv5-forensic-inspection-2026-07-30-cx{1,r1,r2}/`, `evidence/concierge-f1b-finalization-2026-07-30-r2{,-cx1,-remediation-h1}/` — revisiones independientes de CX y remediación de HLC F1B.
+- `evidence/dfl-workforce-architecture-reconciliation-2026-07-30/` — reconciliación arquitectónica completa (CC-2).
+- `evidence/dfl-first-workforce-increment-review-2026-07-30/` — validación CX-N1 del primer incremento.
+- `evidence/workforce-registry-unit-v0.1-prp-2026-07-30/` — PRP original (CC-3).
+- `evidence/workforce-registry-capability-lab-2026-07-30/` — laboratorio experimental de gobierno de mutaciones (CX-LAB-1).
+- `evidence/workforce-registry-unit-v0.1-prp-r1-2026-07-30/` — PRP reconciliado con el laboratorio, incluye `wru-draft.md` listo para SFV5.
 
-### Notas para Próximo Agente
-- Rama local `fase-1-little-bosses-models` en /opt/360eventos/business-os lista para revisión independiente
-- No pushear a origin/main sin revisión 4R independiente y aprobación
-- SFV5 documentation gap (misión separada obs-350) no bloquea piloto
-- Para Fase 2: revisar `docs/pilot-contracts.md` secciones 1–3 para interfaces esperadas
-- Migraciones son baseline: todas las fases posteriores dependen de estos esquemas
+### Session summary: futbolweb-app
+**Type:** session_summary  
+**Project:** futbolweb-app  
+
+## Cierre DFL/KNL/FutbolWeb — 2026-06-27
+
+### Goal
+Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar FutbolWeb limpio de dirty files y factory artifacts.
+
+### Accomplished
+- Engram #101: payload /go slim — graph_context eliminado, knl canónico único en payload
+- cc-atgo-hook.sh: header @go → @$go corregido
+- dfl-nav fmt_brief: mensaje no-match → "sin god_node — intenta la raíz del concepto"
+- FutbolWeb repo limpio: Blueprint audit movido a /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Auditorias/, graphify-out/ eliminado, .gitignore actualizado, commit 3fd5801
+- Engram #102: higiene FutbolWeb documentada
+- Bitácora creada: /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
+
+### Discoveries
+- graph_context era alias redundante del payload /go — eliminado sin romper consumidores
+- agProtocol_ATP-D_ROJA_v0.1-1: 3 archivos con MD5 idéntico en corpus (duplicados de indexación)
+- "estado" como nombre de god_node produce colisión léxica en español con el grafo
+- Blueprint_v0.6 audit era inconclusa (Blueprint no disponible en VM2) — conservada en Auditorias/
+
+### Next Steps
+1. FutbolWeb producto — runtime estable, knockout scoring deployado (91a4531)
+2. KNL próximo ciclo — nota stale graph_context en knl_builder.py, health test local, evaluar renombrar estado → context-proxy
+3. MERCADER — agregar a KNL si se activa como área de trabajo
+4. Corpus — eliminar agProtocol duplicados (-1 variants)
+
+### Relevant Files
+/opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
 ### JPI tiene casa Git propia: DFLghub/transportes-eventos-jpi (2026-08-21)
 **Type:** decision  
@@ -574,15 +592,15 @@ NEXT REQUIERO: decide whether/how to push this branch (a fresh branch on origin,
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.6151  
+**Graph entropy:** 0.6356  
 
-- **Community 11** (99 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Complejidad en la evaluación de costos
-- **Community 0** (6 nodes): Estrategia PRP
+- **Community 11** (99 nodes): Modelos de disponibilidad en servicios digitales, Evaluación de complejidad en costos, Dependencias de Fabricación
+- **Community 0** (7 nodes): Verificación de API, Estrategia PRP
 - **Community 1** (5 nodes): Jurisdicción, Mercader, Observación de Ed
-- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Semántica de Inventario
-- **Community 3** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
-- **Community 4** (4 nodes): Versioning and Lifecycle Management, Algoritmo de Pre-vuelo
+- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
+- **Community 3** (4 nodes): Cost Drivers in SFV5, PRP Structure and Dependencies, Onboarding Capability Deficiencies
+- **Community 4** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
 
 ---
 
-*Mirror auto-generated 2026-08-22T20:10:21Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-23T03:03:26Z | La Garra → DFLghub/amos-context*
