@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-24T21:01:32Z  
+**Generated:** 2026-08-24T23:00:17Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -237,23 +237,25 @@ LATER (NO hacer todavia, evitar sobreingenieria):
 == EVIDENCIA ==
 Commits (ahora dangling, no en ninguna rama, recuperables por hash mientras no corra gc agresivo): d7480410f5702a978d54d218f1b3282f6feb7dbd, 752efb9b1cec6774e7fea5ba3be392cdaa199962, ebd014ec496d1bb2ec312207cf005d1cd437a82d. Commits en la rama principal (persistentes): 8372ec1 (IRONMAN.md creado), ed4877b (cierre Lab TCC x TCX), 84b6b7e (cierre medicion VM2 n=2). Engram obs #491-#497 (tests de concurrencia y probes). IRONMAN.md, filas "Concurrencia TCC x TCX" y "VM2: n=2 fabricas virtuales concurrentes".
 
-### JPI Factory-native adaptation mission — map + real git-permission blocker found (2026-08-21)
+### DFL Organic Model × agMesh × Self-Model — registro histórico + intención pendiente (2026-08-24)
 **Type:** architecture  
 **Project:** dfl  
 
-Follows obs #562-564 (canonical checkpoint + Jorge's 2 corrections on why JPI paused / who built it). Jorge commissioned the actual adaptation mission: PRESERVAR PRODUCTO -> ADAPTAR MECANISMO, explicitly not a rewrite, not chasing 273/273 tests, no new Eventos/Transportes features.
+REGISTRO HISTÓRICO, NO IMPLEMENTACIÓN. Documento completo y autocontenido: /opt/saas-factory-setup/saas-factory/.claude/CHECKPOINT-DFL-AGMESH-ORGANIC-MODEL-SELFMODEL-2026-08-24.md — también indexado en IRONMAN.md → Tablero de hilos, fila "P11 — DFL Organic Model × agMesh × Self-Model".
 
-Classification result: business-os/ (the whole FMD/little-bosses/factory-adapter-registry/amOS system) = F. OBSOLETE/SUPERSEDED mechanism, not product. Its own CLAUDE.md self-describes as a "piloto soberano" -- deliberately separate Express+SQLite process, isolated from the real Next.js host and real Supabase. Zero PRPs, zero .claude/memory entries for it -- confirms it was built entirely off-Factory, exactly matching why-JPI-paused reasoning. 100% of 65 failing tests are inside business-os/; ZERO failures anywhere in the actual product (src/, Next.js app, domain model) -- the real product is healthy.
+Tres sesiones de arqueología (2026-08-24) reconstruyeron desde AgMaster_amOS_1/2/3, doctrina ratificada 2026-05-10 (agProtocol-DOCTRINE-UTILITY-GATE, JOINT-RATIFICATION), DOCTRINA_amOS_Agentes_Organismos_Vivos, NBLM2-FISIO-DFL-01, y el corpus AnyDoc de 31 .md el modelo conceptual histórico de DFL/amOS: evolución Lego/equipo → órgano/digestión → ontología+inmunología (IAIM, agLego, agVara, agNodo, agRelación, agMesh, todos ratificados el mismo día 2026-05-10) → organismo celular/tisular → metabolismo (ATP-D/ROJA) → fisiología dinámica → runtime operativo real (2026-06-27, KNL/Graphify/agTopologo/Engram) que ya no usa ese vocabulario, sin documento de transición encontrado.
 
-Frontend/product layer confirmed genuinely Factory-native already: package.json name is unmodified template default "saas-factory-app", full .claude/skills/ (30 skills) present, 2 real historical PRPs (PRP-001-landing-publica, PRP-002-auth-ui) prove the Next.js/auth layer was built through the proper skill process. The off-Factory divergence is business-os/ only, not the whole project -- an important correction to any assumption that "all of JPI" needs re-platforming.
+GAP CENTRAL confirmado con evidencia (no sospecha): DFL tiene piezas que saben cosas de su propia operación (operational-state, peer-work, Engram, Graphify, AQA, dispatch_gate) pero NINGUNA las conecta en un Self-Model único, vivo, autoconsultable. agRelación (comprensión transversal gobernada) = NOT_FOUND en runtime actual. agMesh/agMesh-X (metabolic capability graph) = DOCUMENTED_ONLY, nunca implementado; diseño más cercano (Workforce Registry Unit, .claude/PRPs/prp-workforce-registry-unit.md) sigue PENDIENTE.
 
-amOS WIP verdict: RETIRE the code (goes with its host mechanism), PRESERVE the intent as documentation. Added business-os/NOTICE-DEPRECATED.md (new file, uncommitted, explains the situation and points at this memory) rather than silently deleting or silently continuing to build on it.
+La necesidad reapareció de forma INDEPENDIENTE en un brief real de Jorge vía peer-work (2026-08, /opt/dfl-knowledge/governance/peer-work/queue.json) preguntando por un "organizational mesh invisible" — sin mencionar IAIM ni agMesh. Prueba de que no es solo arqueología, sigue siendo una necesidad viva.
 
-REAL NEW BLOCKER FOUND (not previously known precisely): git add/commit in /opt/jpi fails with "error: insufficient permission for adding an object to repository database .git/objects". 228 files inside .git itself (including .git/HEAD) are root-owned -- not just working-tree debris as the 2026-08-04 CASA LIMPIA diagnostic assumed (that diagnostic only knew about root-owned files blocking `rm`, not that .git internals themselves were also root-owned, blocking ALL commits). NO commit of any kind is possible in this repo until `sudo chown -R dflagent:dfl /opt/jpi/.git` runs as root. Nothing lost attempting it -- git add partially staged, cleanly `git reset`, working tree verified unchanged.
+QUIERO registrado (NO autoriza ejecución): que DFL conecte lo necesario para saber de sí mismo desde evidencia computable — qué es, qué tiene, qué hace, cómo se relacionan sus partes, en qué estado está — sin que Jorge/Tony lo reconstruyan manualmente cada vez. ESTADO: PENDIENTE_NO_ENVIADO.
 
-This is the single next REQUIERO to unblock everything else in JPI: Jorge runs that one chown command, then a future session can commit the already-triaged preserved work in organized separate commits (docs/domain-knowledge group -- Rubén discovery + domain model; tested-code group -- the PRECOTIZACION-eradication script+test+package.json wiring, already passing 3/3; unrelated-asset-manifest group -- business-os/lib/dfl.yaml for an unrelated Codebase Intelligence capability that happens to live nested there; business-os-mechanism-WIP group -- the amOS files + other business-os/ changes, committed as clearly-labeled historical/experimental, not deleted).
+Candidato de primer incremento (identificado, NO ejecutado): agregador READ-ONLY sobre dominio acotado TCC/TCX, reutilizando operational-state+peer-work+dispatch_gate, sin autoridad nueva, sin tocar NO_TOUCH.
 
-No Supabase/secrets touched. No new Eventos/Transportes features. No rewrite performed. Full detail in jpi-canonical-checkpoint-2026-08-21.md § 7 (local memory).
+Decisión pendiente explícita (no decidida en esta sesión): construir sobre SFV5 actual vs. esperar a la próxima evolución mayor de SaaS Factory ("SFV2") vs. diseñar contrato estable ahora y materializar después. Variables de costo/retrabajo dejadas explícitas en el checkpoint para decisión informada de Jorge.
+
+Búsquedas confirmadas SIN resultado (no fallo de búsqueda, ausencia real verificada): "simbionte"/"symbiont", "red autoconsciente"/"self-aware network" — cero en Engram institucional, cero en /opt/dfl-knowledge, cero en DFL-ChatGPT completo. "agElevation" y "agMesh-X" no tienen antecedente local propio — llegaron solo vía hallazgo externo (3 PDFs revisados por Jorge fuera de este entorno), marcados INFERRED/HYPOTHESIS, no institucionalizados como doctrina confirmada.
 
 ---
 
@@ -436,30 +438,31 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### DFL Organic Model × agMesh × Self-Model — registro histórico + intención pendiente (2026-08-24)
+**Type:** architecture  
+**Project:** dfl  
+
+REGISTRO HISTÓRICO, NO IMPLEMENTACIÓN. Documento completo y autocontenido: /opt/saas-factory-setup/saas-factory/.claude/CHECKPOINT-DFL-AGMESH-ORGANIC-MODEL-SELFMODEL-2026-08-24.md — también indexado en IRONMAN.md → Tablero de hilos, fila "P11 — DFL Organic Model × agMesh × Self-Model".
+
+Tres sesiones de arqueología (2026-08-24) reconstruyeron desde AgMaster_amOS_1/2/3, doctrina ratificada 2026-05-10 (agProtocol-DOCTRINE-UTILITY-GATE, JOINT-RATIFICATION), DOCTRINA_amOS_Agentes_Organismos_Vivos, NBLM2-FISIO-DFL-01, y el corpus AnyDoc de 31 .md el modelo conceptual histórico de DFL/amOS: evolución Lego/equipo → órgano/digestión → ontología+inmunología (IAIM, agLego, agVara, agNodo, agRelación, agMesh, todos ratificados el mismo día 2026-05-10) → organismo celular/tisular → metabolismo (ATP-D/ROJA) → fisiología dinámica → runtime operativo real (2026-06-27, KNL/Graphify/agTopologo/Engram) que ya no usa ese vocabulario, sin documento de transición encontrado.
+
+GAP CENTRAL confirmado con evidencia (no sospecha): DFL tiene piezas que saben cosas de su propia operación (operational-state, peer-work, Engram, Graphify, AQA, dispatch_gate) pero NINGUNA las conecta en un Self-Model único, vivo, autoconsultable. agRelación (comprensión transversal gobernada) = NOT_FOUND en runtime actual. agMesh/agMesh-X (metabolic capability graph) = DOCUMENTED_ONLY, nunca implementado; diseño más cercano (Workforce Registry Unit, .claude/PRPs/prp-workforce-registry-unit.md) sigue PENDIENTE.
+
+La necesidad reapareció de forma INDEPENDIENTE en un brief real de Jorge vía peer-work (2026-08, /opt/dfl-knowledge/governance/peer-work/queue.json) preguntando por un "organizational mesh invisible" — sin mencionar IAIM ni agMesh. Prueba de que no es solo arqueología, sigue siendo una necesidad viva.
+
+QUIERO registrado (NO autoriza ejecución): que DFL conecte lo necesario para saber de sí mismo desde evidencia computable — qué es, qué tiene, qué hace, cómo se relacionan sus partes, en qué estado está — sin que Jorge/Tony lo reconstruyan manualmente cada vez. ESTADO: PENDIENTE_NO_ENVIADO.
+
+Candidato de primer incremento (identificado, NO ejecutado): agregador READ-ONLY sobre dominio acotado TCC/TCX, reutilizando operational-state+peer-work+dispatch_gate, sin autoridad nueva, sin tocar NO_TOUCH.
+
+Decisión pendiente explícita (no decidida en esta sesión): construir sobre SFV5 actual vs. esperar a la próxima evolución mayor de SaaS Factory ("SFV2") vs. diseñar contrato estable ahora y materializar después. Variables de costo/retrabajo dejadas explícitas en el checkpoint para decisión informada de Jorge.
+
+Búsquedas confirmadas SIN resultado (no fallo de búsqueda, ausencia real verificada): "simbionte"/"symbiont", "red autoconsciente"/"self-aware network" — cero en Engram institucional, cero en /opt/dfl-knowledge, cero en DFL-ChatGPT completo. "agElevation" y "agMesh-X" no tienen antecedente local propio — llegaron solo vía hallazgo externo (3 PDFs revisados por Jorge fuera de este entorno), marcados INFERRED/HYPOTHESIS, no institucionalizados como doctrina confirmada.
+
 ### Paseo TCX Full Access profile configured and verified
 **Type:** decision  
 **Project:** saas-factory-setup  
 
 Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
-
-### JPI tiene casa Git propia: DFLghub/transportes-eventos-jpi (2026-08-21)
-**Type:** decision  
-**Project:** dfl  
-
-Follows obs #566. Jorge creó DFLghub/transportes-eventos-jpi (privado, vacío) en GitHub -- yo no pude crearlo (sin gh CLI, sin token API vigente). Diagnostiqué el mecanismo de credencial real (SSH key ~/.ssh/id_ed25519, identidad efectiva "DFLghub" confirmada via `ssh -T git@github.com` -> "Hi DFLghub!", no un deploy-key por-repo) antes de reportar el bloqueo -- el repo simplemente no existía todavía en el primer intento, confirmado después con el mismo comando tras la creación.
-
-Ejecutado, todo verificado desde remoto, no asumido:
-- `git remote rename origin legacy-360eventos` (preserva referencia histórica intacta, sin tocarla)
-- `git remote add origin git@github.com:DFLghub/transportes-eventos-jpi.git`
-- `git push -u origin feat/jpi-fase-5-real-runtime-v0.1` -- push limpio, sin merge/rebase/rewrite
-- Verificado: HEAD local == HEAD remoto (cde6664 antes de la actualización de dfl.yaml, luego 95ae0ae), upstream configurado correctamente (`origin/feat/jpi-fase-5-real-runtime-v0.1`), working tree limpio (0 cambios), historia completa preservada (46 commits, confirmado que el commit de bootstrap original "feat: bootstrap inicial 360Eventos" y el tag jpi-phase-1-closed son ancestros reales de la rama pusheada -- no es una historia truncada/squasheada)
-- 360eventos (legacy-360eventos remote) verificado sin tocar: HEAD sigue en 2a1efe2 (Phase 4), ramas intactas
-
-Actualicé la única referencia institucional necesaria: /opt/jpi/dfl.yaml, asset_id cambiado de `dfl.legacy.jpi-360eventos` (que literalmente conflacionaba JPI con el demo archivado) a `dfl.jpi.transportes-eventos`, con `residence` apuntando al nuevo repo canónico y `consumer_hint` apuntando a esta misma memoria institucional para que una futura sesión no tenga que redescubrir el historial desde cero. Commiteado (95ae0ae) y pusheado al nuevo repo. Índice central de asset-index regenerado y commiteado localmente en saas-factory-setup (commit b5d864d en fase-3-5-jpi-real-sfv5-bridge, no pusheado -- misma razón que el resto de esta sesión en esa rama: estado sucio previo no relacionado).
-
-No se tocó producto, no se metabolizó business-os/FMD/amOS/Outcome-Engine, no se tocó Supabase/secrets, no se hizo merge/rebase/rewrite de historia.
-
-NEXT REQUIERO real pendiente (no de esta misión, la siguiente etapa): decidir el destino de las capacidades de business-os/ según la matriz ya producida (obs #565), ahora que JPI tiene casa Git propia y checkpoint remoto seguro para trabajar sobre él.
 
 ---
 
@@ -570,4 +573,4 @@ NEXT REQUIERO real pendiente (no de esta misión, la siguiente etapa): decidir e
 
 ---
 
-*Mirror auto-generated 2026-08-24T21:01:32Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-24T23:00:17Z | La Garra → DFLghub/amos-context*
