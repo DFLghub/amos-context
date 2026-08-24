@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-24T23:00:57Z  
+**Generated:** 2026-08-24T23:17:14Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -573,4 +573,4 @@ Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el 
 
 ---
 
-*Mirror auto-generated 2026-08-24T23:00:57Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-24T23:17:14Z | La Garra → DFLghub/amos-context*
