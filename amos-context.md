@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-24T01:08:56Z  
+**Generated:** 2026-08-24T03:05:04Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -309,6 +309,54 @@ Costo total 10.50 USD, 14 invocaciones.
 
 ## RECENT ACTIVITY (cross-project)
 
+### [DISCOVERY] SFV5 fabrica de verdad pero solo por via agentica; el bridge programatico devuelve ok:true constante y su artefacto es invariante al pedido
+**Type:** decision  
+**Project:** dfl  
+
+[AMPLIADO 2026-08-04 por obs #462 y #463 — leer ambas antes de usar esta]
+#462 corrige tres afirmaciones de abajo: (C1) "el routing es razonamiento libre / no hay tabla de routing" es FALSO — CLAUDE.md:48-140 tiene un decision tree explicito de 27 ramas, 27/32 skills ruteadas, 5 fuera; es DOCUMENTED, no IMPLEMENTED. (C2) "no hay orquestador / no hay pipeline explicito" es FALSO como afirmacion sobre el diseno — CLAUDE.md:184-260 define 5 flujos y el Flujo 1 tiene 16 pasos ordenados; sigue siendo cierto que no hay ejecutor: es una maquina de estados de papel, y roof-issues-mini no siguio el Flujo 1. (C3) CLAUDE.md:140 declara 30 skills; hay 32.
+#463 corrige el REUTILIZABLE INTACTO de abajo: faltaba el activo mas grande, architecture/first-operable-factory-v01/ (Gerente de Fabrica / FMD, obs #280, 2026-07-21), que ya nombro los dos gaps de esta observacion 14 dias antes y que esta observacion no cita ni una vez.
+El VEREDICTO se sostiene sin cambios: SFV5_AGENTIC_FACTORY_LIVE_PROGRAMMATIC_ENTRY_GAP.
+
+---
+
+TOPIC: dfl/saas-factory/internal-factory-reality-discovery
+TYPE: decision
+STATUS: closed
+DATE: 2026-08-04
+PRECEDENCIA: D
+AUTHORITY: evidence only
+LIFECYCLE: active
+CONFIDENCE: high
+
+MISION SFV5_INTERNAL_FACTORY_REALITY_DISCOVERY, modo YOLO read-only. Commit 3b2a8c9, evidence/sfv5-internal-factory-reality-2026-08-04/ (23 archivos, SHA256SUMS sin self-reference).
+
+VEREDICTO: SFV5_AGENTIC_FACTORY_LIVE_PROGRAMMATIC_ENTRY_GAP.
+
+SFV5 SI FABRICA SOFTWARE, y hay producto que lo prueba: roof-issues-mini (2026-06-13), via prp -> bucle-agentico, seis fases, con la seccion Self-Annealing del PRP LLENA con 3 errores reales y sus fixes (Zod v4 pipe con z.coerce, @import tailwindcss v4 con Tailwind v3 instalado, next lint eliminado en Next 16). Es el unico lugar del sistema donde la fabricacion institucionaliza aprendizaje. LIVE_PROVEN.
+
+PERO SOLO POR UNA RUTA: sesion interactiva de Claude Code leyendo prosa. Busqueda exhaustiva sobre 11 superficies (CI workflows, .claude/commands, .claude/agents, settings.json, Dockerfile/Makefile, claude -p, claude --print, spawn, execSync, SDK @anthropic-ai, MCP): CERO entradas headless. El unico child_process del canonico 9b18947 es git rev-parse HEAD dentro del bridge. package.json canonico: 4 scripts, todos Next.js, cero de fabrica. Solo 7 ejecutables fuera de src/.
+
+EL BRIDGE NO FABRICA Y SU ok:true ES CONSTANTE. buildArtifact() (-lib.mjs:169) es un objeto literal. `objective` se copia como metadato y NUNCA se lee. `requirements` ni siquiera llega al artefacto: usa [...REQUIRED_RULES], la constante del modulo. Las 4 assertions de buildTestReport() comparan constantes contra constantes y evaluan passInput/failInput hardcodeados en la propia funcion. NINGUNA toca la mision. ok:true es matematicamente true para toda mision estructuralmente valida.
+
+PRUEBA EMPIRICA: dos misiones identicas salvo objective — "webapp de heladeria con botones de chocolate, fresa y pistacho" vs "compilador de Rust a WebAssembly con macros procedurales". Ambas status=ready, ok=true, 4/4 assertions. Artefactos normalizados BYTE-IDENTICOS: diff exit 0, 0 bytes. Cero archivos HTML/CSS/JS. La palabra heladeria aparece una vez, dentro del campo objective, como metadato.
+
+SKILLS, correccion de la afirmacion previa: 0/32 con tests CONFIRMADO. Pero "0/32 con camino vivo" era demasiado fuerte. Exacto: 0/32 tests, 3/32 camino vivo evidenciado (prp y bucle-agentico por PRP-001; skill-creator TESTED con quick_validate 32/32), 29/32 sin ninguna evidencia de haberse ejecutado. 20/32 son solo SKILL.md. 2/32 con scripts propios.
+
+NO HAY ORQUESTADOR. Las mas referenciadas del grafo de menciones son hojas: outcomes(7), add-login(7), supabase(7), factory-brain(6). Ninguna coordina el pipeline. El routing es razonamiento libre del modelo sobre description+triggers, mecanismo del HOST, no de SFV5. Las skills se referencian en prosa, no se invocan; solo autoresearch declara Agent en allowed-tools y parallel-build menciona Workflow, ambos del host.
+
+WRU es la superficie headless mas cercana que EXISTE: wru.query.v1 por stdin/stdout con autoridad tipada (consumer_id + authority=READER), lee el frontmatter de las 32 skills. Es el paso 3 del roadmap por ROI de la auditoria del 2026-07-30, la unica recomendacion que llego a construirse. Pero CATALOGA, NO INVOCA. Probado en vivo hoy: 33/33 entradas stale, 20 propuestas y 4 conflictos pendientes, y una excepcion no capturada en query/client.mjs:20 (TypeError toLowerCase) que rompe su propio contrato escribiendo stack trace donde promete JSON.
+
+GAP EXACTO: falta (a) superficie de invocacion no interactiva del runtime existente y (b) verificador de correspondencia pedido->producto. La (b) NO TIENE NINGUN PRECEDENTE en el sistema: ningun mecanismo compara producto contra pedido. Clase de gap: adaptador + instrumentacion. NO requiere modificar skills ni capacidad nueva de fabricacion; SI requiere capacidad nueva de verificacion semantica.
+
+REUTILIZABLE INTACTO: las 32 skills, la plantilla PRP, el contrato de evidencia del bridge (status/artifact/test-report/producer-evidence + SHA), el patron mission_fingerprint + idempotencia, wru.query.v1 como descubrimiento.
+
+EXPERIMENTO MINIMO PROPUESTO: SFV5_HEADLESS_ORDER_TO_PRODUCT_MINIMAL_PROOF. Reproducir roof-issues-mini por via no interactiva usando su PRP-001 respaldado, con los 6 criterios de exito convertidos en aserciones ejecutables. Criterio: >=5/6 criterios DEL PEDIDO en PASS. Contra-criterio explicito: falla si reporta PASS solo porque la ejecucion termino sin error.
+
+RIESGO PRINCIPAL: JPI consume este bridge via business-os/adapters/factory/. Si el flujo de negocio trata ready como "producto correcto", el defecto se propaga a decisiones operativas reales.
+
+Sin uso de root: los bloqueos por ownership (.git de saas-factory-setup root, 38 rutas de skills V5 root, /opt root) quedan documentados, no ocultados. Sin grafo como autoridad: cero consultas a Graphify/agTopologo/codebase-memory.
+
 ### Session summary: dfl-knowledge
 **Type:** session_summary  
 **Project:** dfl-knowledge  
@@ -355,58 +403,6 @@ Sesión larga, multi-misión sobre DFL/SFV5/Workforce Registry Unit (WRU) v0.1: 
 - `/opt/dfl-knowledge/evidence/sfv5-wru-implementation-plan-2026-07-31/` — receipts de generación y corrección del plan.
 - `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/FINAL-VERDICT.md` — matriz completa G1-G44, estado exacto por etapa, veredicto final.
 - `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/HANDOFF-2026-07-31.md` — handoff autosuficiente para continuación por otro agente.
-
-### Session summary: dfl-knowledge
-**Type:** session_summary  
-**Project:** dfl-knowledge  
-
-## Goal
-Sesión larga y multi-misión sobre DFL/SFV5: auditoría forense grounded de la copia local SaaS Factory (VM2), su censo estructurado, remediación en 3 rondas hasta verificación independiente cerrada, reconciliación de la arquitectura laboral completa de DFL (Workforce Registry / Factory Manager), y el PRP ejecutable del primer incremento vivo (Workforce Registry Unit v0.1), reconciliado con resultados de un laboratorio experimental de gobierno de mutaciones.
-
-## Instructions
-- Jorge dio autorización explícita para operar autónomamente en varias misiones sucesivas ("no solicites autorización intermedia", y luego "full authorization to perform this task/mission").
-- Patrón de trabajo institucional confirmado y seguido en toda la sesión: nunca sobrescribir evidencia ya publicada/commiteada — toda corrección o ronda nueva va en un subdirectorio nuevo, con referencia explícita a lo que corrige.
-- Verificación de colisión con CX (otro agente operando en paralelo sobre el mismo repo) antes de cada `git add`/commit: `git log --oneline`, `git status --short`, nunca `git add -A`.
-- Contrato de integridad de evidencia consolidado y reutilizado en todas las misiones posteriores: manifest/checksum de dos pasos (MANIFEST.json escrito primero, excluyendo su propio nombre y el de SHA256SUMS.txt desde el listado inicial; SHA256SUMS.txt escrito después, nunca por `sha256sum * > archivo` ni por copiar/renombrar un archivo ya hasheado bajo otro nombre — ambas son causas raíz reales de bugs de autorreferencia ya encontrados en esta misma cadena).
-- Jorge pidió un `@$fin` parcial (checkpoint) a mitad de una misión — se distinguió correctamente de un cierre canónico: `mem_save` incremental sin barrido de archivado ni `push_mirror.sh`, sesión sigue abierta. Ese checkpoint (obs #394) quedó archivado hoy al completarse y validarse la misión que dejaba pendiente.
-
-## Discoveries
-- **SFV5 local no es "SFV5 de Ricardo Silva".** El único autor real verificable del repo comunitario (`upstream/main`) es Daniel Carreón. Todo lo etiquetado "V5" localmente fue introducido en un commit único (`5e42124`) de Jorge Tigreros — es autoría DFL sobre el V4 comunitario, no una importación de terceros. Cero evidencia de "Ricardo Silva" en el historial git accesible.
-- Ningún "minion" nombrado (Sensei/Trinity/AI Dani) existe en el repo; "Levy" es solo un asset de imagen (mascota) para la skill `video-visuals`, no un agente.
-- El grafo de codebase-memory no cubre `.claude/` de SFV5 en absoluto (0 nodos) ni `tools/bridges/` — 4 índices duplicados para la misma ruta con conteos distintos pese al mismo `head_sha`, causa raíz confirmada: truncamiento de `max_rows` en ciertas queries (no corrupción de datos).
-- El activo de mayor apalancamiento de todo el inventario DFL, descubierto en la reconciliación arquitectónica (CC-2), no es BOS/Concierge/SFV5 por separado — es un harness de alta certeza **genérico** ya construido y probado (`experiments/dfl-high-certainty-exploration-harness-v0.1/`, 2/2 tests, piloto real ejecutado) que ninguna auditoría previa había conectado con el resto del inventario. Existe una duplicación real (2 patrones HLC independientes: el genérico y la instancia específica de Concierge F1B con defectos de evidencia confirmados) — pero la revisión independiente posterior (CX-N1) determinó que NO son duplicados funcionales demostrados y que su unificación queda `DEFER`, no se reabre.
-- WorkUnitLedger (`dfl-knowledge/concierge/workunit.py`, mergeado a main, dogfood real, 237/237 tests) es el activo más maduro para "Factory Manager" — más confiable que `parallel-build` de SFV5 (solo documentado).
-- "Opportunity Inbox" y "Refinería y Distribución de Capacidades" están completamente ausentes de todo el corpus DFL bajo cualquier variante de nombre buscada.
-- El laboratorio experimental de gobierno de mutaciones (`workforce-registry-capability-lab-2026-07-30`, 16/16 escenarios PASS) falsificó la intuición de que un CRUD simple sobre un Registry es suficiente: el estado canónico debe separarse de propuestas, con validación, aprobación, bloqueo optimista (`expected_version`), versionado append-only, verificación de dependencias y evidencia — nunca escritura directa, nunca hard delete, nunca "rollback = replay de audit log" (rollback real = commit gobernado de una versión restaurada).
-- Bug de autorreferencia de checksum tiene 2 causas raíz distintas ya encontradas en esta cadena: (1) truncamiento de shell (`sha256sum * > archivo` trunca el archivo de salida antes de leerlo como argumento del glob), (2) captura de hash bajo un nombre temporal que luego se reutiliza al copiar/renombrar el archivo final. Ambas se evitan solo excluyendo el nombre de salida de la lista de entrada ANTES de hashear, nunca por post-filtro.
-
-## Accomplished
-- ✅ Informe forense original SFV5 — commit `a4589bf` (obs #390).
-- ✅ Addendum de censo/registro/crosswalk/matrices — commit `c074c20` (obs #392).
-- ✅ Resolución documental de 4 preguntas puntuales (12 vs 13 skills, promotion_state de skill-creator/image-generation, límites reales de `log-tool-usage.sh`) — commit `56633d1`.
-- ✅ CC-R1: remediación de 3 defectos de CX-1 (checksum, `scan_delta.py` no reproducible, identidad de grafo) — commit `fa640a5`.
-- ✅ CC-H1: plan de remediación (no implementación) de defectos de evidencia en el harness HLC específico de Concierge F1B — commit `cedb54a`.
-- ✅ CC-R2: cierre del contrato de checksum/manifest de SFV5, retirado el claim "20/20 PASS", desglose honesto 17 PASS + 1 PARTIAL + 1 CORRECTED + 1 NOT_APPLICABLE — commit `0bfc5c9`. **Verificado independientemente por CX-R2 (`60316d9`): `SFV5_AUDIT_INDEPENDENTLY_VERIFIED`.**
-- ✅ CC-2: reconciliación completa de la arquitectura laboral DFL (Workforce Registry + Factory Manager + WorkUnits/HLC + BOS + Engram + grafo), 19 activos inventariados, composición híbrida decidida como borde vivo (sin runtime nuevo) — commit `5e30326`.
-- ✅ CC-3: PRP ejecutable de Workforce Registry Unit v0.1 (schema, adapter SFV5, Registry mínimo, validator, query consumer, blind discovery test de 8 casos, 22 gates) — commit `4dfb07d`. Validado por CX-N1 (`b902bc9`, decisión `REVISE_TO_REGISTRY_WITH_SFV5_ADAPTER`, 39/40).
-- ✅ CC-PRP-R1: reconciliación por delta del PRP con los resultados del laboratorio de gobierno de mutaciones (16/16 escenarios) — modelo de proposal/validation/approval/commit, 6 actores tipados, versionado append-only, prohibición de hard delete, `wru-draft.md` preparado (no colocado aún en SFV5) — commit `500c0a1`.
-- 🔲 `wru-draft.md` pendiente de `CX-PRP-1 independent review` y, tras eso, de colocarse en `.claude/PRPs/wru-draft.md` de SFV5 y someterse vía `/primer` + `/prp`.
-- 🔲 CC-H1 (remediación del harness F1B) quedó como plan documentado, no implementado — pendiente de decisión de si se ejecuta.
-
-## Next Steps
-- Esperar/verificar `CX-PRP-1 independent review` sobre `500c0a1` antes de someter `wru-draft.md` a SFV5.
-- Si CX-PRP-1 aprueba: colocar `wru-draft.md` en `.claude/PRPs/` de SFV5 y ejecutar `/primer` + `/prp` para iniciar la fabricación real (fuera de esta cadena de diseño).
-- Decidir si se retoma la implementación del plan de remediación de CC-H1 (harness F1B) — quedó como diseño, no ejecutado.
-- `push_mirror.sh` no se ejecutó en ningún punto de la sesión — pendiente para cuando Jorge lo autorice explícitamente (ejecutado recién al cierre de hoy, ver línea MIRROR reportada).
-
-## Relevant Files
-- `evidence/sfv5-forensic-inspection-2026-07-30/` — informe original + addendum + 2 rondas de remediación (r1, r2) + resolución documental.
-- `evidence/sfv5-forensic-inspection-2026-07-30-cx{1,r1,r2}/`, `evidence/concierge-f1b-finalization-2026-07-30-r2{,-cx1,-remediation-h1}/` — revisiones independientes de CX y remediación de HLC F1B.
-- `evidence/dfl-workforce-architecture-reconciliation-2026-07-30/` — reconciliación arquitectónica completa (CC-2).
-- `evidence/dfl-first-workforce-increment-review-2026-07-30/` — validación CX-N1 del primer incremento.
-- `evidence/workforce-registry-unit-v0.1-prp-2026-07-30/` — PRP original (CC-3).
-- `evidence/workforce-registry-capability-lab-2026-07-30/` — laboratorio experimental de gobierno de mutaciones (CX-LAB-1).
-- `evidence/workforce-registry-unit-v0.1-prp-r1-2026-07-30/` — PRP reconciliado con el laboratorio, incluye `wru-draft.md` listo para SFV5.
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -563,15 +559,15 @@ NEXT REQUIERO real pendiente (no de esta misión, la siguiente etapa): decidir e
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.6356  
+**Graph entropy:** 0.7912  
 
-- **Community 11** (99 nodes): Modelos de disponibilidad en servicios digitales, Evaluación de complejidad en costos, Dependencias de Fabricación
-- **Community 0** (7 nodes): Verificación de API, Estrategia PRP
-- **Community 1** (5 nodes): Jurisdicción, Mercader, Observación de Ed
-- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
-- **Community 3** (4 nodes): Cost Drivers in SFV5, PRP Structure and Dependencies, Onboarding Capability Deficiencies
-- **Community 4** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
+- **Community 11** (91 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Complejidad en la evaluación de costos
+- **Community 0** (7 nodes): Integraciones externas de SFV5, Condiciones de promoción para capacidades diferidas, Auditoría en SaaS
+- **Community 1** (6 nodes): Verificación de API, Estrategia PRP
+- **Community 2** (5 nodes): Criterios de Éxito para P-1, Límite de Mercader, Adaptación de RLS
+- **Community 3** (5 nodes): Jurisdicción, Mercader, Observación de Ed
+- **Community 4** (4 nodes): MCP Server Behavior, RLS Trap, Semántica de Inventario
 
 ---
 
-*Mirror auto-generated 2026-08-24T01:08:56Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-24T03:05:04Z | La Garra → DFLghub/amos-context*
