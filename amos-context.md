@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-24T23:17:14Z  
+**Generated:** 2026-08-25T00:45:04Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -237,70 +237,15 @@ LATER (NO hacer todavia, evitar sobreingenieria):
 == EVIDENCIA ==
 Commits (ahora dangling, no en ninguna rama, recuperables por hash mientras no corra gc agresivo): d7480410f5702a978d54d218f1b3282f6feb7dbd, 752efb9b1cec6774e7fea5ba3be392cdaa199962, ebd014ec496d1bb2ec312207cf005d1cd437a82d. Commits en la rama principal (persistentes): 8372ec1 (IRONMAN.md creado), ed4877b (cierre Lab TCC x TCX), 84b6b7e (cierre medicion VM2 n=2). Engram obs #491-#497 (tests de concurrencia y probes). IRONMAN.md, filas "Concurrencia TCC x TCX" y "VM2: n=2 fabricas virtuales concurrentes".
 
-### DFL Organic Model × agMesh × Self-Model — registro histórico + intención pendiente (2026-08-24)
-**Type:** architecture  
+### whatsapp-realtor-mvp sigue ausente en filesystem y Neon no verificable
+**Type:** fact  
 **Project:** dfl  
 
-REGISTRO HISTÓRICO, NO IMPLEMENTACIÓN. Documento completo y autocontenido: /opt/saas-factory-setup/saas-factory/.claude/CHECKPOINT-DFL-AGMESH-ORGANIC-MODEL-SELFMODEL-2026-08-24.md — también indexado en IRONMAN.md → Tablero de hilos, fila "P11 — DFL Organic Model × agMesh × Self-Model".
-
-Tres sesiones de arqueología (2026-08-24) reconstruyeron desde AgMaster_amOS_1/2/3, doctrina ratificada 2026-05-10 (agProtocol-DOCTRINE-UTILITY-GATE, JOINT-RATIFICATION), DOCTRINA_amOS_Agentes_Organismos_Vivos, NBLM2-FISIO-DFL-01, y el corpus AnyDoc de 31 .md el modelo conceptual histórico de DFL/amOS: evolución Lego/equipo → órgano/digestión → ontología+inmunología (IAIM, agLego, agVara, agNodo, agRelación, agMesh, todos ratificados el mismo día 2026-05-10) → organismo celular/tisular → metabolismo (ATP-D/ROJA) → fisiología dinámica → runtime operativo real (2026-06-27, KNL/Graphify/agTopologo/Engram) que ya no usa ese vocabulario, sin documento de transición encontrado.
-
-GAP CENTRAL confirmado con evidencia (no sospecha): DFL tiene piezas que saben cosas de su propia operación (operational-state, peer-work, Engram, Graphify, AQA, dispatch_gate) pero NINGUNA las conecta en un Self-Model único, vivo, autoconsultable. agRelación (comprensión transversal gobernada) = NOT_FOUND en runtime actual. agMesh/agMesh-X (metabolic capability graph) = DOCUMENTED_ONLY, nunca implementado; diseño más cercano (Workforce Registry Unit, .claude/PRPs/prp-workforce-registry-unit.md) sigue PENDIENTE.
-
-La necesidad reapareció de forma INDEPENDIENTE en un brief real de Jorge vía peer-work (2026-08, /opt/dfl-knowledge/governance/peer-work/queue.json) preguntando por un "organizational mesh invisible" — sin mencionar IAIM ni agMesh. Prueba de que no es solo arqueología, sigue siendo una necesidad viva.
-
-QUIERO registrado (NO autoriza ejecución): que DFL conecte lo necesario para saber de sí mismo desde evidencia computable — qué es, qué tiene, qué hace, cómo se relacionan sus partes, en qué estado está — sin que Jorge/Tony lo reconstruyan manualmente cada vez. ESTADO: PENDIENTE_NO_ENVIADO.
-
-Candidato de primer incremento (identificado, NO ejecutado): agregador READ-ONLY sobre dominio acotado TCC/TCX, reutilizando operational-state+peer-work+dispatch_gate, sin autoridad nueva, sin tocar NO_TOUCH.
-
-Decisión pendiente explícita (no decidida en esta sesión): construir sobre SFV5 actual vs. esperar a la próxima evolución mayor de SaaS Factory ("SFV2") vs. diseñar contrato estable ahora y materializar después. Variables de costo/retrabajo dejadas explícitas en el checkpoint para decisión informada de Jorge.
-
-Búsquedas confirmadas SIN resultado (no fallo de búsqueda, ausencia real verificada): "simbionte"/"symbiont", "red autoconsciente"/"self-aware network" — cero en Engram institucional, cero en /opt/dfl-knowledge, cero en DFL-ChatGPT completo. "agElevation" y "agMesh-X" no tienen antecedente local propio — llegaron solo vía hallazgo externo (3 PDFs revisados por Jorge fuera de este entorno), marcados INFERRED/HYPOTHESIS, no institucionalizados como doctrina confirmada.
+2026-08-25. Revalidación como TCX/Codex: find -xdev en /opt,/home,/tmp,/workspace y raíz no encontró directorio whatsapp-realtor-mvp; rg no encontró sus contratos/artefactos. El único intent-router localizado es src/lib/intent-router.ts del SFV5 existente, no el MVP inmobiliario. No hay .neon, neon.ts, configuración Neon local ni NEON_API_KEY; neon CLI solo inicia OAuth. Resolver operativo del target: UNKNOWN, posture controlled, sin registro. No se modificó ni borró nada. No es seguro implementar gaps ni identificar recursos Neon sin target y acceso/autorización verificables.
 
 ---
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
-
-### [SFV5] Entrevista canonica completada: la fabrica se autodescribe, mecanismo de interrogacion resuelto y 3 hallazgos criticos verificados
-**Type:** fact  
-**Project:** dfl  
-
-TOPIC: dfl/saas-factory/canonical-self-description
-TYPE: fact
-STATUS: closed
-DATE: 2026-08-05
-PRECEDENCIA: D
-AUTHORITY: evidence only
-LIFECYCLE: active
-CONFIDENCE: high
-
-ENTREVISTA CANONICA A SFV5 COMPLETADA. La fabrica se describio a si misma en 10 bloques, una sola voz (session ad815526), clon canonico 9b18947, solo lectura, cero mutaciones. Evidencia en /opt/dfl-knowledge/evidence/sfv5-canonical-interview-2026-08-05/ (8 documentos + 14 transcripciones JSON + SHA256SUMS + HANDOFF-TO-CX.md).
-
-MECANISMO RESUELTO (cierra Q65 del discovery #460, que quedo INFERENCE): no existe una segunda instancia de Claude Code esperando; se INVOCA. `claude -p` con cwd en <checkout>/saas-factory carga las 32 skills (~19k tokens medidos contra control vacio de 5.7k) y esa sesion ES la fabrica. Reanudable con --resume. LIVE_PROVEN.
-
-TESIS DE LA FABRICA (verbatim): "Soy una arquitectura de contratos declarativos ejecutada por un interprete probabilistico que no controlo, sobre un sistema de archivos que es mi unica memoria." Corolario suyo: todo imperativo en sus archivos (OBLIGATORIO/SIEMPRE/gate duro) es intencion de diseno, no garantia de ejecucion; las unicas garantias reales viven en tools/bridges/ (4 archivos de 82).
-
-HALLAZGOS ACCIONABLES verificados independientemente por Claude Code:
-1. CRITICO update-sf/SKILL.md:52 hace `rm -rf .claude/` y destruye .claude/memory/, PRPs del proyecto y settings.json, mientras anuncia "Archivos NO modificados". Reactiva en silencio la auto-memory del host que memory-manager desactivo. Con N proyectos = destruccion sistematica del activo de aprendizaje compuesto.
-2. CRITICO quality-gates/SKILL.md:25 exige `npm run typecheck`; package.json solo define dev/build/start/lint. Gate duro que invoca script inexistente.
-3. CRITICO dos clases de ciudadano: CLAUDE.md:360 "SIEMPRE habilitar RLS" vs add-payments:74 "service_role bypasses automatically". Resuelve el actor no-humano apagando su invariante mas fuerte.
-4. Sin concepto multi-inquilino organizacional: 1 hit en skills/+src/ y es "Google Workspace" incidental. Su unidad de aislamiento es el individuo, no la organizacion.
-5. codebase-analyst listado en SKILLS_README.md:59 sin directorio: su unico skill de analisis desaparecio en V4->V5.
-6. Son 32 skills, no las 30 documentadas.
-
-IDENTIDAD DERIVADA POR LA PROPIA FABRICA: su especializacion no es un dominio de negocio (atraveso biometria, RAG legal, generacion de video y cold email sin modificarse, verificado en vertical-pack:6) sino una TOPOLOGIA de entrega y operacion. Nombre operativo propuesto por ella: "fabrica de instancias multi-principal operadas en continuo". Criterio de pertenencia: el entregable hay que mantenerlo vivo y observarlo, y todos los principales se autorizan contra el MISMO modelo (hoy la respuesta es no). Aclaro que NO propone renombrar el repo, solo la definicion operativa de asignacion.
-
-CONSECUENCIA PARA EL FMD (#280): convergencia independiente, sin que se le entregara el diseno del Gerente. Derivo sola que tools/bridges/ YA presupone un gerente (factory_request_id, goal_id, attempt_number, evidence_path) y fijo la frontera: "el gerente gobierna ENTRE misiones, yo gobierno DENTRO; la frontera es el paquete de mision y se cruza solo con artefactos, nunca con supervision". Interfaz minima de 8 superficies: 1-4 ya existen en el bridge, 5-8 son la brecha.
-
-GENTLE AI: veredicto SI con acceso al clon completo (52adc25). Capacidad adoptable = el recibo ligado por hash al estado verificado (receipt.go:15) + gates que solo leen recibos. Concepto si, implementacion no. Debe vivir en el kernel compartido; SFV5 emite, el gerente hace vinculante; los tres roles no se pueden fusionar so pena de autocertificacion.
-
-ESTADO DFL VERIFICADO EN LA GARRA: no hay kernel, no hay CI (cero .github/), no existe ~/.saas-factory/brain/, y nada en produccion emite mission packets (los unicos factory_request_id son los que fabrico a mano el discovery). El tramo "hacer vinculantes los recibos" no tiene hoy actor posible.
-
-SIGUIENTE PASO: pedirle el INVENTARIO DE ATESTACION (entregable falsable que ella misma propuso). Pendiente de Jorge, bloquea el resto: que limites volver vinculantes, y si hay identidad para aprobaciones humanas.
-
-CAVEAT DE METODO: la fabrica es parte interesada describiendose a si misma. Los [FACT] no verificados por Claude Code son citas suyas, no evidencia. Se verificaron ~20 de mayor consecuencia.
-
-Costo total 10.50 USD, 14 invocaciones.
 
 ---
 
@@ -438,31 +383,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### DFL Organic Model × agMesh × Self-Model — registro histórico + intención pendiente (2026-08-24)
+### whatsapp-realtor-mvp sigue ausente en filesystem y Neon no verificable
+**Type:** fact  
+**Project:** dfl  
+
+2026-08-25. Revalidación como TCX/Codex: find -xdev en /opt,/home,/tmp,/workspace y raíz no encontró directorio whatsapp-realtor-mvp; rg no encontró sus contratos/artefactos. El único intent-router localizado es src/lib/intent-router.ts del SFV5 existente, no el MVP inmobiliario. No hay .neon, neon.ts, configuración Neon local ni NEON_API_KEY; neon CLI solo inicia OAuth. Resolver operativo del target: UNKNOWN, posture controlled, sin registro. No se modificó ni borró nada. No es seguro implementar gaps ni identificar recursos Neon sin target y acceso/autorización verificables.
+
+### P11 benchmark inmobiliario: patrones baratos y límites del MVP
 **Type:** architecture  
 **Project:** dfl  
 
-REGISTRO HISTÓRICO, NO IMPLEMENTACIÓN. Documento completo y autocontenido: /opt/saas-factory-setup/saas-factory/.claude/CHECKPOINT-DFL-AGMESH-ORGANIC-MODEL-SELFMODEL-2026-08-24.md — también indexado en IRONMAN.md → Tablero de hilos, fila "P11 — DFL Organic Model × agMesh × Self-Model".
-
-Tres sesiones de arqueología (2026-08-24) reconstruyeron desde AgMaster_amOS_1/2/3, doctrina ratificada 2026-05-10 (agProtocol-DOCTRINE-UTILITY-GATE, JOINT-RATIFICATION), DOCTRINA_amOS_Agentes_Organismos_Vivos, NBLM2-FISIO-DFL-01, y el corpus AnyDoc de 31 .md el modelo conceptual histórico de DFL/amOS: evolución Lego/equipo → órgano/digestión → ontología+inmunología (IAIM, agLego, agVara, agNodo, agRelación, agMesh, todos ratificados el mismo día 2026-05-10) → organismo celular/tisular → metabolismo (ATP-D/ROJA) → fisiología dinámica → runtime operativo real (2026-06-27, KNL/Graphify/agTopologo/Engram) que ya no usa ese vocabulario, sin documento de transición encontrado.
-
-GAP CENTRAL confirmado con evidencia (no sospecha): DFL tiene piezas que saben cosas de su propia operación (operational-state, peer-work, Engram, Graphify, AQA, dispatch_gate) pero NINGUNA las conecta en un Self-Model único, vivo, autoconsultable. agRelación (comprensión transversal gobernada) = NOT_FOUND en runtime actual. agMesh/agMesh-X (metabolic capability graph) = DOCUMENTED_ONLY, nunca implementado; diseño más cercano (Workforce Registry Unit, .claude/PRPs/prp-workforce-registry-unit.md) sigue PENDIENTE.
-
-La necesidad reapareció de forma INDEPENDIENTE en un brief real de Jorge vía peer-work (2026-08, /opt/dfl-knowledge/governance/peer-work/queue.json) preguntando por un "organizational mesh invisible" — sin mencionar IAIM ni agMesh. Prueba de que no es solo arqueología, sigue siendo una necesidad viva.
-
-QUIERO registrado (NO autoriza ejecución): que DFL conecte lo necesario para saber de sí mismo desde evidencia computable — qué es, qué tiene, qué hace, cómo se relacionan sus partes, en qué estado está — sin que Jorge/Tony lo reconstruyan manualmente cada vez. ESTADO: PENDIENTE_NO_ENVIADO.
-
-Candidato de primer incremento (identificado, NO ejecutado): agregador READ-ONLY sobre dominio acotado TCC/TCX, reutilizando operational-state+peer-work+dispatch_gate, sin autoridad nueva, sin tocar NO_TOUCH.
-
-Decisión pendiente explícita (no decidida en esta sesión): construir sobre SFV5 actual vs. esperar a la próxima evolución mayor de SaaS Factory ("SFV2") vs. diseñar contrato estable ahora y materializar después. Variables de costo/retrabajo dejadas explícitas en el checkpoint para decisión informada de Jorge.
-
-Búsquedas confirmadas SIN resultado (no fallo de búsqueda, ausencia real verificada): "simbionte"/"symbiont", "red autoconsciente"/"self-aware network" — cero en Engram institucional, cero en /opt/dfl-knowledge, cero en DFL-ChatGPT completo. "agElevation" y "agMesh-X" no tienen antecedente local propio — llegaron solo vía hallazgo externo (3 PDFs revisados por Jorge fuera de este entorno), marcados INFERRED/HYPOTHESIS, no institucionalizados como doctrina confirmada.
-
-### Paseo TCX Full Access profile configured and verified
-**Type:** decision  
-**Project:** saas-factory-setup  
-
-Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
+2026-08-25. Benchmark rápido de Inmobo/Chat Estelar, Domu, YAVE IA, Axery AI, Casas & Espacios, Grupo Santamaría y Ylopo. Patrones convergentes: inbox omnicanal/WhatsApp oficial; trazabilidad completa de conversación, asignación, citas, etapas y seguimiento; inventario/backend conectable; intent/role routing más allá del comprador; agenda de visitas; handoff con contexto; dashboards/reportes; configurabilidad por organización. Domu añade notas operativas que sugieren siguiente acción, agenda, cruce cliente-inmueble y post-cierre; YAVE añade acciones CRM reales, pipeline, cotizador, cartera y automatizaciones; Axery enfatiza match de inventario en tiempo real desde Wasi; Ylopo aporta señales mínimas de proactividad: vistas/favoritos/retorno al sitio/solicitud de información o visita, que deben persistirse como eventos y score sin construir aún outbound complejo. Search recovery requerido: distinguir NO_INVENTORY_MATCH, OVERCONSTRAINED, INSUFFICIENT_CRITERIA, SEARCH_FAILURE, POSSIBLE_ALTERNATIVES. Estado local verificado en esta sesión: whatsapp-realtor-mvp no existe en las rutas revisadas ni hay archivos del MVP; no se implementaron cambios ficticios.
 
 ---
 
@@ -573,4 +504,4 @@ Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el 
 
 ---
 
-*Mirror auto-generated 2026-08-24T23:17:14Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-25T00:45:04Z | La Garra → DFLghub/amos-context*
