@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-25T21:45:03Z  
+**Generated:** 2026-08-25T21:49:24Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -518,4 +518,4 @@ Provenance: baseline TCX HEAD b30d3000be62e3d68159bd2140df5a070f9dcdd2; rama fas
 
 ---
 
-*Mirror auto-generated 2026-08-25T21:45:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-25T21:49:24Z | La Garra → DFLghub/amos-context*
