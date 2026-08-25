@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-25T00:45:04Z  
+**Generated:** 2026-08-25T02:35:17Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -237,11 +237,11 @@ LATER (NO hacer todavia, evitar sobreingenieria):
 == EVIDENCIA ==
 Commits (ahora dangling, no en ninguna rama, recuperables por hash mientras no corra gc agresivo): d7480410f5702a978d54d218f1b3282f6feb7dbd, 752efb9b1cec6774e7fea5ba3be392cdaa199962, ebd014ec496d1bb2ec312207cf005d1cd437a82d. Commits en la rama principal (persistentes): 8372ec1 (IRONMAN.md creado), ed4877b (cierre Lab TCC x TCX), 84b6b7e (cierre medicion VM2 n=2). Engram obs #491-#497 (tests de concurrencia y probes). IRONMAN.md, filas "Concurrencia TCC x TCX" y "VM2: n=2 fabricas virtuales concurrentes".
 
-### whatsapp-realtor-mvp sigue ausente en filesystem y Neon no verificable
+### whatsapp-realtor-mvp: Vercel adaptado, deployment bloqueado por persistencia
 **Type:** fact  
 **Project:** dfl  
 
-2026-08-25. Revalidación como TCX/Codex: find -xdev en /opt,/home,/tmp,/workspace y raíz no encontró directorio whatsapp-realtor-mvp; rg no encontró sus contratos/artefactos. El único intent-router localizado es src/lib/intent-router.ts del SFV5 existente, no el MVP inmobiliario. No hay .neon, neon.ts, configuración Neon local ni NEON_API_KEY; neon CLI solo inicia OAuth. Resolver operativo del target: UNKNOWN, posture controlled, sin registro. No se modificó ni borró nada. No es seguro implementar gaps ni identificar recursos Neon sin target y acceso/autorización verificables.
+2026-08-25. Se inspeccionó patrón real: JackyClean usa proyecto Vercel enlazado (.vercel/project.json), Next.js y Neon Postgres vía DATABASE_URL; RSVP vive como proyecto Vercel independiente event-rsvp-waitlist.vercel.app con persistencia externa. whatsapp-realtor-mvp fue adaptado a función Vercel (api/index.js + vercel.json) y el runtime rechaza API en Vercel con 503 PERSISTENCE_NOT_CONFIGURED si falta DATABASE_URL, evitando falsa persistencia en filesystem efímero. Vercel CLI está autenticado como dflghub, pero no hay DATABASE_URL, NEON_API_KEY, Blob token ni recurso Neon conectado. npm test local PASS; prueba simulada Vercel confirma 503 honesto. No se publicó URL incompleta. Blocker humano exacto: conectar/provisionar un Postgres/Neon para el proyecto Vercel y cargar DATABASE_URL sin exponerla.
 
 ---
 
@@ -383,17 +383,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### whatsapp-realtor-mvp: Vercel adaptado, deployment bloqueado por persistencia
+**Type:** fact  
+**Project:** dfl  
+
+2026-08-25. Se inspeccionó patrón real: JackyClean usa proyecto Vercel enlazado (.vercel/project.json), Next.js y Neon Postgres vía DATABASE_URL; RSVP vive como proyecto Vercel independiente event-rsvp-waitlist.vercel.app con persistencia externa. whatsapp-realtor-mvp fue adaptado a función Vercel (api/index.js + vercel.json) y el runtime rechaza API en Vercel con 503 PERSISTENCE_NOT_CONFIGURED si falta DATABASE_URL, evitando falsa persistencia en filesystem efímero. Vercel CLI está autenticado como dflghub, pero no hay DATABASE_URL, NEON_API_KEY, Blob token ni recurso Neon conectado. npm test local PASS; prueba simulada Vercel confirma 503 honesto. No se publicó URL incompleta. Blocker humano exacto: conectar/provisionar un Postgres/Neon para el proyecto Vercel y cargar DATABASE_URL sin exponerla.
+
 ### whatsapp-realtor-mvp sigue ausente en filesystem y Neon no verificable
 **Type:** fact  
 **Project:** dfl  
 
 2026-08-25. Revalidación como TCX/Codex: find -xdev en /opt,/home,/tmp,/workspace y raíz no encontró directorio whatsapp-realtor-mvp; rg no encontró sus contratos/artefactos. El único intent-router localizado es src/lib/intent-router.ts del SFV5 existente, no el MVP inmobiliario. No hay .neon, neon.ts, configuración Neon local ni NEON_API_KEY; neon CLI solo inicia OAuth. Resolver operativo del target: UNKNOWN, posture controlled, sin registro. No se modificó ni borró nada. No es seguro implementar gaps ni identificar recursos Neon sin target y acceso/autorización verificables.
-
-### P11 benchmark inmobiliario: patrones baratos y límites del MVP
-**Type:** architecture  
-**Project:** dfl  
-
-2026-08-25. Benchmark rápido de Inmobo/Chat Estelar, Domu, YAVE IA, Axery AI, Casas & Espacios, Grupo Santamaría y Ylopo. Patrones convergentes: inbox omnicanal/WhatsApp oficial; trazabilidad completa de conversación, asignación, citas, etapas y seguimiento; inventario/backend conectable; intent/role routing más allá del comprador; agenda de visitas; handoff con contexto; dashboards/reportes; configurabilidad por organización. Domu añade notas operativas que sugieren siguiente acción, agenda, cruce cliente-inmueble y post-cierre; YAVE añade acciones CRM reales, pipeline, cotizador, cartera y automatizaciones; Axery enfatiza match de inventario en tiempo real desde Wasi; Ylopo aporta señales mínimas de proactividad: vistas/favoritos/retorno al sitio/solicitud de información o visita, que deben persistirse como eventos y score sin construir aún outbound complejo. Search recovery requerido: distinguir NO_INVENTORY_MATCH, OVERCONSTRAINED, INSUFFICIENT_CRITERIA, SEARCH_FAILURE, POSSIBLE_ALTERNATIVES. Estado local verificado en esta sesión: whatsapp-realtor-mvp no existe en las rutas revisadas ni hay archivos del MVP; no se implementaron cambios ficticios.
 
 ---
 
@@ -504,4 +504,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-08-25T00:45:04Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-25T02:35:17Z | La Garra → DFLghub/amos-context*
