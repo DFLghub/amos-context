@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-25T03:05:01Z  
+**Generated:** 2026-08-25T05:27:21Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,35 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### Cierre 2026-08-25 — Realtor no validado; patrón operativo recuperado de RSVP y JackyClean
+**Type:** checkpoint  
+**Project:** dfl  
+
+CIERRE DE SESIÓN — 2026-08-25
+
+Estado honesto:
+- whatsapp-realtor-mvp NO queda validado como producto operativo ni READY.
+- La autenticación/OWNER de Realtor no fue demostrada de forma confiable contra el runtime público actual; no debe usarse el PASS histórico como prueba suficiente.
+- No se cambiaron código, credenciales, Vercel, Neon ni otros proyectos durante esta revisión final.
+
+Corrección metodológica:
+- Fue incorrecto revisar Realtor para resolver el problema de Realtor: era evidencia circular.
+- Las referencias operativas relevantes son RSVP y JackyClean.
+
+Evidencia recuperada:
+- RSVP: /opt/dfl-products/event-rsvp-waitlist, repo canónico github:DFLghub/event-rsvp-waitlist@main, producción event-rsvp-waitlist.vercel.app, persistencia Supabase. IRONMAN rows 93-95 lo registran como cierre con verificación de producción/AQA y correcciones adversariales reales. dfl.yaml confirma residencia externa y operación independiente.
+- JackyClean: /home/dflagent/worktrees/jackyclean, repo remoto DFLghub/saas-factory-setup, branch project/jackyclean. Vercel linkage local confirma projectName jackyclean, projectId y orgId del team DFL. Persistencia Neon/Postgres mediante DATABASE_URL y un boundary único en saas-factory/src/lib/db/client.ts. IRONMAN row 115 registra ciclos reales de operación, autoridad OWNER/ADMIN, configuración y verificación E2E.
+- AQA/evidence de Realtor existe, pero el valid-auth histórico usó credenciales inyectadas localmente en el proceso; no prueba por sí solo que Vercel Production usara esos mismos valores.
+
+Engram:
+- búsquedas exactas de Realtor/auth, RSVP y JackyClean no devolvieron observaciones específicas útiles; la evidencia válida está en IRONMAN, handoffs, dfl.yaml y artefactos AQA.
+
+Próximo enfoque:
+1. Usar RSVP/JackyClean como patrón de comparación.
+2. Verificar Realtor únicamente desde source canónico -> deployment -> runtime real -> browser/HTTP externo -> AQA.
+3. No declarar PASS/READY por auth local, variables inyectadas, build o receipts históricos aislados.
+4. No repetir investigación circular ni tocar credenciales sin necesidad.
+
 ### Paseo TCX Full Access profile configured and verified
 **Type:** decision  
 **Project:** saas-factory-setup  
@@ -140,30 +169,6 @@ Actualicé la única referencia institucional necesaria: /opt/jpi/dfl.yaml, asse
 No se tocó producto, no se metabolizó business-os/FMD/amOS/Outcome-Engine, no se tocó Supabase/secrets, no se hizo merge/rebase/rewrite de historia.
 
 NEXT REQUIERO real pendiente (no de esta misión, la siguiente etapa): decidir el destino de las capacidades de business-os/ según la matriz ya producida (obs #565), ahora que JPI tiene casa Git propia y checkpoint remoto seguro para trabajar sobre él.
-
-### JPI .git ownership fixed + 63/64 uncommitted changes preserved in 6 organized commits (2026-08-21)
-**Type:** decision  
-**Project:** dfl  
-
-Follows obs #562-565. Jorge ran `sudo chown -R dflagent:dfl /opt/jpi/.git` himself (I have no sudo, confirmed). Verified: 227 root-owned files inside .git -> 0 after. Working-tree files outside .git that were root-owned (several .md reports, scripts/jpi-domain-term-guard.mjs, business-os/server.js) were already world-readable (rw-r--r--), so they never blocked git add/commit -- only .git internals did. The scoped fix (.git only) was correct and sufficient, verified before executing, not assumed.
-
-Integrity verified post-chown: git status showed the same 64 changes as before (63 original + my own NOTICE file), HEAD unchanged at a241ef5, `git fsck --full --no-dangling` returned clean (zero real corruption; the --full run alone showed ~50 harmless dangling objects from an earlier aborted `git add`+`git reset` attempt, normal and inert).
-
-Preserved everything in 6 separate, real commits (no mass/generic commit), each with clear provenance, nothing deleted, nothing "cleaned":
-1. fcb7c51 -- Rubén/JPI discovery documentation (docs/case-zero/, docs/discovery/, docs/mvp-v2/) -- real interview/discovery evidence with Rubén.
-2. 82d3424 -- real, tested domain/product logic: the PRECOTIZACION-eradication work (scripts/jpi-domain-term-guard.mjs, its test, package.json wiring, src/features/jpi/domain/states.mjs) matching Engram obs #370's report that was never actually committed until now, plus domain/ (decision log, factory defaults, open questions, Rubén's blocking-questions packet, the NO_INTERMEDIATE_STAGE canonical decision, ontology/runtime CSVs), docs/functional/, docs/business/.
-3. f5c7256 -- the root dfl.yaml asset-index manifest (already indexed/discoverable, just never committed).
-4. db68962 -- business-os/ historical WIP unrelated to the amOS thread (factory-request.js, fmd-runtime-factory-bridge test diff, an intent->outcome-mapping exploration with its own migrations 998/999, a Codebase Intelligence wrapper+test+dfl.yaml that happens to live nested here, several e2e test explorations) -- verified via grep that none of these are referenced by the amOS/outcome-analysis chain, kept genuinely separate.
-5. a88d44e -- WIP amOS + Outcome Analysis Engine, kept together deliberately: verified via grep that runtime.js's diff requires() all 5 new fmd/ files (amos-context-loader, outcome-verifier, correction-strategies, factory-outcome-recorder, outcome-pattern-analyzer which itself requires outcome-analysis-engine) as one entangled unit -- splitting it would have misrepresented the real state, so committed as one intertwined WIP commit instead of forcing an artificial "amOS-only" split.
-6. cde6664 -- business-os/NOTICE-DEPRECATED.md, the recovery-analysis documentation written earlier this session.
-
-No UNKNOWN bucket was needed -- every file had clear, evidence-backed provenance, nothing ambiguous survived triage.
-
-Working tree is now 100% clean (`nothing to commit, working tree clean`). Branch `feat/jpi-fase-5-real-runtime-v0.1` has no upstream tracking configured and does not exist on origin (`DFLghub/360eventos.git`) at all -- confirmed via `git rev-parse @{u}` failing and no matching `origin/...` ref. Per explicit instruction and this real ambiguity, did NOT push.
-
-No product behavior changed, no tests run/fixed, no business-os/ code modified beyond adding the already-existing NOTICE-DEPRECATED.md, no Supabase/secrets touched, no metabolization work done -- purely a preserve-and-organize mission, exactly as scoped.
-
-NEXT REQUIERO: decide whether/how to push this branch (a fresh branch on origin, or merge target) -- that's a real open question given no upstream exists, not something to assume. Everything else from here is metabolization work (deciding FMD/little-bosses/amOS/Outcome-Engine fates per the capability matrix in obs #565), explicitly out of scope for this preserve-only mission.
 
 ### DFL LAB HARVEST 2026-08-15: TCC x TCX concurrency + VM2 n=2 load — methodology, not just result
 **Type:** checkpoint  
@@ -387,17 +392,40 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Cierre 2026-08-25 — Realtor no validado; patrón operativo recuperado de RSVP y JackyClean
+**Type:** checkpoint  
+**Project:** dfl  
+
+CIERRE DE SESIÓN — 2026-08-25
+
+Estado honesto:
+- whatsapp-realtor-mvp NO queda validado como producto operativo ni READY.
+- La autenticación/OWNER de Realtor no fue demostrada de forma confiable contra el runtime público actual; no debe usarse el PASS histórico como prueba suficiente.
+- No se cambiaron código, credenciales, Vercel, Neon ni otros proyectos durante esta revisión final.
+
+Corrección metodológica:
+- Fue incorrecto revisar Realtor para resolver el problema de Realtor: era evidencia circular.
+- Las referencias operativas relevantes son RSVP y JackyClean.
+
+Evidencia recuperada:
+- RSVP: /opt/dfl-products/event-rsvp-waitlist, repo canónico github:DFLghub/event-rsvp-waitlist@main, producción event-rsvp-waitlist.vercel.app, persistencia Supabase. IRONMAN rows 93-95 lo registran como cierre con verificación de producción/AQA y correcciones adversariales reales. dfl.yaml confirma residencia externa y operación independiente.
+- JackyClean: /home/dflagent/worktrees/jackyclean, repo remoto DFLghub/saas-factory-setup, branch project/jackyclean. Vercel linkage local confirma projectName jackyclean, projectId y orgId del team DFL. Persistencia Neon/Postgres mediante DATABASE_URL y un boundary único en saas-factory/src/lib/db/client.ts. IRONMAN row 115 registra ciclos reales de operación, autoridad OWNER/ADMIN, configuración y verificación E2E.
+- AQA/evidence de Realtor existe, pero el valid-auth histórico usó credenciales inyectadas localmente en el proceso; no prueba por sí solo que Vercel Production usara esos mismos valores.
+
+Engram:
+- búsquedas exactas de Realtor/auth, RSVP y JackyClean no devolvieron observaciones específicas útiles; la evidencia válida está en IRONMAN, handoffs, dfl.yaml y artefactos AQA.
+
+Próximo enfoque:
+1. Usar RSVP/JackyClean como patrón de comparación.
+2. Verificar Realtor únicamente desde source canónico -> deployment -> runtime real -> browser/HTTP externo -> AQA.
+3. No declarar PASS/READY por auth local, variables inyectadas, build o receipts históricos aislados.
+4. No repetir investigación circular ni tocar credenciales sin necesidad.
+
 ### whatsapp-realtor-mvp: Vercel adaptado, deployment bloqueado por persistencia
 **Type:** fact  
 **Project:** dfl  
 
 2026-08-25. Se inspeccionó patrón real: JackyClean usa proyecto Vercel enlazado (.vercel/project.json), Next.js y Neon Postgres vía DATABASE_URL; RSVP vive como proyecto Vercel independiente event-rsvp-waitlist.vercel.app con persistencia externa. whatsapp-realtor-mvp fue adaptado a función Vercel (api/index.js + vercel.json) y el runtime rechaza API en Vercel con 503 PERSISTENCE_NOT_CONFIGURED si falta DATABASE_URL, evitando falsa persistencia en filesystem efímero. Vercel CLI está autenticado como dflghub, pero no hay DATABASE_URL, NEON_API_KEY, Blob token ni recurso Neon conectado. npm test local PASS; prueba simulada Vercel confirma 503 honesto. No se publicó URL incompleta. Blocker humano exacto: conectar/provisionar un Postgres/Neon para el proyecto Vercel y cargar DATABASE_URL sin exponerla.
-
-### whatsapp-realtor-mvp sigue ausente en filesystem y Neon no verificable
-**Type:** fact  
-**Project:** dfl  
-
-2026-08-25. Revalidación como TCX/Codex: find -xdev en /opt,/home,/tmp,/workspace y raíz no encontró directorio whatsapp-realtor-mvp; rg no encontró sus contratos/artefactos. El único intent-router localizado es src/lib/intent-router.ts del SFV5 existente, no el MVP inmobiliario. No hay .neon, neon.ts, configuración Neon local ni NEON_API_KEY; neon CLI solo inicia OAuth. Resolver operativo del target: UNKNOWN, posture controlled, sin registro. No se modificó ni borró nada. No es seguro implementar gaps ni identificar recursos Neon sin target y acceso/autorización verificables.
 
 ---
 
@@ -508,4 +536,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-08-25T03:05:01Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-25T05:27:21Z | La Garra → DFLghub/amos-context*
