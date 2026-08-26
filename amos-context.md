@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-26T03:05:02Z  
+**Generated:** 2026-08-26T03:05:07Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -330,57 +330,37 @@ Sesión larga, multi-misión sobre DFL/SFV5/Workforce Registry Unit (WRU) v0.1: 
 - `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/FINAL-VERDICT.md` — matriz completa G1-G44, estado exacto por etapa, veredicto final.
 - `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/HANDOFF-2026-07-31.md` — handoff autosuficiente para continuación por otro agente.
 
-### Session summary: dfl-knowledge
-**Type:** session_summary  
-**Project:** dfl-knowledge  
+### Event RSVP MVP — full session close: blind AQA, Back/Forward fix, José delegated-admin grant, lifecycle-gap diagnostic, handoff sent (2026-08-17)
+**Type:** decision  
+**Project:** dfl  
 
-## Goal
-Sesión larga y multi-misión sobre DFL/SFV5: auditoría forense grounded de la copia local SaaS Factory (VM2), su censo estructurado, remediación en 3 rondas hasta verificación independiente cerrada, reconciliación de la arquitectura laboral completa de DFL (Workforce Registry / Factory Manager), y el PRP ejecutable del primer incremento vivo (Workforce Registry Unit v0.1), reconciliado con resultados de un laboratorio experimental de gobierno de mutaciones.
+TOPIC: dfl/event-rsvp/session-close-2026-08-17-tcc-post-jose-remediation
+STATUS: closed
+DATE: 2026-08-17
+PRECEDENCIA: C
+AUTHORITY: evidence only
+LIFECYCLE: active
+CONFIDENCE: high
 
-## Instructions
-- Jorge dio autorización explícita para operar autónomamente en varias misiones sucesivas ("no solicites autorización intermedia", y luego "full authorization to perform this task/mission").
-- Patrón de trabajo institucional confirmado y seguido en toda la sesión: nunca sobrescribir evidencia ya publicada/commiteada — toda corrección o ronda nueva va en un subdirectorio nuevo, con referencia explícita a lo que corrige.
-- Verificación de colisión con CX (otro agente operando en paralelo sobre el mismo repo) antes de cada `git add`/commit: `git log --oneline`, `git status --short`, nunca `git add -A`.
-- Contrato de integridad de evidencia consolidado y reutilizado en todas las misiones posteriores: manifest/checksum de dos pasos (MANIFEST.json escrito primero, excluyendo su propio nombre y el de SHA256SUMS.txt desde el listado inicial; SHA256SUMS.txt escrito después, nunca por `sha256sum * > archivo` ni por copiar/renombrar un archivo ya hasheado bajo otro nombre — ambas son causas raíz reales de bugs de autorreferencia ya encontrados en esta misma cadena).
-- Jorge pidió un `@$fin` parcial (checkpoint) a mitad de una misión — se distinguió correctamente de un cierre canónico: `mem_save` incremental sin barrido de archivado ni `push_mirror.sh`, sesión sigue abierta. Ese checkpoint (obs #394) quedó archivado hoy al completarse y validarse la misión que dejaba pendiente.
+WHAT: Single long TCC session, four threads, all closed, no open blockers for the José handoff.
 
-## Discoveries
-- **SFV5 local no es "SFV5 de Ricardo Silva".** El único autor real verificable del repo comunitario (`upstream/main`) es Daniel Carreón. Todo lo etiquetado "V5" localmente fue introducido en un commit único (`5e42124`) de Jorge Tigreros — es autoría DFL sobre el V4 comunitario, no una importación de terceros. Cero evidencia de "Ricardo Silva" en el historial git accesible.
-- Ningún "minion" nombrado (Sensei/Trinity/AI Dani) existe en el repo; "Levy" es solo un asset de imagen (mascota) para la skill `video-visuals`, no un agente.
-- El grafo de codebase-memory no cubre `.claude/` de SFV5 en absoluto (0 nodos) ni `tools/bridges/` — 4 índices duplicados para la misma ruta con conteos distintos pese al mismo `head_sha`, causa raíz confirmada: truncamiento de `max_rows` en ciertas queries (no corrupción de datos).
-- El activo de mayor apalancamiento de todo el inventario DFL, descubierto en la reconciliación arquitectónica (CC-2), no es BOS/Concierge/SFV5 por separado — es un harness de alta certeza **genérico** ya construido y probado (`experiments/dfl-high-certainty-exploration-harness-v0.1/`, 2/2 tests, piloto real ejecutado) que ninguna auditoría previa había conectado con el resto del inventario. Existe una duplicación real (2 patrones HLC independientes: el genérico y la instancia específica de Concierge F1B con defectos de evidencia confirmados) — pero la revisión independiente posterior (CX-N1) determinó que NO son duplicados funcionales demostrados y que su unificación queda `DEFER`, no se reabre.
-- WorkUnitLedger (`dfl-knowledge/concierge/workunit.py`, mergeado a main, dogfood real, 237/237 tests) es el activo más maduro para "Factory Manager" — más confiable que `parallel-build` de SFV5 (solo documentado).
-- "Opportunity Inbox" y "Refinería y Distribución de Capacidades" están completamente ausentes de todo el corpus DFL bajo cualquier variante de nombre buscada.
-- El laboratorio experimental de gobierno de mutaciones (`workforce-registry-capability-lab-2026-07-30`, 16/16 escenarios PASS) falsificó la intuición de que un CRUD simple sobre un Registry es suficiente: el estado canónico debe separarse de propuestas, con validación, aprobación, bloqueo optimista (`expected_version`), versionado append-only, verificación de dependencias y evidencia — nunca escritura directa, nunca hard delete, nunca "rollback = replay de audit log" (rollback real = commit gobernado de una versión restaurada).
-- Bug de autorreferencia de checksum tiene 2 causas raíz distintas ya encontradas en esta cadena: (1) truncamiento de shell (`sha256sum * > archivo` trunca el archivo de salida antes de leerlo como argumento del glob), (2) captura de hash bajo un nombre temporal que luego se reutiliza al copiar/renombrar el archivo final. Ambas se evitan solo excluyendo el nombre de salida de la lista de entrada ANTES de hashear, nunca por post-filtro.
+1) Blind adversarial AQA (Playwright + OWASP ZAP, not seeded with José's known findings, per Jorge's explicit "keep it simple, minimum tools" instruction): Playwright 24 checks (auth abuse, direct-Supabase-REST IDOR/bypass attempts, business-logic bounds, stored XSS, 10-way concurrent RSVP race) + ZAP baseline+full active scan (135+ rules incl. SQLi/XSS/SSRF/SSTI/RCE/Log4Shell/Spring4Shell) = 0 injection/RCE findings, RLS defense-in-depth confirmed on every bypass attempt. One real NEW bug found (not on José's list): signup with a taken username silently "succeeded" (redirected to /events) while the actual DB insert failed, leaving an orphaned profile-less authenticated session — root cause was auth.signUp() opening a session before the users-table uniqueness check could fail, and a page-level useEffect reacting to that transient truthy `user` state. Fixed (signOut in the error path + stopped reacting to global auth state for the signup redirect) + added CSP/X-Content-Type-Options/X-Frame-Options/Permissions-Policy headers. Verified live post-deploy. Commit 112ab97.
 
-## Accomplished
-- ✅ Informe forense original SFV5 — commit `a4589bf` (obs #390).
-- ✅ Addendum de censo/registro/crosswalk/matrices — commit `c074c20` (obs #392).
-- ✅ Resolución documental de 4 preguntas puntuales (12 vs 13 skills, promotion_state de skill-creator/image-generation, límites reales de `log-tool-usage.sh`) — commit `56633d1`.
-- ✅ CC-R1: remediación de 3 defectos de CX-1 (checksum, `scan_delta.py` no reproducible, identidad de grafo) — commit `fa640a5`.
-- ✅ CC-H1: plan de remediación (no implementación) de defectos de evidencia en el harness HLC específico de Concierge F1B — commit `cedb54a`.
-- ✅ CC-R2: cierre del contrato de checksum/manifest de SFV5, retirado el claim "20/20 PASS", desglose honesto 17 PASS + 1 PARTIAL + 1 CORRECTED + 1 NOT_APPLICABLE — commit `0bfc5c9`. **Verificado independientemente por CX-R2 (`60316d9`): `SFV5_AUDIT_INDEPENDENTLY_VERIFIED`.**
-- ✅ CC-2: reconciliación completa de la arquitectura laboral DFL (Workforce Registry + Factory Manager + WorkUnits/HLC + BOS + Engram + grafo), 19 activos inventariados, composición híbrida decidida como borde vivo (sin runtime nuevo) — commit `5e30326`.
-- ✅ CC-3: PRP ejecutable de Workforce Registry Unit v0.1 (schema, adapter SFV5, Registry mínimo, validator, query consumer, blind discovery test de 8 casos, 22 gates) — commit `4dfb07d`. Validado por CX-N1 (`b902bc9`, decisión `REVISE_TO_REGISTRY_WITH_SFV5_ADAPTER`, 39/40).
-- ✅ CC-PRP-R1: reconciliación por delta del PRP con los resultados del laboratorio de gobierno de mutaciones (16/16 escenarios) — modelo de proposal/validation/approval/commit, 6 actores tipados, versionado append-only, prohibición de hard delete, `wru-draft.md` preparado (no colocado aún en SFV5) — commit `500c0a1`.
-- 🔲 `wru-draft.md` pendiente de `CX-PRP-1 independent review` y, tras eso, de colocarse en `.claude/PRPs/wru-draft.md` de SFV5 y someterse vía `/primer` + `/prp`.
-- 🔲 CC-H1 (remediación del harness F1B) quedó como plan documentado, no implementado — pendiente de decisión de si se ejecuta.
+2) Multi-tab auth investigation (Jorge's real Firefox report: 2 tabs, logout in one deauthed both, a reopened tab showed authenticated then deauthed): reproduced exactly via Playwright pages sharing one BrowserContext. Confirmed root cause: single shared localStorage session per browser origin/profile + GoTrue's own cross-tab storage-event sync — this is expected upstream Supabase behavior, NOT a bug. The 6-8 independent router.push-based auth-guard useEffects reacting uncoordinated to that shared state IS implementation-level amplification, diagnosed but explicitly NOT fixed in that pass per Jorge's scope (diagnosis only, no new investigation lines).
 
-## Next Steps
-- Esperar/verificar `CX-PRP-1 independent review` sobre `500c0a1` antes de someter `wru-draft.md` a SFV5.
-- Si CX-PRP-1 aprueba: colocar `wru-draft.md` en `.claude/PRPs/` de SFV5 y ejecutar `/primer` + `/prp` para iniciar la fabricación real (fuera de esta cadena de diseño).
-- Decidir si se retoma la implementación del plan de remediación de CC-H1 (harness F1B) — quedó como diseño, no ejecutado.
-- `push_mirror.sh` no se ejecutó en ningún punto de la sesión — pendiente para cuando Jorge lo autorice explícitamente (ejecutado recién al cierre de hoy, ver línea MIRROR reportada).
+3) Back/Forward bug (found via Jorge's real repro description, fixed for real this time): Back into /login or /signup while authenticated ate the Back action and bounced straight back to where you started — root cause was those two pages redirecting away from themselves the instant global `user` was truthy, including when reached via popstate (browser Back), which is a real implementation bug distinct from #2. Fix: /login and /signup now render a static non-navigating "already signed in" panel instead of an effect-driven redirect; all 5 protected-route guards (+root "/") switched router.push('/login') to router.replace('/login') so a lost-auth redirect never leaves a trapped history entry. All 7 required scenarios (Back/Forward authenticated, normal nav, refresh, logout, Back after logout, direct access to protected route after logout) verified PASS live in production.
 
-## Relevant Files
-- `evidence/sfv5-forensic-inspection-2026-07-30/` — informe original + addendum + 2 rondas de remediación (r1, r2) + resolución documental.
-- `evidence/sfv5-forensic-inspection-2026-07-30-cx{1,r1,r2}/`, `evidence/concierge-f1b-finalization-2026-07-30-r2{,-cx1,-remediation-h1}/` — revisiones independientes de CX y remediación de HLC F1B.
-- `evidence/dfl-workforce-architecture-reconciliation-2026-07-30/` — reconciliación arquitectónica completa (CC-2).
-- `evidence/dfl-first-workforce-increment-review-2026-07-30/` — validación CX-N1 del primer incremento.
-- `evidence/workforce-registry-unit-v0.1-prp-2026-07-30/` — PRP original (CC-3).
-- `evidence/workforce-registry-capability-lab-2026-07-30/` — laboratorio experimental de gobierno de mutaciones (CX-LAB-1).
-- `evidence/workforce-registry-unit-v0.1-prp-r1-2026-07-30/` — PRP reconciliado con el laboratorio, incluye `wru-draft.md` listo para SFV5.
+4) José capability grant: JoseIncer (confirmed is_admin=true, is_owner=false in production) can now execute remove_demo_data() (DEMO->REAL transition) — migration 018 widened that one RPC from owner-only to any-admin, with an explicit is_owner=false added to its own DELETE as defense in depth. Every other owner/delegated-admin boundary from migration 015 re-verified untouched via real auth.uid() simulation against the LIVE functions/triggers (not mocks, not assumptions): José structurally cannot grant/revoke admin, disable the owner or himself, or change is_owner through any authenticated-role path. NOTE (transparency, self-caught error): a WITH-CTE test harness bug (an unreferenced `select set_config(...)` CTE got planner-pruned and never executed) made one is_owner-bypass test appear to succeed against AdminDFL's real row; caught within ~1 minute, reverted immediately, re-verified correctly with a DO $$ block confirming the real trigger blocks it — root cause was the test methodology, not the app. Documented honestly rather than hidden.
+
+5) Deploy incident (real, separate from all of the above): the GitHub->Vercel webhook for event-rsvp-waitlist silently stopped firing — two full pushes (17c09f5, f022acd) sat completely unbuilt for 50+ minutes, confirmed via `vercel ls` showing the most recent deployment was still 2h old (not just a slow build, zero new deployments triggered at all). Resolved by an interactive `vercel login` device-flow (Jorge authorized twice, first code expired unused) followed by a direct `vercel --prod` deploy, bypassing the broken webhook entirely. NOT root-caused — if pushes to main stop auto-deploying again, this same workaround applies, but the underlying webhook problem is still open and undiagnosed.
+
+6) Event lifecycle gap diagnostic (Jorge-initiated, explicitly asked NOT to fix yet): a regular user can create up to 3 events (events_insert_own RLS, real server-side cap, verified) but the UI has zero edit path (EventForm only renders under /events/new, no edit mode anywhere) and zero delete/cancel-event path (the only "Cancel" button anywhere in the app is "Cancel RSVP", a guest cancelling their own attendance -- /events/[id]/page.tsx never once checks user.id === event.creator_id). The DB-layer delete capability already exists and works (events_delete_own RLS) -- verified live via a real signup->create->direct-REST-DELETE round trip -- it's just never exposed in the UI. Practical consequence Jorge named precisely: a creator's only in-product fix for a mistake is creating ANOTHER event, which still burns one of the 3 slots -- "3 events" can degrade into "3 mistakes and you're locked out." Duplicates (same title, close time) explicitly should NOT be blocked -- legitimate multi-session use case; the real gap is the forced workaround, not the duplicate. Classified by Jorge as product-evolution backlog, non-blocking, NOT a defect Factory hid, and explicitly NOT authorization to build it later without a fresh go-ahead. Methodological lesson captured as a standing feedback memory (feedback-aqa-full-crud-lifecycle): future AQA must exercise CREATE->READ->UPDATE->CANCEL/DELETE for any user-created object, not just CREATE -- a CREATE-only pass gave a clean READY over an object that was otherwise create-only/frozen.
+
+FINAL STATE: production event-rsvp-waitlist.vercel.app serving commit f022acd (deployed via `vercel --prod`, dpl_Dv7MUpeRRFij4vf4JpGFCX6hQX8R), migration 018 applied directly to the DB. Jorge sent José the official re-review message this same session, after the READY_FOR_JOSE verdict. All synthetic test accounts/events from every phase of this session cleaned, 0 residue confirmed by SQL each time. IRONMAN.md has the full detailed rows (3 separate entries: AQA close, Back/Forward+admin-grant+webhook-incident close, lifecycle-gap diagnostic) plus a "HANDOFF SENT" note on the closing row.
+
+WHY IT MATTERS: this is the authoritative narrative for anyone picking up Event RSVP work after this point -- what's actually fixed vs. diagnosed-only vs. deliberately deferred, and why.
+
+NEXT AGENT SHOULD: read IRONMAN.md rows for event-rsvp-waitlist before touching that repo again. If José's re-review surfaces something new, treat it as a fresh finding against this baseline, not against the earlier 2026-08-13 remediation. Do not build event edit/delete/cancel UI without an explicit fresh go-ahead from Jorge, even though this observation documents the gap in detail. If a push to event-rsvp-waitlist/main doesn't deploy within a few minutes, check `vercel ls` for the actual deployment list before assuming it's just slow -- the webhook has failed silently once already.
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -546,15 +526,15 @@ Boundaries:
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.7496  
+**Graph entropy:** 0.8541  
 
-- **Community 11** (95 nodes): Abstracción de oferta, Política de disponibilidad, PRP como artefacto nativo
-- **Community 0** (7 nodes): Verificación de API, Estrategia PRP
-- **Community 1** (5 nodes): Jurisdicción, Mercader, Observación de Ed
-- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
-- **Community 3** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
-- **Community 4** (4 nodes): Modelo de ciclo de vida automatizado
+- **Community 11** (88 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Complejidad en la evaluación de costos
+- **Community 0** (7 nodes): Verificación de API
+- **Community 1** (7 nodes): Jurisdicción, Mercader, Observación de Ed
+- **Community 2** (6 nodes): Universal Platform vs. ESC, Mercader Boundary
+- **Community 3** (5 nodes): Merchant of Record, Métricas comerciales, Integraciones Externas
+- **Community 4** (4 nodes): MCP Server Behavior, RLS Trap, Semántica de Inventario
 
 ---
 
-*Mirror auto-generated 2026-08-26T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-26T03:05:07Z | La Garra → DFLghub/amos-context*
