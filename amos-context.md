@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-25T21:49:24Z  
+**Generated:** 2026-08-26T01:50:09Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -242,11 +242,33 @@ LATER (NO hacer todavia, evitar sobreingenieria):
 == EVIDENCIA ==
 Commits (ahora dangling, no en ninguna rama, recuperables por hash mientras no corra gc agresivo): d7480410f5702a978d54d218f1b3282f6feb7dbd, 752efb9b1cec6774e7fea5ba3be392cdaa199962, ebd014ec496d1bb2ec312207cf005d1cd437a82d. Commits en la rama principal (persistentes): 8372ec1 (IRONMAN.md creado), ed4877b (cierre Lab TCC x TCX), 84b6b7e (cierre medicion VM2 n=2). Engram obs #491-#497 (tests de concurrencia y probes). IRONMAN.md, filas "Concurrencia TCC x TCX" y "VM2: n=2 fabricas virtuales concurrentes".
 
-### [RESOLVED] P11 session closed with canonical Meta test handoff
+### TCX session closure — Realtor Meta and DFL website — 2026-08-26
 **Type:** fact  
 **Project:** dfl  
 
-LIFECYCLE: closed 2026-08-25 via @$fin. Canonical handoff committed as fae34a9 at whatsapp-realtor-mvp/HANDOFF-META-TEST-2026-08-25.md. Engram #576 remains the active checkpoint: test outbound physically proven; inbound and roundtrip not proven; webhook observed 404; no secrets exposed; productive WhatsApp number untouched. Next resume signal is META_TEST_SECRETS_PROVISIONED. No functional implementation or additional deployment occurred during closure.
+SESSION CLOSED — no new work opened.
+
+Realtor / Meta:
+- whatsapp-realtor-mvp is on Vercel Production with the Meta test configuration.
+- META_ACCESS_TOKEN, META_APP_SECRET, META_VERIFY_TOKEN, and META_PHONE_NUMBER_ID were reprovisioned through Vercel without exposing values.
+- The active deployment was refreshed after secret reprovisioning; final deployment dpl_GAjXbwt8R1sGdE3ruCeSsNsg5xd7 was READY and the production alias was active.
+- Runtime-only diagnostic, removed before the final deployment, confirmed all four Meta values present, non-empty, trimmed, and shape-valid. Graph phone-number lookup from the effective Vercel runtime returned HTTP 200 and matched the configured test Phone Number ID.
+- Signed webhook verification, Meta payload normalization, Realtor Conversation Engine routing, instance isolation, wamid correlation, inbound idempotency, outbound recording, and the institutional Meta adapter pass local tests. External webhook contract was live: wrong-token GET rejected with HTTP 403 and invalid-signature POST rejected with HTTP 401.
+- META_TEST_OUTBOUND remains PROVEN. Current physical Pixel → Meta test-number inbound and full roundtrip remain NOT PROVEN because Meta currently does not allow/complete the test-number recipient path. Do not reinterpret the historical one-time physical inbound proof. No productive WhatsApp number was touched.
+
+Backend / deployment:
+- Prior Neon connectivity/runtime fixes and Vercel deployment sequencing are retained; Production must run a deployment created after secret changes.
+- No secrets were printed, copied, committed, or persisted in the closure record.
+
+DFL Messaging Platform / website:
+- DFL Messaging Platform is live on the Meta test setup.
+- https://www.deepfeelingslabs.com/privacy, /terms, and /data-deletion were published on Squarespace and externally verified HTTP 200.
+- Canonical routing is persisted institutionally: Squarespace = public production; Vercel dfl-website = staging/dev/reference only; no DNS moves.
+
+Boundaries:
+- MERCADER untouched.
+- Productive WhatsApp number +57 313 3797408 untouched.
+- Next start point, only if explicitly reopened: perform the human Meta action to restore/allow the test recipient or trigger Meta's official test messages event, then verify physical inbound/roundtrip. Otherwise no pending execution.
 
 ---
 
@@ -392,22 +414,39 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### [RESOLVED] P11 session closed with canonical Meta test handoff
+### TCX session closure — Realtor Meta and DFL website — 2026-08-26
 **Type:** fact  
 **Project:** dfl  
 
-LIFECYCLE: closed 2026-08-25 via @$fin. Canonical handoff committed as fae34a9 at whatsapp-realtor-mvp/HANDOFF-META-TEST-2026-08-25.md. Engram #576 remains the active checkpoint: test outbound physically proven; inbound and roundtrip not proven; webhook observed 404; no secrets exposed; productive WhatsApp number untouched. Next resume signal is META_TEST_SECRETS_PROVISIONED. No functional implementation or additional deployment occurred during closure.
+SESSION CLOSED — no new work opened.
 
-### P11 WhatsApp Realtor Meta test checkpoint — inbound/roundtrip blocked
-**Type:** architecture  
+Realtor / Meta:
+- whatsapp-realtor-mvp is on Vercel Production with the Meta test configuration.
+- META_ACCESS_TOKEN, META_APP_SECRET, META_VERIFY_TOKEN, and META_PHONE_NUMBER_ID were reprovisioned through Vercel without exposing values.
+- The active deployment was refreshed after secret reprovisioning; final deployment dpl_GAjXbwt8R1sGdE3ruCeSsNsg5xd7 was READY and the production alias was active.
+- Runtime-only diagnostic, removed before the final deployment, confirmed all four Meta values present, non-empty, trimmed, and shape-valid. Graph phone-number lookup from the effective Vercel runtime returned HTTP 200 and matched the configured test Phone Number ID.
+- Signed webhook verification, Meta payload normalization, Realtor Conversation Engine routing, instance isolation, wamid correlation, inbound idempotency, outbound recording, and the institutional Meta adapter pass local tests. External webhook contract was live: wrong-token GET rejected with HTTP 403 and invalid-signature POST rejected with HTTP 401.
+- META_TEST_OUTBOUND remains PROVEN. Current physical Pixel → Meta test-number inbound and full roundtrip remain NOT PROVEN because Meta currently does not allow/complete the test-number recipient path. Do not reinterpret the historical one-time physical inbound proof. No productive WhatsApp number was touched.
+
+Backend / deployment:
+- Prior Neon connectivity/runtime fixes and Vercel deployment sequencing are retained; Production must run a deployment created after secret changes.
+- No secrets were printed, copied, committed, or persisted in the closure record.
+
+DFL Messaging Platform / website:
+- DFL Messaging Platform is live on the Meta test setup.
+- https://www.deepfeelingslabs.com/privacy, /terms, and /data-deletion were published on Squarespace and externally verified HTTP 200.
+- Canonical routing is persisted institutionally: Squarespace = public production; Vercel dfl-website = staging/dev/reference only; no DNS moves.
+
+Boundaries:
+- MERCADER untouched.
+- Productive WhatsApp number +57 313 3797408 untouched.
+- Next start point, only if explicitly reopened: perform the human Meta action to restore/allow the test recipient or trigger Meta's official test messages event, then verify physical inbound/roundtrip. Otherwise no pending execution.
+
+### Realtor Vercel BLOCKED root cause fixed via authorized commit provenance
+**Type:** bugfix  
 **Project:** dfl  
 
-CHECKPOINT 2026-08-25 — WhatsApp Realtor / DFL Messaging Platform.
-Demostrado: DFL Business Portfolio Deep Feelings Labs, app DFL Messaging Platform, test WABA 2454047572090959, test phone_number_id 1179416665264825; Jorge verificó destinatario y Meta entregó outbound real físicamente a su WhatsApp. META_TEST_OUTBOUND=PROVEN. No se demostró inbound DFL, respuesta Realtor ni roundtrip.
-Reutilizable: /opt/saas-factory-setup/saas-factory/tools/mercader-autonomy/messaging_meta_whatsapp.mjs; implementa Meta Cloud send, wamid, firma X-Hub-Signature-256 y normalización inbound/delivery. Pruebas ejecutadas en esta sesión: 3/3 PASS. MERCADER no fue modificado.
-Estado exacto al STOP: https://whatsapp-realtor-mvp.vercel.app/webhook devuelve HTTP 404; Realtor no tiene META_VERIFY_TOKEN provisionado ni suscripción Meta messages configurada; no se desplegó webhook ni se tocaron secretos/número productivo +57 313 3797408.
-Siguiente handshake humano exacto: META_TEST_SECRETS_PROVISIONED, tras provisionar de forma segura en el proyecto Vercel whatsapp-realtor-mvp referencias/valores necesarios para META_ACCESS_TOKEN, META_APP_SECRET, META_VERIFY_TOKEN y META_PHONE_NUMBER_ID=1179416665264825, sin enviarlos por chat. Luego implementar/conectar webhook, deploy, validar callback/suscripción messages, probar inbound real y roundtrip.
-Provenance: baseline TCX HEAD b30d3000be62e3d68159bd2140df5a070f9dcdd2; rama fase-3-5-jpi-real-sfv5-bridge. El worktree ya estaba dirty por delta TCC y otros cambios previos; esta sesión solo hizo discovery/pruebas y no modificó archivos. No exponer secretos ni declarar READY/PASS E2E.
+2026-08-25: Diagnosed dpl_8Eq4JX1G7B4jNiG38efEh1cQxcdg via Vercel API. Root cause was TEAM_ACCESS_REQUIRED: readyStateReason said Git author noreply@github.com lacked access to team dflghub's projects; seatBlock verified=false, alwaysRefuseToBuild=true, buildSkipped=true, aliasAssigned=false, errorLink team-configuration. Not Deployment Protection, domain, secrets, or build failure. A --meta author override was insufficient because Vercel used HEAD attribution. Minimal reversible fix: created empty local commit f245850 authored by Deep Feelings Labs with authorized team email; no files or secrets changed. One final production deploy dpl_H9rbjxdgbmodSVjeajBYPKHB1qe7 completed READY, buildSkipped=false, aliasAssigned=true, alias whatsapp-realtor-mvp.vercel.app. External /webhook returned 403 WHATSAPP_VERIFY_FAILED for missing/invalid challenge token (route active, not 404); invalid signed POST returned 401 WHATSAPP_SIGNATURE_INVALID. META secrets untouched; production WhatsApp number untouched. Next action is human Meta Verify & Save then subscribe messages.
 
 ---
 
@@ -518,4 +557,4 @@ Provenance: baseline TCX HEAD b30d3000be62e3d68159bd2140df5a070f9dcdd2; rama fas
 
 ---
 
-*Mirror auto-generated 2026-08-25T21:49:24Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-26T01:50:09Z | La Garra → DFLghub/amos-context*
