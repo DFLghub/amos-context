@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-27T23:20:27Z  
+**Generated:** 2026-08-28T03:05:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -242,33 +242,11 @@ LATER (NO hacer todavia, evitar sobreingenieria):
 == EVIDENCIA ==
 Commits (ahora dangling, no en ninguna rama, recuperables por hash mientras no corra gc agresivo): d7480410f5702a978d54d218f1b3282f6feb7dbd, 752efb9b1cec6774e7fea5ba3be392cdaa199962, ebd014ec496d1bb2ec312207cf005d1cd437a82d. Commits en la rama principal (persistentes): 8372ec1 (IRONMAN.md creado), ed4877b (cierre Lab TCC x TCX), 84b6b7e (cierre medicion VM2 n=2). Engram obs #491-#497 (tests de concurrencia y probes). IRONMAN.md, filas "Concurrencia TCC x TCX" y "VM2: n=2 fabricas virtuales concurrentes".
 
-### TCX session closure — Realtor Meta and DFL website — 2026-08-26
+### JPI human test runtime ready via SSH tunnel
 **Type:** fact  
 **Project:** dfl  
 
-SESSION CLOSED — no new work opened.
-
-Realtor / Meta:
-- whatsapp-realtor-mvp is on Vercel Production with the Meta test configuration.
-- META_ACCESS_TOKEN, META_APP_SECRET, META_VERIFY_TOKEN, and META_PHONE_NUMBER_ID were reprovisioned through Vercel without exposing values.
-- The active deployment was refreshed after secret reprovisioning; final deployment dpl_GAjXbwt8R1sGdE3ruCeSsNsg5xd7 was READY and the production alias was active.
-- Runtime-only diagnostic, removed before the final deployment, confirmed all four Meta values present, non-empty, trimmed, and shape-valid. Graph phone-number lookup from the effective Vercel runtime returned HTTP 200 and matched the configured test Phone Number ID.
-- Signed webhook verification, Meta payload normalization, Realtor Conversation Engine routing, instance isolation, wamid correlation, inbound idempotency, outbound recording, and the institutional Meta adapter pass local tests. External webhook contract was live: wrong-token GET rejected with HTTP 403 and invalid-signature POST rejected with HTTP 401.
-- META_TEST_OUTBOUND remains PROVEN. Current physical Pixel → Meta test-number inbound and full roundtrip remain NOT PROVEN because Meta currently does not allow/complete the test-number recipient path. Do not reinterpret the historical one-time physical inbound proof. No productive WhatsApp number was touched.
-
-Backend / deployment:
-- Prior Neon connectivity/runtime fixes and Vercel deployment sequencing are retained; Production must run a deployment created after secret changes.
-- No secrets were printed, copied, committed, or persisted in the closure record.
-
-DFL Messaging Platform / website:
-- DFL Messaging Platform is live on the Meta test setup.
-- https://www.deepfeelingslabs.com/privacy, /terms, and /data-deletion were published on Squarespace and externally verified HTTP 200.
-- Canonical routing is persisted institutionally: Squarespace = public production; Vercel dfl-website = staging/dev/reference only; no DNS moves.
-
-Boundaries:
-- MERCADER untouched.
-- Productive WhatsApp number +57 313 3797408 untouched.
-- Next start point, only if explicitly reopened: perform the human Meta action to restore/allow the test recipient or trigger Meta's official test messages event, then verify physical inbound/roundtrip. Otherwise no pending execution.
+2026-08-28 P11 human-test handoff: generated distinct OWNER/ADMIN passwords and session secret in memory, encrypted credential payload at /opt/jpi/.jpi-runtime-secrets.gpg with DFL Secret Store public key, mode 600, ignored by git. Runtime started as background Next dev server with env decrypted only into process memory, bound exclusively to 127.0.0.1:3000; public IP port 3000 verified closed. Exact secure access is SSH local tunnel to VM then http://127.0.0.1:3000/jpi-admin/login. Credentials delivered privately to Jorge via Telegram; no password values in logs, repo, or Paseo response. Real Playwright against loopback passed OWNER full render/data/reload/logout and ADMIN login/invalid password/owner-only boundary/reload/logout. test:jpi 7/7, typecheck, build, diff check PASS. Catalog source remains definitively missing the verifiable 78-item breakdown; only 10 composite PDF offerings exist. No public deploy, Supabase, Vercel, payments, production, or external DB touched.
 
 ---
 
@@ -394,39 +372,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### TCX session closure — Realtor Meta and DFL website — 2026-08-26
+### JPI human test runtime ready via SSH tunnel
 **Type:** fact  
 **Project:** dfl  
 
-SESSION CLOSED — no new work opened.
+2026-08-28 P11 human-test handoff: generated distinct OWNER/ADMIN passwords and session secret in memory, encrypted credential payload at /opt/jpi/.jpi-runtime-secrets.gpg with DFL Secret Store public key, mode 600, ignored by git. Runtime started as background Next dev server with env decrypted only into process memory, bound exclusively to 127.0.0.1:3000; public IP port 3000 verified closed. Exact secure access is SSH local tunnel to VM then http://127.0.0.1:3000/jpi-admin/login. Credentials delivered privately to Jorge via Telegram; no password values in logs, repo, or Paseo response. Real Playwright against loopback passed OWNER full render/data/reload/logout and ADMIN login/invalid password/owner-only boundary/reload/logout. test:jpi 7/7, typecheck, build, diff check PASS. Catalog source remains definitively missing the verifiable 78-item breakdown; only 10 composite PDF offerings exist. No public deploy, Supabase, Vercel, payments, production, or external DB touched.
 
-Realtor / Meta:
-- whatsapp-realtor-mvp is on Vercel Production with the Meta test configuration.
-- META_ACCESS_TOKEN, META_APP_SECRET, META_VERIFY_TOKEN, and META_PHONE_NUMBER_ID were reprovisioned through Vercel without exposing values.
-- The active deployment was refreshed after secret reprovisioning; final deployment dpl_GAjXbwt8R1sGdE3ruCeSsNsg5xd7 was READY and the production alias was active.
-- Runtime-only diagnostic, removed before the final deployment, confirmed all four Meta values present, non-empty, trimmed, and shape-valid. Graph phone-number lookup from the effective Vercel runtime returned HTTP 200 and matched the configured test Phone Number ID.
-- Signed webhook verification, Meta payload normalization, Realtor Conversation Engine routing, instance isolation, wamid correlation, inbound idempotency, outbound recording, and the institutional Meta adapter pass local tests. External webhook contract was live: wrong-token GET rejected with HTTP 403 and invalid-signature POST rejected with HTTP 401.
-- META_TEST_OUTBOUND remains PROVEN. Current physical Pixel → Meta test-number inbound and full roundtrip remain NOT PROVEN because Meta currently does not allow/complete the test-number recipient path. Do not reinterpret the historical one-time physical inbound proof. No productive WhatsApp number was touched.
-
-Backend / deployment:
-- Prior Neon connectivity/runtime fixes and Vercel deployment sequencing are retained; Production must run a deployment created after secret changes.
-- No secrets were printed, copied, committed, or persisted in the closure record.
-
-DFL Messaging Platform / website:
-- DFL Messaging Platform is live on the Meta test setup.
-- https://www.deepfeelingslabs.com/privacy, /terms, and /data-deletion were published on Squarespace and externally verified HTTP 200.
-- Canonical routing is persisted institutionally: Squarespace = public production; Vercel dfl-website = staging/dev/reference only; no DNS moves.
-
-Boundaries:
-- MERCADER untouched.
-- Productive WhatsApp number +57 313 3797408 untouched.
-- Next start point, only if explicitly reopened: perform the human Meta action to restore/allow the test recipient or trigger Meta's official test messages event, then verify physical inbound/roundtrip. Otherwise no pending execution.
-
-### Realtor Vercel BLOCKED root cause fixed via authorized commit provenance
-**Type:** bugfix  
+### P11 blocker closure evidence: real browser auth passed, catalog source definitively incomplete
+**Type:** fact  
 **Project:** dfl  
 
-2026-08-25: Diagnosed dpl_8Eq4JX1G7B4jNiG38efEh1cQxcdg via Vercel API. Root cause was TEAM_ACCESS_REQUIRED: readyStateReason said Git author noreply@github.com lacked access to team dflghub's projects; seatBlock verified=false, alwaysRefuseToBuild=true, buildSkipped=true, aliasAssigned=false, errorLink team-configuration. Not Deployment Protection, domain, secrets, or build failure. A --meta author override was insufficient because Vercel used HEAD attribution. Minimal reversible fix: created empty local commit f245850 authored by Deep Feelings Labs with authorized team email; no files or secrets changed. One final production deploy dpl_H9rbjxdgbmodSVjeajBYPKHB1qe7 completed READY, buildSkipped=false, aliasAssigned=true, alias whatsapp-realtor-mvp.vercel.app. External /webhook returned 403 WHATSAPP_VERIFY_FAILED for missing/invalid challenge token (route active, not 404); invalid signed POST returned 401 WHATSAPP_SIGNATURE_INVALID. META secrets untouched; production WhatsApp number untouched. Next action is human Meta Verify & Save then subscribe messages.
+2026-08-28 P11 closure in /opt/jpi. Real Playwright browser E2E against isolated local Next server + temporary SQLite (credentials generated only in process memory, never printed/persisted): ADMIN valid login/dashboard, invalid password, owner-only surface blocked, ordinary operations visible, reload session, logout all PASS; OWNER valid login, full dashboard data surfaces, reload session, logout PASS. Browser executable used from existing Playwright install; no new infrastructure. Added operational quote persistence in migration 016/domain builder: known lines subtotal, PRICE_ON_REQUEST line stores NULL and quote status REQUIRES_CONFIRMATION, audit CREATE_OPERATIONAL_QUOTE; tests pass. Catalog source audit definitive: local SRC-CAT-001 is 13-page PDF and OFFERINGS.csv has 10 composite observed entries; no verifiable 78-item breakdown or items 75-78, so CATALOG_COMPLETE=BLOCKED_SOURCE_MISSING and no invented imports. Validation after closure: test:jpi 7/7 PASS, typecheck PASS, build PASS, diff check PASS. Durable credential values were not written because no secure credential injection was present; implementation requires JPI_OWNER_PASSWORD, JPI_ADMIN_PASSWORD (distinct), JPI_ADMIN_SESSION_SECRET via secure environment. No external DB/Supabase/Vercel/payments/deploy/secrets touched.
 
 ---
 
@@ -537,4 +493,4 @@ Boundaries:
 
 ---
 
-*Mirror auto-generated 2026-08-27T23:20:27Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-28T03:05:02Z | La Garra → DFLghub/amos-context*
