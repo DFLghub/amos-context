@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-28T03:05:02Z  
+**Generated:** 2026-08-28T03:16:46Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -242,11 +242,11 @@ LATER (NO hacer todavia, evitar sobreingenieria):
 == EVIDENCIA ==
 Commits (ahora dangling, no en ninguna rama, recuperables por hash mientras no corra gc agresivo): d7480410f5702a978d54d218f1b3282f6feb7dbd, 752efb9b1cec6774e7fea5ba3be392cdaa199962, ebd014ec496d1bb2ec312207cf005d1cd437a82d. Commits en la rama principal (persistentes): 8372ec1 (IRONMAN.md creado), ed4877b (cierre Lab TCC x TCX), 84b6b7e (cierre medicion VM2 n=2). Engram obs #491-#497 (tests de concurrencia y probes). IRONMAN.md, filas "Concurrencia TCC x TCX" y "VM2: n=2 fabricas virtuales concurrentes".
 
-### JPI human test runtime ready via SSH tunnel
+### P11 JPI — manuales y handoff persistente cerrados
 **Type:** fact  
-**Project:** dfl  
+**Project:** jpi  
 
-2026-08-28 P11 human-test handoff: generated distinct OWNER/ADMIN passwords and session secret in memory, encrypted credential payload at /opt/jpi/.jpi-runtime-secrets.gpg with DFL Secret Store public key, mode 600, ignored by git. Runtime started as background Next dev server with env decrypted only into process memory, bound exclusively to 127.0.0.1:3000; public IP port 3000 verified closed. Exact secure access is SSH local tunnel to VM then http://127.0.0.1:3000/jpi-admin/login. Credentials delivered privately to Jorge via Telegram; no password values in logs, repo, or Paseo response. Real Playwright against loopback passed OWNER full render/data/reload/logout and ADMIN login/invalid password/owner-only boundary/reload/logout. test:jpi 7/7, typecheck, build, diff check PASS. Catalog source remains definitively missing the verifiable 78-item breakdown; only 10 composite PDF offerings exist. No public deploy, Supabase, Vercel, payments, production, or external DB touched.
+CIERRE 2026-08-28. Se entregaron /opt/jpi/docs/MANUAL-USUARIO-JPI.md y MANUAL-PRODUCTO-JPI.md, contrastados contra runtime real. Se incluyó docs/screenshots/jpi-login.png, captura real de login. Verificaciones: npm run test:jpi PASS (7 pruebas + jpi entry-model), typecheck PASS, build PASS, revisión documental PASS. Documentación distingue superficies actuales (login/roles/panel/perfil/escalaciones/catalogo/productos/precios/inventario/activos/Venue/Asset Types/Asset Instances/ofertas/logout) de pendientes UI (Booking/calendario/Event Packages/flujo UI de cotización/visor de auditoría/horarios/depósitos/reglas/fotos). Estado honesto del catálogo: fuente física disponible, 10 ofertas verificables, 78 esperadas, desglose completo ausente; no inventar faltantes; PRICE_ON_REQUEST nunca es gratis. Se dejó handoff persistente en /opt/jpi/docs/P11-JPI-HANDOFF-2026-08-28.md. Seguridad preservada: sin Supabase, Vercel, pagos, deploy, producción ni exposición de credenciales.
 
 ---
 
@@ -372,17 +372,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### P11 JPI — manuales y handoff persistente cerrados
+**Type:** fact  
+**Project:** jpi  
+
+CIERRE 2026-08-28. Se entregaron /opt/jpi/docs/MANUAL-USUARIO-JPI.md y MANUAL-PRODUCTO-JPI.md, contrastados contra runtime real. Se incluyó docs/screenshots/jpi-login.png, captura real de login. Verificaciones: npm run test:jpi PASS (7 pruebas + jpi entry-model), typecheck PASS, build PASS, revisión documental PASS. Documentación distingue superficies actuales (login/roles/panel/perfil/escalaciones/catalogo/productos/precios/inventario/activos/Venue/Asset Types/Asset Instances/ofertas/logout) de pendientes UI (Booking/calendario/Event Packages/flujo UI de cotización/visor de auditoría/horarios/depósitos/reglas/fotos). Estado honesto del catálogo: fuente física disponible, 10 ofertas verificables, 78 esperadas, desglose completo ausente; no inventar faltantes; PRICE_ON_REQUEST nunca es gratis. Se dejó handoff persistente en /opt/jpi/docs/P11-JPI-HANDOFF-2026-08-28.md. Seguridad preservada: sin Supabase, Vercel, pagos, deploy, producción ni exposición de credenciales.
+
 ### JPI human test runtime ready via SSH tunnel
 **Type:** fact  
 **Project:** dfl  
 
 2026-08-28 P11 human-test handoff: generated distinct OWNER/ADMIN passwords and session secret in memory, encrypted credential payload at /opt/jpi/.jpi-runtime-secrets.gpg with DFL Secret Store public key, mode 600, ignored by git. Runtime started as background Next dev server with env decrypted only into process memory, bound exclusively to 127.0.0.1:3000; public IP port 3000 verified closed. Exact secure access is SSH local tunnel to VM then http://127.0.0.1:3000/jpi-admin/login. Credentials delivered privately to Jorge via Telegram; no password values in logs, repo, or Paseo response. Real Playwright against loopback passed OWNER full render/data/reload/logout and ADMIN login/invalid password/owner-only boundary/reload/logout. test:jpi 7/7, typecheck, build, diff check PASS. Catalog source remains definitively missing the verifiable 78-item breakdown; only 10 composite PDF offerings exist. No public deploy, Supabase, Vercel, payments, production, or external DB touched.
-
-### P11 blocker closure evidence: real browser auth passed, catalog source definitively incomplete
-**Type:** fact  
-**Project:** dfl  
-
-2026-08-28 P11 closure in /opt/jpi. Real Playwright browser E2E against isolated local Next server + temporary SQLite (credentials generated only in process memory, never printed/persisted): ADMIN valid login/dashboard, invalid password, owner-only surface blocked, ordinary operations visible, reload session, logout all PASS; OWNER valid login, full dashboard data surfaces, reload session, logout PASS. Browser executable used from existing Playwright install; no new infrastructure. Added operational quote persistence in migration 016/domain builder: known lines subtotal, PRICE_ON_REQUEST line stores NULL and quote status REQUIRES_CONFIRMATION, audit CREATE_OPERATIONAL_QUOTE; tests pass. Catalog source audit definitive: local SRC-CAT-001 is 13-page PDF and OFFERINGS.csv has 10 composite observed entries; no verifiable 78-item breakdown or items 75-78, so CATALOG_COMPLETE=BLOCKED_SOURCE_MISSING and no invented imports. Validation after closure: test:jpi 7/7 PASS, typecheck PASS, build PASS, diff check PASS. Durable credential values were not written because no secure credential injection was present; implementation requires JPI_OWNER_PASSWORD, JPI_ADMIN_PASSWORD (distinct), JPI_ADMIN_SESSION_SECRET via secure environment. No external DB/Supabase/Vercel/payments/deploy/secrets touched.
 
 ---
 
@@ -493,4 +493,4 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ---
 
-*Mirror auto-generated 2026-08-28T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-28T03:16:46Z | La Garra → DFLghub/amos-context*
