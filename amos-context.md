@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-29T18:34:46Z  
+**Generated:** 2026-08-29T18:54:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -433,4 +433,4 @@ SIGNIFICADO INSTITUCIONAL: cierra un círculo completo y real, no solo una entre
 
 ---
 
-*Mirror auto-generated 2026-08-29T18:34:46Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-29T18:54:02Z | La Garra → DFLghub/amos-context*
