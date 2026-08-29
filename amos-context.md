@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-29T18:54:02Z  
+**Generated:** 2026-08-29T21:53:57Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,29 +116,17 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### IDENTIDAD DFL — fragmento de "SaaS Factory Comunidad" orientado a FACTORY, sin énfasis en "SaaS"; DFL tiene un componente LAB (investigación/mixtura/abstracción)
+### P11 transition checkpoint — Realtor preserved, MERCADER gated, JPI resumed
 **Type:** decision  
 **Project:** dfl  
 
-Definición de identidad dada por Jorge (2026-08-29), tras el hallazgo fundacional de que SFV5 es fork directo del código de Daniel Carreón (obs #605) y la confirmación de acceso legítimo vía membresía Nivel 6 (obs #596).
+2026-08-29. Realtor preserved with no further product changes: OWNER UI PASS corrected/verified; META CONFIRMED no observable regression; ADMIN AUTH remains PARTIAL because positive auth and simultaneous sessions lack real production credentials. Handoff updated at /opt/saas-factory-setup/whatsapp-realtor-mvp/HANDOFF-REALTOR-E2E-2026-08-29.md. MERCADER state-first inspection: /opt/saas-factory-setup/mercader-bos has historical code/SQLite but no daemons listening; no safe action now without human perimeter/credential confirmation. Classified HUMAN_GATE (credentials/perimeter), EXTERNAL_GATE (providers), no inequívocal technical defect reproduced. JPI resumed from handoff: test:jpi 7/7 + entry guard, typecheck and build PASS; authz replay customer cases 1-6 PASS. Fixed harness to fill admin username for current real login; admin branch remains blocked by absent local JPI auth variables, not by product conclusion. Remaining JPI UI surfaces (calendar/bookings, Event Packages, full quote UI, audit viewer, schedules, deposits, rules, photos) are product/human decisions, not invented. Transition doc: /opt/jpi/docs/P11-TRANSICION-MERCADER-JPI-2026-08-29.md. IRONMAN updated.
 
-DFL es un PEDACITO/fragmento de "SaaS Factory Comunidad" (el ecosistema completo de Daniel: SaaS + Factory + Comunidad), pero especializado así:
-- **Orientado a FACTORY**, no a Comunidad -- DFL no replica la capa social/de enseñanza/membresía de Daniel (cursos, eventos, tutores, leaderboard). Su interés es el mecanismo de producción (agentes construyendo capacidades), no la capa pedagógica/comunitaria.
-- **Sin ningún énfasis en "SaaS"** -- a DFL le da exactamente igual si lo que produce es un SaaS, un CRM, o (cita textual de Jorge) "un bicho de 60 ojos". La categoría de producto es irrelevante; lo que importa es el mecanismo de fábrica (agentes, skills, adapters, discovery-antes-que-construir) aplicado a CUALQUIER cosa que un negocio/cliente real necesite -- consistente con el hallazgo de MERCADER trayendo "negocios de lo más raros" (obs #601) y con hallazgos reales de esta sesión como el agente EDIFACT de ink-agents (obs #606, un dominio B2B/EDI, nada parecido a un SaaS convencional).
-
-COMPONENTE LAB: DFL tiene un componente propio llamado LAB -- investigación, mixtura, "abstracciones locas" para estirar fronteras. Esto es DISTINTO de la operación de producción/factory del día a día (MERCADER consiguiendo leads, organismos operando). Retrospectivamente, gran parte de esta sesión (el experimento de portabilidad de capacidades SFV4<->SFV5 obs #592, el marco fractal/recursión/encapsulamiento/polimorfismo/herencia obs #594/#599/#601, el harvest+IIH de los 75 repos obs #595, el recheck adversarial obs #606) ES trabajo de LAB, no trabajo de producción directa -- investigación y extracción de patrones para expandir lo que la fábrica puede hacer, no construcción de un producto para un cliente específico.
-
-IMPLICACIÓN PRÁCTICA: al clasificar futuras misiones, vale la pena distinguir explícitamente "esto es LAB" (investigación/exploración, resultado = conocimiento/doctrina/candidatos, per el flujo QUIERO->descubrimiento->reuse/local/dock que YA es esencialmente el método operativo de LAB) vs. "esto es Factory/producción" (un cliente real de MERCADER con un dolor real, resultado = un adapter/producto instalado). El asset-index y Engram sirven a ambos, pero el criterio de éxito es distinto: LAB puede terminar en "NO BUILD" y seguir siendo valioso (ya establecido en obs #594, "el Lab puede y debe poder responder NO BUILD"); Factory/producción necesita resolver el dolor real del cliente, un NO BUILD ahí sería un fallo de la misión, no un resultado válido.
-
-### DOCTRINA (complemento de obs #603) — invertir documentación de forma proporcional a la probabilidad de reuso, no parejo
+### P11 provisional handoff — DFL institutional email remains human-gated
 **Type:** decision  
 **Project:** dfl  
 
-Complemento de Jorge (2026-08-29) a obs #603 (discoverability como costo/beneficio, no regla absoluta). Es la mitad positiva del mismo principio: donde #603 dice "no gastes en documentar lo que probablemente no reaparece", esta lo completa -- "invierte fuerte, hasta lo impecable, en documentar lo que SÍ tiene alta probabilidad de reuso, para que reusarlo sea trivial y expedito".
-
-REGLA COMPLETA (uniendo #603 + esto): el esfuerzo de documentación no debe ser parejo entre capacidades -- debe ser proporcional a la probabilidad real de reuso (ponderada, no imaginada) multiplicada por el valor de que ese reuso sea sin fricción. Un adapter/skill de alta probabilidad de reuso (ej. dfl.skills-dock.v0, el Golden Path de SFV5, un patrón que ya se vio repetirse en 2+ clientes) merece un manifest completo, evidencia real, consumer_hint específico y probado -- literalmente lo que ya se hizo con dfl.skills-dock.v0 y dfl.external.daniel-carreon.fabrica-de-miniaturas.v0 esta sesión. Algo de probabilidad de reuso baja o desconocida no merece esa misma inversión -- ni completa ausencia de registro (per #603, a veces sí, a veces no) ni el mismo nivel de detalle "impeccable" que algo de alta probabilidad.
-
-CÓMO APLICAR: al construir cualquier capacidad real, antes de decidir CUÁNTO documentar (no solo SI documentar), estimar la probabilidad real de reuso. Alta probabilidad -> inversión alta, manifest completo, evidencia verificada, consumer_hint accionable sin ambigüedad. Baja probabilidad -> registro mínimo o ninguno, según el balance ya descrito en obs #603. Esto es asignación de recursos, no un checklist -- el objetivo final es que cuando la reutilización SÍ ocurra, sea trivial y expedita, no que todo esté igual de documentado "por si acaso".
+2026-08-29. Checkpoint preserved for TCX: 7 historical jtigre@gmail.com requests remain reconciled; 7 drafts PREPARED_NOT_SENT; 7 persistent tasks OPEN/NEEDS_HUMAN; request-ID correlations and recovery evidence preserved. Current blocker is identity authentication: available Google session/App Passwords are gardipedia@gmail.com, not deepfeelingslabs@gmail.com. No further authentication attempts, alternate transport, or sends were made. Exact resume sequence: authenticate deepfeelingslabs@gmail.com -> 2FA/App Password -> configure SMTP -> one test to jtigre@gmail.com -> verify physical receipt -> send backlog idempotently once per request ID -> update task states/message IDs/timestamps/delivery evidence. Handoff doc: docs/DFL_WEBSITE_MANAGER_EMAIL_HANDOFF_2026-08-29.md. Mission remains PENDING on human gate; no Squarespace or protected branches touched.
 
 ### Paseo TCX Full Access profile configured and verified
 **Type:** decision  
@@ -146,20 +134,11 @@ CÓMO APLICAR: al construir cualquier capacidad real, antes de decidir CUÁNTO d
 
 Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
 
-### CORRECCIÓN: gaps de actividad en proyectos DFL no son "pausas" — son créditos de Anthropic agotados y ruteo TCC/TCX remoto aún mal configurado
-**Type:** fact  
+### Realtor current-state audit — Owner/Admin UI regressions fixed; positive auth pending
+**Type:** bugfix  
 **Project:** dfl  
 
-Corrección directa de Jorge (2026-08-29) a una inferencia mía sobre el estado de JPI para el copy del website. Yo había caracterizado JPI como "relación comercial en pausa" basándome en una nota institucional vieja (obs previa del 2026-08-04, "Jorge congeló JPI deliberadamente"). Jorge corrige: **ningún proyecto de DFL está realmente "pausado" en el sentido de decisión de negocio** -- los gaps reales de actividad que se ven (ej. sin commits en 48h en /opt/jpi al momento de esta revisión) se explican por dos causas operativas reales, no por freezes deliberados:
-
-1. **Créditos de Anthropic agotados** -- interrumpe sesiones activas sin que sea una decisión de pausar el proyecto.
-2. **Trabajo remoto (Claude Remote Control / "claude rc") todavía no bien configurado** para rutear exactamente a un TCC o un TCX según corresponda al caso -- una limitación de tooling, no de producto ni de decisión comercial.
-
-Jorge señaló evidencia real que yo no verifiqué completo: JPI registra trabajo de TCX en las últimas 24 horas (no confirmado por mí vía `git log` sobre /opt/jpi -- el repo local no mostró commits en 48h al momento de la revisión, lo cual sugiere que la actividad que Jorge ve puede venir de una fuente distinta al git log local, ej. sesión Paseo/TCX activa, escritura en base de datos, o actividad no committeada -- no se investigó más a fondo, no inventar la fuente exacta).
-
-CORRECCIÓN APLICADA: en el copy del website, el estado de JPI se cambió de "Pausado"/"relación comercial en pausa" a **"MVP validado"** -- refleja que el pipeline completo está probado de punta a punta (JPI_BASELINE_CLOSED), sin implicar abandono ni freeze de negocio.
-
-LECCIÓN PARA FUTURAS EVALUACIONES DE ESTADO: un gap de actividad reciente en un repo/proyecto DFL NO debe interpretarse automáticamente como "pausado" o "de baja prioridad" -- verificar primero si es créditos agotados o ruteo remoto mal configurado antes de caracterizar el estado de un proyecto hacia afuera (cliente, website, reportes).
+2026-08-29. Audited current production after prior Realtor work. Reproduced real regressions: Owner assets /owner.js and /owner.css returned 404/MIME JSON; Admin current inline style/script were blocked by stale CSP hashes. Fixed only src/server.js: serve those two static assets with correct MIME and add hashes for current Admin inline blocks. Deployed READY dpl_4SgQ4W1U6CntLs1XB2ADP41scFjq and aliased production. Playwright desktop 1440/mobile 390 Owner+Admin: render/JS/invalid-login feedback pass, no CSP errors or failed assets, no overflow. Invalid auth endpoints return 401. npm test, webhook test, build PASS. Meta double-check: Vercel Production lists four META vars by presence; root/public-state 200, invalid handshake 403, invalid signature 401; no Meta config changed. Positive Owner/Admin auth and simultaneous-user test remain UNPROVEN because production credentials are hidden and no two authenticated sessions are available; do not infer PASS. Report: /opt/saas-factory-setup/whatsapp-realtor-mvp/.qa-reports/2026-08-29-realtor-state/report.md. MERCADER and productive number untouched.
 
 ---
 
@@ -299,30 +278,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### CORRECCIÓN: gaps de actividad en proyectos DFL no son "pausas" — son créditos de Anthropic agotados y ruteo TCC/TCX remoto aún mal configurado
-**Type:** fact  
+### P11 transition checkpoint — Realtor preserved, MERCADER gated, JPI resumed
+**Type:** decision  
 **Project:** dfl  
 
-Corrección directa de Jorge (2026-08-29) a una inferencia mía sobre el estado de JPI para el copy del website. Yo había caracterizado JPI como "relación comercial en pausa" basándome en una nota institucional vieja (obs previa del 2026-08-04, "Jorge congeló JPI deliberadamente"). Jorge corrige: **ningún proyecto de DFL está realmente "pausado" en el sentido de decisión de negocio** -- los gaps reales de actividad que se ven (ej. sin commits en 48h en /opt/jpi al momento de esta revisión) se explican por dos causas operativas reales, no por freezes deliberados:
+2026-08-29. Realtor preserved with no further product changes: OWNER UI PASS corrected/verified; META CONFIRMED no observable regression; ADMIN AUTH remains PARTIAL because positive auth and simultaneous sessions lack real production credentials. Handoff updated at /opt/saas-factory-setup/whatsapp-realtor-mvp/HANDOFF-REALTOR-E2E-2026-08-29.md. MERCADER state-first inspection: /opt/saas-factory-setup/mercader-bos has historical code/SQLite but no daemons listening; no safe action now without human perimeter/credential confirmation. Classified HUMAN_GATE (credentials/perimeter), EXTERNAL_GATE (providers), no inequívocal technical defect reproduced. JPI resumed from handoff: test:jpi 7/7 + entry guard, typecheck and build PASS; authz replay customer cases 1-6 PASS. Fixed harness to fill admin username for current real login; admin branch remains blocked by absent local JPI auth variables, not by product conclusion. Remaining JPI UI surfaces (calendar/bookings, Event Packages, full quote UI, audit viewer, schedules, deposits, rules, photos) are product/human decisions, not invented. Transition doc: /opt/jpi/docs/P11-TRANSICION-MERCADER-JPI-2026-08-29.md. IRONMAN updated.
 
-1. **Créditos de Anthropic agotados** -- interrumpe sesiones activas sin que sea una decisión de pausar el proyecto.
-2. **Trabajo remoto (Claude Remote Control / "claude rc") todavía no bien configurado** para rutear exactamente a un TCC o un TCX según corresponda al caso -- una limitación de tooling, no de producto ni de decisión comercial.
-
-Jorge señaló evidencia real que yo no verifiqué completo: JPI registra trabajo de TCX en las últimas 24 horas (no confirmado por mí vía `git log` sobre /opt/jpi -- el repo local no mostró commits en 48h al momento de la revisión, lo cual sugiere que la actividad que Jorge ve puede venir de una fuente distinta al git log local, ej. sesión Paseo/TCX activa, escritura en base de datos, o actividad no committeada -- no se investigó más a fondo, no inventar la fuente exacta).
-
-CORRECCIÓN APLICADA: en el copy del website, el estado de JPI se cambió de "Pausado"/"relación comercial en pausa" a **"MVP validado"** -- refleja que el pipeline completo está probado de punta a punta (JPI_BASELINE_CLOSED), sin implicar abandono ni freeze de negocio.
-
-LECCIÓN PARA FUTURAS EVALUACIONES DE ESTADO: un gap de actividad reciente en un repo/proyecto DFL NO debe interpretarse automáticamente como "pausado" o "de baja prioridad" -- verificar primero si es créditos agotados o ruteo remoto mal configurado antes de caracterizar el estado de un proyecto hacia afuera (cliente, website, reportes).
-
-### Skill Dock publicado en la comunidad SFC — Daniel Carreón valida públicamente la distinción agente/fábrica/contexto
-**Type:** fact  
+### Realtor current-state audit — Owner/Admin UI regressions fixed; positive auth pending
+**Type:** bugfix  
 **Project:** dfl  
 
-Cierre real del hilo `sfc-gifts`/Skill Dock (obs #609-#610). Jorge publicó el post de la comunidad `saasfactory.so` presentando Skill Dock como regalo de DFL, con la narrativa completa y honesta: nació de un problema real (3 fábricas simultáneas probadas en un experimento de LAB, luego reducido a 2 en paralelo -- Claude Code + Codex -- con misiones complementarias), el hueco real que abrió (catálogos de skills divergiendo entre agentes), y la evidencia real en dos ejes (Claude Code<->Codex, y una generación de fábrica<->otra) -- consistente palabra por palabra con lo ya registrado en obs #592/#594/#609. Post explícito en no sobre-generalizar ("no decimos que sea una solución universal").
-
-RESPUESTA REAL DE DANIEL CARREÓN (comentario público, mismo hilo): "Maravilloso Jorge!! Los agentes pueden cambiar, la fábrica y el contexto es lo que se queda 🤪" -- valida espontáneamente, con sus propias palabras y sin que se lo plantearan así, la misma distinción fractal/arquitectónica que esta sesión construyó de cero (obs #594: fractalidad/recursión/encapsulamiento/polimorfismo del Skill Dock). Jorge respondió "Exactly".
-
-SIGNIFICADO INSTITUCIONAL: cierra un círculo completo y real, no solo una entrega -- specimen externo de Daniel (fabrica-de-miniaturas, obs #589) -> patrones/doctrina extraídos (obs #590-#607) -> herramienta real construida por necesidad propia de DFL, no por imitación (Skill Dock, obs #592) -> pulida y publicada como aporte colateral a la misma comunidad de origen (obs #609-#610) -> validada públicamente por la fuente original. Es el primer caso real y completo de la doctrina de "contribución colateral sin obligación pendiente" (obs #607) llegando a su destino y recibiendo reconocimiento externo genuino, no solo interno.
+2026-08-29. Audited current production after prior Realtor work. Reproduced real regressions: Owner assets /owner.js and /owner.css returned 404/MIME JSON; Admin current inline style/script were blocked by stale CSP hashes. Fixed only src/server.js: serve those two static assets with correct MIME and add hashes for current Admin inline blocks. Deployed READY dpl_4SgQ4W1U6CntLs1XB2ADP41scFjq and aliased production. Playwright desktop 1440/mobile 390 Owner+Admin: render/JS/invalid-login feedback pass, no CSP errors or failed assets, no overflow. Invalid auth endpoints return 401. npm test, webhook test, build PASS. Meta double-check: Vercel Production lists four META vars by presence; root/public-state 200, invalid handshake 403, invalid signature 401; no Meta config changed. Positive Owner/Admin auth and simultaneous-user test remain UNPROVEN because production credentials are hidden and no two authenticated sessions are available; do not infer PASS. Report: /opt/saas-factory-setup/whatsapp-realtor-mvp/.qa-reports/2026-08-29-realtor-state/report.md. MERCADER and productive number untouched.
 
 ---
 
@@ -433,4 +399,4 @@ SIGNIFICADO INSTITUCIONAL: cierra un círculo completo y real, no solo una entre
 
 ---
 
-*Mirror auto-generated 2026-08-29T18:54:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-29T21:53:57Z | La Garra → DFLghub/amos-context*
