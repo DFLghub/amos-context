@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-29T06:36:32Z  
+**Generated:** 2026-08-29T12:52:42Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -512,4 +512,4 @@ Documentos completos y autocontenidos: .claude/CHECKPOINT-DFL-QUIERO-RESULTADO-G
 
 ---
 
-*Mirror auto-generated 2026-08-29T06:36:32Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-29T12:52:42Z | La Garra → DFLghub/amos-context*
