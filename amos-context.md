@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-29T03:05:02Z  
+**Generated:** 2026-08-29T05:45:36Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -493,4 +493,4 @@ CIERRE 2026-08-28. Se entregaron /opt/jpi/docs/MANUAL-USUARIO-JPI.md y MANUAL-PR
 
 ---
 
-*Mirror auto-generated 2026-08-29T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-29T05:45:36Z | La Garra → DFLghub/amos-context*
