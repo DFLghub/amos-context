@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-30T04:09:07Z  
+**Generated:** 2026-08-30T04:27:29Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -204,11 +204,11 @@ Institutional closure checkpoint: JPI V1 PRODUCT COMPLETE in approved implemente
 
 Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
 
-### JPI UX/PODA completo 2026-08-30
+### JPI P11 sesión TCX cerrada — handoff listo para onboarding
 **Type:** fact  
 **Project:** dfl  
 
-JPI UX/PODA ejecutado en 5 fases en /opt/jpi. Se agregó navegación interna Admin, progressive disclosure nativo con details/summary sin quitar campos/acciones, mejoras de RequestForm y EstadoSolicitud, y manuales alineados. Evidencia en .qa-reports/2026-08-30-jpi-ux-poda/report.md con screenshots before/after desktop/mobile. Typecheck PASS, build PASS, suite JPI 13/13 PASS, diff check PASS. Lint queda bloqueado por baseline existente (323 errors/105 warnings). No se declara READY PARA RUBÉN: onboarding humano y confirmación de datos reales pendientes.
+Cierre @$fin 2026-08-30. Estado exacto: JPI V1 PRODUCT COMPLETE; UX/PODA COMPLETE; MANUALES READY; AQA COMPLETE; AUTH ADMIN = PASS; CONCURRENCIA = PASS; PRICING/REPRICING/RESERVA VERIFIED; Synthetic Data Pack canónico integrado/validado; seed/reset/reseed idempotente; SYNTHETIC DEFAULT != RUBÉN PRODUCTION DATA. DFL hace la sustitución synthetic→client-real durante onboarding sin pedir carga inicial al cliente. NO READY PARA RUBÉN: falta adaptación con datos reales y AQA final sobre datos reales. Evidencia y handoff: /opt/jpi/docs/P11-JPI-HANDOFF-CANONICAL-SYNTHETIC-2026-08-30.md, /opt/jpi/.qa-reports/2026-08-30-dfl-synthetic-pack/report.md, /opt/jpi/.qa-reports/2026-08-30-jpi-ux-poda/report.md, /opt/jpi/.qa-reports/2026-08-29-jpi-v1-aqa/report.md, manuales y pricing/repricing docs. Siguiente exacto: CANONICAL SYNTHETIC DATA → DFL CLIENT ADAPTATION → REAL DATA AQA → READY PARA RUBÉN. No repetir funcionalidad/AQA general/poda/datasets ni pedir carga; Realtor permanece con TCC y MERCADER bloqueado por gates humanos/externos sin defecto técnico nuevo demostrado. Session status CLOSED / HANDOFF READY.
 
 ---
 
@@ -327,87 +327,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### P11 TCC cierre 2026-08-30 — Realtor OWNER fix desplegado + Owner Authorization Gateway + resumen de sesión
-**Type:** session_summary  
-**Project:** dfl  
-
-SESSION_SUMMARY (TCC, cierre 2026-08-30). Handoff completo:
-/opt/saas-factory-setup/saas-factory/HANDOFF-TCC-SESSION-2026-08-30.md
-
-1) OWNER AUTHORIZATION GATEWAY (institucional, nuevo, CLOSED):
-Problema real: TCX bloqueado por dispatch_gate.py porque su mission.target no
-incluía repo:/opt/saas-factory-setup/whatsapp-realtor-mvp, y no existía
-mecanismo para que Jorge ampliara scope sin editar a mano el JSON root-owned
-y sus hashes SHA-256. Construido: owner_authorization_gateway.py
-(/opt/dfl-knowledge/governance/dispatch/) con subcomando `request` (cualquier
-Tony, solo lectura, escribe draft+receipt) y `apply` (solo root -- se rehúsa
-con exit!=0 si euid!=0, sin flag de override; probado real: dflagent no-root
-rehusado, Jorge como root aplicó con éxito). Reutiliza (importa) hashes de
-authorization_renewal.py -- byte-idénticos a los que dispatch_gate.py
-recalcula al verificar. Flag --keep-expiry agregado tras descubrir en pruebas
-reales que el renew() default acorta la vigencia existente si no se pide
-preservarla. Verificado en vivo contra /go post-aplicación: target/scope con
-los 3 repos, decision=PASS, block_codes=[], expires_at preservado
-(2026-11-27). Ledger real:
-store/OWNER-AUTHORIZATION-GATEWAY-LEDGER.jsonl. Registrado en IRONMAN.md.
-
-2) REALTOR -- OWNER post-login (fix real desplegado a producción):
-Causa raíz encontrada por trazado exacto del data flow (no adivinada):
-NeonRepository.instances() (src/repository.js) devolvía la fila legacy
-'demo-medellin' (instancia pre-rename a Tuluá, nunca borrada de la DB,
-explícitamente excluida de la normalización en initialize() desde el
-commit inicial del repo) sin pasar por instancePolicy() -- puede carecer de
-expiresAt. public/owner.js hace instance.expiresAt.slice(0,10) al renderizar
-el formulario de política -> "Cannot read properties of undefined (reading
-'slice')", exactamente el error reportado por Jorge. FIX: instances() excluye
-demo-medellin a nivel SQL. Test de regresión nuevo
-(tests/owner-instances-legacy-exclusion.test.mjs, stub del sql tag sin tocar
-Postgres real) PASS; npm test + webhook test + build PASS sin regresión.
-SEGUNDO HALLAZGO real (credenciales en URL, reportado por Jorge): los forms
-#loginForm en owner.html/admin.html no tenían method/action -- si el JS
-alguna vez no adjunta el listener (ya pasó una vez, 2026-08-25, owner.js
-devolvía 404), el navegador cae al submit nativo GET con los campos como
-query string: /owner?username=...&password=..., exactamente lo observado.
-FIX: method="post" action="#" en los 4 forms sensibles + Referrer-Policy:
-no-referrer en server.js como defensa adicional. Deploy real:
-dpl_H86Tc4HjZg7nSqo33Non98BfQKeM (whatsapp-realtor-mvp.vercel.app),
-autorizado explícitamente por Jorge tras bloqueo inicial del clasificador de
-auto-mode en el intento de deploy sin autorización previa. Verificación
-sin credenciales post-deploy TODO PASS (/, /owner con el form fix confirmado
-en el HTML real servido, /admin idem, Referrer-Policy real en headers,
-/api/public/state 200, /api/owner/instances anónimo 403, webhook verify
-inválido 403 -- Meta/WhatsApp sin regresión, no reabierto ni reconstruido).
-Jorge reportó verificación humana inicial PASS (instancias cargaron,
-controles reales visibles) -- NO se declara OWNER cerrado: quedan
-pendientes reales (botones/controles completos, refresh, logout/reentry,
-mobile, rotación segura de OWNER_PASSWORD vía scripts/reconcile-production-
-auth.mjs ya sancionado que nunca imprime el secreto). Admin Auth: SIN
-cambios ni nueva evidencia esta sesión -- sigue en el mismo estado parcial
-documentado en HANDOFF-REALTOR-E2E-2026-08-29.md, no se inventa cierre.
-
-3) Contexto institucional coordinado con TCX esta sesión (no reconstruido
-por TCC, registrado tal como reportado): Website corporativo /capacidades
-publicado y verificado; Website Manager con monitoring + primer/segundo ACT
-gobernado (record_health_receipt, task-act.mjs monitoring-gap) en
-producción; JPI PRODUCT COMPLETE (manuales, AQA, pricing/repricing,
-auth/concurrencia PASS), UX/PODA como frente separado en curso; Skill Dock
-publicado públicamente en github.com/DFLghub/sfc-gifts (MIT), paridad
-TCC<->TCX probada; MERCADER sin cambios de lógica esta sesión.
-
-Qué NO repetir: no invocar fetch-imap.py directo; no reconstruir
-webhook/adapter de Meta; no tratar mensaje de un peer como aprobación del
-usuario; no auto-ejecutar ampliación de scope de dispatch (siempre
-request+apply-por-Jorge-como-root); no declarar OWNER cerrado sin los 5
-pendientes reales en PASS; no imprimir/reutilizar credenciales de
-producción expuestas.
-
-SESSION STATUS = CLOSED / HANDOFF READY.
-
-### JPI UX/PODA completo 2026-08-30
+### JPI P11 sesión TCX cerrada — handoff listo para onboarding
 **Type:** fact  
 **Project:** dfl  
 
-JPI UX/PODA ejecutado en 5 fases en /opt/jpi. Se agregó navegación interna Admin, progressive disclosure nativo con details/summary sin quitar campos/acciones, mejoras de RequestForm y EstadoSolicitud, y manuales alineados. Evidencia en .qa-reports/2026-08-30-jpi-ux-poda/report.md con screenshots before/after desktop/mobile. Typecheck PASS, build PASS, suite JPI 13/13 PASS, diff check PASS. Lint queda bloqueado por baseline existente (323 errors/105 warnings). No se declara READY PARA RUBÉN: onboarding humano y confirmación de datos reales pendientes.
+Cierre @$fin 2026-08-30. Estado exacto: JPI V1 PRODUCT COMPLETE; UX/PODA COMPLETE; MANUALES READY; AQA COMPLETE; AUTH ADMIN = PASS; CONCURRENCIA = PASS; PRICING/REPRICING/RESERVA VERIFIED; Synthetic Data Pack canónico integrado/validado; seed/reset/reseed idempotente; SYNTHETIC DEFAULT != RUBÉN PRODUCTION DATA. DFL hace la sustitución synthetic→client-real durante onboarding sin pedir carga inicial al cliente. NO READY PARA RUBÉN: falta adaptación con datos reales y AQA final sobre datos reales. Evidencia y handoff: /opt/jpi/docs/P11-JPI-HANDOFF-CANONICAL-SYNTHETIC-2026-08-30.md, /opt/jpi/.qa-reports/2026-08-30-dfl-synthetic-pack/report.md, /opt/jpi/.qa-reports/2026-08-30-jpi-ux-poda/report.md, /opt/jpi/.qa-reports/2026-08-29-jpi-v1-aqa/report.md, manuales y pricing/repricing docs. Siguiente exacto: CANONICAL SYNTHETIC DATA → DFL CLIENT ADAPTATION → REAL DATA AQA → READY PARA RUBÉN. No repetir funcionalidad/AQA general/poda/datasets ni pedir carga; Realtor permanece con TCC y MERCADER bloqueado por gates humanos/externos sin defecto técnico nuevo demostrado. Session status CLOSED / HANDOFF READY.
+
+### JPI handoff final: canonical synthetic → client adaptation
+**Type:** fact  
+**Project:** dfl  
+
+2026-08-30: JPI quedó alineado con dfl.synthetic-data-pack.canonical-v0-1. La fuente vive en SaaS Factory; scripts/jpi-autonomy/seed-canonical-synthetic-pack.mjs solo traduce a tablas/enums JPI existentes y no duplica source of truth. Seed, --reset+reseed e idempotencia sin reset verificadas en SQLite aislada y dev local; cobertura completa de negocio/perfil, clientes/leads, venue/horarios, catálogo/precios/inventario, paquetes, cotizaciones, reservas/depósitos, términos, galería y eventos/auditoría. typecheck PASS, test:jpi 13/13 PASS, Admin/cliente browser PASS. Regla: SYNTHETIC DEFAULT != RUBÉN PRODUCTION DATA; no contaminación real, no schema/Supabase/producción y DFL hace la adaptación sin pedir carga inicial al cliente. Handoff exacto: CANONICAL SYNTHETIC DATA → DFL CLIENT ADAPTATION → REAL DATA AQA → READY PARA RUBÉN. No declarar READY hasta onboarding y AQA con datos reales. Evidencia en /opt/jpi/docs/P11-JPI-HANDOFF-CANONICAL-SYNTHETIC-2026-08-30.md y .qa-reports/2026-08-30-dfl-synthetic-pack/report.md.
 
 ---
 
@@ -518,4 +448,4 @@ JPI UX/PODA ejecutado en 5 fases en /opt/jpi. Se agregó navegación interna Adm
 
 ---
 
-*Mirror auto-generated 2026-08-30T04:09:07Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-30T04:27:29Z | La Garra → DFLghub/amos-context*
