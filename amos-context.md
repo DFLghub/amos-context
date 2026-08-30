@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-30T14:48:17Z  
+**Generated:** 2026-08-30T18:00:21Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,12 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### P11 JPI Vercel persistence — AQA-0 formal FAIL, durable backend not authorized
+**Type:** decision  
+**Project:** dfl  
+
+2026-08-30: El Contract AQA de JPI se actualizó al target real https://jpi-jet.vercel.app/jpi y a una prueba Playwright mecánica create→new invocation recovery→refresh. Contract validate PASS. AQA-0 formal FAIL solo en critical_flow_operable; reachability, content signal, env declaration, synthetic seed declaration y stability 3/3 PASS. Orchestrator formal: GLOBAL_STATE=BUILDING, exit 1. El POST público redirige, pero el GET posterior devuelve 404 porque SQLite en /tmp no es compartida/durable entre funciones Vercel. La arquitectura vigente de JPI declara SQLite local-only y no existe backend durable productivo autorizado; por regla no se inventa datastore ni se toca Supabase/NO_TOUCH. Deployment sigue READY como artefacto Vercel, pero AQA0/READY operativo permanecen bloqueados. Receipt: /opt/saas-factory-setup/saas-factory/tools/aqa-kit/evidence/jpi/evidence-records/aqa0-jpi-1788111903860.json; report: /opt/jpi/.qa-reports/2026-08-30-jpi-vercel-public/report.md.
+
 ### P11 TCC cierre 2026-08-30 — Realtor OWNER fix desplegado + Owner Authorization Gateway + resumen de sesión
 **Type:** session_summary  
 **Project:** dfl  
@@ -192,23 +198,17 @@ producción expuestas.
 
 SESSION STATUS = CLOSED / HANDOFF READY.
 
-### JPI v1 provisional phase closure 2026-08-29
-**Type:** decision  
-**Project:** dfl  
-
-Institutional closure checkpoint: JPI V1 PRODUCT COMPLETE in approved implemented scope; manuals/onboarding CLOSED this phase; AQA CLOSED this phase; pricing/repricing policy verified. Only original open point is Admin positive authentication and legitimate concurrent sessions, because real credentials are unavailable; do not infer PASS/FAIL. UX/PODA remains pending human review; do not declare READY PARA RUBEN. Commercial policy: vigente quote preserves snapshot/price; expired quote uses current prices through a new linked revision; exceptions/discounts require explicit Admin decision and audit; no automatic negotiation. Exact resume: securely provision credentials -> positive Admin login -> two simultaneous legitimate sessions -> evidence PASS/FAIL; do not repeat 017/018, repricing, or functional AQA without demonstrated regression. Files: /opt/jpi/docs/P11-JPI-V1-PHASE-CLOSURE-2026-08-29.md, /opt/jpi/.claude/memory/project/jpi-v1-phase-closure-2026-08-29.md, updated handoff and factory IRONMAN.md.
-
 ### Paseo TCX Full Access profile configured and verified
 **Type:** decision  
 **Project:** saas-factory-setup  
 
 Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
 
-### JPI P11 sesión TCX cerrada — handoff listo para onboarding
+### @$fin closure checkpoint 2026-08-30
 **Type:** fact  
 **Project:** dfl  
 
-Cierre @$fin 2026-08-30. Estado exacto: JPI V1 PRODUCT COMPLETE; UX/PODA COMPLETE; MANUALES READY; AQA COMPLETE; AUTH ADMIN = PASS; CONCURRENCIA = PASS; PRICING/REPRICING/RESERVA VERIFIED; Synthetic Data Pack canónico integrado/validado; seed/reset/reseed idempotente; SYNTHETIC DEFAULT != RUBÉN PRODUCTION DATA. DFL hace la sustitución synthetic→client-real durante onboarding sin pedir carga inicial al cliente. NO READY PARA RUBÉN: falta adaptación con datos reales y AQA final sobre datos reales. Evidencia y handoff: /opt/jpi/docs/P11-JPI-HANDOFF-CANONICAL-SYNTHETIC-2026-08-30.md, /opt/jpi/.qa-reports/2026-08-30-dfl-synthetic-pack/report.md, /opt/jpi/.qa-reports/2026-08-30-jpi-ux-poda/report.md, /opt/jpi/.qa-reports/2026-08-29-jpi-v1-aqa/report.md, manuales y pricing/repricing docs. Siguiente exacto: CANONICAL SYNTHETIC DATA → DFL CLIENT ADAPTATION → REAL DATA AQA → READY PARA RUBÉN. No repetir funcionalidad/AQA general/poda/datasets ni pedir carga; Realtor permanece con TCC y MERCADER bloqueado por gates humanos/externos sin defecto técnico nuevo demostrado. Session status CLOSED / HANDOFF READY.
+Formal @$fin closure checkpoint on 2026-08-30. Live /go observed protocol @$go v1.1, identity DFL / amOS, routing receipt for executor TCX with decision PASS, and dispatch receipt execute_permitted=true scoped to /opt/saas-factory-setup/saas-factory, /opt/jpi, and whatsapp-realtor-mvp. Current thread only verified session-connect limitation: no available tool can attach to arbitrary SESSION_ID; no product changes made in this closure turn. Engram search for JPI v1 closure invalidations returned no matches requiring archival. Closure must run push_mirror.sh and report its MIRROR line.
 
 ---
 
@@ -327,17 +327,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### JPI P11 sesión TCX cerrada — handoff listo para onboarding
+### @$fin closure checkpoint 2026-08-30
 **Type:** fact  
 **Project:** dfl  
 
-Cierre @$fin 2026-08-30. Estado exacto: JPI V1 PRODUCT COMPLETE; UX/PODA COMPLETE; MANUALES READY; AQA COMPLETE; AUTH ADMIN = PASS; CONCURRENCIA = PASS; PRICING/REPRICING/RESERVA VERIFIED; Synthetic Data Pack canónico integrado/validado; seed/reset/reseed idempotente; SYNTHETIC DEFAULT != RUBÉN PRODUCTION DATA. DFL hace la sustitución synthetic→client-real durante onboarding sin pedir carga inicial al cliente. NO READY PARA RUBÉN: falta adaptación con datos reales y AQA final sobre datos reales. Evidencia y handoff: /opt/jpi/docs/P11-JPI-HANDOFF-CANONICAL-SYNTHETIC-2026-08-30.md, /opt/jpi/.qa-reports/2026-08-30-dfl-synthetic-pack/report.md, /opt/jpi/.qa-reports/2026-08-30-jpi-ux-poda/report.md, /opt/jpi/.qa-reports/2026-08-29-jpi-v1-aqa/report.md, manuales y pricing/repricing docs. Siguiente exacto: CANONICAL SYNTHETIC DATA → DFL CLIENT ADAPTATION → REAL DATA AQA → READY PARA RUBÉN. No repetir funcionalidad/AQA general/poda/datasets ni pedir carga; Realtor permanece con TCC y MERCADER bloqueado por gates humanos/externos sin defecto técnico nuevo demostrado. Session status CLOSED / HANDOFF READY.
+Formal @$fin closure checkpoint on 2026-08-30. Live /go observed protocol @$go v1.1, identity DFL / amOS, routing receipt for executor TCX with decision PASS, and dispatch receipt execute_permitted=true scoped to /opt/saas-factory-setup/saas-factory, /opt/jpi, and whatsapp-realtor-mvp. Current thread only verified session-connect limitation: no available tool can attach to arbitrary SESSION_ID; no product changes made in this closure turn. Engram search for JPI v1 closure invalidations returned no matches requiring archival. Closure must run push_mirror.sh and report its MIRROR line.
 
-### JPI handoff final: canonical synthetic → client adaptation
-**Type:** fact  
+### P11 JPI Vercel persistence — AQA-0 formal FAIL, durable backend not authorized
+**Type:** decision  
 **Project:** dfl  
 
-2026-08-30: JPI quedó alineado con dfl.synthetic-data-pack.canonical-v0-1. La fuente vive en SaaS Factory; scripts/jpi-autonomy/seed-canonical-synthetic-pack.mjs solo traduce a tablas/enums JPI existentes y no duplica source of truth. Seed, --reset+reseed e idempotencia sin reset verificadas en SQLite aislada y dev local; cobertura completa de negocio/perfil, clientes/leads, venue/horarios, catálogo/precios/inventario, paquetes, cotizaciones, reservas/depósitos, términos, galería y eventos/auditoría. typecheck PASS, test:jpi 13/13 PASS, Admin/cliente browser PASS. Regla: SYNTHETIC DEFAULT != RUBÉN PRODUCTION DATA; no contaminación real, no schema/Supabase/producción y DFL hace la adaptación sin pedir carga inicial al cliente. Handoff exacto: CANONICAL SYNTHETIC DATA → DFL CLIENT ADAPTATION → REAL DATA AQA → READY PARA RUBÉN. No declarar READY hasta onboarding y AQA con datos reales. Evidencia en /opt/jpi/docs/P11-JPI-HANDOFF-CANONICAL-SYNTHETIC-2026-08-30.md y .qa-reports/2026-08-30-dfl-synthetic-pack/report.md.
+2026-08-30: El Contract AQA de JPI se actualizó al target real https://jpi-jet.vercel.app/jpi y a una prueba Playwright mecánica create→new invocation recovery→refresh. Contract validate PASS. AQA-0 formal FAIL solo en critical_flow_operable; reachability, content signal, env declaration, synthetic seed declaration y stability 3/3 PASS. Orchestrator formal: GLOBAL_STATE=BUILDING, exit 1. El POST público redirige, pero el GET posterior devuelve 404 porque SQLite en /tmp no es compartida/durable entre funciones Vercel. La arquitectura vigente de JPI declara SQLite local-only y no existe backend durable productivo autorizado; por regla no se inventa datastore ni se toca Supabase/NO_TOUCH. Deployment sigue READY como artefacto Vercel, pero AQA0/READY operativo permanecen bloqueados. Receipt: /opt/saas-factory-setup/saas-factory/tools/aqa-kit/evidence/jpi/evidence-records/aqa0-jpi-1788111903860.json; report: /opt/jpi/.qa-reports/2026-08-30-jpi-vercel-public/report.md.
 
 ---
 
@@ -448,4 +448,4 @@ Cierre @$fin 2026-08-30. Estado exacto: JPI V1 PRODUCT COMPLETE; UX/PODA COMPLET
 
 ---
 
-*Mirror auto-generated 2026-08-30T14:48:17Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-30T18:00:21Z | La Garra → DFLghub/amos-context*
