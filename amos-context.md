@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-29T21:54:07Z  
+**Generated:** 2026-08-30T03:03:28Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,17 +116,17 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### JPI v1 provisional phase closure 2026-08-29
+**Type:** decision  
+**Project:** dfl  
+
+Institutional closure checkpoint: JPI V1 PRODUCT COMPLETE in approved implemented scope; manuals/onboarding CLOSED this phase; AQA CLOSED this phase; pricing/repricing policy verified. Only original open point is Admin positive authentication and legitimate concurrent sessions, because real credentials are unavailable; do not infer PASS/FAIL. UX/PODA remains pending human review; do not declare READY PARA RUBEN. Commercial policy: vigente quote preserves snapshot/price; expired quote uses current prices through a new linked revision; exceptions/discounts require explicit Admin decision and audit; no automatic negotiation. Exact resume: securely provision credentials -> positive Admin login -> two simultaneous legitimate sessions -> evidence PASS/FAIL; do not repeat 017/018, repricing, or functional AQA without demonstrated regression. Files: /opt/jpi/docs/P11-JPI-V1-PHASE-CLOSURE-2026-08-29.md, /opt/jpi/.claude/memory/project/jpi-v1-phase-closure-2026-08-29.md, updated handoff and factory IRONMAN.md.
+
 ### P11 transition checkpoint — Realtor preserved, MERCADER gated, JPI resumed
 **Type:** decision  
 **Project:** dfl  
 
 2026-08-29. Realtor preserved with no further product changes: OWNER UI PASS corrected/verified; META CONFIRMED no observable regression; ADMIN AUTH remains PARTIAL because positive auth and simultaneous sessions lack real production credentials. Handoff updated at /opt/saas-factory-setup/whatsapp-realtor-mvp/HANDOFF-REALTOR-E2E-2026-08-29.md. MERCADER state-first inspection: /opt/saas-factory-setup/mercader-bos has historical code/SQLite but no daemons listening; no safe action now without human perimeter/credential confirmation. Classified HUMAN_GATE (credentials/perimeter), EXTERNAL_GATE (providers), no inequívocal technical defect reproduced. JPI resumed from handoff: test:jpi 7/7 + entry guard, typecheck and build PASS; authz replay customer cases 1-6 PASS. Fixed harness to fill admin username for current real login; admin branch remains blocked by absent local JPI auth variables, not by product conclusion. Remaining JPI UI surfaces (calendar/bookings, Event Packages, full quote UI, audit viewer, schedules, deposits, rules, photos) are product/human decisions, not invented. Transition doc: /opt/jpi/docs/P11-TRANSICION-MERCADER-JPI-2026-08-29.md. IRONMAN updated.
-
-### P11 provisional handoff — DFL institutional email remains human-gated
-**Type:** decision  
-**Project:** dfl  
-
-2026-08-29. Checkpoint preserved for TCX: 7 historical jtigre@gmail.com requests remain reconciled; 7 drafts PREPARED_NOT_SENT; 7 persistent tasks OPEN/NEEDS_HUMAN; request-ID correlations and recovery evidence preserved. Current blocker is identity authentication: available Google session/App Passwords are gardipedia@gmail.com, not deepfeelingslabs@gmail.com. No further authentication attempts, alternate transport, or sends were made. Exact resume sequence: authenticate deepfeelingslabs@gmail.com -> 2FA/App Password -> configure SMTP -> one test to jtigre@gmail.com -> verify physical receipt -> send backlog idempotently once per request ID -> update task states/message IDs/timestamps/delivery evidence. Handoff doc: docs/DFL_WEBSITE_MANAGER_EMAIL_HANDOFF_2026-08-29.md. Mission remains PENDING on human gate; no Squarespace or protected branches touched.
 
 ### Paseo TCX Full Access profile configured and verified
 **Type:** decision  
@@ -134,11 +134,11 @@ Antes de operar, respondé:
 
 Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
 
-### Realtor current-state audit — Owner/Admin UI regressions fixed; positive auth pending
-**Type:** bugfix  
+### P11 JPI — Auth Admin y concurrencia real PASS 2026-08-30
+**Type:** fact  
 **Project:** dfl  
 
-2026-08-29. Audited current production after prior Realtor work. Reproduced real regressions: Owner assets /owner.js and /owner.css returned 404/MIME JSON; Admin current inline style/script were blocked by stale CSP hashes. Fixed only src/server.js: serve those two static assets with correct MIME and add hashes for current Admin inline blocks. Deployed READY dpl_4SgQ4W1U6CntLs1XB2ADP41scFjq and aliased production. Playwright desktop 1440/mobile 390 Owner+Admin: render/JS/invalid-login feedback pass, no CSP errors or failed assets, no overflow. Invalid auth endpoints return 401. npm test, webhook test, build PASS. Meta double-check: Vercel Production lists four META vars by presence; root/public-state 200, invalid handshake 403, invalid signature 401; no Meta config changed. Positive Owner/Admin auth and simultaneous-user test remain UNPROVEN because production credentials are hidden and no two authenticated sessions are available; do not infer PASS. Report: /opt/saas-factory-setup/whatsapp-realtor-mvp/.qa-reports/2026-08-29-realtor-state/report.md. MERCADER and productive number untouched.
+WHAT: Se cerró el único punto técnico abierto de JPI V1: AUTH ADMIN / CONCURRENCIA. EVIDENCE: runtime local real en http://localhost:3000/jpi-admin; dos sesiones ADMIN legítimas simultáneas (agent-browser aislado jpi-a/jpi-b) iniciaron sesión con credenciales provisionadas en el entorno efectivo del proceso Next, sin exponer valores; ambas cargaron /jpi-admin con header ADMIN y controles habilitados. A refrescar B siguió autenticada; cerrar sesión en A llevó solo A a /jpi-admin/login mientras B permaneció autenticada; A volvió a entrar correctamente. Error de credencial inválida permaneció en login, sin query string. URL posterior al login y refresh: /jpi-admin con location.search vacío; document.cookie no expuso la cookie HttpOnly. Mobile 390x844: scrollWidth 375, sin overflow horizontal, ruta y header correctos. No se observaron errores de navegador. VERIFICATION: npm run test:jpi = 13/13 PASS + jpi entry-model PASS; npm run typecheck PASS; git diff --check PASS. CAUSE/FIX: no se reprodujo fallo en la implementación actual; no hubo cambios de código en esta sesión. SEC: valores de username/password/session secret no se imprimieron ni persistieron; la credencial se usó solo en memoria/proceso. SCOPE: únicamente /opt/jpi; no Realtor, Meta, MERCADER, Supabase, Vercel, deploy ni UX/PODA. NEXT: UX/PODA sigue pendiente de revisión humana; no declarar READY PARA RUBÉN sin el gate correspondiente.
 
 ---
 
@@ -172,79 +172,52 @@ PENDIENTE: Jorge tiene acceso autenticado real; no se intentó ni se debe intent
 **Project:** dfl-knowledge  
 
 ## Goal
-Sesión larga, multi-misión sobre DFL/SFV5/Workforce Registry Unit (WRU) v0.1: desde protocolo @$go inicial hasta fabricación end-to-end completa de WRU bajo autorización humana explícita, con verificación exhaustiva basada en evidencia real en cada paso.
+Sesión larga y multi-misión sobre DFL/SFV5: auditoría forense grounded de la copia local SaaS Factory (VM2), su censo estructurado, remediación en 3 rondas hasta verificación independiente cerrada, reconciliación de la arquitectura laboral completa de DFL (Workforce Registry / Factory Manager), y el PRP ejecutable del primer incremento vivo (Workforce Registry Unit v0.1), reconciliado con resultados de un laboratorio experimental de gobierno de mutaciones.
 
 ## Instructions
-- El usuario opera bajo protocolo DFL: @$go al abrir sesión, @$fin al cerrar (mem_save + push_mirror.sh). No confundir @$go (comando) con /go (ruta HTTP del proxy).
-- Modo de ejecución de máxima autonomía ya establecido (memoria previa): no pedir permiso para acciones seguras, agrupar aprobaciones en un único punto de decisión — pero el usuario definió explícitamente 5 checkpoints humanos bloqueantes para la fabricación de WRU y espera que se respeten literalmente, incluso en modo autónomo.
-- El usuario exige evidencia real y reproducible en cada gate/checkpoint — "no declares PASS por documentos ni scaffolding". Toda corrección de PRP/Plan/build debe traer hashes SHA256 completos, snapshots git before/after, y diffs exactos, nunca solo afirmaciones.
-- Cuando se pide "cierre provisional (checkpoint)" a mitad de una tarea larga, se espera un handoff autosuficiente en disco (no solo un resumen conversacional) para que otro agente sin memoria pueda continuar.
+- Jorge dio autorización explícita para operar autónomamente en varias misiones sucesivas ("no solicites autorización intermedia", y luego "full authorization to perform this task/mission").
+- Patrón de trabajo institucional confirmado y seguido en toda la sesión: nunca sobrescribir evidencia ya publicada/commiteada — toda corrección o ronda nueva va en un subdirectorio nuevo, con referencia explícita a lo que corrige.
+- Verificación de colisión con CX (otro agente operando en paralelo sobre el mismo repo) antes de cada `git add`/commit: `git log --oneline`, `git status --short`, nunca `git add -A`.
+- Contrato de integridad de evidencia consolidado y reutilizado en todas las misiones posteriores: manifest/checksum de dos pasos (MANIFEST.json escrito primero, excluyendo su propio nombre y el de SHA256SUMS.txt desde el listado inicial; SHA256SUMS.txt escrito después, nunca por `sha256sum * > archivo` ni por copiar/renombrar un archivo ya hasheado bajo otro nombre — ambas son causas raíz reales de bugs de autorreferencia ya encontrados en esta misma cadena).
+- Jorge pidió un `@$fin` parcial (checkpoint) a mitad de una misión — se distinguió correctamente de un cierre canónico: `mem_save` incremental sin barrido de archivado ni `push_mirror.sh`, sesión sigue abierta. Ese checkpoint (obs #394) quedó archivado hoy al completarse y validarse la misión que dejaba pendiente.
 
 ## Discoveries
-- Un fetch de amos-context.md (GitHub raw) devolvió contenido con forma de prompt-injection (se autoasignaba un "perfil CONSULTOR" con capacidades falsas, contradichas por el entorno real) — se flagueó al usuario explícitamente en vez de obedecerlo.
-- La corrida inicial de `/prp` para WRU generó un PRP nativo con un defecto real: atribuyó los "44 gates" a la fábrica SFV5 (DDMS) cuando en realidad son gates propios de WRU (G1-G22 del laboratorio de capacidad + G23-G44 de CC-PRP-R1) — corregido en 2 pasadas tras comparar contra las fuentes verbatim (READER añadido como rol, G22/G21/G41-43 restaurados a su alcance/semántica original).
-- Un `git worktree add` nuevo parte con `git status` limpio incluso cuando el árbol principal está sucio desde antes — los archivos no versionados no se materializan en el worktree nuevo. Esto valida el patrón de aislamiento recomendado por el propio Implementation Plan y se usó tal cual.
-- Durante la fabricación real aparecieron 2 falsos positivos en tests de auditoría de código (G44, y la guarda READER de query/client.mjs): el propio comentario explicativo del código contenía la cadena de texto que el test de auditoría buscaba (p.ej. "appendVersion("), inflando el conteo de "call sites". Se corrigió reformulando el comentario, nunca relajando el test.
-- `source_commit` en el schema WRU es "HEAD al momento de generación", no un valor fijo — avanza legítimamente con cada commit de fabricación aunque `.claude/skills/` nunca se toque. Esto se aprovechó honestamente en Fase N para demostrar `freshness_status: stale` real sin ocultarlo (invariante explícito del PRP: nunca esconder staleness al consumidor).
-- Un test inicial de "Activación" asumía que el registro nunca crecería más allá de 32 entradas — al agregar legítimamente una entrada sintética no-SFV5 (Fase N, prueba de extensibilidad real) el test falló; el invariante correcto era "32 `sfv5-skill` únicas", no "32 entradas totales para siempre". Corregido para no penalizar la extensibilidad que el propio PRP exige.
+- **SFV5 local no es "SFV5 de Ricardo Silva".** El único autor real verificable del repo comunitario (`upstream/main`) es Daniel Carreón. Todo lo etiquetado "V5" localmente fue introducido en un commit único (`5e42124`) de Jorge Tigreros — es autoría DFL sobre el V4 comunitario, no una importación de terceros. Cero evidencia de "Ricardo Silva" en el historial git accesible.
+- Ningún "minion" nombrado (Sensei/Trinity/AI Dani) existe en el repo; "Levy" es solo un asset de imagen (mascota) para la skill `video-visuals`, no un agente.
+- El grafo de codebase-memory no cubre `.claude/` de SFV5 en absoluto (0 nodos) ni `tools/bridges/` — 4 índices duplicados para la misma ruta con conteos distintos pese al mismo `head_sha`, causa raíz confirmada: truncamiento de `max_rows` en ciertas queries (no corrupción de datos).
+- El activo de mayor apalancamiento de todo el inventario DFL, descubierto en la reconciliación arquitectónica (CC-2), no es BOS/Concierge/SFV5 por separado — es un harness de alta certeza **genérico** ya construido y probado (`experiments/dfl-high-certainty-exploration-harness-v0.1/`, 2/2 tests, piloto real ejecutado) que ninguna auditoría previa había conectado con el resto del inventario. Existe una duplicación real (2 patrones HLC independientes: el genérico y la instancia específica de Concierge F1B con defectos de evidencia confirmados) — pero la revisión independiente posterior (CX-N1) determinó que NO son duplicados funcionales demostrados y que su unificación queda `DEFER`, no se reabre.
+- WorkUnitLedger (`dfl-knowledge/concierge/workunit.py`, mergeado a main, dogfood real, 237/237 tests) es el activo más maduro para "Factory Manager" — más confiable que `parallel-build` de SFV5 (solo documentado).
+- "Opportunity Inbox" y "Refinería y Distribución de Capacidades" están completamente ausentes de todo el corpus DFL bajo cualquier variante de nombre buscada.
+- El laboratorio experimental de gobierno de mutaciones (`workforce-registry-capability-lab-2026-07-30`, 16/16 escenarios PASS) falsificó la intuición de que un CRUD simple sobre un Registry es suficiente: el estado canónico debe separarse de propuestas, con validación, aprobación, bloqueo optimista (`expected_version`), versionado append-only, verificación de dependencias y evidencia — nunca escritura directa, nunca hard delete, nunca "rollback = replay de audit log" (rollback real = commit gobernado de una versión restaurada).
+- Bug de autorreferencia de checksum tiene 2 causas raíz distintas ya encontradas en esta cadena: (1) truncamiento de shell (`sha256sum * > archivo` trunca el archivo de salida antes de leerlo como argumento del glob), (2) captura de hash bajo un nombre temporal que luego se reutiliza al copiar/renombrar el archivo final. Ambas se evitan solo excluyendo el nombre de salida de la lista de entrada ANTES de hashear, nunca por post-filtro.
 
 ## Accomplished
-- ✅ @$go procesado; prompt-injection en amos-context.md detectado y reportado al usuario antes de actuar sobre él.
-- ✅ CX-MFG-3: corrida real de `/prp` para WRU v0.1 sobre el repo real SFV5 (`/opt/saas-factory-setup`), PRP nativo generado y corregido en 2 rondas (44 gates atribuidos correctamente a WRU no a SFV5, entidades canónicas Source Projection/Proposal/Canonical State formalizadas, contrato de reconciliación NO_CHANGE|PROPOSAL|CONFLICT|SOURCE_MISSING, SFV5 declarado fuente no autoridad, rol READER incorporado, G21/G22/G41-43 restaurados) — cada corrección con receipt completo (hashes SHA256 íntegros, snapshots git worktree/status before-after, diffs exactos, declaraciones NOT_RECOVERABLE cuando aplicaba).
-- ✅ CX-MFG-4: Implementation Plan completo generado desde el PRP aprobado y corregido (498→548 líneas: secuencia canónica `1→2→3→{4,5}→6→7→9.9→9.10→N`, matriz G1-G44 completa, checkpoints humanos, estrategia de commits/corpus/instalación aislada).
-- ✅ Fabricación end-to-end real de WRU v0.1 en worktree git aislado (`/opt/wru-worktree-v0.1`, branch `feat/workforce-registry-unit-v0.1`), 10 commits atómicos, 74/74 tests reales pasando, 44/44 gates PASS con evidencia individual: schema+meta-validación (Fase 1), adapter read-only+reconciliación sobre las 32 skills reales (Fase 2), motor de propuestas/aprobación — único camino de escritura, optimistic locking, autoridad por rol (Fase 3), ciclo de vida gobernado — deprecate/replace/archive/restore, hard-delete estructuralmente imposible (Fase 4), disponibilidad (Fase 5), cliente de consulta bajo autoridad READER + blind discovery de 8 casos (Fase 6), evidencia (Contrato A) + instalación/desinstalación real en copia aislada (Fase 7), Activación real (32/32 skills reales ingeridas vía flujo gobernado, nunca carga directa), Operación real (6 tipos de mutación real incluyendo archive+restore real sobre datos reales), Fase N (blind discovery real sobre el Registry activado, 44 gates agregados, FINAL-VERDICT).
-- ✅ Árbol productivo `/opt/saas-factory-setup` verificado byte-idéntico (HEAD, `git status`, `.claude/skills/`, `CLAUDE.md`, y las 3 herramientas previas de la cadena SFV5/CC-2/CX-N1) en cada uno de los ~15 checkpoints de este build — nunca tocado.
-- ✅ Handoff autosuficiente escrito en disco antes de continuar (cierre provisional pedido explícitamente por el usuario a mitad de la fabricación), para que otro agente sin memoria de la conversación pudiera retomar si la sesión moría.
-- ✅ 4 checkpoints humanos aprobados explícitamente por el usuario en tiempo real (primera escritura canónica, ingestión de datos reales, primera operación de lifecycle, camino vivo real).
-- 🔲 Checkpoint 5 (merge/activación compartida a la rama productiva) deliberadamente NO ejecutado — queda como decisión humana futura, fuera del alcance que esta misión se autorizó a ejecutar sola.
-- Veredicto final entregado: `WRU_V0_1_END_TO_END_BUILT_PENDING_FINAL_INDEPENDENT_VERIFICATION`, con deuda residual declarada explícitamente (sin CLI binario formal; instalación probada en copia de directorio simple, no en un segundo worktree git).
+- ✅ Informe forense original SFV5 — commit `a4589bf` (obs #390).
+- ✅ Addendum de censo/registro/crosswalk/matrices — commit `c074c20` (obs #392).
+- ✅ Resolución documental de 4 preguntas puntuales (12 vs 13 skills, promotion_state de skill-creator/image-generation, límites reales de `log-tool-usage.sh`) — commit `56633d1`.
+- ✅ CC-R1: remediación de 3 defectos de CX-1 (checksum, `scan_delta.py` no reproducible, identidad de grafo) — commit `fa640a5`.
+- ✅ CC-H1: plan de remediación (no implementación) de defectos de evidencia en el harness HLC específico de Concierge F1B — commit `cedb54a`.
+- ✅ CC-R2: cierre del contrato de checksum/manifest de SFV5, retirado el claim "20/20 PASS", desglose honesto 17 PASS + 1 PARTIAL + 1 CORRECTED + 1 NOT_APPLICABLE — commit `0bfc5c9`. **Verificado independientemente por CX-R2 (`60316d9`): `SFV5_AUDIT_INDEPENDENTLY_VERIFIED`.**
+- ✅ CC-2: reconciliación completa de la arquitectura laboral DFL (Workforce Registry + Factory Manager + WorkUnits/HLC + BOS + Engram + grafo), 19 activos inventariados, composición híbrida decidida como borde vivo (sin runtime nuevo) — commit `5e30326`.
+- ✅ CC-3: PRP ejecutable de Workforce Registry Unit v0.1 (schema, adapter SFV5, Registry mínimo, validator, query consumer, blind discovery test de 8 casos, 22 gates) — commit `4dfb07d`. Validado por CX-N1 (`b902bc9`, decisión `REVISE_TO_REGISTRY_WITH_SFV5_ADAPTER`, 39/40).
+- ✅ CC-PRP-R1: reconciliación por delta del PRP con los resultados del laboratorio de gobierno de mutaciones (16/16 escenarios) — modelo de proposal/validation/approval/commit, 6 actores tipados, versionado append-only, prohibición de hard delete, `wru-draft.md` preparado (no colocado aún en SFV5) — commit `500c0a1`.
+- 🔲 `wru-draft.md` pendiente de `CX-PRP-1 independent review` y, tras eso, de colocarse en `.claude/PRPs/wru-draft.md` de SFV5 y someterse vía `/primer` + `/prp`.
+- 🔲 CC-H1 (remediación del harness F1B) quedó como plan documentado, no implementado — pendiente de decisión de si se ejecuta.
 
 ## Next Steps
-- Revisión independiente del build (tipo CX-PRP-1) antes de cualquier propuesta de merge a `fase-3-5-jpi-real-sfv5-bridge`.
-- Decisión humana pendiente sobre checkpoint 5: si/cuándo proponer ese merge.
-- Si se decide llevar WRU a producción real: resolver deuda residual (CLI binario formal; prueba de instalación en un worktree git separado, no solo copia de directorio).
-- Si la sesión se retoma en frío, leer primero `FINAL-VERDICT.md` y `HANDOFF-2026-07-31.md` antes de tocar código.
+- Esperar/verificar `CX-PRP-1 independent review` sobre `500c0a1` antes de someter `wru-draft.md` a SFV5.
+- Si CX-PRP-1 aprueba: colocar `wru-draft.md` en `.claude/PRPs/` de SFV5 y ejecutar `/primer` + `/prp` para iniciar la fabricación real (fuera de esta cadena de diseño).
+- Decidir si se retoma la implementación del plan de remediación de CC-H1 (harness F1B) — quedó como diseño, no ejecutado.
+- `push_mirror.sh` no se ejecutó en ningún punto de la sesión — pendiente para cuando Jorge lo autorice explícitamente (ejecutado recién al cierre de hoy, ver línea MIRROR reportada).
 
 ## Relevant Files
-- `/opt/saas-factory-setup/saas-factory/.claude/PRPs/prp-workforce-registry-unit.md` — PRP aprobado de WRU v0.1, corregido 2 veces, nunca modificado durante la fabricación.
-- `/opt/saas-factory-setup/saas-factory/.claude/PRPs/plan-workforce-registry-unit.md` — Implementation Plan aprobado, fuente de la secuencia de fases ejecutada.
-- `/opt/wru-worktree-v0.1/saas-factory/tools/workforce-registry/` — módulo completo fabricado (schema/, adapters/, proposals/, registry/, query/, evidence/, tests/), 10 commits, 44/44 gates.
-- `/opt/dfl-knowledge/evidence/sfv5-wru-prp-native-run-2026-07-31/` — receipts de generación y corrección del PRP.
-- `/opt/dfl-knowledge/evidence/sfv5-wru-implementation-plan-2026-07-31/` — receipts de generación y corrección del plan.
-- `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/FINAL-VERDICT.md` — matriz completa G1-G44, estado exacto por etapa, veredicto final.
-- `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/HANDOFF-2026-07-31.md` — handoff autosuficiente para continuación por otro agente.
-
-### Event RSVP MVP — full session close: blind AQA, Back/Forward fix, José delegated-admin grant, lifecycle-gap diagnostic, handoff sent (2026-08-17)
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/event-rsvp/session-close-2026-08-17-tcc-post-jose-remediation
-STATUS: closed
-DATE: 2026-08-17
-PRECEDENCIA: C
-AUTHORITY: evidence only
-LIFECYCLE: active
-CONFIDENCE: high
-
-WHAT: Single long TCC session, four threads, all closed, no open blockers for the José handoff.
-
-1) Blind adversarial AQA (Playwright + OWASP ZAP, not seeded with José's known findings, per Jorge's explicit "keep it simple, minimum tools" instruction): Playwright 24 checks (auth abuse, direct-Supabase-REST IDOR/bypass attempts, business-logic bounds, stored XSS, 10-way concurrent RSVP race) + ZAP baseline+full active scan (135+ rules incl. SQLi/XSS/SSRF/SSTI/RCE/Log4Shell/Spring4Shell) = 0 injection/RCE findings, RLS defense-in-depth confirmed on every bypass attempt. One real NEW bug found (not on José's list): signup with a taken username silently "succeeded" (redirected to /events) while the actual DB insert failed, leaving an orphaned profile-less authenticated session — root cause was auth.signUp() opening a session before the users-table uniqueness check could fail, and a page-level useEffect reacting to that transient truthy `user` state. Fixed (signOut in the error path + stopped reacting to global auth state for the signup redirect) + added CSP/X-Content-Type-Options/X-Frame-Options/Permissions-Policy headers. Verified live post-deploy. Commit 112ab97.
-
-2) Multi-tab auth investigation (Jorge's real Firefox report: 2 tabs, logout in one deauthed both, a reopened tab showed authenticated then deauthed): reproduced exactly via Playwright pages sharing one BrowserContext. Confirmed root cause: single shared localStorage session per browser origin/profile + GoTrue's own cross-tab storage-event sync — this is expected upstream Supabase behavior, NOT a bug. The 6-8 independent router.push-based auth-guard useEffects reacting uncoordinated to that shared state IS implementation-level amplification, diagnosed but explicitly NOT fixed in that pass per Jorge's scope (diagnosis only, no new investigation lines).
-
-3) Back/Forward bug (found via Jorge's real repro description, fixed for real this time): Back into /login or /signup while authenticated ate the Back action and bounced straight back to where you started — root cause was those two pages redirecting away from themselves the instant global `user` was truthy, including when reached via popstate (browser Back), which is a real implementation bug distinct from #2. Fix: /login and /signup now render a static non-navigating "already signed in" panel instead of an effect-driven redirect; all 5 protected-route guards (+root "/") switched router.push('/login') to router.replace('/login') so a lost-auth redirect never leaves a trapped history entry. All 7 required scenarios (Back/Forward authenticated, normal nav, refresh, logout, Back after logout, direct access to protected route after logout) verified PASS live in production.
-
-4) José capability grant: JoseIncer (confirmed is_admin=true, is_owner=false in production) can now execute remove_demo_data() (DEMO->REAL transition) — migration 018 widened that one RPC from owner-only to any-admin, with an explicit is_owner=false added to its own DELETE as defense in depth. Every other owner/delegated-admin boundary from migration 015 re-verified untouched via real auth.uid() simulation against the LIVE functions/triggers (not mocks, not assumptions): José structurally cannot grant/revoke admin, disable the owner or himself, or change is_owner through any authenticated-role path. NOTE (transparency, self-caught error): a WITH-CTE test harness bug (an unreferenced `select set_config(...)` CTE got planner-pruned and never executed) made one is_owner-bypass test appear to succeed against AdminDFL's real row; caught within ~1 minute, reverted immediately, re-verified correctly with a DO $$ block confirming the real trigger blocks it — root cause was the test methodology, not the app. Documented honestly rather than hidden.
-
-5) Deploy incident (real, separate from all of the above): the GitHub->Vercel webhook for event-rsvp-waitlist silently stopped firing — two full pushes (17c09f5, f022acd) sat completely unbuilt for 50+ minutes, confirmed via `vercel ls` showing the most recent deployment was still 2h old (not just a slow build, zero new deployments triggered at all). Resolved by an interactive `vercel login` device-flow (Jorge authorized twice, first code expired unused) followed by a direct `vercel --prod` deploy, bypassing the broken webhook entirely. NOT root-caused — if pushes to main stop auto-deploying again, this same workaround applies, but the underlying webhook problem is still open and undiagnosed.
-
-6) Event lifecycle gap diagnostic (Jorge-initiated, explicitly asked NOT to fix yet): a regular user can create up to 3 events (events_insert_own RLS, real server-side cap, verified) but the UI has zero edit path (EventForm only renders under /events/new, no edit mode anywhere) and zero delete/cancel-event path (the only "Cancel" button anywhere in the app is "Cancel RSVP", a guest cancelling their own attendance -- /events/[id]/page.tsx never once checks user.id === event.creator_id). The DB-layer delete capability already exists and works (events_delete_own RLS) -- verified live via a real signup->create->direct-REST-DELETE round trip -- it's just never exposed in the UI. Practical consequence Jorge named precisely: a creator's only in-product fix for a mistake is creating ANOTHER event, which still burns one of the 3 slots -- "3 events" can degrade into "3 mistakes and you're locked out." Duplicates (same title, close time) explicitly should NOT be blocked -- legitimate multi-session use case; the real gap is the forced workaround, not the duplicate. Classified by Jorge as product-evolution backlog, non-blocking, NOT a defect Factory hid, and explicitly NOT authorization to build it later without a fresh go-ahead. Methodological lesson captured as a standing feedback memory (feedback-aqa-full-crud-lifecycle): future AQA must exercise CREATE->READ->UPDATE->CANCEL/DELETE for any user-created object, not just CREATE -- a CREATE-only pass gave a clean READY over an object that was otherwise create-only/frozen.
-
-FINAL STATE: production event-rsvp-waitlist.vercel.app serving commit f022acd (deployed via `vercel --prod`, dpl_Dv7MUpeRRFij4vf4JpGFCX6hQX8R), migration 018 applied directly to the DB. Jorge sent José the official re-review message this same session, after the READY_FOR_JOSE verdict. All synthetic test accounts/events from every phase of this session cleaned, 0 residue confirmed by SQL each time. IRONMAN.md has the full detailed rows (3 separate entries: AQA close, Back/Forward+admin-grant+webhook-incident close, lifecycle-gap diagnostic) plus a "HANDOFF SENT" note on the closing row.
-
-WHY IT MATTERS: this is the authoritative narrative for anyone picking up Event RSVP work after this point -- what's actually fixed vs. diagnosed-only vs. deliberately deferred, and why.
-
-NEXT AGENT SHOULD: read IRONMAN.md rows for event-rsvp-waitlist before touching that repo again. If José's re-review surfaces something new, treat it as a fresh finding against this baseline, not against the earlier 2026-08-13 remediation. Do not build event edit/delete/cancel UI without an explicit fresh go-ahead from Jorge, even though this observation documents the gap in detail. If a push to event-rsvp-waitlist/main doesn't deploy within a few minutes, check `vercel ls` for the actual deployment list before assuming it's just slow -- the webhook has failed silently once already.
+- `evidence/sfv5-forensic-inspection-2026-07-30/` — informe original + addendum + 2 rondas de remediación (r1, r2) + resolución documental.
+- `evidence/sfv5-forensic-inspection-2026-07-30-cx{1,r1,r2}/`, `evidence/concierge-f1b-finalization-2026-07-30-r2{,-cx1,-remediation-h1}/` — revisiones independientes de CX y remediación de HLC F1B.
+- `evidence/dfl-workforce-architecture-reconciliation-2026-07-30/` — reconciliación arquitectónica completa (CC-2).
+- `evidence/dfl-first-workforce-increment-review-2026-07-30/` — validación CX-N1 del primer incremento.
+- `evidence/workforce-registry-unit-v0.1-prp-2026-07-30/` — PRP original (CC-3).
+- `evidence/workforce-registry-capability-lab-2026-07-30/` — laboratorio experimental de gobierno de mutaciones (CX-LAB-1).
+- `evidence/workforce-registry-unit-v0.1-prp-r1-2026-07-30/` — PRP reconciliado con el laboratorio, incluye `wru-draft.md` listo para SFV5.
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -278,17 +251,23 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### P11 transition checkpoint — Realtor preserved, MERCADER gated, JPI resumed
+### Stack FutbolWeb — runtime activo
+**Type:** fact  
+**Project:** futbolweb-app  
+
+FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
+
+### P11 JPI — Auth Admin y concurrencia real PASS 2026-08-30
+**Type:** fact  
+**Project:** dfl  
+
+WHAT: Se cerró el único punto técnico abierto de JPI V1: AUTH ADMIN / CONCURRENCIA. EVIDENCE: runtime local real en http://localhost:3000/jpi-admin; dos sesiones ADMIN legítimas simultáneas (agent-browser aislado jpi-a/jpi-b) iniciaron sesión con credenciales provisionadas en el entorno efectivo del proceso Next, sin exponer valores; ambas cargaron /jpi-admin con header ADMIN y controles habilitados. A refrescar B siguió autenticada; cerrar sesión en A llevó solo A a /jpi-admin/login mientras B permaneció autenticada; A volvió a entrar correctamente. Error de credencial inválida permaneció en login, sin query string. URL posterior al login y refresh: /jpi-admin con location.search vacío; document.cookie no expuso la cookie HttpOnly. Mobile 390x844: scrollWidth 375, sin overflow horizontal, ruta y header correctos. No se observaron errores de navegador. VERIFICATION: npm run test:jpi = 13/13 PASS + jpi entry-model PASS; npm run typecheck PASS; git diff --check PASS. CAUSE/FIX: no se reprodujo fallo en la implementación actual; no hubo cambios de código en esta sesión. SEC: valores de username/password/session secret no se imprimieron ni persistieron; la credencial se usó solo en memoria/proceso. SCOPE: únicamente /opt/jpi; no Realtor, Meta, MERCADER, Supabase, Vercel, deploy ni UX/PODA. NEXT: UX/PODA sigue pendiente de revisión humana; no declarar READY PARA RUBÉN sin el gate correspondiente.
+
+### JPI v1 provisional phase closure 2026-08-29
 **Type:** decision  
 **Project:** dfl  
 
-2026-08-29. Realtor preserved with no further product changes: OWNER UI PASS corrected/verified; META CONFIRMED no observable regression; ADMIN AUTH remains PARTIAL because positive auth and simultaneous sessions lack real production credentials. Handoff updated at /opt/saas-factory-setup/whatsapp-realtor-mvp/HANDOFF-REALTOR-E2E-2026-08-29.md. MERCADER state-first inspection: /opt/saas-factory-setup/mercader-bos has historical code/SQLite but no daemons listening; no safe action now without human perimeter/credential confirmation. Classified HUMAN_GATE (credentials/perimeter), EXTERNAL_GATE (providers), no inequívocal technical defect reproduced. JPI resumed from handoff: test:jpi 7/7 + entry guard, typecheck and build PASS; authz replay customer cases 1-6 PASS. Fixed harness to fill admin username for current real login; admin branch remains blocked by absent local JPI auth variables, not by product conclusion. Remaining JPI UI surfaces (calendar/bookings, Event Packages, full quote UI, audit viewer, schedules, deposits, rules, photos) are product/human decisions, not invented. Transition doc: /opt/jpi/docs/P11-TRANSICION-MERCADER-JPI-2026-08-29.md. IRONMAN updated.
-
-### Realtor current-state audit — Owner/Admin UI regressions fixed; positive auth pending
-**Type:** bugfix  
-**Project:** dfl  
-
-2026-08-29. Audited current production after prior Realtor work. Reproduced real regressions: Owner assets /owner.js and /owner.css returned 404/MIME JSON; Admin current inline style/script were blocked by stale CSP hashes. Fixed only src/server.js: serve those two static assets with correct MIME and add hashes for current Admin inline blocks. Deployed READY dpl_4SgQ4W1U6CntLs1XB2ADP41scFjq and aliased production. Playwright desktop 1440/mobile 390 Owner+Admin: render/JS/invalid-login feedback pass, no CSP errors or failed assets, no overflow. Invalid auth endpoints return 401. npm test, webhook test, build PASS. Meta double-check: Vercel Production lists four META vars by presence; root/public-state 200, invalid handshake 403, invalid signature 401; no Meta config changed. Positive Owner/Admin auth and simultaneous-user test remain UNPROVEN because production credentials are hidden and no two authenticated sessions are available; do not infer PASS. Report: /opt/saas-factory-setup/whatsapp-realtor-mvp/.qa-reports/2026-08-29-realtor-state/report.md. MERCADER and productive number untouched.
+Institutional closure checkpoint: JPI V1 PRODUCT COMPLETE in approved implemented scope; manuals/onboarding CLOSED this phase; AQA CLOSED this phase; pricing/repricing policy verified. Only original open point is Admin positive authentication and legitimate concurrent sessions, because real credentials are unavailable; do not infer PASS/FAIL. UX/PODA remains pending human review; do not declare READY PARA RUBEN. Commercial policy: vigente quote preserves snapshot/price; expired quote uses current prices through a new linked revision; exceptions/discounts require explicit Admin decision and audit; no automatic negotiation. Exact resume: securely provision credentials -> positive Admin login -> two simultaneous legitimate sessions -> evidence PASS/FAIL; do not repeat 017/018, repricing, or functional AQA without demonstrated regression. Files: /opt/jpi/docs/P11-JPI-V1-PHASE-CLOSURE-2026-08-29.md, /opt/jpi/.claude/memory/project/jpi-v1-phase-closure-2026-08-29.md, updated handoff and factory IRONMAN.md.
 
 ---
 
@@ -388,15 +367,15 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.8541  
+**Graph entropy:** 0.7038  
 
-- **Community 11** (88 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Complejidad en la evaluación de costos
-- **Community 0** (7 nodes): Verificación de API
-- **Community 1** (7 nodes): Jurisdicción, Mercader, Observación de Ed
-- **Community 2** (6 nodes): Universal Platform vs. ESC, Mercader Boundary
-- **Community 3** (5 nodes): Merchant of Record, Métricas comerciales, Integraciones Externas
-- **Community 4** (4 nodes): MCP Server Behavior, RLS Trap, Semántica de Inventario
+- **Community 11** (98 nodes): PRP Estructura y Dependencias, Capacidades de Onboarding de DFL, Dependencias de Fabricación
+- **Community 0** (7 nodes): Jurisdicción, Mercader, Observación de Ed
+- **Community 1** (5 nodes): Merchant of Record, Métricas comerciales, Integraciones Externas
+- **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
+- **Community 3** (4 nodes): Abstracción de oferta, Modelo de disponibilidad
+- **Community 4** (4 nodes): Verificación de API, Estrategia PRP
 
 ---
 
-*Mirror auto-generated 2026-08-29T21:54:07Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-30T03:03:28Z | La Garra → DFLghub/amos-context*
