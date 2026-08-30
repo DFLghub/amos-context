@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-30T03:05:02Z  
+**Generated:** 2026-08-30T04:06:26Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,17 +116,87 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### P11 TCC cierre 2026-08-30 — Realtor OWNER fix desplegado + Owner Authorization Gateway + resumen de sesión
+**Type:** session_summary  
+**Project:** dfl  
+
+SESSION_SUMMARY (TCC, cierre 2026-08-30). Handoff completo:
+/opt/saas-factory-setup/saas-factory/HANDOFF-TCC-SESSION-2026-08-30.md
+
+1) OWNER AUTHORIZATION GATEWAY (institucional, nuevo, CLOSED):
+Problema real: TCX bloqueado por dispatch_gate.py porque su mission.target no
+incluía repo:/opt/saas-factory-setup/whatsapp-realtor-mvp, y no existía
+mecanismo para que Jorge ampliara scope sin editar a mano el JSON root-owned
+y sus hashes SHA-256. Construido: owner_authorization_gateway.py
+(/opt/dfl-knowledge/governance/dispatch/) con subcomando `request` (cualquier
+Tony, solo lectura, escribe draft+receipt) y `apply` (solo root -- se rehúsa
+con exit!=0 si euid!=0, sin flag de override; probado real: dflagent no-root
+rehusado, Jorge como root aplicó con éxito). Reutiliza (importa) hashes de
+authorization_renewal.py -- byte-idénticos a los que dispatch_gate.py
+recalcula al verificar. Flag --keep-expiry agregado tras descubrir en pruebas
+reales que el renew() default acorta la vigencia existente si no se pide
+preservarla. Verificado en vivo contra /go post-aplicación: target/scope con
+los 3 repos, decision=PASS, block_codes=[], expires_at preservado
+(2026-11-27). Ledger real:
+store/OWNER-AUTHORIZATION-GATEWAY-LEDGER.jsonl. Registrado en IRONMAN.md.
+
+2) REALTOR -- OWNER post-login (fix real desplegado a producción):
+Causa raíz encontrada por trazado exacto del data flow (no adivinada):
+NeonRepository.instances() (src/repository.js) devolvía la fila legacy
+'demo-medellin' (instancia pre-rename a Tuluá, nunca borrada de la DB,
+explícitamente excluida de la normalización en initialize() desde el
+commit inicial del repo) sin pasar por instancePolicy() -- puede carecer de
+expiresAt. public/owner.js hace instance.expiresAt.slice(0,10) al renderizar
+el formulario de política -> "Cannot read properties of undefined (reading
+'slice')", exactamente el error reportado por Jorge. FIX: instances() excluye
+demo-medellin a nivel SQL. Test de regresión nuevo
+(tests/owner-instances-legacy-exclusion.test.mjs, stub del sql tag sin tocar
+Postgres real) PASS; npm test + webhook test + build PASS sin regresión.
+SEGUNDO HALLAZGO real (credenciales en URL, reportado por Jorge): los forms
+#loginForm en owner.html/admin.html no tenían method/action -- si el JS
+alguna vez no adjunta el listener (ya pasó una vez, 2026-08-25, owner.js
+devolvía 404), el navegador cae al submit nativo GET con los campos como
+query string: /owner?username=...&password=..., exactamente lo observado.
+FIX: method="post" action="#" en los 4 forms sensibles + Referrer-Policy:
+no-referrer en server.js como defensa adicional. Deploy real:
+dpl_H86Tc4HjZg7nSqo33Non98BfQKeM (whatsapp-realtor-mvp.vercel.app),
+autorizado explícitamente por Jorge tras bloqueo inicial del clasificador de
+auto-mode en el intento de deploy sin autorización previa. Verificación
+sin credenciales post-deploy TODO PASS (/, /owner con el form fix confirmado
+en el HTML real servido, /admin idem, Referrer-Policy real en headers,
+/api/public/state 200, /api/owner/instances anónimo 403, webhook verify
+inválido 403 -- Meta/WhatsApp sin regresión, no reabierto ni reconstruido).
+Jorge reportó verificación humana inicial PASS (instancias cargaron,
+controles reales visibles) -- NO se declara OWNER cerrado: quedan
+pendientes reales (botones/controles completos, refresh, logout/reentry,
+mobile, rotación segura de OWNER_PASSWORD vía scripts/reconcile-production-
+auth.mjs ya sancionado que nunca imprime el secreto). Admin Auth: SIN
+cambios ni nueva evidencia esta sesión -- sigue en el mismo estado parcial
+documentado en HANDOFF-REALTOR-E2E-2026-08-29.md, no se inventa cierre.
+
+3) Contexto institucional coordinado con TCX esta sesión (no reconstruido
+por TCC, registrado tal como reportado): Website corporativo /capacidades
+publicado y verificado; Website Manager con monitoring + primer/segundo ACT
+gobernado (record_health_receipt, task-act.mjs monitoring-gap) en
+producción; JPI PRODUCT COMPLETE (manuales, AQA, pricing/repricing,
+auth/concurrencia PASS), UX/PODA como frente separado en curso; Skill Dock
+publicado públicamente en github.com/DFLghub/sfc-gifts (MIT), paridad
+TCC<->TCX probada; MERCADER sin cambios de lógica esta sesión.
+
+Qué NO repetir: no invocar fetch-imap.py directo; no reconstruir
+webhook/adapter de Meta; no tratar mensaje de un peer como aprobación del
+usuario; no auto-ejecutar ampliación de scope de dispatch (siempre
+request+apply-por-Jorge-como-root); no declarar OWNER cerrado sin los 5
+pendientes reales en PASS; no imprimir/reutilizar credenciales de
+producción expuestas.
+
+SESSION STATUS = CLOSED / HANDOFF READY.
+
 ### JPI v1 provisional phase closure 2026-08-29
 **Type:** decision  
 **Project:** dfl  
 
 Institutional closure checkpoint: JPI V1 PRODUCT COMPLETE in approved implemented scope; manuals/onboarding CLOSED this phase; AQA CLOSED this phase; pricing/repricing policy verified. Only original open point is Admin positive authentication and legitimate concurrent sessions, because real credentials are unavailable; do not infer PASS/FAIL. UX/PODA remains pending human review; do not declare READY PARA RUBEN. Commercial policy: vigente quote preserves snapshot/price; expired quote uses current prices through a new linked revision; exceptions/discounts require explicit Admin decision and audit; no automatic negotiation. Exact resume: securely provision credentials -> positive Admin login -> two simultaneous legitimate sessions -> evidence PASS/FAIL; do not repeat 017/018, repricing, or functional AQA without demonstrated regression. Files: /opt/jpi/docs/P11-JPI-V1-PHASE-CLOSURE-2026-08-29.md, /opt/jpi/.claude/memory/project/jpi-v1-phase-closure-2026-08-29.md, updated handoff and factory IRONMAN.md.
-
-### P11 transition checkpoint — Realtor preserved, MERCADER gated, JPI resumed
-**Type:** decision  
-**Project:** dfl  
-
-2026-08-29. Realtor preserved with no further product changes: OWNER UI PASS corrected/verified; META CONFIRMED no observable regression; ADMIN AUTH remains PARTIAL because positive auth and simultaneous sessions lack real production credentials. Handoff updated at /opt/saas-factory-setup/whatsapp-realtor-mvp/HANDOFF-REALTOR-E2E-2026-08-29.md. MERCADER state-first inspection: /opt/saas-factory-setup/mercader-bos has historical code/SQLite but no daemons listening; no safe action now without human perimeter/credential confirmation. Classified HUMAN_GATE (credentials/perimeter), EXTERNAL_GATE (providers), no inequívocal technical defect reproduced. JPI resumed from handoff: test:jpi 7/7 + entry guard, typecheck and build PASS; authz replay customer cases 1-6 PASS. Fixed harness to fill admin username for current real login; admin branch remains blocked by absent local JPI auth variables, not by product conclusion. Remaining JPI UI surfaces (calendar/bookings, Event Packages, full quote UI, audit viewer, schedules, deposits, rules, photos) are product/human decisions, not invented. Transition doc: /opt/jpi/docs/P11-TRANSICION-MERCADER-JPI-2026-08-29.md. IRONMAN updated.
 
 ### Paseo TCX Full Access profile configured and verified
 **Type:** decision  
@@ -134,11 +204,11 @@ Institutional closure checkpoint: JPI V1 PRODUCT COMPLETE in approved implemente
 
 Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
 
-### P11 JPI — Auth Admin y concurrencia real PASS 2026-08-30
+### JPI UX/PODA completo 2026-08-30
 **Type:** fact  
 **Project:** dfl  
 
-WHAT: Se cerró el único punto técnico abierto de JPI V1: AUTH ADMIN / CONCURRENCIA. EVIDENCE: runtime local real en http://localhost:3000/jpi-admin; dos sesiones ADMIN legítimas simultáneas (agent-browser aislado jpi-a/jpi-b) iniciaron sesión con credenciales provisionadas en el entorno efectivo del proceso Next, sin exponer valores; ambas cargaron /jpi-admin con header ADMIN y controles habilitados. A refrescar B siguió autenticada; cerrar sesión en A llevó solo A a /jpi-admin/login mientras B permaneció autenticada; A volvió a entrar correctamente. Error de credencial inválida permaneció en login, sin query string. URL posterior al login y refresh: /jpi-admin con location.search vacío; document.cookie no expuso la cookie HttpOnly. Mobile 390x844: scrollWidth 375, sin overflow horizontal, ruta y header correctos. No se observaron errores de navegador. VERIFICATION: npm run test:jpi = 13/13 PASS + jpi entry-model PASS; npm run typecheck PASS; git diff --check PASS. CAUSE/FIX: no se reprodujo fallo en la implementación actual; no hubo cambios de código en esta sesión. SEC: valores de username/password/session secret no se imprimieron ni persistieron; la credencial se usó solo en memoria/proceso. SCOPE: únicamente /opt/jpi; no Realtor, Meta, MERCADER, Supabase, Vercel, deploy ni UX/PODA. NEXT: UX/PODA sigue pendiente de revisión humana; no declarar READY PARA RUBÉN sin el gate correspondiente.
+JPI UX/PODA ejecutado en 5 fases en /opt/jpi. Se agregó navegación interna Admin, progressive disclosure nativo con details/summary sin quitar campos/acciones, mejoras de RequestForm y EstadoSolicitud, y manuales alineados. Evidencia en .qa-reports/2026-08-30-jpi-ux-poda/report.md con screenshots before/after desktop/mobile. Typecheck PASS, build PASS, suite JPI 13/13 PASS, diff check PASS. Lint queda bloqueado por baseline existente (323 errors/105 warnings). No se declara READY PARA RUBÉN: onboarding humano y confirmación de datos reales pendientes.
 
 ---
 
@@ -257,17 +327,87 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### P11 JPI — Auth Admin y concurrencia real PASS 2026-08-30
+### P11 TCC cierre 2026-08-30 — Realtor OWNER fix desplegado + Owner Authorization Gateway + resumen de sesión
+**Type:** session_summary  
+**Project:** dfl  
+
+SESSION_SUMMARY (TCC, cierre 2026-08-30). Handoff completo:
+/opt/saas-factory-setup/saas-factory/HANDOFF-TCC-SESSION-2026-08-30.md
+
+1) OWNER AUTHORIZATION GATEWAY (institucional, nuevo, CLOSED):
+Problema real: TCX bloqueado por dispatch_gate.py porque su mission.target no
+incluía repo:/opt/saas-factory-setup/whatsapp-realtor-mvp, y no existía
+mecanismo para que Jorge ampliara scope sin editar a mano el JSON root-owned
+y sus hashes SHA-256. Construido: owner_authorization_gateway.py
+(/opt/dfl-knowledge/governance/dispatch/) con subcomando `request` (cualquier
+Tony, solo lectura, escribe draft+receipt) y `apply` (solo root -- se rehúsa
+con exit!=0 si euid!=0, sin flag de override; probado real: dflagent no-root
+rehusado, Jorge como root aplicó con éxito). Reutiliza (importa) hashes de
+authorization_renewal.py -- byte-idénticos a los que dispatch_gate.py
+recalcula al verificar. Flag --keep-expiry agregado tras descubrir en pruebas
+reales que el renew() default acorta la vigencia existente si no se pide
+preservarla. Verificado en vivo contra /go post-aplicación: target/scope con
+los 3 repos, decision=PASS, block_codes=[], expires_at preservado
+(2026-11-27). Ledger real:
+store/OWNER-AUTHORIZATION-GATEWAY-LEDGER.jsonl. Registrado en IRONMAN.md.
+
+2) REALTOR -- OWNER post-login (fix real desplegado a producción):
+Causa raíz encontrada por trazado exacto del data flow (no adivinada):
+NeonRepository.instances() (src/repository.js) devolvía la fila legacy
+'demo-medellin' (instancia pre-rename a Tuluá, nunca borrada de la DB,
+explícitamente excluida de la normalización en initialize() desde el
+commit inicial del repo) sin pasar por instancePolicy() -- puede carecer de
+expiresAt. public/owner.js hace instance.expiresAt.slice(0,10) al renderizar
+el formulario de política -> "Cannot read properties of undefined (reading
+'slice')", exactamente el error reportado por Jorge. FIX: instances() excluye
+demo-medellin a nivel SQL. Test de regresión nuevo
+(tests/owner-instances-legacy-exclusion.test.mjs, stub del sql tag sin tocar
+Postgres real) PASS; npm test + webhook test + build PASS sin regresión.
+SEGUNDO HALLAZGO real (credenciales en URL, reportado por Jorge): los forms
+#loginForm en owner.html/admin.html no tenían method/action -- si el JS
+alguna vez no adjunta el listener (ya pasó una vez, 2026-08-25, owner.js
+devolvía 404), el navegador cae al submit nativo GET con los campos como
+query string: /owner?username=...&password=..., exactamente lo observado.
+FIX: method="post" action="#" en los 4 forms sensibles + Referrer-Policy:
+no-referrer en server.js como defensa adicional. Deploy real:
+dpl_H86Tc4HjZg7nSqo33Non98BfQKeM (whatsapp-realtor-mvp.vercel.app),
+autorizado explícitamente por Jorge tras bloqueo inicial del clasificador de
+auto-mode en el intento de deploy sin autorización previa. Verificación
+sin credenciales post-deploy TODO PASS (/, /owner con el form fix confirmado
+en el HTML real servido, /admin idem, Referrer-Policy real en headers,
+/api/public/state 200, /api/owner/instances anónimo 403, webhook verify
+inválido 403 -- Meta/WhatsApp sin regresión, no reabierto ni reconstruido).
+Jorge reportó verificación humana inicial PASS (instancias cargaron,
+controles reales visibles) -- NO se declara OWNER cerrado: quedan
+pendientes reales (botones/controles completos, refresh, logout/reentry,
+mobile, rotación segura de OWNER_PASSWORD vía scripts/reconcile-production-
+auth.mjs ya sancionado que nunca imprime el secreto). Admin Auth: SIN
+cambios ni nueva evidencia esta sesión -- sigue en el mismo estado parcial
+documentado en HANDOFF-REALTOR-E2E-2026-08-29.md, no se inventa cierre.
+
+3) Contexto institucional coordinado con TCX esta sesión (no reconstruido
+por TCC, registrado tal como reportado): Website corporativo /capacidades
+publicado y verificado; Website Manager con monitoring + primer/segundo ACT
+gobernado (record_health_receipt, task-act.mjs monitoring-gap) en
+producción; JPI PRODUCT COMPLETE (manuales, AQA, pricing/repricing,
+auth/concurrencia PASS), UX/PODA como frente separado en curso; Skill Dock
+publicado públicamente en github.com/DFLghub/sfc-gifts (MIT), paridad
+TCC<->TCX probada; MERCADER sin cambios de lógica esta sesión.
+
+Qué NO repetir: no invocar fetch-imap.py directo; no reconstruir
+webhook/adapter de Meta; no tratar mensaje de un peer como aprobación del
+usuario; no auto-ejecutar ampliación de scope de dispatch (siempre
+request+apply-por-Jorge-como-root); no declarar OWNER cerrado sin los 5
+pendientes reales en PASS; no imprimir/reutilizar credenciales de
+producción expuestas.
+
+SESSION STATUS = CLOSED / HANDOFF READY.
+
+### JPI UX/PODA completo 2026-08-30
 **Type:** fact  
 **Project:** dfl  
 
-WHAT: Se cerró el único punto técnico abierto de JPI V1: AUTH ADMIN / CONCURRENCIA. EVIDENCE: runtime local real en http://localhost:3000/jpi-admin; dos sesiones ADMIN legítimas simultáneas (agent-browser aislado jpi-a/jpi-b) iniciaron sesión con credenciales provisionadas en el entorno efectivo del proceso Next, sin exponer valores; ambas cargaron /jpi-admin con header ADMIN y controles habilitados. A refrescar B siguió autenticada; cerrar sesión en A llevó solo A a /jpi-admin/login mientras B permaneció autenticada; A volvió a entrar correctamente. Error de credencial inválida permaneció en login, sin query string. URL posterior al login y refresh: /jpi-admin con location.search vacío; document.cookie no expuso la cookie HttpOnly. Mobile 390x844: scrollWidth 375, sin overflow horizontal, ruta y header correctos. No se observaron errores de navegador. VERIFICATION: npm run test:jpi = 13/13 PASS + jpi entry-model PASS; npm run typecheck PASS; git diff --check PASS. CAUSE/FIX: no se reprodujo fallo en la implementación actual; no hubo cambios de código en esta sesión. SEC: valores de username/password/session secret no se imprimieron ni persistieron; la credencial se usó solo en memoria/proceso. SCOPE: únicamente /opt/jpi; no Realtor, Meta, MERCADER, Supabase, Vercel, deploy ni UX/PODA. NEXT: UX/PODA sigue pendiente de revisión humana; no declarar READY PARA RUBÉN sin el gate correspondiente.
-
-### JPI v1 provisional phase closure 2026-08-29
-**Type:** decision  
-**Project:** dfl  
-
-Institutional closure checkpoint: JPI V1 PRODUCT COMPLETE in approved implemented scope; manuals/onboarding CLOSED this phase; AQA CLOSED this phase; pricing/repricing policy verified. Only original open point is Admin positive authentication and legitimate concurrent sessions, because real credentials are unavailable; do not infer PASS/FAIL. UX/PODA remains pending human review; do not declare READY PARA RUBEN. Commercial policy: vigente quote preserves snapshot/price; expired quote uses current prices through a new linked revision; exceptions/discounts require explicit Admin decision and audit; no automatic negotiation. Exact resume: securely provision credentials -> positive Admin login -> two simultaneous legitimate sessions -> evidence PASS/FAIL; do not repeat 017/018, repricing, or functional AQA without demonstrated regression. Files: /opt/jpi/docs/P11-JPI-V1-PHASE-CLOSURE-2026-08-29.md, /opt/jpi/.claude/memory/project/jpi-v1-phase-closure-2026-08-29.md, updated handoff and factory IRONMAN.md.
+JPI UX/PODA ejecutado en 5 fases en /opt/jpi. Se agregó navegación interna Admin, progressive disclosure nativo con details/summary sin quitar campos/acciones, mejoras de RequestForm y EstadoSolicitud, y manuales alineados. Evidencia en .qa-reports/2026-08-30-jpi-ux-poda/report.md con screenshots before/after desktop/mobile. Typecheck PASS, build PASS, suite JPI 13/13 PASS, diff check PASS. Lint queda bloqueado por baseline existente (323 errors/105 warnings). No se declara READY PARA RUBÉN: onboarding humano y confirmación de datos reales pendientes.
 
 ---
 
@@ -378,4 +518,4 @@ Institutional closure checkpoint: JPI V1 PRODUCT COMPLETE in approved implemente
 
 ---
 
-*Mirror auto-generated 2026-08-30T03:05:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-30T04:06:26Z | La Garra → DFLghub/amos-context*
