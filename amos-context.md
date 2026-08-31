@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-31T02:04:48Z  
+**Generated:** 2026-08-31T02:30:05Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -204,11 +204,21 @@ SESSION STATUS = CLOSED / HANDOFF READY.
 
 Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
 
-### TCX cierre 2026-08-31 — sesión Paseo remota JPI
-**Type:** fact  
+### WebMan/MERCADER ownership boundary corrected before going live: full ownership transfer includes the conversation (2026-08-31)
+**Type:** feedback  
 **Project:** dfl  
 
-CIERRE @$fin 2026-08-31. Se verificó /go: protocolo @$go v1.1, identidad DFL / amOS, routing TCX PASS y dispatch execute_permitted=true para MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19. El intento de importar el thread Codex 01a05334-65cb-7343-a4b1-66650536aa07 falló correctamente por active writer; no se volvió a importar. Con autorización explícita se creó una nueva sesión Paseo-native mediante paseo run, agente 731da585-495e-4d48-80e4-6daf3a40285c, título TCX remoto — JPI, cwd /opt/saas-factory-setup/saas-factory, provider codex, etiquetas executor=TCX/channel=paseo-remote/project=JPI/purpose=human-reconnect. La sesión quedó idle y visible en paseo ls; no ejecutó trabajo funcional ni hubo cambios de producto. El comando reportó workspace nuevo wks_7b93ab714068319f.
+TCC session, 2026-08-31 (continuation from 2026-08-30). Jorge issued a real course correction, same day, before anything went live: in the prior turn, I had built send-outcome-email.mjs + customer-outcome-messages.mjs -- a 4th governed ACT (real, tested, reusing the already-proven Gmail API transport) intending to have Website Manager automatically email a customer whenever mercader-return-path.mjs observed a real MERCADER-side status change (contacted/converted/rejected). This was the wrong boundary.
+
+CORRECTED PRINCIPLE (Jorge's own words, paraphrased): WebMan receives, classifies, serves, and routes. When a downstream organism (MERCADER) accepts real ownership of a case, it ALSO acquires responsibility for managing the corresponding customer interaction -- qualification, follow-up, proposal/quote, commercial rejection, close, AND telling the customer -- unless there's an explicit named exception. WebMan must not become a conversational proxy for MERCADER. WebMan's own retained duty after a real handoff is narrower: tracking/receipt/SLA only, and it may intervene if the handoff itself failed or the case goes orphaned (MERCADER never acts on it) -- intervening there means escalating the fact to Jorge, not silently speaking for MERCADER.
+
+WHY THIS MATTERS FOR FUTURE SESSIONS: the "who talks to the customer" question in a multi-organism handoff architecture is NOT automatically "whoever built the email capability last" or "whoever originated the contact." It follows real ownership transfer: once ownership of the SUBSTANTIVE interaction moves, the communication channel moves with it too, by default, unless a human explicitly carves out an exception. Don't default to "the capability that's already proven and easiest to reuse" (WebMan's Gmail API send was sitting right there, DELIVERY_PROVEN, tempting to reuse) when the actual authority question is about ownership boundaries, not implementation convenience.
+
+WHAT I DID RIGHT: caught this had NOT been wired into any live flow yet (mercader-return-path.mjs and ingest.mjs never imported the new ACT) -- confirmed via grep before making any further changes, so the correction had zero blast radius. Did not delete the built code (it's real, tested, sound engineering as a governed ACT shape) -- kept it explicitly dormant, matching the established "kept, tested, dormant" precedent from gmail-smtp-transport.mjs earlier in the same project. Documented the corrected principle as a real "Intent -> ownership table" in tools/dfl-website-manager/AUTHORITY_ENVELOPE.md rather than just fixing code silently.
+
+Evidence: IRONMAN.md "corrección de criterio de ownership" row (2026-08-31); tools/dfl-website-manager/AUTHORITY_ENVELOPE.md (Intent -> ownership table + updated MUST_NOT_DO).
+
+Applies broadly: any future DFL handoff-architecture work (WebMan-MERCADER-BOS-Challenge-Manager or any future organism-to-organism pattern) should ask "does ownership of the interaction itself transfer, or just a data/task record" before deciding who owns outbound communication -- do not assume the answer from which capability happens to be built and easy to reuse.
 
 ---
 
@@ -327,33 +337,27 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### WebMan/MERCADER ownership boundary corrected before going live: full ownership transfer includes the conversation (2026-08-31)
+**Type:** feedback  
+**Project:** dfl  
+
+TCC session, 2026-08-31 (continuation from 2026-08-30). Jorge issued a real course correction, same day, before anything went live: in the prior turn, I had built send-outcome-email.mjs + customer-outcome-messages.mjs -- a 4th governed ACT (real, tested, reusing the already-proven Gmail API transport) intending to have Website Manager automatically email a customer whenever mercader-return-path.mjs observed a real MERCADER-side status change (contacted/converted/rejected). This was the wrong boundary.
+
+CORRECTED PRINCIPLE (Jorge's own words, paraphrased): WebMan receives, classifies, serves, and routes. When a downstream organism (MERCADER) accepts real ownership of a case, it ALSO acquires responsibility for managing the corresponding customer interaction -- qualification, follow-up, proposal/quote, commercial rejection, close, AND telling the customer -- unless there's an explicit named exception. WebMan must not become a conversational proxy for MERCADER. WebMan's own retained duty after a real handoff is narrower: tracking/receipt/SLA only, and it may intervene if the handoff itself failed or the case goes orphaned (MERCADER never acts on it) -- intervening there means escalating the fact to Jorge, not silently speaking for MERCADER.
+
+WHY THIS MATTERS FOR FUTURE SESSIONS: the "who talks to the customer" question in a multi-organism handoff architecture is NOT automatically "whoever built the email capability last" or "whoever originated the contact." It follows real ownership transfer: once ownership of the SUBSTANTIVE interaction moves, the communication channel moves with it too, by default, unless a human explicitly carves out an exception. Don't default to "the capability that's already proven and easiest to reuse" (WebMan's Gmail API send was sitting right there, DELIVERY_PROVEN, tempting to reuse) when the actual authority question is about ownership boundaries, not implementation convenience.
+
+WHAT I DID RIGHT: caught this had NOT been wired into any live flow yet (mercader-return-path.mjs and ingest.mjs never imported the new ACT) -- confirmed via grep before making any further changes, so the correction had zero blast radius. Did not delete the built code (it's real, tested, sound engineering as a governed ACT shape) -- kept it explicitly dormant, matching the established "kept, tested, dormant" precedent from gmail-smtp-transport.mjs earlier in the same project. Documented the corrected principle as a real "Intent -> ownership table" in tools/dfl-website-manager/AUTHORITY_ENVELOPE.md rather than just fixing code silently.
+
+Evidence: IRONMAN.md "corrección de criterio de ownership" row (2026-08-31); tools/dfl-website-manager/AUTHORITY_ENVELOPE.md (Intent -> ownership table + updated MUST_NOT_DO).
+
+Applies broadly: any future DFL handoff-architecture work (WebMan-MERCADER-BOS-Challenge-Manager or any future organism-to-organism pattern) should ask "does ownership of the interaction itself transfer, or just a data/task record" before deciding who owns outbound communication -- do not assume the answer from which capability happens to be built and easy to reuse.
+
 ### TCX cierre 2026-08-31 — sesión Paseo remota JPI
 **Type:** fact  
 **Project:** dfl  
 
 CIERRE @$fin 2026-08-31. Se verificó /go: protocolo @$go v1.1, identidad DFL / amOS, routing TCX PASS y dispatch execute_permitted=true para MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19. El intento de importar el thread Codex 01a05334-65cb-7343-a4b1-66650536aa07 falló correctamente por active writer; no se volvió a importar. Con autorización explícita se creó una nueva sesión Paseo-native mediante paseo run, agente 731da585-495e-4d48-80e4-6daf3a40285c, título TCX remoto — JPI, cwd /opt/saas-factory-setup/saas-factory, provider codex, etiquetas executor=TCX/channel=paseo-remote/project=JPI/purpose=human-reconnect. La sesión quedó idle y visible en paseo ls; no ejecutó trabajo funcional ni hubo cambios de producto. El comando reportó workspace nuevo wks_7b93ab714068319f.
-
-### MERCADER inbound lead loop: real scoring connected, return-path proven, real gate found (2026-08-30)
-**Type:** architecture  
-**Project:** dfl  
-
-TCC session, 2026-08-30, fourth follow-up in the P11 Website Manager <-> MERCADER thread. Mission: turn an inbound lead sitting at status='new' in MERCADER into a genuinely worked opportunity, discovering before building.
-
-DISCOVERY (real code audit): MERCADER already has real, callable scoring (scoreLeadWithConstraints) and auto-rejection (applyAutoReject, Phase 3/4, agent-server/dist/{constraint-enrichment,phase-4-automation}.js). MERCADER's real ownership model is HUMAN-OPERATED via Telegram bot commands (/mercader briefing lists status='new' leads; /mercader convert <id> $amt and /mercader reject <id> <reason> call MERCADER's own real markLeadConverted/markLeadRejected functions in bot-mercader.ts). No autonomous inbound consumer exists anywhere in their code -- the bot process (agent-server) simply isn't running on this VM (confirmed via ps aux: none; scheduled_tasks table: empty; no cron/systemd/pm2 entry).
-
-BUILT (connection, not reimplementation): mercader-lead-scoring.mjs -- calls MERCADER's real scoring/auto-reject via a subprocess spawned with cwd set to MERCADER's own agent-server directory, so their own node_modules/native bindings (better-sqlite3) resolve correctly; zero lines of their scoring logic reimplemented, zero files added to their repo. Now wired to fire automatically right after every real handoff (ingest.mjs). Real finding: the live mercader_constraints table has exactly ONE constraint (base conversion rate, confidence=medium, sample_size=8) and ZERO disqualification-type constraints -- meaning applyAutoReject runs for real on every lead but structurally cannot reject anything today regardless of quality, until MERCADER's own learning loop accumulates real disqualification patterns. This is a fact about their current data, not a bug in this session's work.
-
-mercader-return-path.mjs -- pull-based, read-only sweep (same cron-single-shot pattern as sweep.mjs) that checks every WebMan case with status=HANDED_OFF against MERCADER's real current lead status and records what it actually observes (new mercader_status_observed/_at columns on website_events) -- never re-opens WebMan's own terminal HANDED_OFF tracking, per the established "don't duplicate MERCADER's pipeline" boundary.
-
-REAL FULL E2E PROOF: created one synthetic lead through the real handoff -> real scoring ran (score=100, confidence=medium, not auto-rejected -- correctly, no disqualifiers exist) -> invoked MERCADER's own real markLeadRejected() function directly (simulating the one missing link -- an actual human's /mercader reject decision -- using MERCADER's own real function on synthetic data only, never fabricated via raw SQL) -> the very next return-path sweep run correctly observed and recorded previous:'new' -> current:'rejected', with WebMan's own status correctly staying HANDED_OFF throughout (never reopened). Test lead deleted from MERCADER's real DB afterward.
-
-SECOND REAL GAP FOUND, explicitly NOT built without authorization: read MERCADER's actual handleMercaderReject (and by symmetry handleMercaderConvert) handler code -- it only sends a reply to the Jorge/Telegram operator side. Nobody automatically notifies the actual customer of ANY outcome (accepted/rejected/quote/etc), even once a human works a lead through the bot. WebMan already has a real, DELIVERY_PROVEN outbound-email capability (send-outbound-email.mjs, Gmail API, proven earlier this same session) and owns the original customer contact -- architecturally the natural place to close this final loop (watch mercader_status_observed change -> send the customer a real response) -- but this is genuinely new, real, external, customer-visible functionality and was correctly NOT built without Jorge's explicit authorization first. This is the real stopping gate per the mission's own "si una decisión requiere humano, detener exactamente allí" instruction.
-
-109/109 tests pass across the whole tool.
-
-Evidence: IRONMAN.md "P11 MERCADER inbound" row (2026-08-30); tools/dfl-website-manager/{mercader-lead-scoring.mjs,mercader-return-path.mjs} + tests; real mercader_constraints read; real E2E (lead-1788117931182-4376b5, deleted after verification); real Telegram message 312.
-
-NEXT: two explicit human decisions pending, neither assumed or built: (1) whether/when to deploy MERCADER's own live bot process, (2) whether WebMan should close the customer-response loop using its own already-proven email capability once it observes a MERCADER-side outcome.
 
 ---
 
@@ -464,4 +468,4 @@ NEXT: two explicit human decisions pending, neither assumed or built: (1) whethe
 
 ---
 
-*Mirror auto-generated 2026-08-31T02:04:48Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-31T02:30:05Z | La Garra → DFLghub/amos-context*
