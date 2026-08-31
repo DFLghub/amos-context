@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-08-30T18:06:03Z  
+**Generated:** 2026-08-31T02:04:48Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -204,11 +204,11 @@ SESSION STATUS = CLOSED / HANDOFF READY.
 
 Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
 
-### @$fin closure checkpoint 2026-08-30
+### TCX cierre 2026-08-31 — sesión Paseo remota JPI
 **Type:** fact  
 **Project:** dfl  
 
-Formal @$fin closure checkpoint on 2026-08-30. Live /go observed protocol @$go v1.1, identity DFL / amOS, routing receipt for executor TCX with decision PASS, and dispatch receipt execute_permitted=true scoped to /opt/saas-factory-setup/saas-factory, /opt/jpi, and whatsapp-realtor-mvp. Current thread only verified session-connect limitation: no available tool can attach to arbitrary SESSION_ID; no product changes made in this closure turn. Engram search for JPI v1 closure invalidations returned no matches requiring archival. Closure must run push_mirror.sh and report its MIRROR line.
+CIERRE @$fin 2026-08-31. Se verificó /go: protocolo @$go v1.1, identidad DFL / amOS, routing TCX PASS y dispatch execute_permitted=true para MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19. El intento de importar el thread Codex 01a05334-65cb-7343-a4b1-66650536aa07 falló correctamente por active writer; no se volvió a importar. Con autorización explícita se creó una nueva sesión Paseo-native mediante paseo run, agente 731da585-495e-4d48-80e4-6daf3a40285c, título TCX remoto — JPI, cwd /opt/saas-factory-setup/saas-factory, provider codex, etiquetas executor=TCX/channel=paseo-remote/project=JPI/purpose=human-reconnect. La sesión quedó idle y visible en paseo ls; no ejecutó trabajo funcional ni hubo cambios de producto. El comando reportó workspace nuevo wks_7b93ab714068319f.
 
 ---
 
@@ -327,17 +327,33 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### @$fin closure checkpoint 2026-08-30
+### TCX cierre 2026-08-31 — sesión Paseo remota JPI
 **Type:** fact  
 **Project:** dfl  
 
-Formal @$fin closure checkpoint on 2026-08-30. Live /go observed protocol @$go v1.1, identity DFL / amOS, routing receipt for executor TCX with decision PASS, and dispatch receipt execute_permitted=true scoped to /opt/saas-factory-setup/saas-factory, /opt/jpi, and whatsapp-realtor-mvp. Current thread only verified session-connect limitation: no available tool can attach to arbitrary SESSION_ID; no product changes made in this closure turn. Engram search for JPI v1 closure invalidations returned no matches requiring archival. Closure must run push_mirror.sh and report its MIRROR line.
+CIERRE @$fin 2026-08-31. Se verificó /go: protocolo @$go v1.1, identidad DFL / amOS, routing TCX PASS y dispatch execute_permitted=true para MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19. El intento de importar el thread Codex 01a05334-65cb-7343-a4b1-66650536aa07 falló correctamente por active writer; no se volvió a importar. Con autorización explícita se creó una nueva sesión Paseo-native mediante paseo run, agente 731da585-495e-4d48-80e4-6daf3a40285c, título TCX remoto — JPI, cwd /opt/saas-factory-setup/saas-factory, provider codex, etiquetas executor=TCX/channel=paseo-remote/project=JPI/purpose=human-reconnect. La sesión quedó idle y visible en paseo ls; no ejecutó trabajo funcional ni hubo cambios de producto. El comando reportó workspace nuevo wks_7b93ab714068319f.
 
-### P11 JPI Vercel persistence — AQA-0 formal FAIL, durable backend not authorized
-**Type:** decision  
+### MERCADER inbound lead loop: real scoring connected, return-path proven, real gate found (2026-08-30)
+**Type:** architecture  
 **Project:** dfl  
 
-2026-08-30: El Contract AQA de JPI se actualizó al target real https://jpi-jet.vercel.app/jpi y a una prueba Playwright mecánica create→new invocation recovery→refresh. Contract validate PASS. AQA-0 formal FAIL solo en critical_flow_operable; reachability, content signal, env declaration, synthetic seed declaration y stability 3/3 PASS. Orchestrator formal: GLOBAL_STATE=BUILDING, exit 1. El POST público redirige, pero el GET posterior devuelve 404 porque SQLite en /tmp no es compartida/durable entre funciones Vercel. La arquitectura vigente de JPI declara SQLite local-only y no existe backend durable productivo autorizado; por regla no se inventa datastore ni se toca Supabase/NO_TOUCH. Deployment sigue READY como artefacto Vercel, pero AQA0/READY operativo permanecen bloqueados. Receipt: /opt/saas-factory-setup/saas-factory/tools/aqa-kit/evidence/jpi/evidence-records/aqa0-jpi-1788111903860.json; report: /opt/jpi/.qa-reports/2026-08-30-jpi-vercel-public/report.md.
+TCC session, 2026-08-30, fourth follow-up in the P11 Website Manager <-> MERCADER thread. Mission: turn an inbound lead sitting at status='new' in MERCADER into a genuinely worked opportunity, discovering before building.
+
+DISCOVERY (real code audit): MERCADER already has real, callable scoring (scoreLeadWithConstraints) and auto-rejection (applyAutoReject, Phase 3/4, agent-server/dist/{constraint-enrichment,phase-4-automation}.js). MERCADER's real ownership model is HUMAN-OPERATED via Telegram bot commands (/mercader briefing lists status='new' leads; /mercader convert <id> $amt and /mercader reject <id> <reason> call MERCADER's own real markLeadConverted/markLeadRejected functions in bot-mercader.ts). No autonomous inbound consumer exists anywhere in their code -- the bot process (agent-server) simply isn't running on this VM (confirmed via ps aux: none; scheduled_tasks table: empty; no cron/systemd/pm2 entry).
+
+BUILT (connection, not reimplementation): mercader-lead-scoring.mjs -- calls MERCADER's real scoring/auto-reject via a subprocess spawned with cwd set to MERCADER's own agent-server directory, so their own node_modules/native bindings (better-sqlite3) resolve correctly; zero lines of their scoring logic reimplemented, zero files added to their repo. Now wired to fire automatically right after every real handoff (ingest.mjs). Real finding: the live mercader_constraints table has exactly ONE constraint (base conversion rate, confidence=medium, sample_size=8) and ZERO disqualification-type constraints -- meaning applyAutoReject runs for real on every lead but structurally cannot reject anything today regardless of quality, until MERCADER's own learning loop accumulates real disqualification patterns. This is a fact about their current data, not a bug in this session's work.
+
+mercader-return-path.mjs -- pull-based, read-only sweep (same cron-single-shot pattern as sweep.mjs) that checks every WebMan case with status=HANDED_OFF against MERCADER's real current lead status and records what it actually observes (new mercader_status_observed/_at columns on website_events) -- never re-opens WebMan's own terminal HANDED_OFF tracking, per the established "don't duplicate MERCADER's pipeline" boundary.
+
+REAL FULL E2E PROOF: created one synthetic lead through the real handoff -> real scoring ran (score=100, confidence=medium, not auto-rejected -- correctly, no disqualifiers exist) -> invoked MERCADER's own real markLeadRejected() function directly (simulating the one missing link -- an actual human's /mercader reject decision -- using MERCADER's own real function on synthetic data only, never fabricated via raw SQL) -> the very next return-path sweep run correctly observed and recorded previous:'new' -> current:'rejected', with WebMan's own status correctly staying HANDED_OFF throughout (never reopened). Test lead deleted from MERCADER's real DB afterward.
+
+SECOND REAL GAP FOUND, explicitly NOT built without authorization: read MERCADER's actual handleMercaderReject (and by symmetry handleMercaderConvert) handler code -- it only sends a reply to the Jorge/Telegram operator side. Nobody automatically notifies the actual customer of ANY outcome (accepted/rejected/quote/etc), even once a human works a lead through the bot. WebMan already has a real, DELIVERY_PROVEN outbound-email capability (send-outbound-email.mjs, Gmail API, proven earlier this same session) and owns the original customer contact -- architecturally the natural place to close this final loop (watch mercader_status_observed change -> send the customer a real response) -- but this is genuinely new, real, external, customer-visible functionality and was correctly NOT built without Jorge's explicit authorization first. This is the real stopping gate per the mission's own "si una decisión requiere humano, detener exactamente allí" instruction.
+
+109/109 tests pass across the whole tool.
+
+Evidence: IRONMAN.md "P11 MERCADER inbound" row (2026-08-30); tools/dfl-website-manager/{mercader-lead-scoring.mjs,mercader-return-path.mjs} + tests; real mercader_constraints read; real E2E (lead-1788117931182-4376b5, deleted after verification); real Telegram message 312.
+
+NEXT: two explicit human decisions pending, neither assumed or built: (1) whether/when to deploy MERCADER's own live bot process, (2) whether WebMan should close the customer-response loop using its own already-proven email capability once it observes a MERCADER-side outcome.
 
 ---
 
@@ -448,4 +464,4 @@ Formal @$fin closure checkpoint on 2026-08-30. Live /go observed protocol @$go v
 
 ---
 
-*Mirror auto-generated 2026-08-30T18:06:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-08-31T02:04:48Z | La Garra → DFLghub/amos-context*
