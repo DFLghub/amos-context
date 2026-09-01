@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-01T04:01:30Z  
+**Generated:** 2026-09-01T04:03:03Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -378,4 +378,4 @@ Marco rector confirmado por Jorge el 2026-09-01 para los próximos días hasta a
 
 ---
 
-*Mirror auto-generated 2026-09-01T04:01:30Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-01T04:03:03Z | La Garra → DFLghub/amos-context*
