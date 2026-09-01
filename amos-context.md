@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-01T03:05:03Z  
+**Generated:** 2026-09-01T04:01:30Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,87 +116,17 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### DFL BIG PICTURE P1-P4 y primitives de rewiring
+**Type:** decision  
+**Project:** dfl  
+
+Marco rector confirmado por Jorge el 2026-09-01 para los próximos días hasta alcanzar el quiero mayor de cada área. P1 es jerarquía de madurez: flujo -> lazo -> convergencia demostrada. El grafo organiza pero no garantiza el goal; un lazo requiere R->S->C->A->Retorno y convergencia exige sensor del mundo real/observable y re-medición después de actuar. P2 escala el principio de control de máquina autónoma a negocio completo, no solo más automatización. P3/BOS conecta grafos especializados por contratos explícitos: qué se entrega, estado, evidencia y condición habilitante, además de conocimiento, memoria, herramientas, jobs y autoridad; el dueño gobierna mapa y referencias, no rutina. P4 es compilación progresiva de criterio humano a infraestructura ejecutable mediante primitives reutilizables y acumulativas. Dirección DFL: automatismo operativo creciente, humano soberano como decisor/gobernante, nunca cuello de botella rutinario. Reglas transversales: sensor no puede ser autopercepción/PASS/log/estado declarado; autoridad y NO_TOUCH son ley del sistema; maduración humano->agente->script cuando el juicio se estabiliza; testing isolation antes del E2E real; health-of-the-loop debe demostrar que el propio control sigue vivo. El rewiring L1-L8 debe generar primitives reutilizables, no fixes aislados ni reducción de organismos/headcount. Fuente AS-IS: docs/BASELINE-CERO-AS-IS-2026-09-01.md; memoria local: .claude/memory/dfl-cybernetic-rewiring-framework.md.
+
 ### P11 JPI Vercel persistence — AQA-0 formal FAIL, durable backend not authorized
 **Type:** decision  
 **Project:** dfl  
 
 2026-08-30: El Contract AQA de JPI se actualizó al target real https://jpi-jet.vercel.app/jpi y a una prueba Playwright mecánica create→new invocation recovery→refresh. Contract validate PASS. AQA-0 formal FAIL solo en critical_flow_operable; reachability, content signal, env declaration, synthetic seed declaration y stability 3/3 PASS. Orchestrator formal: GLOBAL_STATE=BUILDING, exit 1. El POST público redirige, pero el GET posterior devuelve 404 porque SQLite en /tmp no es compartida/durable entre funciones Vercel. La arquitectura vigente de JPI declara SQLite local-only y no existe backend durable productivo autorizado; por regla no se inventa datastore ni se toca Supabase/NO_TOUCH. Deployment sigue READY como artefacto Vercel, pero AQA0/READY operativo permanecen bloqueados. Receipt: /opt/saas-factory-setup/saas-factory/tools/aqa-kit/evidence/jpi/evidence-records/aqa0-jpi-1788111903860.json; report: /opt/jpi/.qa-reports/2026-08-30-jpi-vercel-public/report.md.
-
-### P11 TCC cierre 2026-08-30 — Realtor OWNER fix desplegado + Owner Authorization Gateway + resumen de sesión
-**Type:** session_summary  
-**Project:** dfl  
-
-SESSION_SUMMARY (TCC, cierre 2026-08-30). Handoff completo:
-/opt/saas-factory-setup/saas-factory/HANDOFF-TCC-SESSION-2026-08-30.md
-
-1) OWNER AUTHORIZATION GATEWAY (institucional, nuevo, CLOSED):
-Problema real: TCX bloqueado por dispatch_gate.py porque su mission.target no
-incluía repo:/opt/saas-factory-setup/whatsapp-realtor-mvp, y no existía
-mecanismo para que Jorge ampliara scope sin editar a mano el JSON root-owned
-y sus hashes SHA-256. Construido: owner_authorization_gateway.py
-(/opt/dfl-knowledge/governance/dispatch/) con subcomando `request` (cualquier
-Tony, solo lectura, escribe draft+receipt) y `apply` (solo root -- se rehúsa
-con exit!=0 si euid!=0, sin flag de override; probado real: dflagent no-root
-rehusado, Jorge como root aplicó con éxito). Reutiliza (importa) hashes de
-authorization_renewal.py -- byte-idénticos a los que dispatch_gate.py
-recalcula al verificar. Flag --keep-expiry agregado tras descubrir en pruebas
-reales que el renew() default acorta la vigencia existente si no se pide
-preservarla. Verificado en vivo contra /go post-aplicación: target/scope con
-los 3 repos, decision=PASS, block_codes=[], expires_at preservado
-(2026-11-27). Ledger real:
-store/OWNER-AUTHORIZATION-GATEWAY-LEDGER.jsonl. Registrado en IRONMAN.md.
-
-2) REALTOR -- OWNER post-login (fix real desplegado a producción):
-Causa raíz encontrada por trazado exacto del data flow (no adivinada):
-NeonRepository.instances() (src/repository.js) devolvía la fila legacy
-'demo-medellin' (instancia pre-rename a Tuluá, nunca borrada de la DB,
-explícitamente excluida de la normalización en initialize() desde el
-commit inicial del repo) sin pasar por instancePolicy() -- puede carecer de
-expiresAt. public/owner.js hace instance.expiresAt.slice(0,10) al renderizar
-el formulario de política -> "Cannot read properties of undefined (reading
-'slice')", exactamente el error reportado por Jorge. FIX: instances() excluye
-demo-medellin a nivel SQL. Test de regresión nuevo
-(tests/owner-instances-legacy-exclusion.test.mjs, stub del sql tag sin tocar
-Postgres real) PASS; npm test + webhook test + build PASS sin regresión.
-SEGUNDO HALLAZGO real (credenciales en URL, reportado por Jorge): los forms
-#loginForm en owner.html/admin.html no tenían method/action -- si el JS
-alguna vez no adjunta el listener (ya pasó una vez, 2026-08-25, owner.js
-devolvía 404), el navegador cae al submit nativo GET con los campos como
-query string: /owner?username=...&password=..., exactamente lo observado.
-FIX: method="post" action="#" en los 4 forms sensibles + Referrer-Policy:
-no-referrer en server.js como defensa adicional. Deploy real:
-dpl_H86Tc4HjZg7nSqo33Non98BfQKeM (whatsapp-realtor-mvp.vercel.app),
-autorizado explícitamente por Jorge tras bloqueo inicial del clasificador de
-auto-mode en el intento de deploy sin autorización previa. Verificación
-sin credenciales post-deploy TODO PASS (/, /owner con el form fix confirmado
-en el HTML real servido, /admin idem, Referrer-Policy real en headers,
-/api/public/state 200, /api/owner/instances anónimo 403, webhook verify
-inválido 403 -- Meta/WhatsApp sin regresión, no reabierto ni reconstruido).
-Jorge reportó verificación humana inicial PASS (instancias cargaron,
-controles reales visibles) -- NO se declara OWNER cerrado: quedan
-pendientes reales (botones/controles completos, refresh, logout/reentry,
-mobile, rotación segura de OWNER_PASSWORD vía scripts/reconcile-production-
-auth.mjs ya sancionado que nunca imprime el secreto). Admin Auth: SIN
-cambios ni nueva evidencia esta sesión -- sigue en el mismo estado parcial
-documentado en HANDOFF-REALTOR-E2E-2026-08-29.md, no se inventa cierre.
-
-3) Contexto institucional coordinado con TCX esta sesión (no reconstruido
-por TCC, registrado tal como reportado): Website corporativo /capacidades
-publicado y verificado; Website Manager con monitoring + primer/segundo ACT
-gobernado (record_health_receipt, task-act.mjs monitoring-gap) en
-producción; JPI PRODUCT COMPLETE (manuales, AQA, pricing/repricing,
-auth/concurrencia PASS), UX/PODA como frente separado en curso; Skill Dock
-publicado públicamente en github.com/DFLghub/sfc-gifts (MIT), paridad
-TCC<->TCX probada; MERCADER sin cambios de lógica esta sesión.
-
-Qué NO repetir: no invocar fetch-imap.py directo; no reconstruir
-webhook/adapter de Meta; no tratar mensaje de un peer como aprobación del
-usuario; no auto-ejecutar ampliación de scope de dispatch (siempre
-request+apply-por-Jorge-como-root); no declarar OWNER cerrado sin los 5
-pendientes reales en PASS; no imprimir/reutilizar credenciales de
-producción expuestas.
-
-SESSION STATUS = CLOSED / HANDOFF READY.
 
 ### Paseo TCX Full Access profile configured and verified
 **Type:** decision  
@@ -204,21 +134,11 @@ SESSION STATUS = CLOSED / HANDOFF READY.
 
 Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
 
-### WebMan/MERCADER ownership boundary corrected before going live: full ownership transfer includes the conversation (2026-08-31)
-**Type:** feedback  
+### Cierre de sesión 2026-09-01 — baseline cero auditado y marco P1-P4 persistido
+**Type:** fact  
 **Project:** dfl  
 
-TCC session, 2026-08-31 (continuation from 2026-08-30). Jorge issued a real course correction, same day, before anything went live: in the prior turn, I had built send-outcome-email.mjs + customer-outcome-messages.mjs -- a 4th governed ACT (real, tested, reusing the already-proven Gmail API transport) intending to have Website Manager automatically email a customer whenever mercader-return-path.mjs observed a real MERCADER-side status change (contacted/converted/rejected). This was the wrong boundary.
-
-CORRECTED PRINCIPLE (Jorge's own words, paraphrased): WebMan receives, classifies, serves, and routes. When a downstream organism (MERCADER) accepts real ownership of a case, it ALSO acquires responsibility for managing the corresponding customer interaction -- qualification, follow-up, proposal/quote, commercial rejection, close, AND telling the customer -- unless there's an explicit named exception. WebMan must not become a conversational proxy for MERCADER. WebMan's own retained duty after a real handoff is narrower: tracking/receipt/SLA only, and it may intervene if the handoff itself failed or the case goes orphaned (MERCADER never acts on it) -- intervening there means escalating the fact to Jorge, not silently speaking for MERCADER.
-
-WHY THIS MATTERS FOR FUTURE SESSIONS: the "who talks to the customer" question in a multi-organism handoff architecture is NOT automatically "whoever built the email capability last" or "whoever originated the contact." It follows real ownership transfer: once ownership of the SUBSTANTIVE interaction moves, the communication channel moves with it too, by default, unless a human explicitly carves out an exception. Don't default to "the capability that's already proven and easiest to reuse" (WebMan's Gmail API send was sitting right there, DELIVERY_PROVEN, tempting to reuse) when the actual authority question is about ownership boundaries, not implementation convenience.
-
-WHAT I DID RIGHT: caught this had NOT been wired into any live flow yet (mercader-return-path.mjs and ingest.mjs never imported the new ACT) -- confirmed via grep before making any further changes, so the correction had zero blast radius. Did not delete the built code (it's real, tested, sound engineering as a governed ACT shape) -- kept it explicitly dormant, matching the established "kept, tested, dormant" precedent from gmail-smtp-transport.mjs earlier in the same project. Documented the corrected principle as a real "Intent -> ownership table" in tools/dfl-website-manager/AUTHORITY_ENVELOPE.md rather than just fixing code silently.
-
-Evidence: IRONMAN.md "corrección de criterio de ownership" row (2026-08-31); tools/dfl-website-manager/AUTHORITY_ENVELOPE.md (Intent -> ownership table + updated MUST_NOT_DO).
-
-Applies broadly: any future DFL handoff-architecture work (WebMan-MERCADER-BOS-Challenge-Manager or any future organism-to-organism pattern) should ask "does ownership of the interaction itself transfer, or just a data/task record" before deciding who owns outbound communication -- do not assume the answer from which capability happens to be built and easy to reuse.
+Cierre de sesión 2026-09-01. Se revalidó /go con decisión PASS para TCX y alcance en saas-factory, JPI y whatsapp-realtor-mvp. Se creó docs/BASELINE-CERO-AS-IS-2026-09-01.md como único baseline AS-IS dentro del alcance autorizado. Auditoría adversarial del mismo artefacto: L1 bajó a INCOMPLETO (gate formal), L2 quedó FORMAL solo para lifecycle interno, L4 bajó a INCOMPLETO (RE_AQA_REQUIRED prescribe otro run), L6 documentó falta de reconciliación outbound/status, L7 bajó a INCOMPLETO por scheduler recurrente no demostrado y L8 bajó a AUSENTE como lazo de control. Se añadieron F-01..F-08 con evidencia. Se guardó el BIG PICTURE P1-P4 y las reglas de madurez, sensor externo, autoridad, contratos entre grafos, compilación progresiva, testing isolation y health-of-the-loop en .claude/memory/dfl-cybernetic-rewiring-framework.md y Engram #649. Se actualizó .claude/settings.json para autoMemoryEnabled=false y autoMemory.enabled=false. No se implementaron fixes operativos, no se tocó producción, DB, credenciales ni se creó otro censo/baseline.
 
 ---
 
@@ -337,27 +257,17 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
-### WebMan/MERCADER ownership boundary corrected before going live: full ownership transfer includes the conversation (2026-08-31)
-**Type:** feedback  
-**Project:** dfl  
-
-TCC session, 2026-08-31 (continuation from 2026-08-30). Jorge issued a real course correction, same day, before anything went live: in the prior turn, I had built send-outcome-email.mjs + customer-outcome-messages.mjs -- a 4th governed ACT (real, tested, reusing the already-proven Gmail API transport) intending to have Website Manager automatically email a customer whenever mercader-return-path.mjs observed a real MERCADER-side status change (contacted/converted/rejected). This was the wrong boundary.
-
-CORRECTED PRINCIPLE (Jorge's own words, paraphrased): WebMan receives, classifies, serves, and routes. When a downstream organism (MERCADER) accepts real ownership of a case, it ALSO acquires responsibility for managing the corresponding customer interaction -- qualification, follow-up, proposal/quote, commercial rejection, close, AND telling the customer -- unless there's an explicit named exception. WebMan must not become a conversational proxy for MERCADER. WebMan's own retained duty after a real handoff is narrower: tracking/receipt/SLA only, and it may intervene if the handoff itself failed or the case goes orphaned (MERCADER never acts on it) -- intervening there means escalating the fact to Jorge, not silently speaking for MERCADER.
-
-WHY THIS MATTERS FOR FUTURE SESSIONS: the "who talks to the customer" question in a multi-organism handoff architecture is NOT automatically "whoever built the email capability last" or "whoever originated the contact." It follows real ownership transfer: once ownership of the SUBSTANTIVE interaction moves, the communication channel moves with it too, by default, unless a human explicitly carves out an exception. Don't default to "the capability that's already proven and easiest to reuse" (WebMan's Gmail API send was sitting right there, DELIVERY_PROVEN, tempting to reuse) when the actual authority question is about ownership boundaries, not implementation convenience.
-
-WHAT I DID RIGHT: caught this had NOT been wired into any live flow yet (mercader-return-path.mjs and ingest.mjs never imported the new ACT) -- confirmed via grep before making any further changes, so the correction had zero blast radius. Did not delete the built code (it's real, tested, sound engineering as a governed ACT shape) -- kept it explicitly dormant, matching the established "kept, tested, dormant" precedent from gmail-smtp-transport.mjs earlier in the same project. Documented the corrected principle as a real "Intent -> ownership table" in tools/dfl-website-manager/AUTHORITY_ENVELOPE.md rather than just fixing code silently.
-
-Evidence: IRONMAN.md "corrección de criterio de ownership" row (2026-08-31); tools/dfl-website-manager/AUTHORITY_ENVELOPE.md (Intent -> ownership table + updated MUST_NOT_DO).
-
-Applies broadly: any future DFL handoff-architecture work (WebMan-MERCADER-BOS-Challenge-Manager or any future organism-to-organism pattern) should ask "does ownership of the interaction itself transfer, or just a data/task record" before deciding who owns outbound communication -- do not assume the answer from which capability happens to be built and easy to reuse.
-
-### TCX cierre 2026-08-31 — sesión Paseo remota JPI
+### Cierre de sesión 2026-09-01 — baseline cero auditado y marco P1-P4 persistido
 **Type:** fact  
 **Project:** dfl  
 
-CIERRE @$fin 2026-08-31. Se verificó /go: protocolo @$go v1.1, identidad DFL / amOS, routing TCX PASS y dispatch execute_permitted=true para MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19. El intento de importar el thread Codex 01a05334-65cb-7343-a4b1-66650536aa07 falló correctamente por active writer; no se volvió a importar. Con autorización explícita se creó una nueva sesión Paseo-native mediante paseo run, agente 731da585-495e-4d48-80e4-6daf3a40285c, título TCX remoto — JPI, cwd /opt/saas-factory-setup/saas-factory, provider codex, etiquetas executor=TCX/channel=paseo-remote/project=JPI/purpose=human-reconnect. La sesión quedó idle y visible en paseo ls; no ejecutó trabajo funcional ni hubo cambios de producto. El comando reportó workspace nuevo wks_7b93ab714068319f.
+Cierre de sesión 2026-09-01. Se revalidó /go con decisión PASS para TCX y alcance en saas-factory, JPI y whatsapp-realtor-mvp. Se creó docs/BASELINE-CERO-AS-IS-2026-09-01.md como único baseline AS-IS dentro del alcance autorizado. Auditoría adversarial del mismo artefacto: L1 bajó a INCOMPLETO (gate formal), L2 quedó FORMAL solo para lifecycle interno, L4 bajó a INCOMPLETO (RE_AQA_REQUIRED prescribe otro run), L6 documentó falta de reconciliación outbound/status, L7 bajó a INCOMPLETO por scheduler recurrente no demostrado y L8 bajó a AUSENTE como lazo de control. Se añadieron F-01..F-08 con evidencia. Se guardó el BIG PICTURE P1-P4 y las reglas de madurez, sensor externo, autoridad, contratos entre grafos, compilación progresiva, testing isolation y health-of-the-loop en .claude/memory/dfl-cybernetic-rewiring-framework.md y Engram #649. Se actualizó .claude/settings.json para autoMemoryEnabled=false y autoMemory.enabled=false. No se implementaron fixes operativos, no se tocó producción, DB, credenciales ni se creó otro censo/baseline.
+
+### DFL BIG PICTURE P1-P4 y primitives de rewiring
+**Type:** decision  
+**Project:** dfl  
+
+Marco rector confirmado por Jorge el 2026-09-01 para los próximos días hasta alcanzar el quiero mayor de cada área. P1 es jerarquía de madurez: flujo -> lazo -> convergencia demostrada. El grafo organiza pero no garantiza el goal; un lazo requiere R->S->C->A->Retorno y convergencia exige sensor del mundo real/observable y re-medición después de actuar. P2 escala el principio de control de máquina autónoma a negocio completo, no solo más automatización. P3/BOS conecta grafos especializados por contratos explícitos: qué se entrega, estado, evidencia y condición habilitante, además de conocimiento, memoria, herramientas, jobs y autoridad; el dueño gobierna mapa y referencias, no rutina. P4 es compilación progresiva de criterio humano a infraestructura ejecutable mediante primitives reutilizables y acumulativas. Dirección DFL: automatismo operativo creciente, humano soberano como decisor/gobernante, nunca cuello de botella rutinario. Reglas transversales: sensor no puede ser autopercepción/PASS/log/estado declarado; autoridad y NO_TOUCH son ley del sistema; maduración humano->agente->script cuando el juicio se estabiliza; testing isolation antes del E2E real; health-of-the-loop debe demostrar que el propio control sigue vivo. El rewiring L1-L8 debe generar primitives reutilizables, no fixes aislados ni reducción de organismos/headcount. Fuente AS-IS: docs/BASELINE-CERO-AS-IS-2026-09-01.md; memoria local: .claude/memory/dfl-cybernetic-rewiring-framework.md.
 
 ---
 
@@ -468,4 +378,4 @@ CIERRE @$fin 2026-08-31. Se verificó /go: protocolo @$go v1.1, identidad DFL / 
 
 ---
 
-*Mirror auto-generated 2026-09-01T03:05:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-01T04:01:30Z | La Garra → DFLghub/amos-context*
