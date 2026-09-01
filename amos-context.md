@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-01T04:03:03Z  
+**Generated:** 2026-09-01T04:05:06Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,17 +116,40 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### P11 — DFL Cybernetic Rewiring L1-L8 + Health-of-the-Loop: sesión completa cerrada (2026-09-01)
+**Type:** decision  
+**Project:** dfl  
+
+TCC, sesión 2026-09-01. Misión: cartografía AS-IS de lazos de control DFL (R→S→C→A→Retorno), auditoría adversarial de TCX, luego loop autónomo de rewiring L1-L8, luego primitive #8 (health-of-the-loop). Artefacto canónico único: docs/BASELINE-CERO-AS-IS-2026-09-01.md (repo saas-factory). Resumen nocturno completo y todas las entradas cronológicas en IRONMAN.md del mismo repo, buscar "P11 — LOOP AUTÓNOMO" y "P11 — Health-of-the-loop CERRADO".
+
+INCIDENTE FUNDACIONAL (previo al loop, real, reparado en vivo): auto-renovación de dispatch freshness (authorization_renewal.py, cron 10min via activate-peer.sh) fallaba 100% desde 2026-08-19 por permisos root:root en renewal-policy.json, ilegible para dflagent. TCX bloqueado por E_DISPATCH_STALE hasta que Jorge (root) corrió el fix: chown root:dfl + chmod 640 + process manual. Verificado post-fix: /go real PASS. Bug menor NO reparado (fuera de alcance autorizado): dispatch_gate.py:207-210 lee mission.authorization_lifecycle (campo inexistente) en vez de dispatch[0].authorization.lifecycle, cae siempre a default 24h en vez de 30 días reales.
+
+ESTADO FINAL POR TRAMO (todos con evidencia real, ningún FORMAL sin retorno probado):
+- L1 (DCSA autorización): INCOMPLETO general -> FORMAL vía E2E real autorizado por Jorge: lead sintético POST a mercader-bos real (127.0.0.1:9099/api/mercader/leads) -> cron TCX automático claim/produce/AQA/deliver/ACK en ~3min sin intervención manual -> mercader_leads.order_status=ACKED confirmado en SQLite directo. Watchdog L1b (check_mission_progress.py) re-midió en vivo y pasó SILENT->OK.
+- L2 (peer-work ACK/NACK): sub-tramo L2b FORMAL. Bug real en tools/telegram-bos/bot.mjs: marcaba delivered_to_telegram sin revisar el campo ok de la respuesta de Telegram. Fix + delivery-outcome.mjs (primitive pura extraída) + 7 tests aislados.
+- L3 (EXTERIOR->MERCADER->FABRICA): INCOMPLETO -> FORMAL con salvedad, reclasificado por la misma evidencia del E2E de L1 (regla "si la evidencia nueva contradice otro L, corrígelo también").
+- L4 (AQA orchestrator): sub-tramo FORMAL. cmdOrchestrate en tools/aqa-kit/bin/aqa.mjs no persistía GLOBAL_STATE (solo stdout) — ahora usa writeEvidenceRecord existente. Nueva primitive tools/aqa-kit/lib/re-aqa-silence.mjs envuelve metaAudit() sin tocarlo. Cron diario, budget 7 días (no 24h, para no generar ruido sobre gaps ya conocidos como JPI AQA-0 FAIL desde 2026-08-30).
+- L5 (JPI reservas): sub-tramo FORMAL. Gap real: jpi_reservations.status nunca transiciona de PENDING_DEPOSIT en NINGÚN código del repo — verificado por grep exhaustivo. Watchdog reservation-watchdog.mjs en /opt/jpi, filtro SQL fuente_datos=sintetico (mismo límite de seguridad que sweep.sh ya usa). STOP respetado: login Admin JPI requiere credenciales Vercel Production inexistentes, no tocado.
+- L6 (Realtor WhatsApp delivery): sub-tramo FORMAL EN REPO, NO DESPLEGADO A PRODUCCIÓN. repository.js ganó updateWhatsAppOutboundStatus (ambas clases, Local y Neon) simétrico a updateWhatsAppInbound. whatsapp-webhook.js reconcilia SENT->DELIVERED->READ real. 9/9 tests incl. 3 nuevos + suite existente sin regresión. Deploy real requiere autorización separada, explícitamente no hecho.
+- L7 (Website Manager sweep): INCOMPLETO -> FORMAL. sweep.mjs existía completo (SLA-breach + heartbeat) pero sin cron. Wrapper cron-sweep.sh instalado. INCIDENTE REAL #4: validar el wrapper corrió el sweep() real contra producción con token real, 3 alertas reales enviadas — pero contenido correcto (3 items genuinamente descuidados desde 2026-08-31, nunca notificados antes).
+- L8 (Engram memoria institucional): sub-tramo FORMAL. curl http://127.0.0.1:7437/conflicts?status=pending (API real, no CLI local) reveló 3 conflictos pendientes, los 3 creados 2026-07-25T02:22:38Z, 38 días sin juzgar. Watchdog tools/engram-watchdog/check_pending_conflicts.py reusa tools/lib/silence_watchdog.py (misma primitive de L1b). Cron 6h instalado sin disparar notify manualmente — el primer tick real mandará 3 alertas legítimas a Jorge.
+- Primitive #8 (health-of-the-loop, decisión por ROI de Jorge, construida el mismo día que se nombró): tools/lib/loop_health_watchdog.py vigila frescura de los 5 receipts/logs de los watchdogs anteriores, cron 15min. Confirmó que los crons de L1b/L4/L7 ya corrían solos correctamente. No vigila su propia salud — límite razonable de la recursión, nombrado explícitamente.
+
+CINCO INCIDENTES REALES AUTORREPORTADOS (ninguno encontrado por tercero): (1) alerta Telegram con silence_seconds mal calculado, sensor no leía IRONMAN.md todavía; (2) alerta Telegram con fecha simulada 2026-09-05 filtrada de un test de Retorno mal aislado — motivó la regla institucional de testing (sección 8 del baseline: ninguna primitive nueva se prueba contra store_dir/tokens/canales reales salvo E2E final autorizado); (3) referencia rota transitoria ~1s en bot.mjs durante edición multi-paso, autosanada; (4) sweep.mjs real disparado sin dry-check, 3 alertas reales pero contenido correcto — motivó práctica "dry-check-then-wire" aplicada desde entonces sin excepción (L5, L8, primitive #8 todos dry-chequeados antes de instalar cron).
+
+PRIMITIVES P4 REUSABLES REALES (no diseño especulativo, consumidores reales): tools/lib/silence_watchdog.py (Python, 3 consumidores: L1b/L5/L8), tools/aqa-kit/lib/re-aqa-silence.mjs (JS, envuelve metaAudit), tools/telegram-bos/delivery-outcome.mjs (patrón ok:boolean), tools/lib/loop_health_watchdog.py (meta-nivel).
+
+FRAMEWORK ESTRATÉGICO (Jorge, afinado 2026-09-01, guardado también en .claude/memory/dfl-cybernetic-rewiring-framework.md del repo saas-factory): P1=jerarquía de madurez flujo->lazo->convergencia demostrada (no dos piezas intercambiables). P2=escalar el mismo principio de control de máquina a negocio. P3/BOS=grafos conectados por contratos+memoria+herramientas+jobs+autoridad. P4=primitives acumulativas, no lista de componentes. 8 primitives transversales: (1) jerarquía de madurez, (2) sensor mide el mundo no autopercepción, (3) autoridad=ley del sistema, (4) maduración humano->agente->script, (5) contratos entre grafos, (6) P4 como compilación progresiva, (7) testing isolation, (8) health-of-the-loop.
+
+GAPS EXPLÍCITAMENTE ABIERTOS, NO INFLADOS: login Admin JPI + concurrencia real (credenciales inexistentes); deploy Realtor a producción (autorización separada pendiente); actuador de confirmación de depósito JPI (decisión de negocio no infraestructura); juicio automático de conflictos Engram (acto cognitivo, no automatizado); bug de campo mal nombrado en dispatch_gate.py; auditoría adversarial de TCX sobre todo este cierre, pendiente de autorización de Jorge.
+
+PRÓXIMO PASO EXPLÍCITO PARA QUIEN RETOME: 1) Confirmar en IRONMAN.md si hay entradas posteriores a esta (buscar fecha >2026-09-01 o "L9"). 2) Si Jorge pide seguir, la auditoría adversarial de TCX sobre L1-L8 + primitive #8 es el trabajo pendiente más directo. 3) Ningún STOP duro se disparó durante toda la misión — los límites de autoridad reales (JPI Admin, Realtor deploy) se respetaron sin rodeos, no requieren re-visitarse salvo que Jorge cambie esa decisión explícitamente.
+
 ### DFL BIG PICTURE P1-P4 y primitives de rewiring
 **Type:** decision  
 **Project:** dfl  
 
 Marco rector confirmado por Jorge el 2026-09-01 para los próximos días hasta alcanzar el quiero mayor de cada área. P1 es jerarquía de madurez: flujo -> lazo -> convergencia demostrada. El grafo organiza pero no garantiza el goal; un lazo requiere R->S->C->A->Retorno y convergencia exige sensor del mundo real/observable y re-medición después de actuar. P2 escala el principio de control de máquina autónoma a negocio completo, no solo más automatización. P3/BOS conecta grafos especializados por contratos explícitos: qué se entrega, estado, evidencia y condición habilitante, además de conocimiento, memoria, herramientas, jobs y autoridad; el dueño gobierna mapa y referencias, no rutina. P4 es compilación progresiva de criterio humano a infraestructura ejecutable mediante primitives reutilizables y acumulativas. Dirección DFL: automatismo operativo creciente, humano soberano como decisor/gobernante, nunca cuello de botella rutinario. Reglas transversales: sensor no puede ser autopercepción/PASS/log/estado declarado; autoridad y NO_TOUCH son ley del sistema; maduración humano->agente->script cuando el juicio se estabiliza; testing isolation antes del E2E real; health-of-the-loop debe demostrar que el propio control sigue vivo. El rewiring L1-L8 debe generar primitives reutilizables, no fixes aislados ni reducción de organismos/headcount. Fuente AS-IS: docs/BASELINE-CERO-AS-IS-2026-09-01.md; memoria local: .claude/memory/dfl-cybernetic-rewiring-framework.md.
-
-### P11 JPI Vercel persistence — AQA-0 formal FAIL, durable backend not authorized
-**Type:** decision  
-**Project:** dfl  
-
-2026-08-30: El Contract AQA de JPI se actualizó al target real https://jpi-jet.vercel.app/jpi y a una prueba Playwright mecánica create→new invocation recovery→refresh. Contract validate PASS. AQA-0 formal FAIL solo en critical_flow_operable; reachability, content signal, env declaration, synthetic seed declaration y stability 3/3 PASS. Orchestrator formal: GLOBAL_STATE=BUILDING, exit 1. El POST público redirige, pero el GET posterior devuelve 404 porque SQLite en /tmp no es compartida/durable entre funciones Vercel. La arquitectura vigente de JPI declara SQLite local-only y no existe backend durable productivo autorizado; por regla no se inventa datastore ni se toca Supabase/NO_TOUCH. Deployment sigue READY como artefacto Vercel, pero AQA0/READY operativo permanecen bloqueados. Receipt: /opt/saas-factory-setup/saas-factory/tools/aqa-kit/evidence/jpi/evidence-records/aqa0-jpi-1788111903860.json; report: /opt/jpi/.qa-reports/2026-08-30-jpi-vercel-public/report.md.
 
 ### Paseo TCX Full Access profile configured and verified
 **Type:** decision  
@@ -257,17 +280,40 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 
 FutbolWeb corre en /opt/futbolweb en La Garra (DigitalOcean, IP 67.205.166.199). Caddy en 80/443. n8n en 5678. yt-ingest en 8080. Engram Cloud en 8090. Supabase externo para scoring/ranking. No tocar puertos 80/443/3001/5678/8080 sin autorización.
 
+### P11 — DFL Cybernetic Rewiring L1-L8 + Health-of-the-Loop: sesión completa cerrada (2026-09-01)
+**Type:** decision  
+**Project:** dfl  
+
+TCC, sesión 2026-09-01. Misión: cartografía AS-IS de lazos de control DFL (R→S→C→A→Retorno), auditoría adversarial de TCX, luego loop autónomo de rewiring L1-L8, luego primitive #8 (health-of-the-loop). Artefacto canónico único: docs/BASELINE-CERO-AS-IS-2026-09-01.md (repo saas-factory). Resumen nocturno completo y todas las entradas cronológicas en IRONMAN.md del mismo repo, buscar "P11 — LOOP AUTÓNOMO" y "P11 — Health-of-the-loop CERRADO".
+
+INCIDENTE FUNDACIONAL (previo al loop, real, reparado en vivo): auto-renovación de dispatch freshness (authorization_renewal.py, cron 10min via activate-peer.sh) fallaba 100% desde 2026-08-19 por permisos root:root en renewal-policy.json, ilegible para dflagent. TCX bloqueado por E_DISPATCH_STALE hasta que Jorge (root) corrió el fix: chown root:dfl + chmod 640 + process manual. Verificado post-fix: /go real PASS. Bug menor NO reparado (fuera de alcance autorizado): dispatch_gate.py:207-210 lee mission.authorization_lifecycle (campo inexistente) en vez de dispatch[0].authorization.lifecycle, cae siempre a default 24h en vez de 30 días reales.
+
+ESTADO FINAL POR TRAMO (todos con evidencia real, ningún FORMAL sin retorno probado):
+- L1 (DCSA autorización): INCOMPLETO general -> FORMAL vía E2E real autorizado por Jorge: lead sintético POST a mercader-bos real (127.0.0.1:9099/api/mercader/leads) -> cron TCX automático claim/produce/AQA/deliver/ACK en ~3min sin intervención manual -> mercader_leads.order_status=ACKED confirmado en SQLite directo. Watchdog L1b (check_mission_progress.py) re-midió en vivo y pasó SILENT->OK.
+- L2 (peer-work ACK/NACK): sub-tramo L2b FORMAL. Bug real en tools/telegram-bos/bot.mjs: marcaba delivered_to_telegram sin revisar el campo ok de la respuesta de Telegram. Fix + delivery-outcome.mjs (primitive pura extraída) + 7 tests aislados.
+- L3 (EXTERIOR->MERCADER->FABRICA): INCOMPLETO -> FORMAL con salvedad, reclasificado por la misma evidencia del E2E de L1 (regla "si la evidencia nueva contradice otro L, corrígelo también").
+- L4 (AQA orchestrator): sub-tramo FORMAL. cmdOrchestrate en tools/aqa-kit/bin/aqa.mjs no persistía GLOBAL_STATE (solo stdout) — ahora usa writeEvidenceRecord existente. Nueva primitive tools/aqa-kit/lib/re-aqa-silence.mjs envuelve metaAudit() sin tocarlo. Cron diario, budget 7 días (no 24h, para no generar ruido sobre gaps ya conocidos como JPI AQA-0 FAIL desde 2026-08-30).
+- L5 (JPI reservas): sub-tramo FORMAL. Gap real: jpi_reservations.status nunca transiciona de PENDING_DEPOSIT en NINGÚN código del repo — verificado por grep exhaustivo. Watchdog reservation-watchdog.mjs en /opt/jpi, filtro SQL fuente_datos=sintetico (mismo límite de seguridad que sweep.sh ya usa). STOP respetado: login Admin JPI requiere credenciales Vercel Production inexistentes, no tocado.
+- L6 (Realtor WhatsApp delivery): sub-tramo FORMAL EN REPO, NO DESPLEGADO A PRODUCCIÓN. repository.js ganó updateWhatsAppOutboundStatus (ambas clases, Local y Neon) simétrico a updateWhatsAppInbound. whatsapp-webhook.js reconcilia SENT->DELIVERED->READ real. 9/9 tests incl. 3 nuevos + suite existente sin regresión. Deploy real requiere autorización separada, explícitamente no hecho.
+- L7 (Website Manager sweep): INCOMPLETO -> FORMAL. sweep.mjs existía completo (SLA-breach + heartbeat) pero sin cron. Wrapper cron-sweep.sh instalado. INCIDENTE REAL #4: validar el wrapper corrió el sweep() real contra producción con token real, 3 alertas reales enviadas — pero contenido correcto (3 items genuinamente descuidados desde 2026-08-31, nunca notificados antes).
+- L8 (Engram memoria institucional): sub-tramo FORMAL. curl http://127.0.0.1:7437/conflicts?status=pending (API real, no CLI local) reveló 3 conflictos pendientes, los 3 creados 2026-07-25T02:22:38Z, 38 días sin juzgar. Watchdog tools/engram-watchdog/check_pending_conflicts.py reusa tools/lib/silence_watchdog.py (misma primitive de L1b). Cron 6h instalado sin disparar notify manualmente — el primer tick real mandará 3 alertas legítimas a Jorge.
+- Primitive #8 (health-of-the-loop, decisión por ROI de Jorge, construida el mismo día que se nombró): tools/lib/loop_health_watchdog.py vigila frescura de los 5 receipts/logs de los watchdogs anteriores, cron 15min. Confirmó que los crons de L1b/L4/L7 ya corrían solos correctamente. No vigila su propia salud — límite razonable de la recursión, nombrado explícitamente.
+
+CINCO INCIDENTES REALES AUTORREPORTADOS (ninguno encontrado por tercero): (1) alerta Telegram con silence_seconds mal calculado, sensor no leía IRONMAN.md todavía; (2) alerta Telegram con fecha simulada 2026-09-05 filtrada de un test de Retorno mal aislado — motivó la regla institucional de testing (sección 8 del baseline: ninguna primitive nueva se prueba contra store_dir/tokens/canales reales salvo E2E final autorizado); (3) referencia rota transitoria ~1s en bot.mjs durante edición multi-paso, autosanada; (4) sweep.mjs real disparado sin dry-check, 3 alertas reales pero contenido correcto — motivó práctica "dry-check-then-wire" aplicada desde entonces sin excepción (L5, L8, primitive #8 todos dry-chequeados antes de instalar cron).
+
+PRIMITIVES P4 REUSABLES REALES (no diseño especulativo, consumidores reales): tools/lib/silence_watchdog.py (Python, 3 consumidores: L1b/L5/L8), tools/aqa-kit/lib/re-aqa-silence.mjs (JS, envuelve metaAudit), tools/telegram-bos/delivery-outcome.mjs (patrón ok:boolean), tools/lib/loop_health_watchdog.py (meta-nivel).
+
+FRAMEWORK ESTRATÉGICO (Jorge, afinado 2026-09-01, guardado también en .claude/memory/dfl-cybernetic-rewiring-framework.md del repo saas-factory): P1=jerarquía de madurez flujo->lazo->convergencia demostrada (no dos piezas intercambiables). P2=escalar el mismo principio de control de máquina a negocio. P3/BOS=grafos conectados por contratos+memoria+herramientas+jobs+autoridad. P4=primitives acumulativas, no lista de componentes. 8 primitives transversales: (1) jerarquía de madurez, (2) sensor mide el mundo no autopercepción, (3) autoridad=ley del sistema, (4) maduración humano->agente->script, (5) contratos entre grafos, (6) P4 como compilación progresiva, (7) testing isolation, (8) health-of-the-loop.
+
+GAPS EXPLÍCITAMENTE ABIERTOS, NO INFLADOS: login Admin JPI + concurrencia real (credenciales inexistentes); deploy Realtor a producción (autorización separada pendiente); actuador de confirmación de depósito JPI (decisión de negocio no infraestructura); juicio automático de conflictos Engram (acto cognitivo, no automatizado); bug de campo mal nombrado en dispatch_gate.py; auditoría adversarial de TCX sobre todo este cierre, pendiente de autorización de Jorge.
+
+PRÓXIMO PASO EXPLÍCITO PARA QUIEN RETOME: 1) Confirmar en IRONMAN.md si hay entradas posteriores a esta (buscar fecha >2026-09-01 o "L9"). 2) Si Jorge pide seguir, la auditoría adversarial de TCX sobre L1-L8 + primitive #8 es el trabajo pendiente más directo. 3) Ningún STOP duro se disparó durante toda la misión — los límites de autoridad reales (JPI Admin, Realtor deploy) se respetaron sin rodeos, no requieren re-visitarse salvo que Jorge cambie esa decisión explícitamente.
+
 ### Cierre de sesión 2026-09-01 — baseline cero auditado y marco P1-P4 persistido
 **Type:** fact  
 **Project:** dfl  
 
 Cierre de sesión 2026-09-01. Se revalidó /go con decisión PASS para TCX y alcance en saas-factory, JPI y whatsapp-realtor-mvp. Se creó docs/BASELINE-CERO-AS-IS-2026-09-01.md como único baseline AS-IS dentro del alcance autorizado. Auditoría adversarial del mismo artefacto: L1 bajó a INCOMPLETO (gate formal), L2 quedó FORMAL solo para lifecycle interno, L4 bajó a INCOMPLETO (RE_AQA_REQUIRED prescribe otro run), L6 documentó falta de reconciliación outbound/status, L7 bajó a INCOMPLETO por scheduler recurrente no demostrado y L8 bajó a AUSENTE como lazo de control. Se añadieron F-01..F-08 con evidencia. Se guardó el BIG PICTURE P1-P4 y las reglas de madurez, sensor externo, autoridad, contratos entre grafos, compilación progresiva, testing isolation y health-of-the-loop en .claude/memory/dfl-cybernetic-rewiring-framework.md y Engram #649. Se actualizó .claude/settings.json para autoMemoryEnabled=false y autoMemory.enabled=false. No se implementaron fixes operativos, no se tocó producción, DB, credenciales ni se creó otro censo/baseline.
-
-### DFL BIG PICTURE P1-P4 y primitives de rewiring
-**Type:** decision  
-**Project:** dfl  
-
-Marco rector confirmado por Jorge el 2026-09-01 para los próximos días hasta alcanzar el quiero mayor de cada área. P1 es jerarquía de madurez: flujo -> lazo -> convergencia demostrada. El grafo organiza pero no garantiza el goal; un lazo requiere R->S->C->A->Retorno y convergencia exige sensor del mundo real/observable y re-medición después de actuar. P2 escala el principio de control de máquina autónoma a negocio completo, no solo más automatización. P3/BOS conecta grafos especializados por contratos explícitos: qué se entrega, estado, evidencia y condición habilitante, además de conocimiento, memoria, herramientas, jobs y autoridad; el dueño gobierna mapa y referencias, no rutina. P4 es compilación progresiva de criterio humano a infraestructura ejecutable mediante primitives reutilizables y acumulativas. Dirección DFL: automatismo operativo creciente, humano soberano como decisor/gobernante, nunca cuello de botella rutinario. Reglas transversales: sensor no puede ser autopercepción/PASS/log/estado declarado; autoridad y NO_TOUCH son ley del sistema; maduración humano->agente->script cuando el juicio se estabiliza; testing isolation antes del E2E real; health-of-the-loop debe demostrar que el propio control sigue vivo. El rewiring L1-L8 debe generar primitives reutilizables, no fixes aislados ni reducción de organismos/headcount. Fuente AS-IS: docs/BASELINE-CERO-AS-IS-2026-09-01.md; memoria local: .claude/memory/dfl-cybernetic-rewiring-framework.md.
 
 ---
 
@@ -378,4 +424,4 @@ Marco rector confirmado por Jorge el 2026-09-01 para los próximos días hasta a
 
 ---
 
-*Mirror auto-generated 2026-09-01T04:03:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-01T04:05:06Z | La Garra → DFLghub/amos-context*
