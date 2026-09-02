@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-02T10:28:07Z  
+**Generated:** 2026-09-02T13:43:31Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -507,4 +507,4 @@ Relevant Files: /root/HANDOFF-P11-2026-09-02.md, /opt/futbolweb/lib/{espn-world-
 
 ---
 
-*Mirror auto-generated 2026-09-02T10:28:07Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-02T13:43:31Z | La Garra → DFLghub/amos-context*
