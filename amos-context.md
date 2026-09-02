@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-02T03:05:15Z  
+**Generated:** 2026-09-02T03:26:35Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -214,7 +214,7 @@ Full doc index for tomorrow: docs/DFL_WEBSITE_BILINGUAL_STRATEGY.md, docs/DFL_WE
 **Type:** manual  
 **Project:** root  
 
-P11 vuelta 2 (TCC cierra falsos supuestos, 2026-09-02) — resultados verificados:\n\n1. VERCEL CRON para /api/tournament-reality/sync: CONFIRMADO AUSENTE. `vercel crons ls --project futbolweb-app` (CLI autenticada como dflghub, solo lectura) devolvió \"No cron jobs found for dflghubs-projects/futbolweb-app\". El supuesto anterior (\"puede que Vercel Cron lo dispare\") queda descartado.\n\n2. Return real de FutbolWeb identificado: `.github/workflows/ko-reality-sync.yml` (GitHub Actions, repo DFLghub/futbolweb-app). Contiene decenas de ventanas cron específicas por partido (todas fechadas jun-jul 2026, ya pasadas) MÁS una reconciliación rodante sin restricción de fecha: `15 */3 * * *` (cada 3h, todo el año 2026). El job siempre llama a `/api/tournament-reality/sync` con CRON_SECRET real vía curl, sin importar cuál entrada de cron disparó. Conclusión: el Return SÍ existe y sigue activo hoy (vía la reconciliación rodante cada 3h), aunque las ventanas de alta densidad específicas por partido ya expiraron (correcto, el torneo terminó). No se pudo confirmar historial real de ejecuciones (gh CLI no instalado, no se buscaron credenciales) — el diseño está verificado por archivo, no por logs de ejecución real. Marca: PASS con evidencia de diseño, NO PASS con evidencia de ejecución histórica (sigue abierto para TCX).\n\n3. session-watchdog.sh — propuesta de fix (NO desplegada, solo diseñada, pendiente autorización de Jorge): (a) subir STALE_SECONDS de 600s a ~1800s; (b) exigir 2 lecturas consecutivas de staleness antes de reap (separa sospecha de acción, ~3min de confirmación extra); (c) reconocer explícitamente que para sesiones CC no existe ninguna señal positiva de muerte (no hay PID expuesto, cc-heartbeat-hook.sh solo toca un archivo por session_id; SessionEnd solo cubre salidas limpias) — esto es un límite estructural real, no resoluble con ajustes locales, y queda INCOMPLETE.\n\n4. R1/R2 MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19 (revisión de si una sola corrida E2E bastó para subir confianza): INCOMPLETE — la evidencia de validación real vive en observaciones Engram del proyecto \"dfl\" (no \"root\"), no accesible desde el mem_search de esta sesión/proyecto. No se puede afirmar ni descartar sobre-confianza sin esa auditoría. Requiere sesión/acceso al proyecto Engram \"dfl\".\n\n5. Hallazgo adicional confirmado: el listado NO_TOUCH/restricciones tiene una única fuente canónica real (`/opt/dfl-context-proxy/main.py` líneas ~578/723) — las ~100 coincidencias de grep son capturas históricas de /go, no copias mantenidas. No hace falta consolidar nada ahí.
+R1/R2 (MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19) — CERRADO, con evidencia real encontrada esta vez en /root/.engram/engram.db proyecto \"dfl\" (obs #528, #529, #532, #534; no en el proyecto \"dfl\" de dflagent, que no tenía nada de esto).\n\nVEREDICTO: la preocupación de la misión P11 vuelta 2 (\"¿una sola corrida E2E bastó para subir confianza?\") queda CONFIRMADA como válida, con evidencia, no descartada.\n\nEvidencia real (obs #534, 2026-08-19): R1 (executor automático de MERCADER_ORDER PENDING, reusa peer-work queue + activate-peer.sh) y R2 (tools/mercader-autonomy/ack_callback.py, ACK automático + update idempotente de mercader_leads.order_status) se construyeron y se demostraron con UNA prueba sintética end-to-end: lead-1787179288964-amokp → MERCADER-ORDER-EXT-BUY-2026-08-19T224128969Z → pw-a14969e5de8e COMPLETED por TCX → AQA-1 CRUD_LIFECYCLE PASS → ACK pw-1f006af20139c COMPLETED por R2 → SQLite order_status=ACKED. Más UN check adicional de idempotencia (segunda llamada al callback devolvió \"already_acked\" correctamente).\n\nEs decir: 1 corrida principal + 1 verificación de idempotencia, ejecutadas y reportadas por el mismo rol (TCX) que construyó R1/R2 — sin verificación adversarial independiente (sin inyección de fallos, sin carga concurrente, sin un TCX/TCC distinto re-probando). Esto es exactamente el patrón de riesgo \"self-attested, no Falsification_PASS\" del marco Av/Cv de esta sesión.\n\nCONCLUSIÓN PARA A_v: R1/R2 NO debe promoverse a FORMAL ni contar como A_v alto todavía — correcto mantenerlo en su banda actual (evidencia básica/operacional, no adversarial). No es que falte evidencia (ya no es INCOMPLETE por falta de acceso) — es que la evidencia que existe es de un solo tipo (una corrida feliz + un retry), insuficiente para el nivel de autonomía que R1/R2 ya está ejerciendo en producción (MERCADER real).\n\nContexto adicional (obs #532, mismo día, anterior a R1/R2): antes de esta misión, R1 y R2 eran pasos MANUALES (TCC ejecutaba a mano, UPDATE manual de SQLite) — R1/R2 se construyeron específicamente para eliminar esa intervención manual, siguiendo la regla de Jorge \"reutilizar todo lo existente, construir solo el delta que el E2E demuestre necesario\".\n\nRecomendación para TCX en la próxima vuelta: probar R1/R2 con inyección de fallos (AQA DENY, peer-work timeout, dos leads BUY concurrentes para el mismo cliente) antes de considerar subir su nivel de A_v.
 
 ---
 
@@ -379,6 +379,11 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+**Type:** manual  
+**Project:** root  
+
+R1/R2 (MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19) — CERRADO, con evidencia real encontrada esta vez en /root/.engram/engram.db proyecto \"dfl\" (obs #528, #529, #532, #534; no en el proyecto \"dfl\" de dflagent, que no tenía nada de esto).\n\nVEREDICTO: la preocupación de la misión P11 vuelta 2 (\"¿una sola corrida E2E bastó para subir confianza?\") queda CONFIRMADA como válida, con evidencia, no descartada.\n\nEvidencia real (obs #534, 2026-08-19): R1 (executor automático de MERCADER_ORDER PENDING, reusa peer-work queue + activate-peer.sh) y R2 (tools/mercader-autonomy/ack_callback.py, ACK automático + update idempotente de mercader_leads.order_status) se construyeron y se demostraron con UNA prueba sintética end-to-end: lead-1787179288964-amokp → MERCADER-ORDER-EXT-BUY-2026-08-19T224128969Z → pw-a14969e5de8e COMPLETED por TCX → AQA-1 CRUD_LIFECYCLE PASS → ACK pw-1f006af20139c COMPLETED por R2 → SQLite order_status=ACKED. Más UN check adicional de idempotencia (segunda llamada al callback devolvió \"already_acked\" correctamente).\n\nEs decir: 1 corrida principal + 1 verificación de idempotencia, ejecutadas y reportadas por el mismo rol (TCX) que construyó R1/R2 — sin verificación adversarial independiente (sin inyección de fallos, sin carga concurrente, sin un TCX/TCC distinto re-probando). Esto es exactamente el patrón de riesgo \"self-attested, no Falsification_PASS\" del marco Av/Cv de esta sesión.\n\nCONCLUSIÓN PARA A_v: R1/R2 NO debe promoverse a FORMAL ni contar como A_v alto todavía — correcto mantenerlo en su banda actual (evidencia básica/operacional, no adversarial). No es que falte evidencia (ya no es INCOMPLETE por falta de acceso) — es que la evidencia que existe es de un solo tipo (una corrida feliz + un retry), insuficiente para el nivel de autonomía que R1/R2 ya está ejerciendo en producción (MERCADER real).\n\nContexto adicional (obs #532, mismo día, anterior a R1/R2): antes de esta misión, R1 y R2 eran pasos MANUALES (TCC ejecutaba a mano, UPDATE manual de SQLite) — R1/R2 se construyeron específicamente para eliminar esa intervención manual, siguiendo la regla de Jorge \"reutilizar todo lo existente, construir solo el delta que el E2E demuestre necesario\".\n\nRecomendación para TCX en la próxima vuelta: probar R1/R2 con inyección de fallos (AQA DENY, peer-work timeout, dos leads BUY concurrentes para el mismo cliente) antes de considerar subir su nivel de A_v.
+
 ### Session summary: root
 **Type:** session_summary  
 **Project:** root  
@@ -392,35 +397,6 @@ Accomplished: Handoff completo escrito en /root/HANDOFF-P11-2026-09-02.md. Guard
 Next Steps: Construir agregador C soberano mínimo reusando señales ya existentes (degraded de FutbolWeb, UNCHANGED/CHANGED de daily_check), colgado del cron existente, sin scheduler nuevo. Cerrar R1/R2 accediendo al proyecto Engram "dfl". No desplegar el fix de session-watchdog sin autorización explícita de Jorge.
 
 Relevant Files: /root/HANDOFF-P11-2026-09-02.md, /opt/futbolweb/lib/{espn-world-cup,scoring-propagation,tournament-reality}.ts, /opt/futbolweb/.github/workflows/ko-reality-sync.yml, /opt/dfl-context-proxy/session-watchdog.sh, /opt/dfl-knowledge/scripts/{wru_graph_refresh.py,daily_check.sh}, /opt/dfl-knowledge/governance/dispatch/store/owner-authorization-drafts/, /opt/saas-factory-setup/mercader-bos/, /root/downloads/{business-os-new,business-os-template}
-
-### P11 TCX — falsificación adversarial del Loop Soberano DFL cerrada
-**Type:** decision  
-**Project:** dfl  
-
-TOPIC: dfl/cybernetics/sovereign-loop/p11-falsification
-TYPE: decision
-STATUS: closed
-DATE: 2026-09-02
-
-OBJETIVO: Falsar sin desarrollo las afirmaciones de TCC sobre watchdog, FootballWeb Return, DCSA, WRU/daily_check, Loop Soberano y autonomía verificable.
-
-RESULTADO: WATCHDOG FAIL. El mismo heartbeat CC fue marcado muerto tres veces (2026-09-02 00:42, 01:18 y 02:03 UTC); cada falso positivo eliminó el heartbeat y disparó push_mirror, con tres commits reales. No hay evidencia de que matara procesos ni de interferencia con el cron 03:05, pero no fue inocuo.
-
-FOOTBALLWEB RETURN FAIL. La ruta real https://www.futbolweb.app/api/tournament-reality/sync existe y devuelve 401; deployment production READY, pero no hay vercel.json, el inspect del proyecto/deployment no mostró crons y no existe evidencia de ejecución programada de Vercel.
-
-DCSA PROVEN para los caminos ejercitados. Suite dispatch_gate 18/18 PASS; receipt adversarial DCSA dispatch reporta 27/27 y gates W3/W4/W7/W8/W10/W13, incluyendo AUTOPROMOTE bloqueado, fail-closed HTTP y owner issuer Jorge. Ledger real registra scope widening solicitado/aplicado por root el 2026-08-30. Esto no prueba todos los escenarios futuros.
-
-DAILY_CHECK PASS con límite. wru_graph_refresh compara digest de HEADs reales y devuelve CHANGED/exit 2 o UNCHANGED/exit 0; logs 2026-08-15..09-01 muestran cambios detectados y digests estables sin falsificación encontrada. daily_check fuerza regen cuando WRU/manifiestos cambian. No cubre cualquier cambio semántico arbitrario fuera de HEADs/manifiestos/.md.
-
-SOVEREIGN LOOP GAPS PARTIAL. Existen agregadores/falsificadores locales (AQA aggregate, re-AQA, loop-health, mission-progress, Engram conflict y revisiones independientes), pero ninguno es el C soberano que responde si DFL converge al QUIERO mayor. No existe F umbrella automatizado ni enforcement técnico de Cmin(Av), Vmin o CalibrationCadence(F) protegido por owner.
-
-AUTONOMY RISK FOUND. R1/R2 aumentó autonomía y obtuvo un E2E automático real, pero solo una vez, con lead sintético, sin carga/concurrencia/adversario; el baseline lo conserva como FORMAL con salvedad. Riesgo adicional: watchdog produjo side effects desde una calibración falsa. No se encontró evidencia de promoción deliberada sin gate; sí evidencia de autonomía clasificada por encima de convergencia completa.
-
-FEEDBACK TCC V2: separar F de componente vs F soberano; exigir identidad/vida positiva antes de actuar en watchdog; no usar FORMAL para habilitar mayor Av sin Cv/Cmin/Vmin; formalizar calibración independiente y enforcement owner-protected; mantener FootballWeb como no probado hasta evidencia del scheduler real.
-
-EVIDENCE: /var/log/dfl-session-watchdog.log; /opt/dfl-context-proxy/session-watchdog.sh; Vercel inspect de futbolweb-app y HTTP 401 público; /opt/dfl-knowledge/evidence/dcsa-dispatch-wiring-2026-08-02/receipts/DISPATCH-WIRING-RECEIPT.json; /opt/dfl-knowledge/governance/dispatch/test_dispatch_gate.py (18/18); /var/log/dfl-graphify.log; /opt/dfl-knowledge/scripts/{daily_check.sh,wru_graph_refresh.py}; docs/BASELINE-CERO-AS-IS-2026-09-01.md y docs/standards/cybernetics/DFL_CONTROL_LOOP_BASELINE_v0.1.md.
-
-FILES_CHANGED: no code changes; session closure documentation only.
 
 ---
 
@@ -531,4 +507,4 @@ FILES_CHANGED: no code changes; session closure documentation only.
 
 ---
 
-*Mirror auto-generated 2026-09-02T03:05:15Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-02T03:26:35Z | La Garra → DFLghub/amos-context*
