@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-02T13:47:21Z  
+**Generated:** 2026-09-02T14:33:32Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -211,10 +211,13 @@ DO-NOT-REPEAT LIST (institutional, for any future session, any Tony):
 
 Full doc index for tomorrow: docs/DFL_WEBSITE_BILINGUAL_STRATEGY.md, docs/DFL_WEBSITE_MANAGER_NOTIFICATION_STORM_2026-09-01.md, docs/DFL_STATE_GRAPH_LOOP_AQA_2026-09-01.md, docs/DFL_LOOP_TAXONOMY_2026-09-01.md, docs/DFL_CAPABILITY_ACQUISITION_AQA_2026-09-01.md, docs/DFL_WHATSAPP_CAPABILITY_EXTRACTION_2026-09-01.md, docs/DFL_WHATSAPP_MULTI_PRODUCT_TRANSFER_2026-09-01.md, docs/DFL_RSVP_WHATSAPP_BACKEND_2026-09-01.md. IRONMAN.md has one real row per mission (10 rows added today). Engram obs #652-#660 plus this index (#661).
 
-**Type:** manual  
-**Project:** root  
+### engram cloud — propósito diseñado (multi-usuario/multi-ubicación)
+**Type:** fact  
+**Project:** dfl  
 
-R1/R2 (MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19) — CERRADO, con evidencia real encontrada esta vez en /root/.engram/engram.db proyecto \"dfl\" (obs #528, #529, #532, #534; no en el proyecto \"dfl\" de dflagent, que no tenía nada de esto).\n\nVEREDICTO: la preocupación de la misión P11 vuelta 2 (\"¿una sola corrida E2E bastó para subir confianza?\") queda CONFIRMADA como válida, con evidencia, no descartada.\n\nEvidencia real (obs #534, 2026-08-19): R1 (executor automático de MERCADER_ORDER PENDING, reusa peer-work queue + activate-peer.sh) y R2 (tools/mercader-autonomy/ack_callback.py, ACK automático + update idempotente de mercader_leads.order_status) se construyeron y se demostraron con UNA prueba sintética end-to-end: lead-1787179288964-amokp → MERCADER-ORDER-EXT-BUY-2026-08-19T224128969Z → pw-a14969e5de8e COMPLETED por TCX → AQA-1 CRUD_LIFECYCLE PASS → ACK pw-1f006af20139c COMPLETED por R2 → SQLite order_status=ACKED. Más UN check adicional de idempotencia (segunda llamada al callback devolvió \"already_acked\" correctamente).\n\nEs decir: 1 corrida principal + 1 verificación de idempotencia, ejecutadas y reportadas por el mismo rol (TCX) que construyó R1/R2 — sin verificación adversarial independiente (sin inyección de fallos, sin carga concurrente, sin un TCX/TCC distinto re-probando). Esto es exactamente el patrón de riesgo \"self-attested, no Falsification_PASS\" del marco Av/Cv de esta sesión.\n\nCONCLUSIÓN PARA A_v: R1/R2 NO debe promoverse a FORMAL ni contar como A_v alto todavía — correcto mantenerlo en su banda actual (evidencia básica/operacional, no adversarial). No es que falte evidencia (ya no es INCOMPLETE por falta de acceso) — es que la evidencia que existe es de un solo tipo (una corrida feliz + un retry), insuficiente para el nivel de autonomía que R1/R2 ya está ejerciendo en producción (MERCADER real).\n\nContexto adicional (obs #532, mismo día, anterior a R1/R2): antes de esta misión, R1 y R2 eran pasos MANUALES (TCC ejecutaba a mano, UPDATE manual de SQLite) — R1/R2 se construyeron específicamente para eliminar esa intervención manual, siguiendo la regla de Jorge \"reutilizar todo lo existente, construir solo el delta que el E2E demuestre necesario\".\n\nRecomendación para TCX en la próxima vuelta: probar R1/R2 con inyección de fallos (AQA DENY, peer-work timeout, dos leads BUY concurrentes para el mismo cliente) antes de considerar subir su nivel de A_v.
+Aclaración directa de Jorge (2026-09-02), durante la autopsia IRONMAN/Engram de la misión P11 (ver docs/P11-IRONMAN-ENGRAM-AUTOPSY-2026-09-02.md): "engram cloud" (proceso Docker observado en :8090, backend Postgres, contenedor engram-prod-cloud) está pensado (DESIGNED) para que el mismo store institucional pueda ser consultado remotamente cuando DFL tenga usuarios (humanos o no) accediendo desde ubicaciones físicas distintas -- todos con acceso a la misma información sin importar su ubicación. Es decir, una superficie de acceso remoto/multi-usuario al mismo dato lógico que hoy sirve localmente engram serve (:7437) vía engram-mcp.service (:8092).
+
+Estado OBSERVED al momento de esta nota (no cambiado por esta aclaración): sin ninguna referencia en el payload /go, IRONMAN.md, AGENTS.md o CLAUDE.md; sin evidencia de tráfico real de usuarios remotos todavía. No confirmado en código si ya replica/sincroniza datos con el store institucional de :7437 o si es un despliegue paralelo aún no conectado. Clasificación: DESIGNED con propósito claro, no integrado/operacional confirmado todavía -- no es un proceso huérfano sin dueño.
 
 ---
 
@@ -379,24 +382,18 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### engram cloud — propósito diseñado (multi-usuario/multi-ubicación)
+**Type:** fact  
+**Project:** dfl  
+
+Aclaración directa de Jorge (2026-09-02), durante la autopsia IRONMAN/Engram de la misión P11 (ver docs/P11-IRONMAN-ENGRAM-AUTOPSY-2026-09-02.md): "engram cloud" (proceso Docker observado en :8090, backend Postgres, contenedor engram-prod-cloud) está pensado (DESIGNED) para que el mismo store institucional pueda ser consultado remotamente cuando DFL tenga usuarios (humanos o no) accediendo desde ubicaciones físicas distintas -- todos con acceso a la misma información sin importar su ubicación. Es decir, una superficie de acceso remoto/multi-usuario al mismo dato lógico que hoy sirve localmente engram serve (:7437) vía engram-mcp.service (:8092).
+
+Estado OBSERVED al momento de esta nota (no cambiado por esta aclaración): sin ninguna referencia en el payload /go, IRONMAN.md, AGENTS.md o CLAUDE.md; sin evidencia de tráfico real de usuarios remotos todavía. No confirmado en código si ya replica/sincroniza datos con el store institucional de :7437 o si es un despliegue paralelo aún no conectado. Clasificación: DESIGNED con propósito claro, no integrado/operacional confirmado todavía -- no es un proceso huérfano sin dueño.
+
 **Type:** manual  
 **Project:** root  
 
 R1/R2 (MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19) — CERRADO, con evidencia real encontrada esta vez en /root/.engram/engram.db proyecto \"dfl\" (obs #528, #529, #532, #534; no en el proyecto \"dfl\" de dflagent, que no tenía nada de esto).\n\nVEREDICTO: la preocupación de la misión P11 vuelta 2 (\"¿una sola corrida E2E bastó para subir confianza?\") queda CONFIRMADA como válida, con evidencia, no descartada.\n\nEvidencia real (obs #534, 2026-08-19): R1 (executor automático de MERCADER_ORDER PENDING, reusa peer-work queue + activate-peer.sh) y R2 (tools/mercader-autonomy/ack_callback.py, ACK automático + update idempotente de mercader_leads.order_status) se construyeron y se demostraron con UNA prueba sintética end-to-end: lead-1787179288964-amokp → MERCADER-ORDER-EXT-BUY-2026-08-19T224128969Z → pw-a14969e5de8e COMPLETED por TCX → AQA-1 CRUD_LIFECYCLE PASS → ACK pw-1f006af20139c COMPLETED por R2 → SQLite order_status=ACKED. Más UN check adicional de idempotencia (segunda llamada al callback devolvió \"already_acked\" correctamente).\n\nEs decir: 1 corrida principal + 1 verificación de idempotencia, ejecutadas y reportadas por el mismo rol (TCX) que construyó R1/R2 — sin verificación adversarial independiente (sin inyección de fallos, sin carga concurrente, sin un TCX/TCC distinto re-probando). Esto es exactamente el patrón de riesgo \"self-attested, no Falsification_PASS\" del marco Av/Cv de esta sesión.\n\nCONCLUSIÓN PARA A_v: R1/R2 NO debe promoverse a FORMAL ni contar como A_v alto todavía — correcto mantenerlo en su banda actual (evidencia básica/operacional, no adversarial). No es que falte evidencia (ya no es INCOMPLETE por falta de acceso) — es que la evidencia que existe es de un solo tipo (una corrida feliz + un retry), insuficiente para el nivel de autonomía que R1/R2 ya está ejerciendo en producción (MERCADER real).\n\nContexto adicional (obs #532, mismo día, anterior a R1/R2): antes de esta misión, R1 y R2 eran pasos MANUALES (TCC ejecutaba a mano, UPDATE manual de SQLite) — R1/R2 se construyeron específicamente para eliminar esa intervención manual, siguiendo la regla de Jorge \"reutilizar todo lo existente, construir solo el delta que el E2E demuestre necesario\".\n\nRecomendación para TCX en la próxima vuelta: probar R1/R2 con inyección de fallos (AQA DENY, peer-work timeout, dos leads BUY concurrentes para el mismo cliente) antes de considerar subir su nivel de A_v.
-
-### Session summary: root
-**Type:** session_summary  
-**Project:** root  
-
-Goal: Cerrar P11 (loops anidados → graph → BOS / autonomía verificable) sin abrir trabajo nuevo; consolidar QUIERO soberano y evidencia empírica de dos rondas de cierre de falsos supuestos.
-
-Discoveries: QUIERO soberano congelado: max A_v s.a. C_v≥C_min(A_v) [creciente, convexa, con techo], V≥V_min, Authority∈Gates, ΔR/ΔC_min(·)/CalibrationCadence(F) owner-protected, H_L(F) liveness automatizable vs Calibration(F) periódica humana no-recursiva. Principio: MÁS AUTONOMÍA → MÁS EVIDENCIA. Empírico: session-watchdog tiene falso positivo real confirmado (reapeó esta misma sesión); FutbolWeb Return confirmado real vía GitHub Actions ko-reality-sync.yml (no Vercel Cron); daily_check/wru_graph_refresh confirmado PASS en logs reales; DCSA owner-authorization-gateway ya existe y funciona (prohibited_actions:AUTOPROMOTE, expiración temporal); R1/R2 sigue INCOMPLETE (evidencia en proyecto Engram "dfl", no accesible desde "root"). "Business OS v7 de Ricardo" NO EXISTE — es una copia mal etiquetada de Hermes Command Center (cc-hermes-cc), confirmado por sus propios commits; la versión real más alta es v6 ("el agrupador").
-
-Accomplished: Handoff completo escrito en /root/HANDOFF-P11-2026-09-02.md. Guardadas 6 observaciones Engram (ids 662-667) documentando: tesis P1-P4, QUIERO mayor, QUIERO vectorial canónico, hallazgos vuelta 1 y vuelta 2 de P11, y el descubrimiento de que Gates/Authority ya existen implementados vía DCSA. Comparación exploratoria de 3 ecosistemas "Business OS" (VM2/mercader-bos, business-os-new, business-os-v6 de Ricardo) entregada sin decisión, a pedido de Jorge.
-
-Next Steps: Construir agregador C soberano mínimo reusando señales ya existentes (degraded de FutbolWeb, UNCHANGED/CHANGED de daily_check), colgado del cron existente, sin scheduler nuevo. Cerrar R1/R2 accediendo al proyecto Engram "dfl". No desplegar el fix de session-watchdog sin autorización explícita de Jorge.
-
-Relevant Files: /root/HANDOFF-P11-2026-09-02.md, /opt/futbolweb/lib/{espn-world-cup,scoring-propagation,tournament-reality}.ts, /opt/futbolweb/.github/workflows/ko-reality-sync.yml, /opt/dfl-context-proxy/session-watchdog.sh, /opt/dfl-knowledge/scripts/{wru_graph_refresh.py,daily_check.sh}, /opt/dfl-knowledge/governance/dispatch/store/owner-authorization-drafts/, /opt/saas-factory-setup/mercader-bos/, /root/downloads/{business-os-new,business-os-template}
 
 ---
 
@@ -507,4 +504,4 @@ Relevant Files: /root/HANDOFF-P11-2026-09-02.md, /opt/futbolweb/lib/{espn-world-
 
 ---
 
-*Mirror auto-generated 2026-09-02T13:47:21Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-02T14:33:32Z | La Garra → DFLghub/amos-context*
