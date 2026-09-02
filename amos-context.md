@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-02T02:18:03Z  
+**Generated:** 2026-09-02T02:44:11Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,6 +116,35 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
+### P11 TCX — falsificación adversarial del Loop Soberano DFL cerrada
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/cybernetics/sovereign-loop/p11-falsification
+TYPE: decision
+STATUS: closed
+DATE: 2026-09-02
+
+OBJETIVO: Falsar sin desarrollo las afirmaciones de TCC sobre watchdog, FootballWeb Return, DCSA, WRU/daily_check, Loop Soberano y autonomía verificable.
+
+RESULTADO: WATCHDOG FAIL. El mismo heartbeat CC fue marcado muerto tres veces (2026-09-02 00:42, 01:18 y 02:03 UTC); cada falso positivo eliminó el heartbeat y disparó push_mirror, con tres commits reales. No hay evidencia de que matara procesos ni de interferencia con el cron 03:05, pero no fue inocuo.
+
+FOOTBALLWEB RETURN FAIL. La ruta real https://www.futbolweb.app/api/tournament-reality/sync existe y devuelve 401; deployment production READY, pero no hay vercel.json, el inspect del proyecto/deployment no mostró crons y no existe evidencia de ejecución programada de Vercel.
+
+DCSA PROVEN para los caminos ejercitados. Suite dispatch_gate 18/18 PASS; receipt adversarial DCSA dispatch reporta 27/27 y gates W3/W4/W7/W8/W10/W13, incluyendo AUTOPROMOTE bloqueado, fail-closed HTTP y owner issuer Jorge. Ledger real registra scope widening solicitado/aplicado por root el 2026-08-30. Esto no prueba todos los escenarios futuros.
+
+DAILY_CHECK PASS con límite. wru_graph_refresh compara digest de HEADs reales y devuelve CHANGED/exit 2 o UNCHANGED/exit 0; logs 2026-08-15..09-01 muestran cambios detectados y digests estables sin falsificación encontrada. daily_check fuerza regen cuando WRU/manifiestos cambian. No cubre cualquier cambio semántico arbitrario fuera de HEADs/manifiestos/.md.
+
+SOVEREIGN LOOP GAPS PARTIAL. Existen agregadores/falsificadores locales (AQA aggregate, re-AQA, loop-health, mission-progress, Engram conflict y revisiones independientes), pero ninguno es el C soberano que responde si DFL converge al QUIERO mayor. No existe F umbrella automatizado ni enforcement técnico de Cmin(Av), Vmin o CalibrationCadence(F) protegido por owner.
+
+AUTONOMY RISK FOUND. R1/R2 aumentó autonomía y obtuvo un E2E automático real, pero solo una vez, con lead sintético, sin carga/concurrencia/adversario; el baseline lo conserva como FORMAL con salvedad. Riesgo adicional: watchdog produjo side effects desde una calibración falsa. No se encontró evidencia de promoción deliberada sin gate; sí evidencia de autonomía clasificada por encima de convergencia completa.
+
+FEEDBACK TCC V2: separar F de componente vs F soberano; exigir identidad/vida positiva antes de actuar en watchdog; no usar FORMAL para habilitar mayor Av sin Cv/Cmin/Vmin; formalizar calibración independiente y enforcement owner-protected; mantener FootballWeb como no probado hasta evidencia del scheduler real.
+
+EVIDENCE: /var/log/dfl-session-watchdog.log; /opt/dfl-context-proxy/session-watchdog.sh; Vercel inspect de futbolweb-app y HTTP 401 público; /opt/dfl-knowledge/evidence/dcsa-dispatch-wiring-2026-08-02/receipts/DISPATCH-WIRING-RECEIPT.json; /opt/dfl-knowledge/governance/dispatch/test_dispatch_gate.py (18/18); /var/log/dfl-graphify.log; /opt/dfl-knowledge/scripts/{daily_check.sh,wru_graph_refresh.py}; docs/BASELINE-CERO-AS-IS-2026-09-01.md y docs/standards/cybernetics/DFL_CONTROL_LOOP_BASELINE_v0.1.md.
+
+FILES_CHANGED: no code changes; session closure documentation only.
+
 ### SESSION SUMMARY 2026-09-01 (Claude/TCC) — @$fin, full-day handoff
 **Type:** decision  
 **Project:** dfl  
@@ -168,51 +197,10 @@ DO-NOT-REPEAT LIST (institutional, for any future session, any Tony):
 
 Full doc index for tomorrow: docs/DFL_WEBSITE_BILINGUAL_STRATEGY.md, docs/DFL_WEBSITE_MANAGER_NOTIFICATION_STORM_2026-09-01.md, docs/DFL_STATE_GRAPH_LOOP_AQA_2026-09-01.md, docs/DFL_LOOP_TAXONOMY_2026-09-01.md, docs/DFL_CAPABILITY_ACQUISITION_AQA_2026-09-01.md, docs/DFL_WHATSAPP_CAPABILITY_EXTRACTION_2026-09-01.md, docs/DFL_WHATSAPP_MULTI_PRODUCT_TRANSFER_2026-09-01.md, docs/DFL_RSVP_WHATSAPP_BACKEND_2026-09-01.md. IRONMAN.md has one real row per mission (10 rows added today). Engram obs #652-#660 plus this index (#661).
 
-### LAZO → GRAFO DE LAZOS → GRAFO DE GRAFOS → BUSINESS OS — tesis institucional corregida por Jorge (2026-09-01)
-**Type:** decision  
-**Project:** dfl  
-
-Jorge dio correcciones puntuales sobre un documento externo (material de un curso de Daniel, paginas 2-3, no presente en este repo/filesystem -- lo comparte "para tu información y conocimiento", no como archivo a editar) que sintetiza la relación entre el incidente de notification storm de hoy (obs #653/#654) y la arquitectura institucional de DFL. Registrado aquí porque es la tesis conceptual que ata todo el trabajo de hoy, no solo una nota de sesión.
-
-TESIS CENTRAL: la progresión no es "grafos" como tema aislado, es una jerarquía:
-LAZO → GRAFO DE LAZOS → GRAFO DE GRAFOS → BUSINESS OS / SISTEMA VIABLE
-El giro de hoy hacia "lazos" no se aparta del curso institucional -- vuelve a su fundamento.
-
-CORRECCIONES PUNTUALES DE JORGE AL ESQUEMA DE DANIEL:
-1. "Business OS = grafo de grafos" se mantiene, pero se precisa: los grafos no solo "se conectan" -- las SALIDAS de unos se convierten en ENTRADAS, REFERENCIAS, SENSORES o PERTURBACIONES de otros. Ahí nacen los lazos entre macroprocesos.
-2. "El agente sabe TODO, en todo momento" es demasiado absoluto. Corrección: "El sistema puede saber lo que necesita saber, cuando lo necesita, SI está conectado, observable y autorizado." Justificación explícita de Jorge: "hoy vimos que tener información disponible no implica interpretarla correctamente" (referencia directa al storm: cada componente individual pasaba sus tests y el sistema seguía roto).
-3. Sobre "jobs corren solos": falta pieza fundamental. Corrección: "Un job recurrente necesita lazo, estado y condición de salida/estabilidad." El Website Manager tenía cron, sensor, comparación y acción -- pero el lazo estaba mal cerrado. Resultado: 162 notificaciones duplicadas.
-4. Las tres escalas se afinan agregando estado+autoridad+feedback (si no, "grafo de grafos" suena demasiado estructural/vacío):
-   Lazo: una tarea se regula.
-   Grafo: muchos lazos coordinan un trabajo.
-   Business OS: muchos grafos coordinan un negocio, COMPARTIENDO ESTADO, MEMORIA, AUTORIDAD Y FEEDBACK.
-5. La sección "por qué se rompe" (Ashby, Goodhart, "mi tormenta" de Daniel) ya no es solo el ejemplo de Daniel -- DFL tiene ahora un espécimen propio, independiente, que demuestra que el problema de los lazos se reproduce fuera del sistema de Daniel: Website Manager, 3 eventos reales, 61 sweeps, 162 Telegram duplicados, duplicate ingestion=NO, duplicate escalation=YES.
-6. Nota editorial menor: error de numeración de página en el documento original (dice "Página 2" donde debía decir "Página 3" en la sección de cierre).
-
-LA IDEA MÁS IMPORTANTE (enriquecimiento del lazo clásico de Daniel, no contradicción): un lazo de control clásico tiene 4 piezas -- Referencia + Sensor + Comparador + Actuador -- que explican CÓMO REGULA. Daniel menciona después "LA VUELTA: otra vez" pero no la desarrolla -- ahí es exactamente donde apareció el fallo de hoy. No bastaba con que las 4 piezas fueran correctas; había que controlar qué significa "volver a pasar". Formulación enriquecida de Jorge:
-
-LAZO = Referencia + Sensor + Comparador + Actuador + Reentrada + Estado + condición de continuidad/salida
-
-Los primeros 4 explican cómo regula. Los últimos 3 (Reentrada, Estado, condición de continuidad/salida) explican SI AL REPETIR converge, se estabiliza, oscila o explota. Ese es el puente directo entre el curso de Daniel y lo que se descubrió en AQA hoy: sweep.mjs tenía las 4 primeras piezas correctas (cron=reentrada, DB row=sensor, isBreached()=comparador, notify()=actuador) -- el defecto vivía enteramente en que la Reentrada no tenía condición de salida real y el Estado no cambiaba con ella.
-
-CORRECCIÓN SOBRE GRAPHIFY (confirma independientemente lo que esta sesión ya había concluido probándolo en vivo, obs #654): "Graphify no es la herramienta de los lazos. Es potencialmente uno de los instrumentos para observar partes del sistema. El objeto que queremos comprender es el lazo, y ese lazo puede atravesar código, estado, tiempo, cron, memoria, autoridad y efectos externos." Ningún instrumento único observa el lazo completo.
-
-FRASE DE CIERRE DE JORGE, el hilo que une ayer con hoy: "Aquí vemos la anatomía y la cibernética básica; el incidente de hoy nos mostró que DFL necesita además auditar la DINÁMICA de esos lazos cuando empiezan a correr en el tiempo."
-
-ACCIÓN TOMADA esta sesión: se incorporó el fundamento cibernético (fórmula de 7 partes + progresión LAZO→GRAFO DE LAZOS→GRAFO DE GRAFOS→BUSINESS OS + corrección sobre Graphify) directamente en docs/standards/aqa/DFL_AQA_PRODUCTION_DIRECTIVE_V0.1.md §12 (el addendum ya creado hoy sobre el mismo incidente), como grounding conceptual del RECURRING_CAPABILITY Test Profile ya construido (tools/aqa-kit/lib/profiles.mjs) -- no se creó documento nuevo ni se duplicó fuente de verdad, se enriqueció la ya escrita hoy mismo.
-
-Pendiente/no hecho: el documento original de Daniel (páginas 2-3) no existe en este filesystem/repo -- Jorge lo compartió como contexto, no como archivo a editar; si en el futuro se requiere reflejar estas correcciones en el documento original de Daniel, se necesita el archivo real (probablemente vive fuera de VM2, ver residence pattern de docs/patterns/vm2-externalization/METHOD.md).
-
-### Paseo TCX Full Access profile configured and verified
-**Type:** decision  
-**Project:** saas-factory-setup  
-
-Cierre @$fin. En VM2/PASEO_HOME=/home/dflagent/.paseo-sfv5-dev se configuró el agent profile dedicado de Paseo id=tcx-full-access, name='TCX — Full Access', provider=codex, model=gpt-5.5, modeId=full-access. La fuente instalada de Paseo 0.5.0-beta.5 confirma que full-access materializa approval_policy=never y sandbox_mode=danger-full-access. `paseo reload --format json` aplicó daemon.agentProfiles sin restartRequiredPaths. Verificación directa vía API local confirmó el perfil y los modos Codex (auto, auto-review, full-access). No se lanzó sesión desde Pixel, no se modificaron credenciales ni el provider global Codex. Próximo paso para Jorge: cerrar/reabrir Paseo en Pixel, abrir saas-factory y seleccionar TCX — Full Access; no seleccionar Codex genérico.
-
 **Type:** manual  
 **Project:** root  
 
-HALLAZGO CLAVE (P11 v2, 2026-09-02): el framework Gates/Authority/ΔR-approval del QUIERO vectorial (ver dfl/thesis/quiero-vectorial-canonico) YA EXISTE parcialmente implementado en producción, no es solo teoría — no hay que construirlo desde cero:\n\n- **DCSA owner-authorization-gateway** (`/opt/dfl-knowledge/governance/dispatch/store/owner-authorization-drafts/*.json`, schema `dfl.dcsa.owner-authorization-gateway-draft.v1`): mecanismo real de ampliar/restringir el scope de autoridad de una misión (ej. widen-MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19). Cada draft tiene: reason, old_target/new_target/added, previous_expires_at/new_expires_at (autoridad con EXPIRACIÓN por tiempo, no permanente), renewal_count, provenance.selected_by (\"Jorge_direct_authorization\"), amendments (log de cambios). Las misiones llevan allowed_actions/prohibited_actions explícitos — ej. `prohibited_actions: [\"AUTOPROMOTE\"]`, i.e. una misión tiene prohibido auto-ampliar su propia autoridad. Esto es una instancia real y ya probada de \"Authority ∈ Gates\" + \"ΔAuthority ⇒ Approval(R_owner)\".\n- **provisional-routing-state.json** (`/opt/dfl-knowledge/governance/onboarding/`, schema `dfl.onboarding.provisional-routing.v1`): es la fuente real del \"PROVISIONAL ROUTING GATE / FAIL_CLOSED\" que aparece en cada /go — lista misiones `pending` con executor, target repos, policy, status, y freshness con expiración (`max_age_seconds`). Confirma que el gate FAIL_CLOSED que vi al inicio de esta sesión es el estado *default* cuando ninguna misión pending coincide con el executor/sesión actual — no un bug ni ambigüedad, es el diseño esperado (fail-closed por defecto, opt-in explícito por misión).\n- Fuente canónica única del texto NO_TOUCH/restricciones: `/opt/dfl-context-proxy/main.py` (líneas ~578 y ~723) — todo lo demás que grep encuentra (~100 archivos) son capturas/logs históricos de respuestas /go pasadas, NO copias mantenidas por separado. No hace falta consolidar nada — ya está consolidado en una sola fuente; la aparente duplicación es solo artefacto de logging, no un riesgo de drift real.\n\nImplicación para cualquier implementación futura de Av/Cv/Gates: reutilizar DCSA + provisional-routing-state como la capa de Gates/Authority, no construir un registro nuevo. El TCX ya existe como rol ejecutor con expiración y prohibición explícita de autopromoción — es la base real sobre la que colgar Av (autonomía verificable) sin inventar framework nuevo.
+P11 vuelta 2 (TCC cierra falsos supuestos, 2026-09-02) — resultados verificados:\n\n1. VERCEL CRON para /api/tournament-reality/sync: CONFIRMADO AUSENTE. `vercel crons ls --project futbolweb-app` (CLI autenticada como dflghub, solo lectura) devolvió \"No cron jobs found for dflghubs-projects/futbolweb-app\". El supuesto anterior (\"puede que Vercel Cron lo dispare\") queda descartado.\n\n2. Return real de FutbolWeb identificado: `.github/workflows/ko-reality-sync.yml` (GitHub Actions, repo DFLghub/futbolweb-app). Contiene decenas de ventanas cron específicas por partido (todas fechadas jun-jul 2026, ya pasadas) MÁS una reconciliación rodante sin restricción de fecha: `15 */3 * * *` (cada 3h, todo el año 2026). El job siempre llama a `/api/tournament-reality/sync` con CRON_SECRET real vía curl, sin importar cuál entrada de cron disparó. Conclusión: el Return SÍ existe y sigue activo hoy (vía la reconciliación rodante cada 3h), aunque las ventanas de alta densidad específicas por partido ya expiraron (correcto, el torneo terminó). No se pudo confirmar historial real de ejecuciones (gh CLI no instalado, no se buscaron credenciales) — el diseño está verificado por archivo, no por logs de ejecución real. Marca: PASS con evidencia de diseño, NO PASS con evidencia de ejecución histórica (sigue abierto para TCX).\n\n3. session-watchdog.sh — propuesta de fix (NO desplegada, solo diseñada, pendiente autorización de Jorge): (a) subir STALE_SECONDS de 600s a ~1800s; (b) exigir 2 lecturas consecutivas de staleness antes de reap (separa sospecha de acción, ~3min de confirmación extra); (c) reconocer explícitamente que para sesiones CC no existe ninguna señal positiva de muerte (no hay PID expuesto, cc-heartbeat-hook.sh solo toca un archivo por session_id; SessionEnd solo cubre salidas limpias) — esto es un límite estructural real, no resoluble con ajustes locales, y queda INCOMPLETE.\n\n4. R1/R2 MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19 (revisión de si una sola corrida E2E bastó para subir confianza): INCOMPLETE — la evidencia de validación real vive en observaciones Engram del proyecto \"dfl\" (no \"root\"), no accesible desde el mem_search de esta sesión/proyecto. No se puede afirmar ni descartar sobre-confianza sin esa auditoría. Requiere sesión/acceso al proyecto Engram \"dfl\".\n\n5. Hallazgo adicional confirmado: el listado NO_TOUCH/restricciones tiene una única fuente canónica real (`/opt/dfl-context-proxy/main.py` líneas ~578/723) — las ~100 coincidencias de grep son capturas históricas de /go, no copias mantenidas. No hace falta consolidar nada ahí.
 
 ---
 
@@ -377,15 +365,39 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### P11 TCX — falsificación adversarial del Loop Soberano DFL cerrada
+**Type:** decision  
+**Project:** dfl  
+
+TOPIC: dfl/cybernetics/sovereign-loop/p11-falsification
+TYPE: decision
+STATUS: closed
+DATE: 2026-09-02
+
+OBJETIVO: Falsar sin desarrollo las afirmaciones de TCC sobre watchdog, FootballWeb Return, DCSA, WRU/daily_check, Loop Soberano y autonomía verificable.
+
+RESULTADO: WATCHDOG FAIL. El mismo heartbeat CC fue marcado muerto tres veces (2026-09-02 00:42, 01:18 y 02:03 UTC); cada falso positivo eliminó el heartbeat y disparó push_mirror, con tres commits reales. No hay evidencia de que matara procesos ni de interferencia con el cron 03:05, pero no fue inocuo.
+
+FOOTBALLWEB RETURN FAIL. La ruta real https://www.futbolweb.app/api/tournament-reality/sync existe y devuelve 401; deployment production READY, pero no hay vercel.json, el inspect del proyecto/deployment no mostró crons y no existe evidencia de ejecución programada de Vercel.
+
+DCSA PROVEN para los caminos ejercitados. Suite dispatch_gate 18/18 PASS; receipt adversarial DCSA dispatch reporta 27/27 y gates W3/W4/W7/W8/W10/W13, incluyendo AUTOPROMOTE bloqueado, fail-closed HTTP y owner issuer Jorge. Ledger real registra scope widening solicitado/aplicado por root el 2026-08-30. Esto no prueba todos los escenarios futuros.
+
+DAILY_CHECK PASS con límite. wru_graph_refresh compara digest de HEADs reales y devuelve CHANGED/exit 2 o UNCHANGED/exit 0; logs 2026-08-15..09-01 muestran cambios detectados y digests estables sin falsificación encontrada. daily_check fuerza regen cuando WRU/manifiestos cambian. No cubre cualquier cambio semántico arbitrario fuera de HEADs/manifiestos/.md.
+
+SOVEREIGN LOOP GAPS PARTIAL. Existen agregadores/falsificadores locales (AQA aggregate, re-AQA, loop-health, mission-progress, Engram conflict y revisiones independientes), pero ninguno es el C soberano que responde si DFL converge al QUIERO mayor. No existe F umbrella automatizado ni enforcement técnico de Cmin(Av), Vmin o CalibrationCadence(F) protegido por owner.
+
+AUTONOMY RISK FOUND. R1/R2 aumentó autonomía y obtuvo un E2E automático real, pero solo una vez, con lead sintético, sin carga/concurrencia/adversario; el baseline lo conserva como FORMAL con salvedad. Riesgo adicional: watchdog produjo side effects desde una calibración falsa. No se encontró evidencia de promoción deliberada sin gate; sí evidencia de autonomía clasificada por encima de convergencia completa.
+
+FEEDBACK TCC V2: separar F de componente vs F soberano; exigir identidad/vida positiva antes de actuar en watchdog; no usar FORMAL para habilitar mayor Av sin Cv/Cmin/Vmin; formalizar calibración independiente y enforcement owner-protected; mantener FootballWeb como no probado hasta evidencia del scheduler real.
+
+EVIDENCE: /var/log/dfl-session-watchdog.log; /opt/dfl-context-proxy/session-watchdog.sh; Vercel inspect de futbolweb-app y HTTP 401 público; /opt/dfl-knowledge/evidence/dcsa-dispatch-wiring-2026-08-02/receipts/DISPATCH-WIRING-RECEIPT.json; /opt/dfl-knowledge/governance/dispatch/test_dispatch_gate.py (18/18); /var/log/dfl-graphify.log; /opt/dfl-knowledge/scripts/{daily_check.sh,wru_graph_refresh.py}; docs/BASELINE-CERO-AS-IS-2026-09-01.md y docs/standards/cybernetics/DFL_CONTROL_LOOP_BASELINE_v0.1.md.
+
+FILES_CHANGED: no code changes; session closure documentation only.
+
 **Type:** manual  
 **Project:** root  
 
-HALLAZGO CLAVE (P11 v2, 2026-09-02): el framework Gates/Authority/ΔR-approval del QUIERO vectorial (ver dfl/thesis/quiero-vectorial-canonico) YA EXISTE parcialmente implementado en producción, no es solo teoría — no hay que construirlo desde cero:\n\n- **DCSA owner-authorization-gateway** (`/opt/dfl-knowledge/governance/dispatch/store/owner-authorization-drafts/*.json`, schema `dfl.dcsa.owner-authorization-gateway-draft.v1`): mecanismo real de ampliar/restringir el scope de autoridad de una misión (ej. widen-MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19). Cada draft tiene: reason, old_target/new_target/added, previous_expires_at/new_expires_at (autoridad con EXPIRACIÓN por tiempo, no permanente), renewal_count, provenance.selected_by (\"Jorge_direct_authorization\"), amendments (log de cambios). Las misiones llevan allowed_actions/prohibited_actions explícitos — ej. `prohibited_actions: [\"AUTOPROMOTE\"]`, i.e. una misión tiene prohibido auto-ampliar su propia autoridad. Esto es una instancia real y ya probada de \"Authority ∈ Gates\" + \"ΔAuthority ⇒ Approval(R_owner)\".\n- **provisional-routing-state.json** (`/opt/dfl-knowledge/governance/onboarding/`, schema `dfl.onboarding.provisional-routing.v1`): es la fuente real del \"PROVISIONAL ROUTING GATE / FAIL_CLOSED\" que aparece en cada /go — lista misiones `pending` con executor, target repos, policy, status, y freshness con expiración (`max_age_seconds`). Confirma que el gate FAIL_CLOSED que vi al inicio de esta sesión es el estado *default* cuando ninguna misión pending coincide con el executor/sesión actual — no un bug ni ambigüedad, es el diseño esperado (fail-closed por defecto, opt-in explícito por misión).\n- Fuente canónica única del texto NO_TOUCH/restricciones: `/opt/dfl-context-proxy/main.py` (líneas ~578 y ~723) — todo lo demás que grep encuentra (~100 archivos) son capturas/logs históricos de respuestas /go pasadas, NO copias mantenidas por separado. No hace falta consolidar nada — ya está consolidado en una sola fuente; la aparente duplicación es solo artefacto de logging, no un riesgo de drift real.\n\nImplicación para cualquier implementación futura de Av/Cv/Gates: reutilizar DCSA + provisional-routing-state como la capa de Gates/Authority, no construir un registro nuevo. El TCX ya existe como rol ejecutor con expiración y prohibición explícita de autopromoción — es la base real sobre la que colgar Av (autonomía verificable) sin inventar framework nuevo.
-
-**Type:** manual  
-**Project:** root  
-
-QUIERO MAYOR de DFL — formalización vectorial CANÓNICA (congelada 2026-09-02, tras 5 vueltas de crítica/refinamiento con TCC en sesión), reemplaza el borrador ⟨A,C,S⟩ inicial:\n\nEstructura final (lexicográfica, no suma ponderada):\n\nmax A_v\nsujeto a:\n  C_v ≥ C_min\n  V ≥ V_min\n  Authority ∈ Gates\n  ΔR ⇒ Approval(R_owner)\n  H_L(F) ≥ H_min\n  Calibration(F) = periodic ground-truth check (dueño humano)\n\nDonde:\n- A_v — Autonomía verificable: única variable que se maximiza de verdad. No es \"menos humano\"; es \"todo lo resoluble se resolvió Y todo lo que debía escalarse por Gates fue escalado\". Se deriva de un candidato A* que sobrevive verificación: F(A*)=PASS ⇒ A_v (v = sobrevivió verificación, no self-report).\n- C_v — Convergencia verificable: piso/gate, NO co-objetivo con A_v. Solo cuenta si R→S→C→A→Return demuestra movimiento real hacia la Reference (evidencia del loop completo, no una afirmación). Prioridad lexicográfica: primero asegurar C_v≥C_min, DESPUÉS maximizar A_v — nunca al revés, porque un error en el Comparador envenena todo lo demás río abajo; un error en A_v (exceso de cautela) solo cuesta tiempo, es recuperable.\n- V — Viabilidad: piso, no objetivo a maximizar sin límite (más redundancia/resiliencia de la necesaria compite con A_v y C_v vía overhead).\n- R / Propósito: no se optimiza; lo define/autoriza R_owner. El sistema puede cuestionar R y proponer que quedó obsoleta, pero NO puede mutarla sin Approval(R_owner).\n- Soberanía: NO es variable independiente (se eliminó S) — queda representada completamente por Gates de autoridad + control exclusivo de R_owner sobre ΔR. Simplificación válida, sin pérdida.\n- F — el verificador/falsificador (rol conceptual TCX frente a TCC): candidatos A*, C* solo cuentan como A_v, C_v tras sobrevivir F. Health(F) partida en dos capas distintas:\n  - H_L(F) liveness: ¿F está vivo/corriendo/produciendo diagnóstico? — continuo, automatizable.\n  - Calibration(F): ¿los diagnósticos de F siguen correspondiendo con la realidad? — NO automatizable recursivamente (no resolver con F2→F3→F4..., eso solo desplaza el problema); requiere muestreo periódico contra ground truth humano. Aquí el humano tiene intervención de altísima calidad y bajísima frecuencia: calibrar el instrumento, no operar el negocio.\n\nMetáfora ancla: piloto de avión moderno — DFL (autopiloto) hace cada vez más operativamente; Jorge hace cada vez menos operación pero conserva destino (R) y la potestad de desconfiar/recalibrar el tablero (F).\n\nPULIDO PENDIENTE (abierto, no resuelto, propuesto por TCC 2026-09-02, Jorge aún no confirma si lo incorpora):\n1. C_min probablemente debería ser función creciente de cuánta autonomía ya se concedió (más A_v delegado ⇒ exige más evidencia de C_v, no el mismo umbral fijo de siempre).\n2. La cadencia de Calibration(F) necesita dueño explícito y debería vivir bajo la misma autoridad que Approval(R_owner) — si el propio sistema decide cuándo recalibrar, reabre el mismo hueco que ΔR ya cerró (un instrumento mal calibrado diría de sí mismo que todo va bien y que no urge recalibrar).\n\nRelación con [[dfl-quiero-mayor]] y [[dfl-thesis-lazo-grafo-business-os]]: esta es la versión formal/matemática del mismo QUIERO mayor en prosa; y C_v/F formalizan exactamente el rol TCC/TCX ya establecido en la misión P11 (dfl/mission/p11-loops-anidados-graph-bos) — F(A_v,C_v)=PASS es la versión abstracta de "TCX intenta falsificar lo que TCC afirma".
+P11 vuelta 2 (TCC cierra falsos supuestos, 2026-09-02) — resultados verificados:\n\n1. VERCEL CRON para /api/tournament-reality/sync: CONFIRMADO AUSENTE. `vercel crons ls --project futbolweb-app` (CLI autenticada como dflghub, solo lectura) devolvió \"No cron jobs found for dflghubs-projects/futbolweb-app\". El supuesto anterior (\"puede que Vercel Cron lo dispare\") queda descartado.\n\n2. Return real de FutbolWeb identificado: `.github/workflows/ko-reality-sync.yml` (GitHub Actions, repo DFLghub/futbolweb-app). Contiene decenas de ventanas cron específicas por partido (todas fechadas jun-jul 2026, ya pasadas) MÁS una reconciliación rodante sin restricción de fecha: `15 */3 * * *` (cada 3h, todo el año 2026). El job siempre llama a `/api/tournament-reality/sync` con CRON_SECRET real vía curl, sin importar cuál entrada de cron disparó. Conclusión: el Return SÍ existe y sigue activo hoy (vía la reconciliación rodante cada 3h), aunque las ventanas de alta densidad específicas por partido ya expiraron (correcto, el torneo terminó). No se pudo confirmar historial real de ejecuciones (gh CLI no instalado, no se buscaron credenciales) — el diseño está verificado por archivo, no por logs de ejecución real. Marca: PASS con evidencia de diseño, NO PASS con evidencia de ejecución histórica (sigue abierto para TCX).\n\n3. session-watchdog.sh — propuesta de fix (NO desplegada, solo diseñada, pendiente autorización de Jorge): (a) subir STALE_SECONDS de 600s a ~1800s; (b) exigir 2 lecturas consecutivas de staleness antes de reap (separa sospecha de acción, ~3min de confirmación extra); (c) reconocer explícitamente que para sesiones CC no existe ninguna señal positiva de muerte (no hay PID expuesto, cc-heartbeat-hook.sh solo toca un archivo por session_id; SessionEnd solo cubre salidas limpias) — esto es un límite estructural real, no resoluble con ajustes locales, y queda INCOMPLETE.\n\n4. R1/R2 MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19 (revisión de si una sola corrida E2E bastó para subir confianza): INCOMPLETE — la evidencia de validación real vive en observaciones Engram del proyecto \"dfl\" (no \"root\"), no accesible desde el mem_search de esta sesión/proyecto. No se puede afirmar ni descartar sobre-confianza sin esa auditoría. Requiere sesión/acceso al proyecto Engram \"dfl\".\n\n5. Hallazgo adicional confirmado: el listado NO_TOUCH/restricciones tiene una única fuente canónica real (`/opt/dfl-context-proxy/main.py` líneas ~578/723) — las ~100 coincidencias de grep son capturas históricas de /go, no copias mantenidas. No hace falta consolidar nada ahí.
 
 ---
 
@@ -496,4 +508,4 @@ QUIERO MAYOR de DFL — formalización vectorial CANÓNICA (congelada 2026-09-02
 
 ---
 
-*Mirror auto-generated 2026-09-02T02:18:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-02T02:44:11Z | La Garra → DFLghub/amos-context*
