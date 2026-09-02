@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-02T03:03:03Z  
+**Generated:** 2026-09-02T03:05:03Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -115,6 +115,20 @@ Antes de operar, respondé:
 ---
 
 ## RECENT DECISIONS
+
+### Session summary: root
+**Type:** session_summary  
+**Project:** root  
+
+Goal: Cerrar P11 (loops anidados → graph → BOS / autonomía verificable) sin abrir trabajo nuevo; consolidar QUIERO soberano y evidencia empírica de dos rondas de cierre de falsos supuestos.
+
+Discoveries: QUIERO soberano congelado: max A_v s.a. C_v≥C_min(A_v) [creciente, convexa, con techo], V≥V_min, Authority∈Gates, ΔR/ΔC_min(·)/CalibrationCadence(F) owner-protected, H_L(F) liveness automatizable vs Calibration(F) periódica humana no-recursiva. Principio: MÁS AUTONOMÍA → MÁS EVIDENCIA. Empírico: session-watchdog tiene falso positivo real confirmado (reapeó esta misma sesión); FutbolWeb Return confirmado real vía GitHub Actions ko-reality-sync.yml (no Vercel Cron); daily_check/wru_graph_refresh confirmado PASS en logs reales; DCSA owner-authorization-gateway ya existe y funciona (prohibited_actions:AUTOPROMOTE, expiración temporal); R1/R2 sigue INCOMPLETE (evidencia en proyecto Engram "dfl", no accesible desde "root"). "Business OS v7 de Ricardo" NO EXISTE — es una copia mal etiquetada de Hermes Command Center (cc-hermes-cc), confirmado por sus propios commits; la versión real más alta es v6 ("el agrupador").
+
+Accomplished: Handoff completo escrito en /root/HANDOFF-P11-2026-09-02.md. Guardadas 6 observaciones Engram (ids 662-667) documentando: tesis P1-P4, QUIERO mayor, QUIERO vectorial canónico, hallazgos vuelta 1 y vuelta 2 de P11, y el descubrimiento de que Gates/Authority ya existen implementados vía DCSA. Comparación exploratoria de 3 ecosistemas "Business OS" (VM2/mercader-bos, business-os-new, business-os-v6 de Ricardo) entregada sin decisión, a pedido de Jorge.
+
+Next Steps: Construir agregador C soberano mínimo reusando señales ya existentes (degraded de FutbolWeb, UNCHANGED/CHANGED de daily_check), colgado del cron existente, sin scheduler nuevo. Cerrar R1/R2 accediendo al proyecto Engram "dfl". No desplegar el fix de session-watchdog sin autorización explícita de Jorge.
+
+Relevant Files: /root/HANDOFF-P11-2026-09-02.md, /opt/futbolweb/lib/{espn-world-cup,scoring-propagation,tournament-reality}.ts, /opt/futbolweb/.github/workflows/ko-reality-sync.yml, /opt/dfl-context-proxy/session-watchdog.sh, /opt/dfl-knowledge/scripts/{wru_graph_refresh.py,daily_check.sh}, /opt/dfl-knowledge/governance/dispatch/store/owner-authorization-drafts/, /opt/saas-factory-setup/mercader-bos/, /root/downloads/{business-os-new,business-os-template}
 
 ### P11 TCX — falsificación adversarial del Loop Soberano DFL cerrada
 **Type:** decision  
@@ -365,6 +379,20 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
+### Session summary: root
+**Type:** session_summary  
+**Project:** root  
+
+Goal: Cerrar P11 (loops anidados → graph → BOS / autonomía verificable) sin abrir trabajo nuevo; consolidar QUIERO soberano y evidencia empírica de dos rondas de cierre de falsos supuestos.
+
+Discoveries: QUIERO soberano congelado: max A_v s.a. C_v≥C_min(A_v) [creciente, convexa, con techo], V≥V_min, Authority∈Gates, ΔR/ΔC_min(·)/CalibrationCadence(F) owner-protected, H_L(F) liveness automatizable vs Calibration(F) periódica humana no-recursiva. Principio: MÁS AUTONOMÍA → MÁS EVIDENCIA. Empírico: session-watchdog tiene falso positivo real confirmado (reapeó esta misma sesión); FutbolWeb Return confirmado real vía GitHub Actions ko-reality-sync.yml (no Vercel Cron); daily_check/wru_graph_refresh confirmado PASS en logs reales; DCSA owner-authorization-gateway ya existe y funciona (prohibited_actions:AUTOPROMOTE, expiración temporal); R1/R2 sigue INCOMPLETE (evidencia en proyecto Engram "dfl", no accesible desde "root"). "Business OS v7 de Ricardo" NO EXISTE — es una copia mal etiquetada de Hermes Command Center (cc-hermes-cc), confirmado por sus propios commits; la versión real más alta es v6 ("el agrupador").
+
+Accomplished: Handoff completo escrito en /root/HANDOFF-P11-2026-09-02.md. Guardadas 6 observaciones Engram (ids 662-667) documentando: tesis P1-P4, QUIERO mayor, QUIERO vectorial canónico, hallazgos vuelta 1 y vuelta 2 de P11, y el descubrimiento de que Gates/Authority ya existen implementados vía DCSA. Comparación exploratoria de 3 ecosistemas "Business OS" (VM2/mercader-bos, business-os-new, business-os-v6 de Ricardo) entregada sin decisión, a pedido de Jorge.
+
+Next Steps: Construir agregador C soberano mínimo reusando señales ya existentes (degraded de FutbolWeb, UNCHANGED/CHANGED de daily_check), colgado del cron existente, sin scheduler nuevo. Cerrar R1/R2 accediendo al proyecto Engram "dfl". No desplegar el fix de session-watchdog sin autorización explícita de Jorge.
+
+Relevant Files: /root/HANDOFF-P11-2026-09-02.md, /opt/futbolweb/lib/{espn-world-cup,scoring-propagation,tournament-reality}.ts, /opt/futbolweb/.github/workflows/ko-reality-sync.yml, /opt/dfl-context-proxy/session-watchdog.sh, /opt/dfl-knowledge/scripts/{wru_graph_refresh.py,daily_check.sh}, /opt/dfl-knowledge/governance/dispatch/store/owner-authorization-drafts/, /opt/saas-factory-setup/mercader-bos/, /root/downloads/{business-os-new,business-os-template}
+
 ### P11 TCX — falsificación adversarial del Loop Soberano DFL cerrada
 **Type:** decision  
 **Project:** dfl  
@@ -393,11 +421,6 @@ FEEDBACK TCC V2: separar F de componente vs F soberano; exigir identidad/vida po
 EVIDENCE: /var/log/dfl-session-watchdog.log; /opt/dfl-context-proxy/session-watchdog.sh; Vercel inspect de futbolweb-app y HTTP 401 público; /opt/dfl-knowledge/evidence/dcsa-dispatch-wiring-2026-08-02/receipts/DISPATCH-WIRING-RECEIPT.json; /opt/dfl-knowledge/governance/dispatch/test_dispatch_gate.py (18/18); /var/log/dfl-graphify.log; /opt/dfl-knowledge/scripts/{daily_check.sh,wru_graph_refresh.py}; docs/BASELINE-CERO-AS-IS-2026-09-01.md y docs/standards/cybernetics/DFL_CONTROL_LOOP_BASELINE_v0.1.md.
 
 FILES_CHANGED: no code changes; session closure documentation only.
-
-**Type:** manual  
-**Project:** root  
-
-P11 vuelta 2 (TCC cierra falsos supuestos, 2026-09-02) — resultados verificados:\n\n1. VERCEL CRON para /api/tournament-reality/sync: CONFIRMADO AUSENTE. `vercel crons ls --project futbolweb-app` (CLI autenticada como dflghub, solo lectura) devolvió \"No cron jobs found for dflghubs-projects/futbolweb-app\". El supuesto anterior (\"puede que Vercel Cron lo dispare\") queda descartado.\n\n2. Return real de FutbolWeb identificado: `.github/workflows/ko-reality-sync.yml` (GitHub Actions, repo DFLghub/futbolweb-app). Contiene decenas de ventanas cron específicas por partido (todas fechadas jun-jul 2026, ya pasadas) MÁS una reconciliación rodante sin restricción de fecha: `15 */3 * * *` (cada 3h, todo el año 2026). El job siempre llama a `/api/tournament-reality/sync` con CRON_SECRET real vía curl, sin importar cuál entrada de cron disparó. Conclusión: el Return SÍ existe y sigue activo hoy (vía la reconciliación rodante cada 3h), aunque las ventanas de alta densidad específicas por partido ya expiraron (correcto, el torneo terminó). No se pudo confirmar historial real de ejecuciones (gh CLI no instalado, no se buscaron credenciales) — el diseño está verificado por archivo, no por logs de ejecución real. Marca: PASS con evidencia de diseño, NO PASS con evidencia de ejecución histórica (sigue abierto para TCX).\n\n3. session-watchdog.sh — propuesta de fix (NO desplegada, solo diseñada, pendiente autorización de Jorge): (a) subir STALE_SECONDS de 600s a ~1800s; (b) exigir 2 lecturas consecutivas de staleness antes de reap (separa sospecha de acción, ~3min de confirmación extra); (c) reconocer explícitamente que para sesiones CC no existe ninguna señal positiva de muerte (no hay PID expuesto, cc-heartbeat-hook.sh solo toca un archivo por session_id; SessionEnd solo cubre salidas limpias) — esto es un límite estructural real, no resoluble con ajustes locales, y queda INCOMPLETE.\n\n4. R1/R2 MERCADER_AUTONOMOUS_R1_R2_TCX_2026_08_19 (revisión de si una sola corrida E2E bastó para subir confianza): INCOMPLETE — la evidencia de validación real vive en observaciones Engram del proyecto \"dfl\" (no \"root\"), no accesible desde el mem_search de esta sesión/proyecto. No se puede afirmar ni descartar sobre-confianza sin esa auditoría. Requiere sesión/acceso al proyecto Engram \"dfl\".\n\n5. Hallazgo adicional confirmado: el listado NO_TOUCH/restricciones tiene una única fuente canónica real (`/opt/dfl-context-proxy/main.py` líneas ~578/723) — las ~100 coincidencias de grep son capturas históricas de /go, no copias mantenidas. No hace falta consolidar nada ahí.
 
 ---
 
@@ -508,4 +531,4 @@ P11 vuelta 2 (TCC cierra falsos supuestos, 2026-09-02) — resultados verificado
 
 ---
 
-*Mirror auto-generated 2026-09-02T03:03:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-02T03:05:03Z | La Garra → DFLghub/amos-context*
