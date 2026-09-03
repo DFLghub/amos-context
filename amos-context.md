@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-02T23:27:03Z  
+**Generated:** 2026-09-03T01:30:05Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -116,39 +116,42 @@ Antes de operar, respondé:
 
 ## RECENT DECISIONS
 
-### MERCADER Thin Slice — diseño preparado, no ejecutado
+### THINSLICE-2026-09-02-001 — CIERRE DE SESIÓN + HANDOFF (consolidado, ver obs #679-#692 para detalle)
 **Type:** decision  
 **Project:** dfl  
 
-Preparacion del Thin Slice real de MERCADER (estrategia aprobada por Jorge: G0-G4 como scorecard, no fases secuenciales; Thin Slice real temprano en vez de completar gates). Doc completo: docs/MERCADER-ESTRATEGIA-GLOBAL-G0-G4-2026-09-02.md, seccion "Thin Slice real de MERCADER".
+Cierre de sesion, sin trabajo nuevo. Este es un CONSOLIDADO -- el detalle completo de cada paso, con evidencia, ya vive en Engram obs #679 a #692 (project=dfl) y en las filas correspondientes de IRONMAN.md; no se repite aca.
 
-Decisiones ya tomadas por Jorge: Website conserva ownership de sus ventas (no se fusiona, puede hacer handoff explicito a MERCADER); Finanzas/conciliacion es capacidad transversal DFL, no dominio de MERCADER; no se valida el shortcut "lead->produccion".
+ESTADO FINAL: Thin Slice NO cerrado. Ultima transicion confirmada: PAYOUT_INITIATED (evidencia humana de Jorge). Pendiente: PAYOUT_COMPLETED -> MERCURY_RECEIVED (para el monto real, USD 0.67; el $0.01 ya visto en Mercury es solo el deposito de verificacion de conexion bancaria, evento distinto) -> RECONCILED.
 
-Caso propuesto: una persona de confianza pide UN OnePager real (el unico producto que MERCADER ya sabe producir/entregar E2E). Sin dinero real (Cobro fuera del recorrido). Recorrido: Lead/Evaluacion/Oferta/Aceptacion-Venta manuales; Orden y Produccion reusan el sistema ya construido y probado (POST /api/mercader/leads BUY, mercader-fabrica-bridge.ts + AQA-1); Fulfillment/Delivery manual por canal ya operativo (no crear mensajeria nueva); Aceptacion cliente manual (senal explicita, distinta de entrega -- la pieza que sabiamos que no existe como sensor, se prueba a mano); Postventa/Cierre manual.
+CADENA DE IDENTIDAD COMPLETA, intacta en todas las etapas: THINSLICE-2026-09-02-001 -> lead-1788385305643-ic8wx -> offer-thinslice-20260902-001 (status FULFILLED) -> MERCADER-ORDER-THINSLICE-2026-09-02-001 -> pw-b0b1e87f03e9 (Produccion, COMPLETED) -> pw-11ecd16fc6eb (ACK, COMPLETED) -> pedido Squarespace n.126 00002 (payment_ref SQSP-PAYMENT-35990be8-1352-4104-ab6f-74b2af4dc0e3) -> mercader_leads.status=converted, sale_amount=1.00 -> payout Squarespace Pending hacia Mercury Checking ...1275.
 
-Identidad: no existe order_id hasta la etapa Orden -- se usa una etiqueta de caso externa (ej THINSLICE-2026-09-02-001) anotada desde el primer paso, empalmada explicitamente en el brief del lead al crear la orden real. Esa costura etiqueta->order_id es en si misma el primer dato que el experimento prueba.
+GAPS PROBADOS (no reparados): GAP A (Orden->Produccion automatica gateada a intent_type=BUY, la oferta formal PAID nunca lo dispara), GAP B (Produccion/ACK no sincroniza mercader_commercial_offers -- puenteado a mano dos veces), GAP C CRITICO (el sistema autodeclara DELIVERED/ACK sin evidencia real -- el link /entrega/* real dio HTTP 404; PRODUCED != DELIVERED demostrado en la practica). Ademas: SMTP outbound de esta VM bloqueado (egress, no convertido en mision); Refund/Claims/Chargebacks y Postventa/Cierre: capacidad inexistente en MERCADER (confirmado por grep de codigo real), necesidad futura registrada, fuera de alcance hoy.
 
-Evidencia minima OCURRIO/NO OCURRIO/NO OBSERVABLE definida por transicion (ver doc). Autopsia de 7 preguntas preparada (identidad perdida, ownership ambiguo, transicion ausente, evidencia ausente, outcome incumplido, que silencio deberia ser lazo, cual es el UNICO gap real que autoriza construir -- disciplina de un gap por corrida, no lista de deseos).
+WORKAROUNDS MANUALES usados solo para continuar (ninguno cuenta como PASS de automatizacion): (1) peer-work manual Orden->Produccion via tools/peer-work/peer_work.py create, etiquetado explicitamente MANUAL BRIDGE; (2) sincronizacion manual de mercader_commercial_offers.status (PAID->PAYMENT_PENDING->PAID->FULFILLMENT_PENDING->FULFILLED) via commercial_store.mjs; (3) mercader_leads.status='converted' via UPDATE directo replicando markLeadConverted; (4) delivery real por Gmail web (Chrome remoto/CDP, gardipedia@gmail.com) en vez de SMTP; (5) intervencion humana de Jorge para 2FA de Squarespace, conexion bancaria Mercury, y autorizacion del payout -- todas fuera de alcance de cualquier agente por diseño (permisos de propietario de cuenta).
 
-GO/NO-GO: GO -- cero construccion, cero riesgo real, responde la pregunta que ninguna auditoria mas iba a responder.
+BLOCKERS RESUELTOS: SMTP->email alternativo via Gmail web (resuelto con canal alternativo, no con el SMTP mismo, que sigue bloqueado); 2FA de Squarespace Balance (resuelto por Jorge).
+BLOCKERS ABIERTOS: ownership-only permission wall de Squarespace Balance (estructural, no resoluble por ningun agente, confirmado 2 veces); PAYOUT_COMPLETED/MERCURY_RECEIVED/RECONCILED (tiempo bancario normal, 1-3 dias habiles segun Squarespace); PERSISTENT_SECRET_SOURCE de SUPABASE_ACCESS_TOKEN (de P0, sin relacion, sigue abierto); dispatch de mercader-bos sin aplicar (draft listo, root de Jorge pendiente, de P0).
 
-G0 sigue bloqueado: draft de dispatch pendiente de apply como root de Jorge (comando exacto en el doc), no bloqueante para correr el Thin Slice.
+EVIDENCIA FINANCIERA FINAL DE HOY: Squarespace Balance paso de USD 0.67 a USD 0.00; transferencia real hacia cuenta Mercury Checking ...1275, status Pending, ETA mostrada por Squarespace 1-3 dias habiles. Deposito de verificacion de $0.01 ya visible en Mercury (evento de conexion, no el payout).
 
-NO EJECUTADO todavia -- queda pendiente que Jorge elija el caso real, el canal de entrega, y quien juega "el cliente", antes de correr el proximo P11 (ejecucion del Thin Slice + autopsia).
+HANDOFF PARA PROXIMA SESION -- unico punto de reanudacion: (1) revisar estado del payout en Squarespace; (2) si sigue Pending, no intervenir; (3) si pasa a Completed/Posted, verificar Mercury; (4) confirmar ingreso real en Mercury; (5) reconciliar contra THINSLICE-2026-09-02-001/pedido 00002/payment_ref; (6) solo entonces evaluar cierre E2E del Thin Slice y, por separado, si se autoriza reparar alguno de los 3 gaps (prioridad C > A = B).
 
-### MERCADER estrategia global G0-G4 — contradicción real con decisión Website+MERCADER
+### THINSLICE-2026-09-02-001 — CIERRE: venta real completa, lead converted; Postventa = blocker final confirmado
 **Type:** decision  
 **Project:** dfl  
 
-Sintesis (no ejecucion) de la estrategia global de Jorge para convertir MERCADER en sistema comercial operativo de DFL, mapeada contra G0-G4 sobre evidencia ya reunida (F1-F4, P0). Doc completo: docs/MERCADER-ESTRATEGIA-GLOBAL-G0-G4-2026-09-02.md.
+Jorge acepto explicitamente el producto entregado como cumplimiento de la orden ("acepto el producto entregado como cumplimiento de la orden"). Accion tomada, reuso real (no construccion): markLeadConverted-equivalent (UPDATE directo replicando la funcion real db.ts::markLeadConverted) sobre mercader_leads: status='converted', sale_amount=1.00, converted_at=timestamp real. Estado final de la fila: {status: converted, sale_amount: 1, order_id: MERCADER-ORDER-THINSLICE-2026-09-02-001, order_status: ACKED}.
 
-Hallazgo mas importante: la estrategia nueva lista "Website" como fuente de Adquisicion de MERCADER, pero esto CONTRADICE una decision institucional ya tomada por Jorge el 2026-08-24 (IRONMAN.md): "DFL Website conserva ownership de sus ventas. MERCADER conserva ownership de las suyas... no se fusionan los dos pipelines de ventas." Requiere que Jorge decida si la estrategia nueva reemplaza esa decision o si Website queda fuera de Adquisicion.
+INTENTO DE CONTINUAR A POSTVENTA/CIERRE: busqueda real (grep) de cualquier mecanismo de reclamo/complaint/postventa/support-ticket/refund en TODO el codigo real de mercader-bos y mercader-autonomy -- CERO resultados. Confirma con evidencia de codigo (no solo de documentacion previa) que Postventa/Cierre NO EXISTE como capacidad de MERCADER hoy. Es el blocker final real de este Thin Slice: no hay mas circuito que recorrer porque el sistema no tiene a donde ir despues de 'converted'.
 
-Otros hallazgos: (1) Finanzas (cobro/payout/conciliacion) probablemente NO deberia ser un dominio propio de MERCADER -- es un gap identico y no resuelto en TODO DFL (Website, JPI, JackyClean tampoco tienen conciliacion), tratarlo transversal evita la misma duplicacion que causo el trabajo de reconciliacion del adaptador WhatsApp. (2) El dominio "Evaluacion" que pide Jorge tiene un candidato de reuso fuerte no nombrado en su propia estrategia: el patron Challenge Manager (SLA_HOURS/slaDeadline/isBreached), ya adaptado 2 veces (MERCADER R-B, DFL Website Manager). (3) "Aceptacion real del cliente" (no solo entrega) es el lazo mas genuinamente nuevo de toda la estrategia -- confirmado que no existe ningun sensor asi en ningun sistema de DFL hoy. (4) Riesgo de fragmentar identidad de caso si Finanzas/Postventa nacen con sus propias claves antes de decidir que todo hereda order_id.
+CIERRE DEL THIN SLICE THINSLICE-2026-09-02-001 -- resumen completo del circuito real recorrido de punta a punta, con evidencia en cada etapa:
 
-order_id ya es identidad de caso real (probado E2E lead->orden->AQA->ACK) pero se detiene en ACKED -- nada aguas abajo (cobro, delivery externo real, aceptacion, postventa) lo hereda hoy. No existe un grafo navegable de casos (IRONMAN=tablero de estado, Engram=busqueda narrativa, ninguno es grafo de relaciones); seria una vista sobre datos existentes, no plataforma nueva. Graphify confirmado incorrecto para esto (ya se sabia).
+Lead (real, API) -> Evaluacion (automatica: scoring real descubierto, score=100 + juicio humano) -> Oferta (real, DB, USD $1.00) -> Aceptacion de oferta (real, confirmacion textual de Jorge) -> Venta (real, PAYMENT_REQUIRED) -> Cobro (real, Squarespace Pay Link, orden Squarespace N.126 00002, payment_ref verificado) -> Orden (real, con GAP A descubierto y puenteado manualmente) -> Produccion (real, TCX, AQA-1 PASS, OnePager real) -> Delivery (autodeclarado por el sistema pero el canal real /entrega/* dio 404 -- GAP C critico descubierto) -> Entrega real alternativa (email real via Gmail web/HTTPS, gardipedia@gmail.com, sin SMTP por bloqueo de egress de la VM) -> Recepcion humana real confirmada (Jorge subio el archivo descargado) -> Sincronizacion manual FULFILLED (GAP B puenteado manualmente) -> Aceptacion real del producto por Jorge -> lead status=converted, sale_amount real -> Postventa/Cierre: BLOCKER FINAL, capacidad inexistente en MERCADER (confirmado por codigo, no solo por diseño).
 
-Roadmap de 10 peones pequeños en el doc, empezando por 2 decisiones (Finanzas transversal si/no; contradiccion Website resuelta si/no) antes de tocar codigo.
+GAPS demostrados con evidencia real para roadmap de reparacion (prioridad segun Jorge): GAP C (critico, observabilidad semantica -- DELIVERED/ACK se autodeclaran sin evidencia real de entrega) > GAP A (Orden->Produccion automatica bloqueada por gate BUY-only) = GAP B (Produccion/ACK->fulfillment de oferta no sincronizado) > Postventa/Cierre inexistente (heredable de JPI, nunca portado).
+
+Identidad preservada intacta en las 12+ etapas, sin una sola perdida, desde THINSLICE-2026-09-02-001 hasta el estado final 'converted'. Doc de estrategia global: docs/MERCADER-ESTRATEGIA-GLOBAL-G0-G4-2026-09-02.md. Cadena completa de observaciones Engram de esta mision: #679 a #688(esta).
 
 ### Session summary: root
 **Type:** session_summary  
@@ -164,23 +167,31 @@ Next Steps: Construir agregador C soberano mínimo reusando señales ya existent
 
 Relevant Files: /root/HANDOFF-P11-2026-09-02.md, /opt/futbolweb/lib/{espn-world-cup,scoring-propagation,tournament-reality}.ts, /opt/futbolweb/.github/workflows/ko-reality-sync.yml, /opt/dfl-context-proxy/session-watchdog.sh, /opt/dfl-knowledge/scripts/{wru_graph_refresh.py,daily_check.sh}, /opt/dfl-knowledge/governance/dispatch/store/owner-authorization-drafts/, /opt/saas-factory-setup/mercader-bos/, /root/downloads/{business-os-new,business-os-template}
 
-### THINSLICE-2026-09-02-001 — Pay Link real creado en Squarespace
+### THINSLICE-2026-09-02-001 — $0.01 verification deposit llegó a Mercury; $0.67 payout real aún pendiente
 **Type:** fact  
 **Project:** dfl  
 
-Pay Link real creado en Squarespace (Deep Feelings Labs, conch-mauve-tgdn.squarespace.com/config/commerce/pay-links) via Chrome remoto del iMac (reverse SSH tunnel 127.0.0.1:9223, CDP real, Playwright connectOverCDP -- no se lanzo navegador nuevo, se uso la sesion ya autenticada de Jorge).
+Evidencia humana real (screenshot app Mercury de Jorge): cuenta "Deep Feelings..." Checking ...1275, transaccion real "#VUZ Squarespace, Real-Time Payment In, $0.01". Jorge aclara explicitamente: esto es el deposito de verificacion que Squarespace envio al "conectar" la cuenta bancaria con Mercury -- NO es el payout real de USD 0.67 del Thin Slice. El payout real puede tardar (tiempo bancario normal).
 
-Datos reales: Titulo "OnePager — THINSLICE-2026-09-02-001", Importe USD $1.00, Nombre del elemento "OnePager real — THINSLICE-2026-09-02-001 (Thin Slice MERCADER)", Tipo de articulo Servicio. Estado tras guardar: Activo, 1-1 de 1 registros en la tabla de Enlaces de pago, fecha actualizada 2/9/26.
+Estado del lazo, sin avanzar de mas: PAYOUT_INITIATED (confirmado, mensaje anterior de Jorge) -> PAYOUT_COMPLETED: PENDIENTE, no confirmado -> MERCURY_RECEIVED (para el monto real del payout, USD 0.67): PENDIENTE, todavia no llego, solo llego el deposito de verificacion de $0.01 (evento distinto) -> RECONCILED: PENDIENTE.
 
-LINK REAL: https://www.deepfeelingslabs.com/pay-link/e818c9f8-34d6-45f4-bcde-fcb27bd2701c (extraido del href mailto de compartir, no inventado).
-
-No se toco configuracion bancaria, merchant, payout ni ninguna otra configuracion financiera -- unicamente se creo el enlace de pago solicitado. De paso se confirmo visualmente en el dashboard de Productos y servicios de este mismo sitio la orden N.126 00001 ya conocida (Jorge Tigreros, jtigre@gmail.com, USD 1.00, Pagado, logistica Pendiente) -- el cargo real de $1 mencionado en auditorias anteriores de esta sesion.
-
-Siguiente paso: entregar el link a Jorge para que pague con su tarjeta real. Cuando confirme el pago, verificar en el mismo dashboard de Squarespace, capturar el payment_ref/ID de la nueva orden, y transicionar la oferta real offer-thinslice-20260902-001 (ya en PAYMENT_REQUIRED) a PAYMENT_PENDING->PAID via commercial_store.mjs::transitionOffer, anotando explicitamente "Squarespace Payments, Website-owned rail borrowed for this test, no rail propio de MERCADER".
+No se declara nada mas alla de esto. Se espera el proximo reporte de Jorge cuando el payout real de $0.67 aparezca en Mercury.
 
 ---
 
 ## ACTIVE CONSTRAINTS — DO NOT TOUCH WITHOUT PRP
+
+### THINSLICE-2026-09-02-001 — PAYOUT_INITIATED (evidencia humana de Jorge); mi Chrome remoto no puede verificarlo
+**Type:** fact  
+**Project:** dfl  
+
+Estado actualizado: PAYOUT_INITIATED, basado en evidencia humana directa de Jorge: "USD 0.67 -> COLUMN NA MERCURY (...1275), balance Squarespace = USD 0.00 y transferencia status Pending."
+
+Verificacion propia intentada via el Chrome remoto (gardipedia@gmail.com) -- RESULTADO IMPORTANTE: no pude corroborar independientemente. La pagina de Balance sigue mostrando "Es necesario tener permisos. Solo el propietario de la cuenta de Squarespace Payments de este sitio puede acceder a los detalles sobre Squarespace Balance" -- el 2FA ya se configuro (el texto cambio de "Agrega la autenticacion" a "USD 0.67 ahora estan disponibles para gastarlos o transferirlos"), pero el bloqueo de PERMISOS DE PROPIETARIO sigue exactamente igual. Esto confirma que son dos restricciones independientes: 2FA (ya resuelto) y ownership de cuenta (nunca resuelto para la identidad gardipedia, y no se puede resolver por esa via). La tabla de "Transferencias" tampoco muestra una fila nueva de retiro a banco -- solo sigue mostrando la liquidacion antigua del 25 ago hacia "Balance" interno.
+
+CONCLUSION METODOLOGICA IMPORTANTE para el resto de este Thin Slice: el Chrome remoto (identidad gardipedia, colaboradora) es ESTRUCTURALMENTE CIEGO a los datos de Balance/payout-a-banco, independientemente del estado de 2FA -- esto no va a cambiar. La evidencia de PAYOUT_COMPLETED y MERCURY_RECEIVED tendra que venir del propio reporte de Jorge (desde su sesion de propietario real, o desde su cuenta Mercury directamente) -- no de una verificacion mia via este canal. Lo dejo registrado para no reintentar la misma verificacion inutilmente en el futuro.
+
+Estado del lazo: PAYOUT_INITIATED (evidencia humana) -> PAYOUT_COMPLETED (pendiente, requiere reporte de Jorge) -> MERCURY_RECEIVED (pendiente, requiere reporte de Jorge, ej. screenshot de la cuenta Mercury) -> RECONCILED (pendiente).
 
 ### THINSLICE-2026-09-02-001 — gap real encontrado y puenteado manualmente: Orden→Producción
 **Type:** fact  
@@ -197,39 +208,6 @@ PUENTE MANUAL EJECUTADO (autorizado explicitamente por Jorge 2026-09-02, condici
 Estado actual: PENDING, esperando que el cron ya existente (activate-peer.sh TCX, */10 * * * *) lo recoja, igual que ya paso una vez automaticamente el 2026-09-01 (ficha L3 de BASELINE-CERO-AS-IS). No se forzo un claim bajo identidad ajena.
 
 Siguiente: cuando TCX reclame y complete este item (produzca el OnePager real, corra AQA-1, entregue con token verificable, emita MERCADER_ACK), verificar Produccion (PRODUCED, distinto de DELIVERED) y continuar Fulfillment/Delivery -> Recepcion/Aceptacion de Jorge -> Postventa, hasta el proximo gap real.
-
-### THINSLICE-2026-09-02-001 — resultado final: BLOCKED en Cobro, con hallazgos reales importantes
-**Type:** fact  
-**Project:** dfl  
-
-Ejecucion real E2E del Thin Slice de MERCADER, cliente=Jorge real, producto=1 OnePager, con intento de venta y cobro real. Resultado: BLOCKED en Cobro (bloqueador externo real, no fabricado, no saltado).
-
-RECORRIDO REAL ALCANZADO, con evidencia:
-1. LEAD: OCURRIO. POST real a http://127.0.0.1:9099/api/mercader/leads (servidor PID 3689480, corriendo desde 2026-09-01 -- HALLAZGO: contradice auditorias previas de esta sesion que asumian "sin daemons corriendo en ningun ambiente", Claim!=Evidence confirmado en la practica). lead_id real: lead-1788385305643-ic8wx.
-2. EVALUACION/CALIFICACION: OCURRIO, automatico + juicio humano. HALLAZGO NO ESPERADO: existe un motor real de scoring/auto-rechazo YA CONSTRUIDO Y VIVO (scoreLeadWithConstraints + autoRejectConfig, threshold default 40, en phase-4-automation.ts) -- contradice la asuncion previa de que Evaluacion era 100% manual/inexistente. Nuestro lead scoreo 100, paso automaticamente (autoRejected:false). Evidencia ausente notada: el score no se persiste como columna, es efimero (solo en la respuesta del POST).
-3. OFERTA: OCURRIO, real, persistida en tabla mercader_commercial_offers (offer_id offer-thinslice-20260902-001), status OFFERED, correlation_id=THINSLICE-2026-09-02-001, amount_minor=100 USD ($1.00). HALLAZGO: esta tabla/estado-maquina esta CONSTRUIDA y funcional en el codigo (commercial_contract.mjs + commercial_store.mjs) pero CERO expuesta via HTTP -- nunca antes se habia ejercitado por un flujo real/humano, solo por tests. Tuve un error de uso propio al inicio (createOffer devuelve {row,created}, no la fila directa) -- no es un bug del sistema, es un contrato de retorno idempotente correcto, documentado aca para quien reuse esta funcion despues.
-4. ACEPTACION: OCURRIO, real. Jorge confirmo explicitamente "si" en el chat (2026-09-02T21:45:16Z aprox). Transicion OFFERED->ACCEPTED con customer_acceptance_ref='JORGE-CHAT-CONFIRM-2026-09-02T21:45:16Z' -- el propio codigo EXIGE esta referencia para permitir la transicion (guarda real, no se pudo fabricar).
-5. VENTA: OCURRIO, real. Transicion ACCEPTED->PAYMENT_REQUIRED, persistida.
-6. COBRO: BLOCKED, real, verificado -- no un supuesto. Inspeccione mercader-bos completo: cero codigo de integracion de pago real (grep de stripe/polar/checkout solo encontro UN comentario mencionando "Stripe/Mercury" como concepto futuro, cero implementacion). .env de mercader-bos no tiene ninguna clave de pago. Cero credenciales Polar en TODO el filesystem (grep vacio) y cero mencion en el log de acceso del secret-store. La unica ruta de cobro real que existe en DFL (Squarespace Payments) pertenece al pipeline de ventas del Website, separado deliberadamente del de MERCADER por decision de Jorge del 24-08 -- usarla para este caso violaria esa separacion y confundiria la identidad de quien cobra. NO SE FABRICO NI SALTO el cobro. payment_provider sigue NULL, payment_readiness=PAYMENT_REQUIRED (honesto, no forzado a PAID).
-
-NO EJECUTADO (por disciplina, siguiendo "no saltes el cobro para declarar E2E" y "no validar el shortcut lead->produccion"): Orden, Produccion, Fulfillment/Delivery, Recepcion/Aceptacion cliente, Postventa/Cierre. El propio state machine ya gatea Fulfillment a PAID -- avanzar sin cobro real hubiera sido exactamente el shortcut prohibido.
-
-CONTINUIDAD DE IDENTIDAD: PRESERVADA correctamente en todo el tramo recorrido -- THINSLICE-2026-09-02-001 vive como correlation_id en la oferta, correlacionado con el lead_id real desde el primer paso. No hubo perdida de identidad en este tramo (a diferencia de lo que se penso podria pasar). order_id todavia no nacio (nace recien en la transicion a Orden, que no se alcanzo).
-
-OWNERSHIP POR ETAPA: claro durante todo el tramo recorrido -- yo (ejecutor) sostuve el caso end-to-end, sin ambiguedad de quien tenia la pelota, PORQUE fue una ejecucion manual/dirigida, no un proceso automatico paralelo. Pregunta abierta real: si esto corriera de verdad con muchos leads simultaneos, quien es el owner de un caso en PAYMENT_REQUIRED indefinido -- no hay sensor de eso hoy (ver silencios abajo).
-
-SILENCIOS QUE NECESITAN LAZO (no construido, solo identificado): "oferta ACCEPTED/PAYMENT_REQUIRED sin avanzar a PAID en N horas" -- hoy nadie lo notaria; ningun sensor existe sobre la tabla mercader_commercial_offers.
-
-CAPACIDADES DESCUBIERTAS/REUTILIZADAS (nuevas, no documentadas antes en esta sesion):
-- El agent-server de mercader-bos esta VIVO en produccion real (puerto 9099), no apagado como se penso.
-- Motor de scoring/auto-rechazo de leads real y funcional (phase-4-automation.ts, constraint-enrichment.ts).
-- El state machine comercial completo (commercial_contract.mjs + commercial_store.mjs) es real, correcto, y reusable tal cual -- funciono sin ningun cambio de codigo, solo llamando las funciones existentes.
-
-GAP GENUINO QUE AUTORIZA TRABAJO (uno solo, con disciplina): no existe ninguna ruta de cobro real, propia y autorizada para MERCADER (ni Stripe, ni Polar, ni ninguna). Es EXTERNAL_GATE + decision de Jorge, no un gap de codigo -- nada que "construir" hasta que Jorge decida el rail (ver DEFERRED_BY_DEPENDENCY ya registrado en P0, obs #675/#676).
-
-OWNER_ACTIONS: (1) decidir y provisionar un rail de cobro real y propio para MERCADER (Stripe nuevo, Polar institucional, o activar el Stripe ya presente en CampaignOS/CRM-B2B si se activan esos donados) -- sin esto, Cobro sigue BLOCKED indefinidamente y Orden/Produccion/Delivery no pueden probarse con dinero real. (2) el draft de dispatch de mercader-bos sigue sin aplicar (root pendiente, ver P0).
-
-Nada se disfrazo de exitoso. BLOCKED en Cobro es el resultado real y honesto.
 
 ---
 
@@ -376,35 +354,36 @@ Cerrar carril institucional DFL (@$go, KNL, hooks, context-proxy) y dejar Futbol
 ### Relevant Files
 /opt/dfl-context-proxy/main.py, /opt/dfl-context-proxy/cc-atgo-hook.sh, /usr/local/bin/dfl-nav, /opt/futbolweb/.gitignore, /opt/dfl-knowledge/07_Chat_History/FutbolWeb/Actas/BITACORA_ODA+Standard_2026-06-27_CIERRE_DFL_KNL_FUTBOLWEB.md
 
-### THINSLICE-2026-09-02-001 — gap real encontrado y puenteado manualmente: Orden→Producción
+### THINSLICE-2026-09-02-001 — CIERRE DE SESIÓN + HANDOFF (consolidado, ver obs #679-#692 para detalle)
+**Type:** decision  
+**Project:** dfl  
+
+Cierre de sesion, sin trabajo nuevo. Este es un CONSOLIDADO -- el detalle completo de cada paso, con evidencia, ya vive en Engram obs #679 a #692 (project=dfl) y en las filas correspondientes de IRONMAN.md; no se repite aca.
+
+ESTADO FINAL: Thin Slice NO cerrado. Ultima transicion confirmada: PAYOUT_INITIATED (evidencia humana de Jorge). Pendiente: PAYOUT_COMPLETED -> MERCURY_RECEIVED (para el monto real, USD 0.67; el $0.01 ya visto en Mercury es solo el deposito de verificacion de conexion bancaria, evento distinto) -> RECONCILED.
+
+CADENA DE IDENTIDAD COMPLETA, intacta en todas las etapas: THINSLICE-2026-09-02-001 -> lead-1788385305643-ic8wx -> offer-thinslice-20260902-001 (status FULFILLED) -> MERCADER-ORDER-THINSLICE-2026-09-02-001 -> pw-b0b1e87f03e9 (Produccion, COMPLETED) -> pw-11ecd16fc6eb (ACK, COMPLETED) -> pedido Squarespace n.126 00002 (payment_ref SQSP-PAYMENT-35990be8-1352-4104-ab6f-74b2af4dc0e3) -> mercader_leads.status=converted, sale_amount=1.00 -> payout Squarespace Pending hacia Mercury Checking ...1275.
+
+GAPS PROBADOS (no reparados): GAP A (Orden->Produccion automatica gateada a intent_type=BUY, la oferta formal PAID nunca lo dispara), GAP B (Produccion/ACK no sincroniza mercader_commercial_offers -- puenteado a mano dos veces), GAP C CRITICO (el sistema autodeclara DELIVERED/ACK sin evidencia real -- el link /entrega/* real dio HTTP 404; PRODUCED != DELIVERED demostrado en la practica). Ademas: SMTP outbound de esta VM bloqueado (egress, no convertido en mision); Refund/Claims/Chargebacks y Postventa/Cierre: capacidad inexistente en MERCADER (confirmado por grep de codigo real), necesidad futura registrada, fuera de alcance hoy.
+
+WORKAROUNDS MANUALES usados solo para continuar (ninguno cuenta como PASS de automatizacion): (1) peer-work manual Orden->Produccion via tools/peer-work/peer_work.py create, etiquetado explicitamente MANUAL BRIDGE; (2) sincronizacion manual de mercader_commercial_offers.status (PAID->PAYMENT_PENDING->PAID->FULFILLMENT_PENDING->FULFILLED) via commercial_store.mjs; (3) mercader_leads.status='converted' via UPDATE directo replicando markLeadConverted; (4) delivery real por Gmail web (Chrome remoto/CDP, gardipedia@gmail.com) en vez de SMTP; (5) intervencion humana de Jorge para 2FA de Squarespace, conexion bancaria Mercury, y autorizacion del payout -- todas fuera de alcance de cualquier agente por diseño (permisos de propietario de cuenta).
+
+BLOCKERS RESUELTOS: SMTP->email alternativo via Gmail web (resuelto con canal alternativo, no con el SMTP mismo, que sigue bloqueado); 2FA de Squarespace Balance (resuelto por Jorge).
+BLOCKERS ABIERTOS: ownership-only permission wall de Squarespace Balance (estructural, no resoluble por ningun agente, confirmado 2 veces); PAYOUT_COMPLETED/MERCURY_RECEIVED/RECONCILED (tiempo bancario normal, 1-3 dias habiles segun Squarespace); PERSISTENT_SECRET_SOURCE de SUPABASE_ACCESS_TOKEN (de P0, sin relacion, sigue abierto); dispatch de mercader-bos sin aplicar (draft listo, root de Jorge pendiente, de P0).
+
+EVIDENCIA FINANCIERA FINAL DE HOY: Squarespace Balance paso de USD 0.67 a USD 0.00; transferencia real hacia cuenta Mercury Checking ...1275, status Pending, ETA mostrada por Squarespace 1-3 dias habiles. Deposito de verificacion de $0.01 ya visible en Mercury (evento de conexion, no el payout).
+
+HANDOFF PARA PROXIMA SESION -- unico punto de reanudacion: (1) revisar estado del payout en Squarespace; (2) si sigue Pending, no intervenir; (3) si pasa a Completed/Posted, verificar Mercury; (4) confirmar ingreso real en Mercury; (5) reconciliar contra THINSLICE-2026-09-02-001/pedido 00002/payment_ref; (6) solo entonces evaluar cierre E2E del Thin Slice y, por separado, si se autoriza reparar alguno de los 3 gaps (prioridad C > A = B).
+
+### THINSLICE-2026-09-02-001 — $0.01 verification deposit llegó a Mercury; $0.67 payout real aún pendiente
 **Type:** fact  
 **Project:** dfl  
 
-Continuacion de THINSLICE-2026-09-02-001 tras Cobro real confirmado (Squarespace Pay Link, USD $1.00, orden Squarespace N.126 00002, payment_ref real capturado del panel: config/finance/payments/35990be8-1352-4104-ab6f-74b2af4dc0e3).
+Evidencia humana real (screenshot app Mercury de Jorge): cuenta "Deep Feelings..." Checking ...1275, transaccion real "#VUZ Squarespace, Real-Time Payment In, $0.01". Jorge aclara explicitamente: esto es el deposito de verificacion que Squarespace envio al "conectar" la cuenta bancaria con Mercury -- NO es el payout real de USD 0.67 del Thin Slice. El payout real puede tardar (tiempo bancario normal).
 
-CADENA DE IDENTIDAD COMPLETA, sin perdida: THINSLICE-2026-09-02-001 (correlation_id) -> lead-1788385305643-ic8wx (lead_id) -> MERCADER-ORDER-THINSLICE-2026-09-02-001 (order_id) -> offer-thinslice-20260902-001 (status PAID, payment_ref=SQSP-PAYMENT-35990be8-1352-4104-ab6f-74b2af4dc0e3) -> pw-b0b1e87f03e9 (order_request_id, peer-work item real).
+Estado del lazo, sin avanzar de mas: PAYOUT_INITIATED (confirmado, mensaje anterior de Jorge) -> PAYOUT_COMPLETED: PENDIENTE, no confirmado -> MERCURY_RECEIVED (para el monto real del payout, USD 0.67): PENDIENTE, todavia no llego, solo llego el deposito de verificacion de $0.01 (evento distinto) -> RECONCILED: PENDIENTE.
 
-GAP REAL DEMOSTRADO (no fabricado, encontrado leyendo el codigo real de mercader-fabrica-bridge.ts): el trigger automatico Orden->Produccion (maybeTransitionBuyToOrder) esta hard-gateado a lead.intent_type==='BUY'. La funcion "offer-aware" (maybeAcceptOfferAndRequirePayment) TAMBIEN termina llamando a maybeTransitionBuyToOrder internamente -- o sea que incluso el camino "consciente de ofertas" depende del mismo gate BUY-only. onOfferPaid() solo transiciona el estado de la oferta a PAID, tampoco dispara produccion. CONCLUSION: un lead con intent_type=LEAD que pasa por el flujo comercial formal completo (Oferta->Aceptacion->Venta->Cobro->PAID) JAMAS puede llegar a Produccion via ningun camino automatico existente hoy -- no importa cuan real sea el pago. No es "falta produccion" (produccion SI existe y funciona, ver mercader-fabrica-bridge.ts + AQA-1 ya probado); es una transicion faltante entre dos subgrafos ya construidos (el bridge BUY-directo y el state-machine de ofertas formales). Observacion de Jorge, correcta: esto es mucho mas pequeno de reparar (agregar una condicion alternativa al guard de maybeTransitionBuyToOrder, o llamarla explicitamente desde onOfferPaid) que construir un sistema nuevo.
-
-PUENTE MANUAL EJECUTADO (autorizado explicitamente por Jorge 2026-09-02, condiciones: no tocar intent_type, no parchear mercader-fabrica-bridge.ts, no construir solucion todavia, registrar como MANUAL BRIDGE no como PASS de automatizacion): cree directamente, via tools/peer-work/peer_work.py create, el MISMO payload que maybeTransitionBuyToOrder generaria (mismo source=MERCADER, intent=MERCADER_ORDER, target_executor=TCX, authority_ref=human:telegram:8776472165, mismas acceptance criteria), agregando ademas correlation_id=THINSLICE-2026-09-02-001 nativo (parametro que la funcion Python soporta pero el bridge TS nunca usa -- otro hallazgo menor) y un campo inputs.automation_status='ORDEN_PRODUCCION_AUTOMATICA_BLOCKED' + scope explicito narrando el gap, para que el item quede etiquetado en el ledger como puente manual, no como resultado de automatizacion real. request_id real: pw-b0b1e87f03e9, status PENDING, target_executor TCX -- vinculado de vuelta a mercader_leads.order_request_id.
-
-Estado actual: PENDING, esperando que el cron ya existente (activate-peer.sh TCX, */10 * * * *) lo recoja, igual que ya paso una vez automaticamente el 2026-09-01 (ficha L3 de BASELINE-CERO-AS-IS). No se forzo un claim bajo identidad ajena.
-
-Siguiente: cuando TCX reclame y complete este item (produzca el OnePager real, corra AQA-1, entregue con token verificable, emita MERCADER_ACK), verificar Produccion (PRODUCED, distinto de DELIVERED) y continuar Fulfillment/Delivery -> Recepcion/Aceptacion de Jorge -> Postventa, hasta el proximo gap real.
-
-### THINSLICE-2026-09-02-001 — Pay Link real creado en Squarespace
-**Type:** fact  
-**Project:** dfl  
-
-Pay Link real creado en Squarespace (Deep Feelings Labs, conch-mauve-tgdn.squarespace.com/config/commerce/pay-links) via Chrome remoto del iMac (reverse SSH tunnel 127.0.0.1:9223, CDP real, Playwright connectOverCDP -- no se lanzo navegador nuevo, se uso la sesion ya autenticada de Jorge).
-
-Datos reales: Titulo "OnePager — THINSLICE-2026-09-02-001", Importe USD $1.00, Nombre del elemento "OnePager real — THINSLICE-2026-09-02-001 (Thin Slice MERCADER)", Tipo de articulo Servicio. Estado tras guardar: Activo, 1-1 de 1 registros en la tabla de Enlaces de pago, fecha actualizada 2/9/26.
-
-LINK REAL: https://www.deepfeelingslabs.com/pay-link/e818c9f8-34d6-45f4-bcde-fcb27bd2701c (extraido del href mailto de compartir, no inventado).
-
-No se toco configuracion bancaria, merchant, payout ni ninguna otra configuracion financiera -- unicamente se creo el enlace de pago solicitado. De paso se confirmo visualmente en el dashboard de Productos y servicios de este mismo sitio la orden N.126 00001 ya conocida (Jorge Tigreros, jtigre@gmail.com, USD 1.00, Pagado, logistica Pendiente) -- el cargo real de $1 mencionado en auditorias anteriores de esta sesion.
-
-Siguiente paso: entregar el link a Jorge para que pague con su tarjeta real. Cuando confirme el pago, verificar en el mismo dashboard de Squarespace, capturar el payment_ref/ID de la nueva orden, y transicionar la oferta real offer-thinslice-20260902-001 (ya en PAYMENT_REQUIRED) a PAYMENT_PENDING->PAID via commercial_store.mjs::transitionOffer, anotando explicitamente "Squarespace Payments, Website-owned rail borrowed for this test, no rail propio de MERCADER".
+No se declara nada mas alla de esto. Se espera el proximo reporte de Jorge cuando el payout real de $0.67 aparezca en Mercury.
 
 ---
 
@@ -515,4 +494,4 @@ Siguiente paso: entregar el link a Jorge para que pague con su tarjeta real. Cua
 
 ---
 
-*Mirror auto-generated 2026-09-02T23:27:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-03T01:30:05Z | La Garra → DFLghub/amos-context*
