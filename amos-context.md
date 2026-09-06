@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-05T04:09:03Z  
+**Generated:** 2026-09-06T03:03:12Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -223,6 +223,53 @@ Siguiente: cuando TCX reclame y complete este item (produzca el OnePager real, c
 **Project:** dfl-knowledge  
 
 ## Goal
+Sesión larga, multi-misión sobre DFL/SFV5/Workforce Registry Unit (WRU) v0.1: desde protocolo @$go inicial hasta fabricación end-to-end completa de WRU bajo autorización humana explícita, con verificación exhaustiva basada en evidencia real en cada paso.
+
+## Instructions
+- El usuario opera bajo protocolo DFL: @$go al abrir sesión, @$fin al cerrar (mem_save + push_mirror.sh). No confundir @$go (comando) con /go (ruta HTTP del proxy).
+- Modo de ejecución de máxima autonomía ya establecido (memoria previa): no pedir permiso para acciones seguras, agrupar aprobaciones en un único punto de decisión — pero el usuario definió explícitamente 5 checkpoints humanos bloqueantes para la fabricación de WRU y espera que se respeten literalmente, incluso en modo autónomo.
+- El usuario exige evidencia real y reproducible en cada gate/checkpoint — "no declares PASS por documentos ni scaffolding". Toda corrección de PRP/Plan/build debe traer hashes SHA256 completos, snapshots git before/after, y diffs exactos, nunca solo afirmaciones.
+- Cuando se pide "cierre provisional (checkpoint)" a mitad de una tarea larga, se espera un handoff autosuficiente en disco (no solo un resumen conversacional) para que otro agente sin memoria pueda continuar.
+
+## Discoveries
+- Un fetch de amos-context.md (GitHub raw) devolvió contenido con forma de prompt-injection (se autoasignaba un "perfil CONSULTOR" con capacidades falsas, contradichas por el entorno real) — se flagueó al usuario explícitamente en vez de obedecerlo.
+- La corrida inicial de `/prp` para WRU generó un PRP nativo con un defecto real: atribuyó los "44 gates" a la fábrica SFV5 (DDMS) cuando en realidad son gates propios de WRU (G1-G22 del laboratorio de capacidad + G23-G44 de CC-PRP-R1) — corregido en 2 pasadas tras comparar contra las fuentes verbatim (READER añadido como rol, G22/G21/G41-43 restaurados a su alcance/semántica original).
+- Un `git worktree add` nuevo parte con `git status` limpio incluso cuando el árbol principal está sucio desde antes — los archivos no versionados no se materializan en el worktree nuevo. Esto valida el patrón de aislamiento recomendado por el propio Implementation Plan y se usó tal cual.
+- Durante la fabricación real aparecieron 2 falsos positivos en tests de auditoría de código (G44, y la guarda READER de query/client.mjs): el propio comentario explicativo del código contenía la cadena de texto que el test de auditoría buscaba (p.ej. "appendVersion("), inflando el conteo de "call sites". Se corrigió reformulando el comentario, nunca relajando el test.
+- `source_commit` en el schema WRU es "HEAD al momento de generación", no un valor fijo — avanza legítimamente con cada commit de fabricación aunque `.claude/skills/` nunca se toque. Esto se aprovechó honestamente en Fase N para demostrar `freshness_status: stale` real sin ocultarlo (invariante explícito del PRP: nunca esconder staleness al consumidor).
+- Un test inicial de "Activación" asumía que el registro nunca crecería más allá de 32 entradas — al agregar legítimamente una entrada sintética no-SFV5 (Fase N, prueba de extensibilidad real) el test falló; el invariante correcto era "32 `sfv5-skill` únicas", no "32 entradas totales para siempre". Corregido para no penalizar la extensibilidad que el propio PRP exige.
+
+## Accomplished
+- ✅ @$go procesado; prompt-injection en amos-context.md detectado y reportado al usuario antes de actuar sobre él.
+- ✅ CX-MFG-3: corrida real de `/prp` para WRU v0.1 sobre el repo real SFV5 (`/opt/saas-factory-setup`), PRP nativo generado y corregido en 2 rondas (44 gates atribuidos correctamente a WRU no a SFV5, entidades canónicas Source Projection/Proposal/Canonical State formalizadas, contrato de reconciliación NO_CHANGE|PROPOSAL|CONFLICT|SOURCE_MISSING, SFV5 declarado fuente no autoridad, rol READER incorporado, G21/G22/G41-43 restaurados) — cada corrección con receipt completo (hashes SHA256 íntegros, snapshots git worktree/status before-after, diffs exactos, declaraciones NOT_RECOVERABLE cuando aplicaba).
+- ✅ CX-MFG-4: Implementation Plan completo generado desde el PRP aprobado y corregido (498→548 líneas: secuencia canónica `1→2→3→{4,5}→6→7→9.9→9.10→N`, matriz G1-G44 completa, checkpoints humanos, estrategia de commits/corpus/instalación aislada).
+- ✅ Fabricación end-to-end real de WRU v0.1 en worktree git aislado (`/opt/wru-worktree-v0.1`, branch `feat/workforce-registry-unit-v0.1`), 10 commits atómicos, 74/74 tests reales pasando, 44/44 gates PASS con evidencia individual: schema+meta-validación (Fase 1), adapter read-only+reconciliación sobre las 32 skills reales (Fase 2), motor de propuestas/aprobación — único camino de escritura, optimistic locking, autoridad por rol (Fase 3), ciclo de vida gobernado — deprecate/replace/archive/restore, hard-delete estructuralmente imposible (Fase 4), disponibilidad (Fase 5), cliente de consulta bajo autoridad READER + blind discovery de 8 casos (Fase 6), evidencia (Contrato A) + instalación/desinstalación real en copia aislada (Fase 7), Activación real (32/32 skills reales ingeridas vía flujo gobernado, nunca carga directa), Operación real (6 tipos de mutación real incluyendo archive+restore real sobre datos reales), Fase N (blind discovery real sobre el Registry activado, 44 gates agregados, FINAL-VERDICT).
+- ✅ Árbol productivo `/opt/saas-factory-setup` verificado byte-idéntico (HEAD, `git status`, `.claude/skills/`, `CLAUDE.md`, y las 3 herramientas previas de la cadena SFV5/CC-2/CX-N1) en cada uno de los ~15 checkpoints de este build — nunca tocado.
+- ✅ Handoff autosuficiente escrito en disco antes de continuar (cierre provisional pedido explícitamente por el usuario a mitad de la fabricación), para que otro agente sin memoria de la conversación pudiera retomar si la sesión moría.
+- ✅ 4 checkpoints humanos aprobados explícitamente por el usuario en tiempo real (primera escritura canónica, ingestión de datos reales, primera operación de lifecycle, camino vivo real).
+- 🔲 Checkpoint 5 (merge/activación compartida a la rama productiva) deliberadamente NO ejecutado — queda como decisión humana futura, fuera del alcance que esta misión se autorizó a ejecutar sola.
+- Veredicto final entregado: `WRU_V0_1_END_TO_END_BUILT_PENDING_FINAL_INDEPENDENT_VERIFICATION`, con deuda residual declarada explícitamente (sin CLI binario formal; instalación probada en copia de directorio simple, no en un segundo worktree git).
+
+## Next Steps
+- Revisión independiente del build (tipo CX-PRP-1) antes de cualquier propuesta de merge a `fase-3-5-jpi-real-sfv5-bridge`.
+- Decisión humana pendiente sobre checkpoint 5: si/cuándo proponer ese merge.
+- Si se decide llevar WRU a producción real: resolver deuda residual (CLI binario formal; prueba de instalación en un worktree git separado, no solo copia de directorio).
+- Si la sesión se retoma en frío, leer primero `FINAL-VERDICT.md` y `HANDOFF-2026-07-31.md` antes de tocar código.
+
+## Relevant Files
+- `/opt/saas-factory-setup/saas-factory/.claude/PRPs/prp-workforce-registry-unit.md` — PRP aprobado de WRU v0.1, corregido 2 veces, nunca modificado durante la fabricación.
+- `/opt/saas-factory-setup/saas-factory/.claude/PRPs/plan-workforce-registry-unit.md` — Implementation Plan aprobado, fuente de la secuencia de fases ejecutada.
+- `/opt/wru-worktree-v0.1/saas-factory/tools/workforce-registry/` — módulo completo fabricado (schema/, adapters/, proposals/, registry/, query/, evidence/, tests/), 10 commits, 44/44 gates.
+- `/opt/dfl-knowledge/evidence/sfv5-wru-prp-native-run-2026-07-31/` — receipts de generación y corrección del PRP.
+- `/opt/dfl-knowledge/evidence/sfv5-wru-implementation-plan-2026-07-31/` — receipts de generación y corrección del plan.
+- `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/FINAL-VERDICT.md` — matriz completa G1-G44, estado exacto por etapa, veredicto final.
+- `/opt/dfl-knowledge/evidence/wru-v0.1-e2e-build-2026-07-31/HANDOFF-2026-07-31.md` — handoff autosuficiente para continuación por otro agente.
+
+### Session summary: dfl-knowledge
+**Type:** session_summary  
+**Project:** dfl-knowledge  
+
+## Goal
 Sesión larga y multi-misión sobre DFL/SFV5: auditoría forense grounded de la copia local SaaS Factory (VM2), su censo estructurado, remediación en 3 rondas hasta verificación independiente cerrada, reconciliación de la arquitectura laboral completa de DFL (Workforce Registry / Factory Manager), y el PRP ejecutable del primer incremento vivo (Workforce Registry Unit v0.1), reconciliado con resultados de un laboratorio experimental de gobierno de mutaciones.
 
 ## Instructions
@@ -269,58 +316,6 @@ Sesión larga y multi-misión sobre DFL/SFV5: auditoría forense grounded de la 
 - `evidence/workforce-registry-unit-v0.1-prp-2026-07-30/` — PRP original (CC-3).
 - `evidence/workforce-registry-capability-lab-2026-07-30/` — laboratorio experimental de gobierno de mutaciones (CX-LAB-1).
 - `evidence/workforce-registry-unit-v0.1-prp-r1-2026-07-30/` — PRP reconciliado con el laboratorio, incluye `wru-draft.md` listo para SFV5.
-
-### SESSION SUMMARY 2026-09-01 (Claude/TCC) — @$fin, full-day handoff
-**Type:** decision  
-**Project:** dfl  
-
-Full-day Claude Code (TCC) session, 2026-09-01, closing via @$fin. Consolidates and cross-references obs #652 through #660 (each mission's full narrative lives in its own observation and doc; this is the session-level index, not a replacement).
-
-CHRONOLOGY / MAJOR THREADS (in order):
-
-1. WEGLOT/BILINGUAL WEBSITE (obs #652, docs/DFL_WEBSITE_BILINGUAL_STRATEGY.md): audited Weglot on the live DFL Squarespace site (data-wg-notranslate markup confirmed, but zero live second-language content today). No plan bought/upgraded. Recommended DFL-owned /en page tree (Option B) over Squarespace-native (doesn't exist) or another paid tool (Option C, rejected). Migration NOT executed (needs a live Squarespace admin session this environment didn't have). Built and REAL-E2E-verified a vendor-lifecycle AQA gate (tools/dfl-website-manager/vendor-lifecycle.mjs + vendor-registry.json): a vendor with an active trial and unverified end date is CRITICAL by design, not OK-by-default. Real cron installed (0 8 * * *). Trial risk is now a tracked operational task, not silent marketing noise -- but not eliminated (real trial end date still unconfirmed).
-
-2. WEBSITE MANAGER NOTIFICATION STORM (obs #653, docs/DFL_WEBSITE_MANAGER_NOTIFICATION_STORM_2026-09-01.md): HIGH severity real incident. sweep.mjs's SLA-breach loop had no idempotency check -- isBreached() compared against a clock start that never advanced, so notify()+markNotified() fired unconditionally on every 10-min cron cycle. 61 runs -> 162 duplicate Telegram alerts over ~10h on 3 real events (2 Weglot-domain, 1 Gemini-domain, both misclassified channel=unknown->ESCALATE). Matches the reported "~200 messages, Weglot/Gemini >50 each." Duplicate ingestion: NO (each email ingested once). Duplicate escalation: YES. Root cause: a persistent SLA-breached STATE was reinterpreted as a new EVENT on every sweep. Contained immediately (removed the cron entry right after the last scheduled run). Fixed for real: ESCALATED/ROUTED -> SLA breach -> notify ONCE -> AWAITING_HUMAN (a status absent from the SLA-clock map, so isBreached() is structurally false for it forever after -- the state machine itself is the guard, no separate cooldown table). Retry made per-row/isolated so a real delivery failure retries cleanly without duplicating events. classify.mjs gained sender-domain-based vendor_lifecycle/vendor_marketing channels (AUTO_RESOLVE, never escalate) for Weglot/Gemini specifically. Reprocessed the 3 stuck real events (reclassified + closed NO_ACTION_NEEDED). sweep.mjs/classify.mjs/store.mjs had ZERO test coverage before this incident -- itself part of the root cause; added sweep.test.mjs (8 tests incl. the 100-consecutive-sweep adversarial -> max 1 Telegram send) and classify.test.mjs (7 tests). Full suite grew from 127 to 143, all PASS. Cron restored with the fix; crontab diffed byte-identical to pre-incident except the intentional vendor-lifecycle addition -- TCC/TCX/telegram-bos paths confirmed untouched throughout.
-
-3. NODE PASS != GRAPH PASS != LOOP PASS AQA (obs #654 + #656, docs/DFL_STATE_GRAPH_LOOP_AQA_2026-09-01.md + docs/DFL_LOOP_TAXONOMY_2026-09-01.md): elevated the storm incident into institutional AQA doctrine. Audited existing organs first (asset-index dfl.yaml schema, aqa-kit's 8 Test Profiles + sentinel-test discipline, tools/lib/silence_watchdog.py -- a shared Python watchdog primitive already correctly implementing fresh-transition-only notify, reused by 3 real crons before this incident ever happened). Added RECURRING_CAPABILITY as a 9th real AQA Test Profile (tools/aqa-kit/lib/profiles.mjs), same mandatory schema as the other 8, with a real sentinel (fixtures/sentinels/recurring-capability-sweep.mjs: 'vulnerable' mode reproduces the exact storm shape and correctly FAILs; 'fixed' mode runs the real shipped sweep.mjs and PASSes). Directive addendum v0.3 added (docs/standards/aqa/DFL_AQA_PRODUCTION_DIRECTIVE_V0.1.md section 12): a passing component set does not imply a passing graph; N>=100 consecutive-cycle adversarial established as institutional minimum. Deepened further: formalized LOOP = reference+sensor+comparator+actuator+re-entry+state+continuation/exit-condition as real code (tools/aqa-kit/lib/loop-behavior.mjs: classifyLoopBehavior() classifies CONVERGED/BOUNDED_RETRY/STABLE_NO_EFFECT/DEGENERATE/DIVERGENT/OSCILLATING from a real per-cycle effect sequence), validated all 6 mission-required loop types (A-F) with ONE shared generic harness (loop-behavior.test.mjs, 12/12 PASS). Honest finding: types E (degenerate/real bug) and F (legitimate feedback loop) can be statistically indistinguishable by count alone -- distinguishing them needs a semantic check (fresh external evidence vs. stale internal replay), which directly motivated reclassifying check-site-health.mjs as NEEDS_LOOP_AQA (structurally a legitimate Type-F candidate, but its per-minute re-alert has no governed reminder-throttle policy -- recommended, not executed). Graphify tested for real (not assumed) across every mode including watch/querylog/diagnose-multigraph: contributes exactly the static code/dependency plane, zero temporal/state signal in ANY configuration -- gap documented, no replacement built. Built a real 8-plane multi-plane observability matrix from what actually reconstructed the storm (temporal history + state graph + external effects; Graphify contributed nothing to that specific diagnosis). Reclassified the 3 prior NEEDS_GRAPH_AQA items with real code reads: jpi-autonomy's reservation-watchdog.mjs and runtime.mjs -> LOOP_AQA_COVERED (real wasAlready guard / self-documented per-flow idempotency markers); check-site-health.mjs stays NEEDS_LOOP_AQA with a precise reason now, not a vague one.
-
-4. JORGE'S LAZO->GRAFO DE LAZOS->GRAFO DE GRAFOS->BUSINESS OS THESIS (obs #655): mid-mission correction on Daniel's course material (private, saasfactory.so classroom, not locally accessible). Jorge's 6 corrections absorbed and codified into the AQA directive §12: the enriched 7-part loop formula (4 classic cybernetic pieces = HOW it regulates; 3 added pieces -- re-entry/state/continuation-exit-condition -- = WHETHER repeating converges/stabilizes/oscillates/explodes), and the correction that Graphify is "one possible instrument to observe parts of the system," not "the tool for loops" -- independently confirmed by this session's own live Graphify testing the same day.
-
-5. CAPABILITY ACQUISITION AQA (obs #657, docs/DFL_CAPABILITY_ACQUISITION_AQA_2026-09-01.md): a third AQA institutionalization axis -- not "does it loop correctly" but "was it actually acquired, or did it just work once." Maturity ladder SEEN->EXECUTED->ACQUIRED->REUSABLE->TRANSFERABLE->GENERALIZED with objective per-transition evidence, codified as a 10th real Test Profile CAPABILITY_ACQUISITION (T0-T6 required_checks). PORTABLE != ACQUIRED != TRANSFERABLE demonstrated with a real DFL example (Skill Dock's artifact-copy tests prove portability, not acquired-usage-knowledge). Three honest benchmarks: Skill Dock (REUSED/TRANSFERRED real but its genericity was never turned into a permanent regression test -- a real, own-goal finding); Graphify (the strongest result -- a real, organic T5 negative case: this session never reached for Graphify during the actual storm diagnosis, chose logs+DB+Telegram on its own); Loop AQA (T3 executed live in-mission via a real cross-repo transfer test against JPI's real reservation-watchdog.mjs, unmodified, 1/1 PASS). Intelligence Memory format proposed: SITUATION->CAPABILITY CHOSEN->WHY->RESULT->EVIDENCE->LIMIT DISCOVERED (not a new mechanism, just a shape for Engram entries, applied retroactively as an example). Real motivating case Jorge gave live: Realtor's WhatsApp two-way capability should be "build once, use N->infinity times" -- verified via asset-index it was NOT registered as reusable (0 search results), directly setting up threads 6-8.
-
-6. WHATSAPP CAPABILITY EXTRACTION (obs #658, docs/DFL_WHATSAPP_CAPABILITY_EXTRACTION_2026-09-01.md): extracted Realtor's real, production-proven (deployment dpl_GAjXbwt8R1sGdE3ruCeSsNsg5xd7) Meta WhatsApp Cloud API adapter into tools/messaging-adapters/meta-whatsapp/adapter.mjs, the canonical single source (dfl.messaging-adapters.meta-whatsapp.v1). Before writing code, found the previous extraction attempt (tools/mercader-autonomy/messaging_meta_whatsapp.mjs, claiming "institutional" status in its own comment) had ALREADY silently drifted from Realtor's real version and had ZERO real consumers -- exactly the PORTABLE-not-ACQUIRED trap the capability-acquisition ladder (thread 5) was built to catch, found failing for real inside DFL's own codebase. Reconciled rather than re-forked: Realtor's proven behavior as base + 2 additive generalizations (health(), channel tagging) merged from the abandoned copy. Realtor kept working, PROVEN not assumed (baseline captured before any change, its 3 own test files re-run identical after the sync). Built sync.mjs+consumers.mjs+drift-check.test.mjs -- the actual fix for the root cause (a permanent test that would have caught the original drift, proven both directions: fails on real pre-existing drift, passes after sync). MERCADER rewired to import canonical directly (T2, 24/24 PASS, zero regression).
-
-7. MULTI-PRODUCT WHATSAPP TRANSFER (obs #659, docs/DFL_WHATSAPP_MULTI_PRODUCT_TRANSFER_2026-09-01.md): extended the canonical to JPI (greenfield, built scripts/jpi-autonomy/whatsapp-adapter.mjs mapping WhatsApp replies to flow-aceptacion.mjs's own pre-existing, self-documented acceptance-evidence gap; 8/8 new + 255/255 full JPI suite PASS), JackyClean (found ANOTHER independently drifted hand-copy of the same abandoned mercader fork, reconciled identically, real domain code notify.ts/messaging_surface.mjs preserved untouched), and DFL Website (functions/whatsapp-intake/, reusing the exact existing functions/challenge-intake satellite-Vercel-function pattern rather than inventing one, since Squarespace itself cannot host a backend -- confirmed same day in thread 1). RSVP investigated and found genuinely BLOCKED at that point: a shallow clone showed a pure client+Supabase frontend with zero server API routes and a Python backend with no code in the repo -- correctly NOT forced. T6 left UNPROVEN for all 5 real consumers without exception, honoring the mission's explicit anti-inflation rule even under momentum toward a clean sweep.
-
-8. RSVP BACKEND RESOLUTION (obs #660, docs/DFL_RSVP_WHATSAPP_BACKEND_2026-09-01.md): a FULL (not shallow) clone revealed RSVP's Python backend and an old /api/rsvp route were real once, and were DELIBERATELY DELETED 2026-08-17 as genuinely dead code (git blame confirmed, real commit message: "nothing in the app called them, writes already blocked by RLS"). Correctly did NOT recover them -- that would have reversed a real, correct decision. Built the real minimal backend instead using RSVP's own existing framework (Next.js App Router route.ts, zero new Vercel infra) -- proven with an actual `npm run build` (not just type-check), confirming the new route compiles as a real dynamic Vercel function alongside all 10 pre-existing routes with zero regression. Canonical wired via the same sync mechanism, zero hand-copying. Honest schema-level finding, not worked around: RSVP's real schema requires an auth.users-backed identity for every rsvps write and has no phone/guest column anywhere -- so no RSVP-state-writing "confirm via WhatsApp" flow was invented; only the safe verify->normalize->read-only-lookup->human-handoff path was built and proven E2E (11/11 new tests PASS). drift-check.test.mjs extended to support a genuinely different case (RSVP is deliberately non-VM2-resident per the externalization pattern) -- a missing external consumer now SKIPS rather than FAILS, verified in both directions. Before pushing the finished work to GitHub (the only way to durably preserve it, since RSVP is intentionally not kept locally), noticed RSVP was outside today's authorized dispatch scope and used AskUserQuestion rather than assuming -- Jorge explicitly authorized a new branch push, not a merge/deploy. Pushed feat/whatsapp-webhook-intake for real (commit 55c82f7) to github.com/DFLghub/event-rsvp-waitlist, NOT merged to main, no Meta credentials anywhere.
-
-INSTITUTIONAL DOCTRINE THAT DIDN'T EXIST THIS MORNING AND EXISTS NOW:
-- AQA directive §12 (v0.3): NODE PASS != GRAPH PASS, cycle/graph audit mandatory for recurring capabilities, N>=100 adversarial baseline, the 7-part cybernetic loop formula.
-- tools/aqa-kit/lib/profiles.mjs: RECURRING_CAPABILITY (9th) and CAPABILITY_ACQUISITION (10th) Test Profiles, both with real sentinel tests, not just declared.
-- tools/aqa-kit/lib/loop-behavior.mjs: the generic loop-behavior classifier + harness, reused by 3 real fixtures across 3 different repos (saas-factory's own storm sentinel, the synthetic A-F taxonomy tests, and the real cross-repo JPI transfer test).
-- dfl.messaging-adapters.meta-whatsapp.v1: DFL's first fully-canonicalized, multi-consumer, drift-guarded shared capability with a real generalized N-consumer sync mechanism (consumers.mjs + sync.mjs + drift-check.test.mjs) -- 6 real consumers (Realtor, MERCADER, JackyClean, JPI, DFL Website, RSVP), each with distinct, non-inflated evidence.
-- The `external: true` consumer pattern (skip-not-fail drift-check) for VM2-externalized products, extending the existing externalization doctrine into the drift-check mechanism for the first time.
-
-WHAT STAYED HONESTLY UNPROVEN OR BLOCKED (do not silently claim these tomorrow):
-- Weglot's real trial-end date (no admin/IMAP access this session).
-- The actual EN/ES Squarespace migration (proposal ready, not executed -- needs a live Squarespace admin session).
-- check-site-health.mjs's reminder-throttle policy (recommended, not built -- real per-10-min re-alert while a real outage persists, structurally Type-F-legitimate but ungoverned).
-- T6 (independent/spontaneous capability invocation) for EVERY capability discussed today, without exception -- everything was explicitly directed.
-- Skill Dock's cross-generation genericity is real (one proven event) but not covered by a permanent regression test.
-- RSVP's WhatsApp-driven RSVP state writes (confirm/change/cancel) and outbound (invitations/reminders) -- both require a real phone-to-identity linking decision nobody has made; deliberately not built.
-- Which of the 6 WhatsApp consumers (if any) should actually go to Meta production -- zero credentials configured anywhere, that's Jorge's call.
-- MERCADER's own human/external gates (unrelated to today's work, still open from before).
-- Realtor's final human verification + the OWNER_PASSWORD rotation (unrelated to today, still open from before, referenced in HANDOFF-TCC-SESSION-2026-08-30.md).
-
-DO-NOT-REPEAT LIST (institutional, for any future session, any Tony):
-- Do not hand-copy tools/messaging-adapters/meta-whatsapp/adapter.mjs into a new product ever again -- always use sync.mjs + consumers.mjs. Two real hand-copies (MERCADER's original, JackyClean's) already drifted silently before this was caught; a third is not acceptable.
-- Do not declare a recurring capability (cron/watcher/retry/SLA/heartbeat) safe from a single successful run -- always run the N>=100 adversarial via loop-behavior.mjs's harness or an equivalent, per RECURRING_CAPABILITY.
-- Do not declare T6 (spontaneous invocation) PASS for anything that was explicitly requested -- UNPROVEN is the honest default until real unprompted evidence exists.
-- Do not revive RSVP's Python backend or /api/rsvp route -- confirmed real dead code, deliberately removed 2026-08-17, do not resurrect without a NEW real reason.
-- Do not push/deploy any of the 6 WhatsApp consumers to Meta production without Jorge's explicit credential/gate authorization.
-- Do not assume a product's git-visible architecture reflects a shallow clone's view -- RSVP's real history (a full clone) told a completely different story than the shallow depth-1 clone from the prior mission the same day.
-
-Full doc index for tomorrow: docs/DFL_WEBSITE_BILINGUAL_STRATEGY.md, docs/DFL_WEBSITE_MANAGER_NOTIFICATION_STORM_2026-09-01.md, docs/DFL_STATE_GRAPH_LOOP_AQA_2026-09-01.md, docs/DFL_LOOP_TAXONOMY_2026-09-01.md, docs/DFL_CAPABILITY_ACQUISITION_AQA_2026-09-01.md, docs/DFL_WHATSAPP_CAPABILITY_EXTRACTION_2026-09-01.md, docs/DFL_WHATSAPP_MULTI_PRODUCT_TRANSFER_2026-09-01.md, docs/DFL_RSVP_WHATSAPP_BACKEND_2026-09-01.md. IRONMAN.md has one real row per mission (10 rows added today). Engram obs #652-#660 plus this index (#661).
 
 ### Session summary: futbolweb-app
 **Type:** session_summary  
@@ -483,15 +478,15 @@ No se declara nada mas alla de esto. Se espera el proximo reporte de Jorge cuand
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.7038  
+**Graph entropy:** 0.7141  
 
-- **Community 11** (98 nodes): PRP Estructura y Dependencias, Capacidades de Onboarding de DFL, Dependencias de Fabricación
-- **Community 0** (7 nodes): Jurisdicción, Mercader, Observación de Ed
-- **Community 1** (5 nodes): Merchant of Record, Métricas comerciales, Integraciones Externas
+- **Community 11** (95 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Complejidad en la evaluación de costos
+- **Community 0** (7 nodes): Verificación de API, Estrategia PRP, Riesgos de implementación
+- **Community 1** (5 nodes): Jurisdicción, Mercader, Observación de Ed
 - **Community 2** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
-- **Community 3** (4 nodes): Abstracción de oferta, Modelo de disponibilidad
-- **Community 4** (4 nodes): Verificación de API, Estrategia PRP
+- **Community 4** (4 nodes): Owner-Based RLS, Mercader Boundary
+- **Community 3** (4 nodes): Merchant of Record, Métricas comerciales, Integraciones externas
 
 ---
 
-*Mirror auto-generated 2026-09-05T04:09:03Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-06T03:03:12Z | La Garra → DFLghub/amos-context*
