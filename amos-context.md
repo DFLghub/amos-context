@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-09-15T02:54:02Z  
+**Generated:** 2026-09-15T02:57:02Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -287,4 +287,4 @@ HALLAZGO CLAVE (P11 v2, 2026-09-02): el framework Gates/Authority/ΔR-approval d
 
 ---
 
-*Mirror auto-generated 2026-09-15T02:54:02Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-09-15T02:57:02Z | La Garra → DFLghub/amos-context*
