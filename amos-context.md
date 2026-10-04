@@ -1,5 +1,5 @@
 # amOS Context — @$go Live Mirror
-**Generated:** 2026-10-03T21:46:13Z  
+**Generated:** 2026-10-04T03:03:54Z  
 **Protocol:** @$go v1.1  
 **Rule:** Any agent reading this file has current DFL operational state.  
 **Source B (live JSON):** https://context.deepfeelingslabs.com/go  
@@ -277,15 +277,15 @@ HALLAZGO CLAVE (P11 v2, 2026-09-02): el framework Gates/Authority/ΔR-approval d
 
 ## KNL SEMANTIC COMMUNITIES
 
-**Graph entropy:** 0.7664  
+**Graph entropy:** 0.6922  
 
-- **Community 11** (93 nodes): Abstracción de oferta, Política de disponibilidad en servicios, PRP como artefacto nativo
-- **Community 0** (7 nodes): Verificación de API, Estrategia PRP
-- **Community 1** (4 nodes): MCP Server Behavior, RLS Trap, Cardinalidad de Inventario
-- **Community 3** (4 nodes): Owner-Based RLS, Mercader Boundary
-- **Community 2** (4 nodes): Plataforma Universal, ESC (Ed Square Cars), Patrón de Tenencia Owner-Scoped
-- **Community 4** (4 nodes): Modelo de ciclo de vida automatizado
+- **Community 11** (98 nodes): Capacidades de Onboarding de DFL, Dependencias antes de la fabricación, Requisitos externos para V1
+- **Community 0** (6 nodes): Mercader Boundary, Criterios de Éxito para P-1, Límite de Mercader
+- **Community 1** (6 nodes): Estrategia PRP
+- **Community 2** (4 nodes): MCP Server Behavior, RLS y Acceso a Datos, Cardinalidad de Inventario
+- **Community 3** (4 nodes): PRP como artefacto nativo, Modelo de disponibilidad en servicios digitales, Complejidad en la evaluación de costos
+- **Community 4** (4 nodes): Generalidad en Modelos Comerciales
 
 ---
 
-*Mirror auto-generated 2026-10-03T21:46:13Z | La Garra → DFLghub/amos-context*
+*Mirror auto-generated 2026-10-04T03:03:54Z | La Garra → DFLghub/amos-context*
